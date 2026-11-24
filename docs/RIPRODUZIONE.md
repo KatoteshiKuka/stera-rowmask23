@@ -131,10 +131,10 @@ sh sistemi/benchmark/confronto_appaiato.sh                 # una campagna: motor
 sh sistemi/benchmark/TinyStories/esegui_confronto_tesi.sh  # una campagna: STERA 30M e i due TinyStories su MPS
 ```
 
-I numeri della tesi vengono da cinque campagne complete e consecutive sui pesi del checkpoint finale. Lo script può attendere che il sistema sia scarico (`SOGLIA_CARICO`, media di carico a un minuto, e `PAUSA` in secondi); per la tesi le campagne sono state eseguite senza attesa:
+I numeri della tesi vengono da cinque campagne complete sui pesi del checkpoint finale, ciascuna avviata quando la media di carico a un minuto scende sotto 1,5 e dopo 60 s di pausa, con il Mac alimentato dalla rete e senza altre applicazioni attive:
 
 ```bash
-SOGLIA_CARICO=100 PAUSA=5 STERA_PESI=H122000 PYTHON=.venv-sistemi/bin/python \
+SOGLIA_CARICO=1.5 PAUSA=60 STERA_PESI=H122000 PYTHON=.venv-sistemi/bin/python \
   sh sistemi/benchmark/campagne_tempi.sh sistemi/risultati/campagne_20261124/protocollo 5
 .venv-sistemi/bin/python sistemi/benchmark/riepiloga_campagne.py sistemi/risultati/campagne_20261124/protocollo
 ```
@@ -143,7 +143,7 @@ Il riepilogo verifica prima che i token coincidano fra i due motori, con l'imple
 
 I risultati della tesi, con i report che li descrivono, sono in `sistemi/risultati/`:
 
-- `campagne_20261124/protocollo/`: le cinque campagne sul checkpoint finale usate nella tesi e `riepilogo.json` (decode appaiato −35,9%, tempi e picchi dei tre modelli); `protocollo_H80000/` e `preliminari/` contengono campagne precedenti sui pesi a 80.000 aggiornamenti;
+- `campagne_20261124/protocollo/`: le cinque campagne sul checkpoint finale usate nella tesi e `riepilogo.json` (decode appaiato −34,8%, tempi e picchi dei tre modelli); `protocollo_H122000_sotto_carico/` contiene cinque campagne sugli stessi pesi eseguite con il sistema carico, `protocollo_H80000/` e `preliminari/` campagne precedenti sui pesi a 80.000 aggiornamenti;
 - `01_motore_compatto_vs_denso/`: misure appaiate precedenti e attribuzione del tempo per operatore;
 - `02_tre_modelli_mac/`: primo token, decode e picco di memoria dei tre modelli;
 - `03_f10_ssd_qwen/`: prototipo F10 (motore `sistemi/motori/stera_independent_fp32_transposed_jit_v28.py`, lettura dal disco `evidenze_f10/ssd_validato/bench_ssd_f10.py`) (pesi compatti 4,003 GB contro 18,597 GB densi), lettura validata dall'SSD, Qwen3.5-9B con caricamento degli strati dal disco, eseguito con [SWLP](https://github.com/Rishav-Upadhaya/SWLP) al commit `3941963812850f9ad6821f3bec78754d695143ac` (script `prepara_swlp.py`, `misura_swlp.py`, `riepiloga_swlp.py`); modello `Qwen/Qwen3.5-9B` scaricato da Hugging Face (revisione registrata nei metadati di download: `c202236235762e1c871ad0ccb60c8ee5ba337b9a`).

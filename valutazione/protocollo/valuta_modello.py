@@ -53,7 +53,10 @@ def carica_stera30m(path, device):
 
 def carica_hf(cartella, device):
     from transformers import AutoModelForCausalLM
-    m = AutoModelForCausalLM.from_pretrained(cartella, local_files_only=True, dtype=torch.float32).eval().to(device)
+    import transformers
+    # l'argomento si chiama torch_dtype fino a Transformers 4.5x e dtype nelle versioni successive
+    chiave = "dtype" if int(transformers.__version__.split(".")[0]) >= 5 else "torch_dtype"
+    m = AutoModelForCausalLM.from_pretrained(cartella, local_files_only=True, **{chiave: torch.float32}).eval().to(device)
     return lambda ids: m(input_ids=ids, use_cache=False).logits
 
 

@@ -30,7 +30,7 @@ a.set_title("(a) Decode, compatto rispetto a denso", fontsize=9.5); a.grid(axis=
 for i in range(6):
     b.plot([0, 1], [td[i], ts[i]], color=C["chiaro"], lw=.9, zorder=1)
 b.scatter([0]*6, td, color=C["neutro"], zorder=2, s=16, label="Denso"); b.scatter([1]*6, ts, color=C["stera"], zorder=2, s=16, label="Compatto")
-b.set_xticks([0, 1]); b.set_xticklabels(["Denso", "Compatto"]); b.set_xlim(-.4, 1.4); b.set_ylim(.5, 1.15)
+b.set_xticks([0, 1]); b.set_xticklabels(["Denso", "Compatto"]); b.set_xlim(-.4, 1.4); b.set_ylim(.5, .9)
 b.set_ylabel("Tempo totale (s)"); b.yaxis.set_major_formatter(FuncFormatter(lambda v, _: it(v, 2)))
 b.set_title("(b) Tempo totale della richiesta", fontsize=9.5); b.grid(axis="x", visible=False)
 fig.savefig(out/"decode_appaiato_stera30m.pdf")

@@ -1,0 +1,14 @@
+{"trainable_params": 30346182, "start_step": 0, "targets": 0, "ordinal": 0, "world": 2, "ckpt": null, "sha256": "", "output": "/mnt/scratch/andreanardoni/riproduzione_20261124/prova_addestramento", "steps": 200, "batch": 64, "ctx": 512, "lr": 0.0006, "warmup": 300, "budget_steps": 80000, "decay_frac": 0.2, "wd": 0.1, "beta2": 0.95, "save_steps": 2000, "nval": 512, "micro": 8, "rank": 96, "layers": 6, "sched_offset": 0, "signs": false, "gains": true, "scratch": true}
+VAL step=0 nll=10.927510
+V2 step=20 t=20 labels=245375 loss=9.34693 grad_norm=5.7446 lr=4e-05 tok_s=12115
+V2 step=40 t=40 labels=499131 loss=7.79904 grad_norm=5.0621 lr=8e-05 tok_s=12316
+V2 step=60 t=60 labels=750840 loss=5.87678 grad_norm=1.4387 lr=0.00012 tok_s=12375
+V2 step=80 t=80 labels=1001687 loss=4.97753 grad_norm=2.0815 lr=0.00016 tok_s=12414
+V2 step=100 t=100 labels=1257135 loss=4.63741 grad_norm=1.3644 lr=0.0002 tok_s=12429
+V2 step=120 t=120 labels=1509273 loss=4.25768 grad_norm=1.4740 lr=0.00024 tok_s=12432
+V2 step=140 t=140 labels=1754587 loss=4.19792 grad_norm=2.2243 lr=0.00028 tok_s=12417
+V2 step=160 t=160 labels=2004270 loss=4.02666 grad_norm=2.4247 lr=0.00032 tok_s=12401
+V2 step=180 t=180 labels=2253896 loss=3.87985 grad_norm=1.9901 lr=0.00036 tok_s=12396
+V2 step=200 t=200 labels=2503531 loss=3.71362 grad_norm=2.3369 lr=0.0004 tok_s=12388
+V2_CHECKPOINT_OK path=/mnt/scratch/andreanardoni/riproduzione_20261124/prova_addestramento/TS68V2_STEP200.ckpt.gz sha256=64f7404f786bf51a802a5d15adc75f0b38fdeed09131fd03142763eb6452e065
+VAL step=200 t=200 labels=2503531 nll=3.645174

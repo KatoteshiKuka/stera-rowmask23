@@ -1,4 +1,4 @@
 Prototipo F10 inizializzato dal checkpoint finale di STERA 30M
 pesi: sistemi/modelli/H122000_fp32_weights.npz sha256 864d03dc63b5d5a8977eba0c7c8bec60530a33a1ef52762ab5b96aeb2201018c
 comando: STERA_PESI=H122000 python stera_independent_fp32_transposed_jit_v28.py --factor 10 --context 128 --tokens 100 (due esecuzioni)
-data: 2026-11-24, media di carico all avvio circa 4
+data: 2026-11-24, ogni esecuzione avviata con media di carico a un minuto sotto 1,5 (condizioni.txt); risultati 12,29 e 12,33 token/s

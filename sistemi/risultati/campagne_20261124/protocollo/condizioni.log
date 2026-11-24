@@ -1,10 +1,10 @@
-campagna 1 pesi H122000 inizio 2026-11-24T21:48:01 carico { 2.71 2.27 2.18 } alimentazione AC Power
-campagna 1 fine 2026-11-24T21:50:26
-campagna 2 pesi H122000 inizio 2026-11-24T21:50:31 carico { 4.59 3.17 2.55 } alimentazione AC Power
-campagna 2 fine 2026-11-24T21:52:56
-campagna 3 pesi H122000 inizio 2026-11-24T21:53:01 carico { 4.49 3.42 2.73 } alimentazione AC Power
-campagna 3 fine 2026-11-24T21:55:24
-campagna 4 pesi H122000 inizio 2026-11-24T21:55:29 carico { 3.90 3.46 2.84 } alimentazione AC Power
-campagna 4 fine 2026-11-24T21:58:01
-campagna 5 pesi H122000 inizio 2026-11-24T21:58:06 carico { 3.51 3.74 3.08 } alimentazione AC Power
-campagna 5 fine 2026-11-24T22:00:33
+campagna 1 pesi H122000 inizio 2026-11-24T22:20:24 carico { 1.60 2.18 2.59 } alimentazione AC Power
+campagna 1 fine 2026-11-24T22:22:50
+campagna 2 pesi H122000 inizio 2026-11-24T22:30:50 carico { 1.66 2.25 2.56 } alimentazione AC Power
+campagna 2 fine 2026-11-24T22:32:59
+campagna 3 pesi H122000 inizio 2026-11-24T22:33:59 carico { 1.31 1.87 2.35 } alimentazione AC Power
+campagna 3 fine 2026-11-24T22:36:08
+campagna 4 pesi H122000 inizio 2026-11-24T23:40:52 carico { 1.26 2.49 6.28 } alimentazione AC Power
+campagna 4 fine 2026-11-24T23:43:02
+campagna 5 pesi H122000 inizio 2026-11-24T23:47:22 carico { 1.25 1.82 4.57 } alimentazione AC Power
+campagna 5 fine 2026-11-24T23:49:30

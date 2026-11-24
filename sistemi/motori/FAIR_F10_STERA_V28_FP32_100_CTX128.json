@@ -5,9 +5,9 @@
   "fp32": true,
   "live_compressed_coords": true,
   "independent_coordinate_slots": 898109280,
-  "tps": 9.72571253763275,
-  "median_ms": 102.60660396306776,
-  "p90_ms": 106.80491599487141,
+  "tps": 12.32680391649731,
+  "median_ms": 81.03154200944118,
+  "p90_ms": 81.49120898451656,
   "generated_ids": [
     257,
     640,
@@ -111,10 +111,10 @@
     2613
   ],
   "memory": {
-    "rss_mib": 716.09,
+    "rss_mib": 716.44,
     "mlx_active_mib": 4001.55,
-    "sys_available_mib": 3772.41,
-    "swap_used_mib": 2902.5
+    "sys_available_mib": 5040.05,
+    "swap_used_mib": 999.62
   },
   "true_dense_equivalent_elements": 4633067520,
   "limitation": "Coordinate slots differ per tile and originate from learned H80000; NOT trained independently at expanded scale."

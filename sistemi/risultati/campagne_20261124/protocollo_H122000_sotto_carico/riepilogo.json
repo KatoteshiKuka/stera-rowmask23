@@ -1,0 +1,217 @@
+{
+  "condizioni": [
+    "campagna 1 pesi H122000 inizio 2026-11-24T21:48:01 carico { 2.71 2.27 2.18 } alimentazione AC Power",
+    "campagna 1 fine 2026-11-24T21:50:26",
+    "campagna 2 pesi H122000 inizio 2026-11-24T21:50:31 carico { 4.59 3.17 2.55 } alimentazione AC Power",
+    "campagna 2 fine 2026-11-24T21:52:56",
+    "campagna 3 pesi H122000 inizio 2026-11-24T21:53:01 carico { 4.49 3.42 2.73 } alimentazione AC Power",
+    "campagna 3 fine 2026-11-24T21:55:24",
+    "campagna 4 pesi H122000 inizio 2026-11-24T21:55:29 carico { 3.90 3.46 2.84 } alimentazione AC Power",
+    "campagna 4 fine 2026-11-24T21:58:01",
+    "campagna 5 pesi H122000 inizio 2026-11-24T21:58:06 carico { 3.51 3.74 3.08 } alimentazione AC Power",
+    "campagna 5 fine 2026-11-24T22:00:33"
+  ],
+  "confronto_appaiato": {
+    "campagne": 5,
+    "coppie": 30,
+    "token_identici_compatto_denso": true,
+    "token_identici_fra_campagne": true,
+    "denso": {
+      "primo_token_ms": {
+        "mediana": 36.68508297414519,
+        "min": 34.796084044501185,
+        "max": 58.88095800764859,
+        "n": 30
+      },
+      "decode_token_s": {
+        "mediana": 102.13050333189076,
+        "min": 85.49063303679712,
+        "max": 105.60766588411596,
+        "n": 30
+      },
+      "totale_s": {
+        "mediana": 1.0156877499830443,
+        "min": 0.9832657499937341,
+        "max": 1.2285997499711812,
+        "n": 30
+      }
+    },
+    "compatto": {
+      "primo_token_ms": {
+        "mediana": 75.544521008851,
+        "min": 72.92858295841143,
+        "max": 90.73487500427291,
+        "n": 30
+      },
+      "decode_token_s": {
+        "mediana": 158.8324458164512,
+        "min": 132.00531585366957,
+        "max": 167.67826740792677,
+        "n": 30
+      },
+      "totale_s": {
+        "mediana": 0.7039542704878841,
+        "min": 0.672612750029657,
+        "max": 0.833293917006813,
+        "n": 30
+      }
+    },
+    "variazione_decode_pct": {
+      "mediana": -35.87056623223202,
+      "min": -40.527564846518814,
+      "max": -31.334716393614237,
+      "n": 30
+    },
+    "variazione_decode_pct_per_campagna": [
+      -36.3867986269021,
+      -35.82724247762633,
+      -36.39272564971341,
+      -35.336478757146494,
+      -35.66811365413757
+    ],
+    "variazione_decode_pct_per_input": {
+      "10": -35.2130567395442,
+      "25": -34.98053381407993,
+      "40": -35.54965955689406,
+      "55": -36.42499354604293,
+      "70": -36.41733511547746,
+      "85": -36.31646796461466
+    },
+    "totale_s_per_input": {
+      "10": {
+        "denso": 1.0116340000531636,
+        "compatto": 0.7088138330145739
+      },
+      "25": {
+        "denso": 1.0173206249601208,
+        "compatto": 0.7209658329957165
+      },
+      "40": {
+        "denso": 1.0433512500021607,
+        "compatto": 0.7058471249765716
+      },
+      "55": {
+        "denso": 1.0208966670325026,
+        "compatto": 0.6962404589867219
+      },
+      "70": {
+        "denso": 1.0095375419477932,
+        "compatto": 0.690202165977098
+      },
+      "85": {
+        "denso": 1.0236342080170289,
+        "compatto": 0.6955813750391826
+      }
+    },
+    "coppie_compatto_piu_rapido_in_decode": 30,
+    "coppie_denso_primo_token_prima": 30,
+    "coppie_compatto_totale_minore": 30
+  },
+  "tre_modelli": {
+    "8M": {
+      "misure": 15,
+      "motore": "Transformers/PyTorch 2.15.0 MPS",
+      "primo_token_ms": {
+        "mediana": 21.78633405128494,
+        "min": 19.573417026549578,
+        "max": 28.589249996002764,
+        "n": 15
+      },
+      "decode_token_s": {
+        "mediana": 176.54546439177406,
+        "min": 159.55153255510243,
+        "max": 181.1374481908832,
+        "n": 15
+      },
+      "totale_s": {
+        "mediana": 0.5912018739618361,
+        "min": 0.5767533329781145,
+        "max": 0.647257249976974,
+        "n": 15
+      },
+      "picco_richiesta_mib": {
+        "mediana": 1525.1751708984375,
+        "min": 1522.7689819335938,
+        "max": 1527.5189819335938,
+        "n": 15
+      },
+      "picco_processo_mib": {
+        "mediana": 1525.1751708984375,
+        "min": 1522.7689819335938,
+        "max": 1527.5189819335938,
+        "n": 15
+      },
+      "parita_eager": true
+    },
+    "STERA": {
+      "misure": 15,
+      "motore": "MLX/Metal v63",
+      "primo_token_ms": {
+        "mediana": 121.28845800179988,
+        "min": 117.82475002110004,
+        "max": 133.4095839993097,
+        "n": 15
+      },
+      "decode_token_s": {
+        "mediana": 160.02845305950436,
+        "min": 139.05920435017543,
+        "max": 164.44366242900358,
+        "n": 15
+      },
+      "totale_s": {
+        "mediana": 0.7450671250117011,
+        "min": 0.7275625829934143,
+        "max": 0.8525277500157245,
+        "n": 15
+      },
+      "picco_richiesta_mib": {
+        "mediana": 412.8929443359375,
+        "min": 412.22113037109375,
+        "max": 413.50225830078125,
+        "n": 15
+      },
+      "picco_processo_mib": {
+        "mediana": 412.8929443359375,
+        "min": 412.22113037109375,
+        "max": 413.50225830078125,
+        "n": 15
+      },
+      "parita_eager": false
+    },
+    "33M": {
+      "misure": 15,
+      "motore": "Transformers/PyTorch 2.15.0 MPS",
+      "primo_token_ms": {
+        "mediana": 31.813832989428192,
+        "min": 31.318875029683113,
+        "max": 43.51124999811873,
+        "n": 15
+      },
+      "decode_token_s": {
+        "mediana": 94.78615709674699,
+        "min": 92.60356431353576,
+        "max": 100.48981671011249,
+        "n": 15
+      },
+      "totale_s": {
+        "mediana": 1.0875148750492372,
+        "min": 1.0268850830034353,
+        "max": 1.1114804989774711,
+        "n": 15
+      },
+      "picco_richiesta_mib": {
+        "mediana": 1493.0657958984375,
+        "min": 1490.2376098632812,
+        "max": 1494.9877319335938,
+        "n": 15
+      },
+      "picco_processo_mib": {
+        "mediana": 1493.0657958984375,
+        "min": 1490.2376098632812,
+        "max": 1494.9877319335938,
+        "n": 15
+      },
+      "parita_eager": true
+    }
+  }
+}

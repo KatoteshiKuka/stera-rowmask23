@@ -1,29 +1,29 @@
-W1124 21:49:13.116000 93517 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
-Loading weights:   0%|          | 0/56 [00:00<?, ?it/s]Loading weights: 100%|██████████| 56/56 [00:00<00:00, 19601.19it/s]
+W1124 22:21:34.488000 95553 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+Loading weights:   0%|          | 0/56 [00:00<?, ?it/s]Loading weights: 100%|██████████| 56/56 [00:00<00:00, 25204.53it/s]
 [transformers] [1mGPTNeoForCausalLM LOAD REPORT[0m from: /Users/andreanardoni/Desktop/STERA-RowMask23/sistemi/modelli/TinyStories/33M
 Key                                                   | Status     |  | 
 ------------------------------------------------------+------------+--+-
-transformer.h.{0, 1, 2, 3}.attn.attention.bias        | UNEXPECTED |  | 
 transformer.h.{0, 1, 2, 3}.attn.attention.masked_bias | UNEXPECTED |  | 
+transformer.h.{0, 1, 2, 3}.attn.attention.bias        | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
 [transformers] `past_key_values`/`cache_params` are deprecated. Use `cache` instead.
-        8.57 real         6.23 user         0.63 sys
-           661962752  maximum resident set size
+        8.57 real         6.22 user         0.61 sys
+           660504576  maximum resident set size
                    0  average shared memory size
                    0  average unshared data size
                    0  average unshared stack size
-               65336  page reclaims
-                  83  page faults
+               65259  page reclaims
+                  72  page faults
                    0  swaps
                    0  block input operations
                    0  block output operations
                    0  messages sent
                    0  messages received
                    0  signals received
-                  87  voluntary context switches
-                5486  involuntary context switches
-         55647158702  instructions retired
-         20609480347  cycles elapsed
-          1566903680  peak memory footprint
+                  88  voluntary context switches
+                4299  involuntary context switches
+         55622317325  instructions retired
+         20412407852  cycles elapsed
+          1566395712  peak memory footprint
