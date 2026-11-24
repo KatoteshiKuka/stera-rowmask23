@@ -97,7 +97,7 @@ python valuta_modello.py hf --modello ../../esterni/TinyStories-8M  --device cpu
 
 Lo stesso script calcola la NLL dei 300 racconti di riferimento (57.841 token bersaglio) e genera una continuazione per incipit con top-$k$ 40, temperatura 0,75, al più 180 nuovi token. Il generatore casuale è su CPU con il seme dell'incipit, quindi le continuazioni non dipendono dal dispositivo.
 
-**Verifica:** le continuazioni coincidono token per token con quelle in `valutazione/generazioni/`; lo abbiamo controllato rieseguendo su CPU i primi incipit di STERA 30M e TinyStories-33M, generati originariamente su P100. Le NLL per racconto differiscono di pochi millesimi di nat per effetto degli arrotondamenti.
+**Verifica:** le continuazioni coincidono token per token con quelle in `valutazione/generazioni/`; rieseguendo i tre modelli su P100 coincidono tutte le 900 continuazioni; su CPU coincidono 899 su 900 (l'incipit F156 di TinyStories-33M diverge dal token 84 per l'arrotondamento). Le NLL medie differiscono al più di qualche centomillesimo di nat.
 
 ## 5. Giudizio cieco
 
