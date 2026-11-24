@@ -1,5 +1,5 @@
-W1124 20:20:45.491000 89697 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
-Loading weights:   0%|          | 0/56 [00:00<?, ?it/s]Loading weights: 100%|██████████| 56/56 [00:00<00:00, 18203.60it/s]
+W1124 21:52:51.076000 93698 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+Loading weights:   0%|          | 0/56 [00:00<?, ?it/s]Loading weights: 100%|██████████| 56/56 [00:00<00:00, 24433.69it/s]
 [transformers] [1mGPTNeoForCausalLM LOAD REPORT[0m from: /Users/andreanardoni/Desktop/STERA-RowMask23/sistemi/modelli/TinyStories/33M
 Key                                                   | Status     |  | 
 ------------------------------------------------------+------------+--+-

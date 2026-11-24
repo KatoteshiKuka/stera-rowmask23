@@ -14,19 +14,22 @@ Ogni passo della tesi è stato rieseguito partendo solo dal repository e da font
 | Valutazione TEST300, TinyStories-33M | Mac, CPU (originale su P100) | 299/300 continuazioni identiche; NLL 1,324450 (tesi 1,324456). L'unica differenza (incipit F156) inizia al token 84 ed è compatibile con un diverso arrotondamento fra CPU e GPU nel campionamento |
 | Aggregazione del giudizio cieco (`aggrega_e_decodifica.py`) | Mac | `risultati_3modelli.json` identico |
 | Esportazione dei pesi (FP32 e INT8) | Mac | payload di 121.384.728 e 74.240.928 byte, come nella tesi; errore relativo INT8 0,01461 |
-| Archivio senza perdita | Mac | 102.298.136 byte; ripristino bit per bit su tutti i 267 tensori. Il file `.npz` ripristinato ha un'impronta diversa dall'originale perché il contenitore zip registra metadati propri, mentre i tensori coincidono |
+| Archivio senza perdita | Mac | rifatto sul checkpoint finale, 102.352.624 byte; ripristino bit per bit su tutti i 267 tensori. Un file `.npz` ricostruito da `restore_lossless_archive.py` contiene gli stessi tensori ma può avere un'impronta diversa, perché il contenitore zip registra metadati propri |
 | Figure | Mac, matplotlib 3.9.4 | identiche al pixel; con matplotlib 3.11 differiscono di 1–2 pixel per il rendering del testo |
-| Tempi e memoria (Capitolo 8) | Mac M1 | token identici in tutte le esecuzioni; tempi da cinque campagne ripetute, vedi sotto |
+| Tempi e memoria (Capitolo 8) | Mac M1 | rieseguiti sul checkpoint finale, vedi sotto |
 
-## Tempi
+## Tempi, archivio e prototipo F10 sul checkpoint finale
 
-I token generati sono deterministici e coincidono in ogni esecuzione con quelli registrati. I tempi dipendono dallo stato della macchina: per questo la tesi riporta le mediane di cinque campagne complete (`sistemi/benchmark/campagne_tempi.sh`), ciascuna avviata quando la media di carico a un minuto scende sotto 1,5 e dopo 60 s di pausa. Il registro `condizioni.log` riporta il carico all'avvio effettivo, dopo la pausa (fra 1,7 e 2,3). Il riepilogo è in `sistemi/risultati/campagne_20261124/protocollo/riepilogo.json`.
+Tutti i risultati di sistema della tesi si riferiscono al checkpoint finale (122.000 aggiornamenti, pesi `H122000_*`, SHA-256 dei pesi FP32 `864d03dc…`). I motori leggono il checkpoint indicato da `STERA_PESI`, con `H122000` come valore predefinito.
 
-Le cinque campagne danno una variazione mediana del decode di −36,1%, con mediane per campagna fra −35,8% e −36,5% e tutte le 30 coppie fra −34,3% e −37,8%. Tre campagne preliminari, eseguite senza controllo del carico, con media di carico fra 2,2 e 3,6 e la batteria in ricarica (`preliminari/`), danno −35,8%, −31,3% e −36,5% con gli stessi token. Le misure precedenti in `01_motore_compatto_vs_denso/` e `02_tre_modelli_mac/` (−26,9%, sei sole coppie) sono state sostituite nella tesi da queste.
+- **Tempi.** Cinque campagne consecutive (`sistemi/benchmark/campagne_tempi.sh`), con una media di carico fra 2,7 e 4,6 registrata in `condizioni.log`. In tutte le 30 coppie i due motori producono gli stessi token, identici fra le campagne; i TinyStories coincidono con l'implementazione eager. La variazione mediana del decode è −35,9%, con mediane per campagna fra −35,3% e −36,4%. Riepilogo: `sistemi/risultati/campagne_20261124/protocollo/riepilogo.json`.
+- **Forma densa equivalente.** `esporta_denso.py` produce `H122000_DENSE_FP32.safetensors` (330.885.120 byte di payload, verifica bit per bit dopo il salvataggio).
+- **Archivio senza perdita.** 102.352.624 byte sul checkpoint finale, con ripristino bit per bit di tutti i 267 tensori (sui pesi a 80.000 aggiornamenti l'archivio era di 102.298.136 byte).
+- **Prototipo F10.** Inizializzato dal checkpoint finale: 9,89 e 9,73 token/s in due esecuzioni (`03_f10_ssd_qwen/evidenze_f10/inferenza_H122000/`). La prova di lettura dall'SSD misura volumi di byte che dipendono solo dalla forma del modello, quindi vale per qualunque checkpoint.
 
-Le misure di tempo usano i pesi del checkpoint a 80.000 aggiornamenti della stessa corsa (`H80000_*`), che hanno la stessa forma e lo stesso numero di byte del checkpoint finale; i token di riferimento registrati sono quelli prodotti da questi pesi.
+Le campagne precedenti sui pesi a 80.000 aggiornamenti restano in `campagne_20261124/protocollo_H80000/` e `preliminari/`, con −36,1% e fra −31,3% e −36,5% di variazione del decode.
 
 ## Voci non rieseguite
 
 - **Addestramento completo e valutazione su GPU.** Richiedono il server con le P100; i job sono pronti ma non ancora eseguiti. La verifica a 20 passi e la NLL DEV su CPU controllano il motore di addestramento e il checkpoint senza riaddestrare.
-- **Prototipo F10, lettura da SSD e Qwen3.5-9B** (`03_f10_ssd_qwen/`): non rieseguiti (richiedono il download di circa 18 GB del modello Qwen).
+- **Qwen3.5-9B** (`03_f10_ssd_qwen/`): non rieseguito (richiede il download di circa 18 GB); non dipende da STERA.

@@ -1,10 +1,10 @@
-W1124 20:20:16.633000 89679 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
-Loading weights:   0%|          | 0/108 [00:00<?, ?it/s]Loading weights: 100%|██████████| 108/108 [00:00<00:00, 21339.03it/s]
+W1124 21:52:19.865000 93678 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+Loading weights:   0%|          | 0/108 [00:00<?, ?it/s]Loading weights: 100%|██████████| 108/108 [00:00<00:00, 27280.03it/s]
 [transformers] [1mGPTNeoForCausalLM LOAD REPORT[0m from: /Users/andreanardoni/Desktop/STERA-RowMask23/sistemi/modelli/TinyStories/8M
 Key                                                               | Status     |  | 
 ------------------------------------------------------------------+------------+--+-
-transformer.h.{0, 1, 2, 3, 4, 5, 6, 7}.attn.attention.masked_bias | UNEXPECTED |  | 
 transformer.h.{0, 1, 2, 3, 4, 5, 6, 7}.attn.attention.bias        | UNEXPECTED |  | 
+transformer.h.{0, 1, 2, 3, 4, 5, 6, 7}.attn.attention.masked_bias | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.

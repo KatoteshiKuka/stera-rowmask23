@@ -119,11 +119,11 @@ I motori in `sistemi/motori/` leggono i pesi da `sistemi/modelli/`:
 
 | File | Contenuto | Come si ottiene |
 |---|---|---|
-| `H80000_fp32_weights.npz` | coordinate e tensori FP32 di STERA 30M | `python sistemi/benchmark/esporta_pesi.py <checkpoint> <sha256> H80000` |
-| `H80000_int8_weights.npz` | coordinate INT8 per blocco, scale FP32 | prodotto dallo stesso comando |
-| `H80000_DENSE_FP32.safetensors` | matrici dense equivalenti | `python sistemi/benchmark/esporta_denso.py` |
+| `H122000_fp32_weights.npz` | coordinate e tensori FP32 del checkpoint finale | `python sistemi/benchmark/esporta_pesi.py pesi/stera30m_step122000.ckpt.gz 418becfb…6ed0887 H122000` |
+| `H122000_int8_weights.npz` | coordinate INT8 per blocco, scale FP32 | prodotto dallo stesso comando |
+| `H122000_DENSE_FP32.safetensors` | matrici dense equivalenti | `python sistemi/benchmark/esporta_denso.py` |
 
-Le misure di tempo e memoria sono state eseguite sui pesi del checkpoint a 80.000 aggiornamenti della stessa corsa: forma, numero di parametri e byte sono identici a quelli del checkpoint finale, e i tempi di esecuzione non dipendono dai valori dei pesi.
+Tutte le misure della tesi usano il checkpoint finale. I motori leggono i pesi indicati dalla variabile `STERA_PESI` (predefinito `H122000`).
 
 ```bash
 python3.11 -m venv .venv-sistemi && .venv-sistemi/bin/pip install -r requisiti_sistemi.txt
@@ -131,10 +131,11 @@ sh sistemi/benchmark/confronto_appaiato.sh                 # una campagna: motor
 sh sistemi/benchmark/TinyStories/esegui_confronto_tesi.sh  # una campagna: STERA 30M e i due TinyStories su MPS
 ```
 
-I numeri della tesi vengono da cinque campagne complete, ciascuna avviata quando la media di carico a un minuto scende sotto 1,5 e dopo 60 s di pausa, con il Mac alimentato dalla rete:
+I numeri della tesi vengono da cinque campagne complete e consecutive sui pesi del checkpoint finale. Lo script può attendere che il sistema sia scarico (`SOGLIA_CARICO`, media di carico a un minuto, e `PAUSA` in secondi); per la tesi le campagne sono state eseguite senza attesa:
 
 ```bash
-PYTHON=.venv-sistemi/bin/python sh sistemi/benchmark/campagne_tempi.sh sistemi/risultati/campagne_20261124/protocollo 5
+SOGLIA_CARICO=100 PAUSA=5 STERA_PESI=H122000 PYTHON=.venv-sistemi/bin/python \
+  sh sistemi/benchmark/campagne_tempi.sh sistemi/risultati/campagne_20261124/protocollo 5
 .venv-sistemi/bin/python sistemi/benchmark/riepiloga_campagne.py sistemi/risultati/campagne_20261124/protocollo
 ```
 
@@ -142,12 +143,12 @@ Il riepilogo verifica prima che i token coincidano fra i due motori, con l'imple
 
 I risultati della tesi, con i report che li descrivono, sono in `sistemi/risultati/`:
 
-- `campagne_20261124/protocollo/`: le cinque campagne usate nella tesi e `riepilogo.json` (decode appaiato −36,1%, tempi e picchi dei tre modelli); `campagne_20261124/preliminari/` contiene tre campagne precedenti senza controllo del carico, con gli stessi token;
+- `campagne_20261124/protocollo/`: le cinque campagne sul checkpoint finale usate nella tesi e `riepilogo.json` (decode appaiato −35,9%, tempi e picchi dei tre modelli); `protocollo_H80000/` e `preliminari/` contengono campagne precedenti sui pesi a 80.000 aggiornamenti;
 - `01_motore_compatto_vs_denso/`: misure appaiate precedenti e attribuzione del tempo per operatore;
 - `02_tre_modelli_mac/`: primo token, decode e picco di memoria dei tre modelli;
 - `03_f10_ssd_qwen/`: prototipo F10 (motore `sistemi/motori/stera_independent_fp32_transposed_jit_v28.py`, lettura dal disco `evidenze_f10/ssd_validato/bench_ssd_f10.py`) (pesi compatti 4,003 GB contro 18,597 GB densi), lettura validata dall'SSD, Qwen3.5-9B con caricamento degli strati dal disco, eseguito con [SWLP](https://github.com/Rishav-Upadhaya/SWLP) al commit `3941963812850f9ad6821f3bec78754d695143ac` (script `prepara_swlp.py`, `misura_swlp.py`, `riepiloga_swlp.py`); modello `Qwen/Qwen3.5-9B` scaricato da Hugging Face (revisione registrata nei metadati di download: `c202236235762e1c871ad0ccb60c8ee5ba337b9a`).
 
-L'archivio senza perdita dei pesi FP32 (102.298.136 byte) si ottiene con `sistemi/benchmark/archivio_senza_perdita/steraf32_byteplane.py` e si ripristina bit per bit con `restore_lossless_archive.py`.
+L'archivio senza perdita dei pesi FP32 del checkpoint finale (102.352.624 byte) si ottiene con `sistemi/benchmark/archivio_senza_perdita/steraf32_byteplane.py` e si ripristina bit per bit con `restore_lossless_archive.py`.
 
 ## 7. Figure e tesi
 

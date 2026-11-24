@@ -1,0 +1,29 @@
+W1124 20:19:49.886000 89662 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+Loading weights:   0%|          | 0/108 [00:00<?, ?it/s]Loading weights: 100%|██████████| 108/108 [00:00<00:00, 33396.11it/s]
+[transformers] [1mGPTNeoForCausalLM LOAD REPORT[0m from: /Users/andreanardoni/Desktop/STERA-RowMask23/sistemi/modelli/TinyStories/8M
+Key                                                               | Status     |  | 
+------------------------------------------------------------------+------------+--+-
+transformer.h.{0, 1, 2, 3, 4, 5, 6, 7}.attn.attention.bias        | UNEXPECTED |  | 
+transformer.h.{0, 1, 2, 3, 4, 5, 6, 7}.attn.attention.masked_bias | UNEXPECTED |  | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+[transformers] `past_key_values`/`cache_params` are deprecated. Use `cache` instead.
+        7.61 real         6.19 user         0.56 sys
+           677445632  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+               66304  page reclaims
+                  72  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                  10  voluntary context switches
+                4990  involuntary context switches
+         57367359146  instructions retired
+         20260480534  cycles elapsed
+          1600572864  peak memory footprint

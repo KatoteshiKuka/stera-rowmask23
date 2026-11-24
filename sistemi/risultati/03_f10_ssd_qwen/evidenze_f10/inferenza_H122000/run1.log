@@ -1,0 +1,17 @@
+mx.metal.get_active_memory is deprecated and will be removed in a future version. Use mx.get_active_memory instead.
+DIRECT_MODEL_LOADED embedding tiles 23580 gpu {'rss_mib': 310.72, 'mlx_active_mib': 380.77, 'sys_available_mib': 6175.47, 'swap_used_mib': 2902.5}
+DIRECT_MODEL_LOADED layers.0.proj tiles 14400 gpu {'rss_mib': 366.36, 'mlx_active_mib': 976.7, 'sys_available_mib': 5637.52, 'swap_used_mib': 2902.5}
+DIRECT_MODEL_LOADED layers.1.proj tiles 14400 gpu {'rss_mib': 421.3, 'mlx_active_mib': 1572.63, 'sys_available_mib': 5359.0, 'swap_used_mib': 2902.5}
+DIRECT_MODEL_LOADED layers.2.proj tiles 14400 gpu {'rss_mib': 476.23, 'mlx_active_mib': 2168.56, 'sys_available_mib': 5359.0, 'swap_used_mib': 2902.5}
+DIRECT_MODEL_LOADED layers.3.proj tiles 14400 gpu {'rss_mib': 288.44, 'mlx_active_mib': 2764.49, 'sys_available_mib': 5359.0, 'swap_used_mib': 2902.5}
+DIRECT_MODEL_LOADED layers.4.proj tiles 14400 gpu {'rss_mib': 322.58, 'mlx_active_mib': 3360.42, 'sys_available_mib': 5359.0, 'swap_used_mib': 2902.5}
+DIRECT_MODEL_LOADED layers.5.proj tiles 14400 gpu {'rss_mib': 338.16, 'mlx_active_mib': 3956.35, 'sys_available_mib': 3591.73, 'swap_used_mib': 2902.5}
+DIRECT_MODEL_COMPLETE n_coords 898109280 fp32_weight_bytes 4002707952 gpu {'rss_mib': 439.77, 'mlx_active_mib': 3956.35, 'sys_available_mib': 3544.67, 'swap_used_mib': 2902.5}
+COMPACT_COORD_FP32_INIT resident_pre_warmup {'rss_mib': 372.22, 'mlx_active_mib': 3956.35, 'sys_available_mib': 3726.73, 'swap_used_mib': 2902.5}
+STEP 0 ms 139.14 RAM {'rss_mib': 382.8, 'mlx_active_mib': 4001.55, 'sys_available_mib': 3801.56, 'swap_used_mib': 2902.5}
+STEP 20 ms 101.9 RAM {'rss_mib': 383.55, 'mlx_active_mib': 4001.55, 'sys_available_mib': 3757.27, 'swap_used_mib': 2902.5}
+STEP 40 ms 101.28 RAM {'rss_mib': 383.56, 'mlx_active_mib': 4001.55, 'sys_available_mib': 3765.88, 'swap_used_mib': 2902.5}
+STEP 60 ms 100.04 RAM {'rss_mib': 383.58, 'mlx_active_mib': 4001.55, 'sys_available_mib': 3755.98, 'swap_used_mib': 2902.5}
+STEP 80 ms 100.94 RAM {'rss_mib': 383.61, 'mlx_active_mib': 4001.55, 'sys_available_mib': 3741.66, 'swap_used_mib': 2902.5}
+STEP 100 ms 102.72 RAM {'rss_mib': 383.77, 'mlx_active_mib': 4001.55, 'sys_available_mib': 3723.69, 'swap_used_mib': 2902.5}
+FINAL {"tokens": 100, "ctx": 128, "factor": 10, "fp32": true, "live_compressed_coords": true, "independent_coordinate_slots": 898109280, "tps": 9.888273951738025, "median_ms": 100.85754201281816, "p90_ms": 104.22516701510176, "memory": {"rss_mib": 383.77, "mlx_active_mib": 4001.55, "sys_available_mib": 3722.56, "swap_used_mib": 2902.5}, "true_dense_equivalent_elements": 4633067520, "limitation": "Coordinate slots differ per tile and originate from learned H80000; NOT trained independently at expanded scale."}

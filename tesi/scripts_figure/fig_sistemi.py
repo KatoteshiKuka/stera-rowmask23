@@ -5,7 +5,7 @@ R = pathlib.Path(__file__).resolve().parent.parent
 out = R/"figure/risultati"
 # 1) byte dei pesi
 rows = [("STERA 30M, coordinate INT8", 74.241, C["stera"]), ("TinyStories-8M, FP32", 78.810, C["ts8"]),
-        ("STERA 30M, archivio senza perdita", 102.298, C["chiaro"]), ("STERA 30M, FP32", 121.385, C["stera"]),
+        ("STERA 30M, archivio senza perdita", 102.353, C["chiaro"]), ("STERA 30M, FP32", 121.385, C["stera"]),
         ("TinyStories-33M, FP32", 274.056, C["ts33"]), ("STERA 30M, espansione densa FP32", 330.885, C["neutro"])]
 fig, ax = plt.subplots(figsize=(6.0, 2.6))
 for i, (lab, v, col) in enumerate(rows):
@@ -30,7 +30,7 @@ a.set_title("(a) Decode, compatto rispetto a denso", fontsize=9.5); a.grid(axis=
 for i in range(6):
     b.plot([0, 1], [td[i], ts[i]], color=C["chiaro"], lw=.9, zorder=1)
 b.scatter([0]*6, td, color=C["neutro"], zorder=2, s=16, label="Denso"); b.scatter([1]*6, ts, color=C["stera"], zorder=2, s=16, label="Compatto")
-b.set_xticks([0, 1]); b.set_xticklabels(["Denso", "Compatto"]); b.set_xlim(-.4, 1.4); b.set_ylim(.5, 1.0)
+b.set_xticks([0, 1]); b.set_xticklabels(["Denso", "Compatto"]); b.set_xlim(-.4, 1.4); b.set_ylim(.5, 1.15)
 b.set_ylabel("Tempo totale (s)"); b.yaxis.set_major_formatter(FuncFormatter(lambda v, _: it(v, 2)))
 b.set_title("(b) Tempo totale della richiesta", fontsize=9.5); b.grid(axis="x", visible=False)
 fig.savefig(out/"decode_appaiato_stera30m.pdf")

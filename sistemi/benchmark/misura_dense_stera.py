@@ -21,7 +21,7 @@ from stera_h80000_fp32_dense_sdpa_v62 import CompiledStatic
 from stera_h80000_fp32_tuned_sdpa_v63 import CompressedCompiled
 
 def load_dense():
-    weights = mx.load(str(MODELLI/"H80000_DENSE_FP32.safetensors"))
+    weights = mx.load(str(MODELLI/f"{dense.PESI}_DENSE_FP32.safetensors"))
     matrices = {name for name, _, _ in dense.BASE}
     def from_file(factor):
         assert factor == 1

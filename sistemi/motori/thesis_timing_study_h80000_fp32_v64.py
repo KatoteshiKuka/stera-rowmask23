@@ -15,9 +15,9 @@ from stera_h80000_fp32_dense_sdpa_v62 import CompiledStatic as DENSE_V62
 from stera4b_fp32_compiled_static_v10 import CompiledStatic as DENSE
 ROOT=Path(__file__).resolve().parent
 def prompt_tokens(length):
- path=ROOT.parent/'PROMPTS_FRESH_TEST100.json'
+ path=ROOT.parent/'modelli'/'PROMPTS_FRESH_TEST100.json'
  prompts=json.loads(path.read_text())
- tokenizer=Tokenizer.from_file(str(ROOT.parent/'STERA_FINAL_H80000_LOSSLESS_FROZEN_20261122/tokenizer.json'))
+ tokenizer=Tokenizer.from_file(str(ROOT.parent/'modelli'/'tokenizer.json'))
  ids=[50256]
  while len(ids)<length:
   for row in prompts:

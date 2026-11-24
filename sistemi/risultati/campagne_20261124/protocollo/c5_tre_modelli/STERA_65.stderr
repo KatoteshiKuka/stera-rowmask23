@@ -1,10 +1,10 @@
 mx.metal.get_active_memory is deprecated and will be removed in a future version. Use mx.get_active_memory instead.
-        1.87 real         1.02 user         0.26 sys
-           327237632  maximum resident set size
+        2.04 real         1.03 user         0.26 sys
+           327172096  maximum resident set size
                    0  average shared memory size
                    0  average unshared data size
                    0  average unshared stack size
-               23186  page reclaims
+               23168  page reclaims
                   71  page faults
                    0  swaps
                    0  block input operations
@@ -13,7 +13,7 @@ mx.metal.get_active_memory is deprecated and will be removed in a future version
                    0  messages received
                    0  signals received
                    0  voluntary context switches
-                9504  involuntary context switches
-          8418406598  instructions retired
-          3032637790  cycles elapsed
-           432982400  peak memory footprint
+                9729  involuntary context switches
+          8428985492  instructions retired
+          3047806913  cycles elapsed
+           432867712  peak memory footprint

@@ -1,20 +1,20 @@
-W1124 20:55:48.031000 91133 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
-Loading weights:   0%|          | 0/108 [00:00<?, ?it/s]Loading weights: 100%|██████████| 108/108 [00:00<00:00, 27614.29it/s]
+W1124 21:54:21.080000 93799 torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+Loading weights:   0%|          | 0/108 [00:00<?, ?it/s]Loading weights: 100%|██████████| 108/108 [00:00<00:00, 17722.41it/s]
 [transformers] [1mGPTNeoForCausalLM LOAD REPORT[0m from: /Users/andreanardoni/Desktop/STERA-RowMask23/sistemi/modelli/TinyStories/8M
 Key                                                               | Status     |  | 
 ------------------------------------------------------------------+------------+--+-
-transformer.h.{0, 1, 2, 3, 4, 5, 6, 7}.attn.attention.masked_bias | UNEXPECTED |  | 
 transformer.h.{0, 1, 2, 3, 4, 5, 6, 7}.attn.attention.bias        | UNEXPECTED |  | 
+transformer.h.{0, 1, 2, 3, 4, 5, 6, 7}.attn.attention.masked_bias | UNEXPECTED |  | 
 
 Notes:
 - UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
 [transformers] `past_key_values`/`cache_params` are deprecated. Use `cache` instead.
-        7.56 real         6.15 user         0.57 sys
-           675758080  maximum resident set size
+        8.02 real         6.45 user         0.64 sys
+           681705472  maximum resident set size
                    0  average shared memory size
                    0  average unshared data size
                    0  average unshared stack size
-               66441  page reclaims
+               66136  page reclaims
                   72  page faults
                    0  swaps
                    0  block input operations
@@ -22,8 +22,8 @@ Notes:
                    0  messages sent
                    0  messages received
                    0  signals received
-                  75  voluntary context switches
-                4817  involuntary context switches
-         57355903084  instructions retired
-         20239211599  cycles elapsed
-          1599802688  peak memory footprint
+                  50  voluntary context switches
+                6783  involuntary context switches
+         57409635534  instructions retired
+         20913305444  cycles elapsed
+          1596739008  peak memory footprint

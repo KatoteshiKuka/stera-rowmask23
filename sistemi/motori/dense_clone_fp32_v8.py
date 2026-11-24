@@ -11,7 +11,9 @@ import numpy as np
 import mlx.core as mx
 P=Path(__file__).resolve().parent.parent
 ROOT=Path(__file__).resolve().parent
-NPZ=P/'modelli/H80000_fp32_weights.npz'
+# pesi da misurare: STERA_PESI=H122000 (checkpoint finale, predefinito) oppure H80000
+PESI=os.environ.get('STERA_PESI','H122000')
+NPZ=P/'modelli'/f'{PESI}_fp32_weights.npz'
 BASE=[('embedding',50304,768)]+[(f'layers.{l}.{k}',r,c) for l in range(6) for k,r,c in [('q',768,768),('k',768,768),('v',768,768),('o',768,768),('fc',3072,768),('proj',768,3072)]]
 def usage():
  p=psutil.Process()

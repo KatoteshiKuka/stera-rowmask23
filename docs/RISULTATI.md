@@ -42,7 +42,7 @@
 |---|---:|
 | STERA 30M, coordinate INT8 (altri tensori FP32) | 74.240.928 |
 | TinyStories-8M FP32 | 78.810.112 |
-| STERA 30M, archivio senza perdita | 102.298.136 |
+| STERA 30M, archivio senza perdita | 102.352.624 |
 | STERA 30M FP32 | 121.384.728 |
 | TinyStories-33M FP32 | 274.056.192 |
 | STERA 30M, espansione densa FP32 | 330.885.120 |
@@ -51,23 +51,23 @@ Fonti: conteggio dei parametri (`addestramento/ts68_v3.py`) e file in `sistemi/m
 
 ## Tempi di esecuzione (Capitolo 8)
 
-Mac con Apple M1, 16 GB, MLX/Metal, FP32, 256 token in ingresso, 100 passi di decode. Cinque campagne di misura, ciascuna avviata a sistema scarico (`sistemi/benchmark/campagne_tempi.sh`); mediane a caldo su 30 coppie (6 input × 5 campagne). Fonte: `sistemi/risultati/campagne_20261124/protocollo/riepilogo.json`, prodotto da `sistemi/benchmark/riepiloga_campagne.py`.
+Mac con Apple M1, 16 GB, MLX/Metal, FP32, 256 token in ingresso, 100 passi di decode, pesi del checkpoint finale. Cinque campagne di misura consecutive (`sistemi/benchmark/campagne_tempi.sh`, media di carico fra 2,7 e 4,6); mediane a caldo su 30 coppie (6 input × 5 campagne). Fonte: `sistemi/risultati/campagne_20261124/protocollo/riepilogo.json`, prodotto da `sistemi/benchmark/riepiloga_campagne.py`.
 
 | Motore | Primo token | Decode | Totale |
 |---|---:|---:|---:|
-| Denso equivalente | 32,4 ms | 114,09 token/s | 0,910 s |
-| Compatto (coordinate) | 69,2 ms | 177,94 token/s | 0,631 s |
+| Denso equivalente | 36,7 ms | 102,13 token/s | 1,016 s |
+| Compatto (coordinate) | 75,5 ms | 158,83 token/s | 0,704 s |
 
-Variazione mediana appaiata del tempo per token in decode: −36,1% (da −34,3% a −37,8% sulle 30 coppie; mediane per campagna da −35,8% a −36,5%). Il denso emette prima il primo token e il compatto termina prima la richiesta in tutte le 30 coppie. I due motori producono gli stessi 101 token su tutti gli input, identici in tutte le campagne.
+Variazione mediana appaiata del tempo per token in decode: −35,9% (da −31,3% a −40,5% sulle 30 coppie; mediane per campagna da −35,3% a −36,4%). Il denso emette prima il primo token e il compatto termina prima la richiesta in tutte le 30 coppie. I due motori producono gli stessi 101 token su tutti gli input, identici in tutte le campagne.
 
 Tre modelli sullo stesso Mac (STERA 30M su MLX/Metal, TinyStories su PyTorch 2.15 MPS), 3 input × 5 campagne, mediane a caldo:
 
 | Modello | Primo token | Decode | Totale | Picco RAM |
 |---|---:|---:|---:|---:|
-| TinyStories-8M | 21,6 ms | 168,97 token/s | 0,613 s | 1.526,7 MiB |
-| STERA 30M | 110,9 ms | 179,52 token/s | 0,667 s | 413,2 MiB |
-| TinyStories-33M | 29,4 ms | 97,17 token/s | 1,055 s | 1.492,1 MiB |
+| TinyStories-8M | 21,8 ms | 176,55 token/s | 0,591 s | 1.525,2 MiB |
+| STERA 30M | 121,3 ms | 160,03 token/s | 0,745 s | 412,9 MiB |
+| TinyStories-33M | 31,8 ms | 94,79 token/s | 1,088 s | 1.493,1 MiB |
 
 I token dei due TinyStories coincidono con quelli dell'implementazione eager in ogni campagna.
 
-Prototipo F10 e Qwen3.5-9B: `sistemi/risultati/03_f10_ssd_qwen/` (pesi compatti 4,003 GB contro 18,597 GB densi; lettura sequenziale dall'SSD 1,685 s contro 7,821 s; Qwen3.5-9B BF16 con caricamento degli strati: 0,153 token/s con prefetch, 0,126 senza).
+Prototipo F10 e Qwen3.5-9B: `sistemi/risultati/03_f10_ssd_qwen/` (F10 inizializzato dal checkpoint finale, decode 9,89 e 9,73 token/s in `evidenze_f10/inferenza_H122000/`; pesi compatti 4,003 GB contro 18,597 GB densi; lettura sequenziale dall'SSD 1,685 s contro 7,821 s; Qwen3.5-9B BF16 con caricamento degli strati: 0,153 token/s con prefetch, 0,126 senza).
