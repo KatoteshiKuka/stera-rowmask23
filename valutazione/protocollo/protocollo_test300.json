@@ -1,0 +1,100 @@
+{
+  "protocollo": "Valutazione TEST300 di STERA 30M, TinyStories-8M e TinyStories-33M",
+  "incipit": {
+    "file": "incipit_test300.json",
+    "sha256": "95bcffdbc25502ddc137eccf94eb935b805c9478989b46902bae4522902032ec",
+    "seme_selezione": 202611240901,
+    "partizione": "TEST",
+    "regola": "prime due frasi complete, 12-64 token compreso BOS, prefisso esatto di token, almeno 20 token di continuazione; selezione indipendente dai modelli",
+    "esclusi": "incipit gia usati durante lo sviluppo (cartella esclusioni/)"
+  },
+  "tokenizer_sha256": "f6ed3d307010c244c22aeffbde05f419cf277c23e64cf98b673cac5449cfeff5",
+  "modelli": {
+    "STERA 30M": {
+      "checkpoint": "stera30m_step122000.ckpt.gz",
+      "sha256": "418becfbcaddcefd56f828f295138bbc865f9405a9060930c060ff7e6ced0887",
+      "parametri": 30346182
+    },
+    "TinyStories-33M": {
+      "hf": "roneneldan/TinyStories-33M",
+      "revisione": "2ad0a164221b7c4d21cac7c46aec74f6f98dbfc8",
+      "sha256_pesi": "41316d3bad3cf7766cbc36443a71c5ef05321a1c4fa14855df537998c6dad302",
+      "parametri": 68514048
+    },
+    "TinyStories-8M": {
+      "hf": "roneneldan/TinyStories-8M",
+      "revisione": "8612e3b15c66ffa94eaa6ee0de5c96edd2d630af",
+      "sha256_pesi": "22c355bfabebc1f6c861b3f5d7a801e96c7f6da4af4bb0f7780096ab82ea6716",
+      "parametri": 19702528
+    }
+  },
+  "generazione": {
+    "temperature": 0.75,
+    "top_k": 40,
+    "max_new_tokens": 180,
+    "max_total_tokens": 256,
+    "stop_eos": 50256,
+    "seed": "202611240902+1009*i",
+    "precision": "FP32",
+    "hardware": "STERA 30M e TinyStories-33M su Tesla P100, TinyStories-8M su CPU; procedura identica, verificata token per token"
+  },
+  "nll": {
+    "max_target_tokens": 512,
+    "same_reference_sequences": true,
+    "aggregate": "token weighted NLL; perplexity exp(NLL)"
+  },
+  "giudizio": {
+    "giudice": "Claude Opus 5.5, un solo giudice",
+    "modalita": "cieco: 900 testi anonimi, ordine casuale (seme 202611241500), blocchi da 30, abbinamento ai modelli aperto solo dopo il giudizio",
+    "rubrica": "../giudizio_cieco/rubrica.txt",
+    "corretto": "categoria S, cioe grammatica, coerenza e trama tutte >= 6"
+  },
+  "statistica": {
+    "proporzioni": "intervallo di Wilson 95%",
+    "differenze": "bootstrap appaiato sugli incipit, 25000 repliche",
+    "test": "McNemar esatto, correzione di Holm sui 3 confronti",
+    "nll": "bootstrap sui racconti, 10000 repliche"
+  },
+  "corpus": {
+    "schema": "STERA_TS68_ALL_GPT4_TRAIN_CONTENT_SPLIT_V1",
+    "source": "/Users/andreanardoni/Desktop/stera/Experiments/STERA_V3_NEXTGEN_20261115/kaggle_export_20261115/local_extended_v3_100_120_140m/science_diagnosis_20261116/official_gpt4_v2_20261116/TinyStoriesV2-GPT4-train.official.txt",
+    "source_sha256": "6418d412de72888f52b5142c761ac21a582f7d1166f0bfbdb5f03ccfdec90443",
+    "tokenizer": "/Users/andreanardoni/Documents/ChatGPT/TESIANDREA/experiments/official_tinystories33m_reserved300/model/tokenizer.json",
+    "tokenizer_sha256": "f6ed3d307010c244c22aeffbde05f419cf277c23e64cf98b673cac5449cfeff5",
+    "vocab": 50257,
+    "eos": 50256,
+    "bos": 50256,
+    "seed": 20261117,
+    "pack_sha256": "5ae58177e37ddc66f22bc5ac26c73b82d9b7b2702a1871a5cbfd517c1ae39066",
+    "index_sha256": "bbadffc0b26a2dcf13c396691880e9655a8646212356317c95a96e8d70c69774",
+    "stories": 2717495,
+    "blocks": 10616,
+    "split_stories": [
+      2660865,
+      29279,
+      27351
+    ],
+    "split_target_tokens": [
+      530189191,
+      5838521,
+      5441693
+    ],
+    "split_names": [
+      "TRAIN",
+      "VALIDATION",
+      "TEST"
+    ],
+    "split_policy": "content normalized whitespace/lowercase SHA256 modulo10000: <100 TEST,<200 VAL,else TRAIN; reserved2000 content groups forced VAL",
+    "duplicate_occurrences": 1,
+    "duplicate_groups_always_same_split": true,
+    "reserved_content_groups": 2000,
+    "full_source_used": true,
+    "no_narrative_quality_selection": true,
+    "no_story_length_truncation": true,
+    "index_format": "24 bytes little-endian QIIII: block byte offset,token offset,token length,source byte offset,split",
+    "block_format": "uint32 compressed bytes,uint32 raw bytes,zlib uint16 token sequence",
+    "test_used_for_gradient": false,
+    "official_sealed_test_opened": false,
+    "elapsed_s": 637.486871125
+  }
+}

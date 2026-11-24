@@ -1,0 +1,51 @@
+{
+  "protocol": "STERA_SSD_IO_DIRECT_READ_NO_COMPUTE_V1",
+  "date": "2026-11-23",
+  "host": "macOS-26.5.2-arm64-arm-64bit",
+  "source_file": "/Users/andreanardoni/Desktop/STERA/Experiments/STERA_V3_NEXTGEN_20261115/kaggle_export_20261115/local_extended_v3_100_120_140m/science_diagnosis_20261116/official_gpt4_v2_20261116/TinyStoriesV2-GPT4-train.official.txt",
+  "source_bytes": 2227753162,
+  "io_cache_policy": "fcntl F_NOCACHE=48 (macOS), read() chunks 16MiB; sequential; pre-existing real file repeatedly read",
+  "trials": 2,
+  "scenarios": {
+    "compact_active_weights": {
+      "payload_bytes": 4147491312,
+      "trials": [
+        {
+          "bytes_read": 4147491312,
+          "seconds": 1.751763292,
+          "effective_GB_per_s": 2.3676094429771855,
+          "file_rewinds": 1
+        },
+        {
+          "bytes_read": 4147491312,
+          "seconds": 0.775298791,
+          "effective_GB_per_s": 5.349539248797823,
+          "file_rewinds": 1
+        }
+      ],
+      "median_seconds": 1.2635310414999998,
+      "median_GB_s": 3.8585743458875044
+    },
+    "dense_equivalent_weights": {
+      "payload_bytes": 18597089280,
+      "trials": [
+        {
+          "bytes_read": 18597089280,
+          "seconds": 3.592271,
+          "effective_GB_per_s": 5.176972806338942,
+          "file_rewinds": 8
+        },
+        {
+          "bytes_read": 18597089280,
+          "seconds": 3.516897874999999,
+          "effective_GB_per_s": 5.287924170957056,
+          "file_rewinds": 8
+        }
+      ],
+      "median_seconds": 3.5545844374999995,
+      "median_GB_s": 5.232448488647999
+    }
+  },
+  "interpretation": "I/O-only sequential read time for bytes corresponding to resident compact weights vs Dense-equivalent weights; not per-token model output; repeats same 2.23GB disk file; F_NOCACHE bypasses filesystem data cache; no 18.6GB Dense weights were created or multiplied. SSD data was not transformed into matrices. This is a lower-bound style operational reference, not a measured out-of-core Dense transformer.",
+  "safety": "No large files written; only small JSON/Markdown report."
+}

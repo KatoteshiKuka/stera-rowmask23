@@ -1,0 +1,157 @@
+{
+  "motori/prefill_dense.py": {
+    "source": "/Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/H80000_DENSE_FP32/prefill_dense.py",
+    "source_sha256": "9ef0b5f350243de9f92160a41ca06fa7324d3b246d4a9b04b421b38df4a5bae4",
+    "workspace_sha256": "9ef0b5f350243de9f92160a41ca06fa7324d3b246d4a9b04b421b38df4a5bae4"
+  },
+  "motori/prefill_f1.py": {
+    "source": "/Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/confronto_pubblici/ottimizzati/prefill_f1.py",
+    "source_sha256": "b6dccd0ba9431d3c8daaf9659b9a6c059c12e168508b9b36f0c2a81c557596f3",
+    "workspace_sha256": "b6dccd0ba9431d3c8daaf9659b9a6c059c12e168508b9b36f0c2a81c557596f3"
+  },
+  "motori/stera_batch_rowmask_fp32_v38.py": {
+    "source": "/Users/andreanardoni/Desktop/STERA/Experiments/STERA_H_STORIES_20261121/BENCH_STERA_4B_20261122/stera_batch_rowmask_fp32_v38.py",
+    "source_sha256": "840da90196dd18a586cee50ec114dd0933dfb7680087036375e5d0d6055f10c3",
+    "workspace_sha256": "840da90196dd18a586cee50ec114dd0933dfb7680087036375e5d0d6055f10c3"
+  },
+  "motori/stera4b_fwht_metal_v28.py": {
+    "source": "/Users/andreanardoni/Desktop/STERA/Experiments/STERA_H_STORIES_20261121/BENCH_STERA_4B_20261122/stera4b_fwht_metal_v28.py",
+    "source_sha256": "a6858808beb85882adac0a4d6199bdfb1b64446ab562fbaecc0804a842a7de69",
+    "workspace_sha256": "a6858808beb85882adac0a4d6199bdfb1b64446ab562fbaecc0804a842a7de69"
+  },
+  "motori/stera4b_wht_splitk_transposed_v28.py": {
+    "source": "/Users/andreanardoni/Desktop/STERA/Experiments/STERA_H_STORIES_20261121/BENCH_STERA_4B_20261122/stera4b_wht_splitk_transposed_v28.py",
+    "source_sha256": "b7ed0d60244e85e855fddc39449728f6c66433aba8b44de9c2ac17988c22e433",
+    "workspace_sha256": "b7ed0d60244e85e855fddc39449728f6c66433aba8b44de9c2ac17988c22e433"
+  },
+  "motori/independent_rowmask23_fp32.py": {
+    "source": "/Users/andreanardoni/Desktop/STERA/Experiments/STERA_H_STORIES_20261121/BENCH_STERA_4B_20261122/independent_rowmask23_fp32.py",
+    "source_sha256": "ec3523826e9064667daef83db7b36cd7a409d1d4fc195a1636d53217a8427868",
+    "workspace_sha256": "ec3523826e9064667daef83db7b36cd7a409d1d4fc195a1636d53217a8427868"
+  },
+  "motori/stera4b_stream_mlx.py": {
+    "source": "/Users/andreanardoni/Desktop/STERA/Experiments/STERA_H_STORIES_20261121/BENCH_STERA_4B_20261122/stera4b_stream_mlx.py",
+    "source_sha256": "10114e9c12765277ae615303918426087d7b0feeecbd22979f500febe65f17a9",
+    "workspace_sha256": "85823efa2a71439e302f647fa7df82183a0d7719e244fee45d65b29bddd728bb"
+  },
+  "motori/stera4b_wht_sparse_v3.py": {
+    "source": "/Users/andreanardoni/Desktop/STERA/Experiments/STERA_H_STORIES_20261121/BENCH_STERA_4B_20261122/stera4b_wht_sparse_v3.py",
+    "source_sha256": "e6b0f1d0e29178ed909a44e61ab63de0d938939c03043ee173e5e5c17f65ccf7",
+    "workspace_sha256": "e6b0f1d0e29178ed909a44e61ab63de0d938939c03043ee173e5e5c17f65ccf7"
+  },
+  "motori/stera_independent_fp32_longctx_v47.py": {
+    "source": "/Users/andreanardoni/Desktop/STERA/Experiments/STERA_H_STORIES_20261121/BENCH_STERA_4B_20261122/stera_independent_fp32_longctx_v47.py",
+    "source_sha256": "22f2a46bfdf753e1bdcf43fe448fec7464e2646c4b67688518b549b234a818f3",
+    "workspace_sha256": "22f2a46bfdf753e1bdcf43fe448fec7464e2646c4b67688518b549b234a818f3"
+  },
+  "motori/stera4b_factored_fp32_v8.py": {
+    "source": "/Users/andreanardoni/Desktop/STERA/Experiments/STERA_H_STORIES_20261121/BENCH_STERA_4B_20261122/stera4b_factored_fp32_v8.py",
+    "source_sha256": "acc2c322aec4a868fd81cff0f42cff319a0aedf5810f26c1da91c14d3b54b84f",
+    "workspace_sha256": "87f2b938815e3a59c0a0d5ad88c68673fa2a9beb6df24c35d8faa09d6f576629"
+  },
+  "motori/dense_clone_fp32_v8.py": {
+    "source": "/Users/andreanardoni/Desktop/STERA/Experiments/STERA_H_STORIES_20261121/BENCH_STERA_4B_20261122/dense_clone_fp32_v8.py",
+    "source_sha256": "f3044262b2eb9c4ac4a07afe8acb87f2f333500efd63c5064b8edc3ce9f52eb7",
+    "workspace_sha256": "fc710215c05369236dc6448c9990b9c64b2762155dd82894d39626ea4add428a"
+  },
+  "motori/stera_long_context_attention_fp32_v19.py": {
+    "source": "/Users/andreanardoni/Desktop/STERA/Experiments/STERA_H_STORIES_20261121/BENCH_STERA_4B_20261122/stera_long_context_attention_fp32_v19.py",
+    "source_sha256": "4c11b0c4ade772c1bcc578001da1cdd9e4124121d2d72ac03ad5cd033d0457aa",
+    "workspace_sha256": "4c11b0c4ade772c1bcc578001da1cdd9e4124121d2d72ac03ad5cd033d0457aa"
+  },
+  "motori/stera_independent_fp32_variable_width_v23.py": {
+    "source": "/Users/andreanardoni/Desktop/STERA/Experiments/STERA_H_STORIES_20261121/BENCH_STERA_4B_20261122/stera_independent_fp32_variable_width_v23.py",
+    "source_sha256": "5808f346af91fd06e740f42f78630c06d39f2ec88d0972c5567d6edb362879b6",
+    "workspace_sha256": "5808f346af91fd06e740f42f78630c06d39f2ec88d0972c5567d6edb362879b6"
+  },
+  "motori/stera_h80000_fp32_dense_sdpa_v62.py": {
+    "source": "/Users/andreanardoni/Desktop/STERA/Experiments/STERA_H_STORIES_20261121/BENCH_STERA_4B_20261122/stera_h80000_fp32_dense_sdpa_v62.py",
+    "source_sha256": "85a13ba4e51b17292ac72ce6442ded41d571316c951bef05dbef129909aec0e3",
+    "workspace_sha256": "85a13ba4e51b17292ac72ce6442ded41d571316c951bef05dbef129909aec0e3"
+  },
+  "motori/stera_h80000_fp32_tuned_sdpa_v63.py": {
+    "source": "/Users/andreanardoni/Desktop/STERA/Experiments/STERA_H_STORIES_20261121/BENCH_STERA_4B_20261122/stera_h80000_fp32_tuned_sdpa_v63.py",
+    "source_sha256": "335fbbbbfd29caa68ed3cadd03ec1ef7867359cd5d2ba980b3a0f0082869990f",
+    "workspace_sha256": "335fbbbbfd29caa68ed3cadd03ec1ef7867359cd5d2ba980b3a0f0082869990f"
+  },
+  "modelli/tokenizer.json": {
+    "source": "/Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/H80000_DENSE_FP32/tokenizer.json",
+    "source_sha256": "f6ed3d307010c244c22aeffbde05f419cf277c23e64cf98b673cac5449cfeff5",
+    "workspace_sha256": "f6ed3d307010c244c22aeffbde05f419cf277c23e64cf98b673cac5449cfeff5"
+  },
+  "modelli/manifest.json": {
+    "source": "/Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/H80000_DENSE_FP32/manifest.json",
+    "source_sha256": "ee33bd0df8df691f05b5f607f3b3dc9cab68ab1f2c18204c485a718e9386d9f0",
+    "workspace_sha256": "ee33bd0df8df691f05b5f607f3b3dc9cab68ab1f2c18204c485a718e9386d9f0"
+  },
+  "modelli/PROMPTS_FRESH_TEST100.json": {
+    "source": "/Users/andreanardoni/Desktop/STERA/Experiments/STERA_H_STORIES_20261121/PROMPTS_FRESH_TEST100.json",
+    "source_sha256": "362f0c50045175cd141b422f80376e303ecc5b42d14496bd4adc7ff5af8e656f",
+    "workspace_sha256": "362f0c50045175cd141b422f80376e303ecc5b42d14496bd4adc7ff5af8e656f"
+  },
+  "benchmark/misura_dense_stera.py": {
+    "source": "/Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/H80000_DENSE_FP32/misura_dense_stera.py",
+    "source_sha256": "ee4209a2c60d9034558c3a6947c48841bcf72e0a278878d75015d78a839d4cc4",
+    "workspace_sha256": "e93a5121597d970a3af7cc39405e1652487f7ecf64b324f2bc2a52b08fff2547"
+  },
+  "benchmark/attribuzione.py": {
+    "source": "/Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/H80000_DENSE_FP32/attribuzione.py",
+    "source_sha256": "0f6a6bfb61891446df5c559a0caae527fd5a65a5d497b9d717f04cc8b1944ae5",
+    "workspace_sha256": "a2996016401aa3bf435a051412ea202f9d398fff4efcc21f6be4fa2e9af8fbbe"
+  },
+  "benchmark/isola_head.py": {
+    "source": "/Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/H80000_DENSE_FP32/isola_head.py",
+    "source_sha256": "8908a47f25b208a823657993737faae69f5fea59df0e8b33e92a2aa045f1d358",
+    "workspace_sha256": "d58797b00024b158694df403df81d2e21d4bd54a155e06fb385d2d65be9c6426"
+  },
+  "benchmark/analizza_attribuzione.py": {
+    "source": "/Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/H80000_DENSE_FP32/analizza_attribuzione.py",
+    "source_sha256": "42efabdc248c3e5e90d858d3893812fa05fc76a3d1e69edc615212a196937a83",
+    "workspace_sha256": "121047c3cd996a1fb28f148be99082c0dbd8ab8aabb343afe745138321094944"
+  },
+  "risultati_storici/REPORT_H80000_MOTORI_OTTIMIZZATI.md": {
+    "source": "/Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/H80000_DENSE_FP32/REPORT_H80000_MOTORI_OTTIMIZZATI.md",
+    "source_sha256": "e60f2668b4ee38f71ef75f6d2143316465b52153f3ec99b1eff9a6e2e9487c7f",
+    "workspace_sha256": "1c4cd8d7b9d939e4ed25d98a660dfd154e0d9802d8cbc4f085729ca5fbdd7c1e"
+  },
+  "risultati_storici/REPORT_ATTRIBUZIONE_3MS.md": {
+    "source": "/Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/H80000_DENSE_FP32/REPORT_ATTRIBUZIONE_3MS.md",
+    "source_sha256": "72b0a2123fd2b235cc084967e7d143dbe2d4feb72fc706283384da71e039ca32",
+    "workspace_sha256": "ff9901a4061bdec40eafca2c321e6125dbce6cf3102b18a21a9685ea61541c99"
+  },
+  "risultati_storici/riepilogo_appaiato.json": {
+    "source": "/Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/H80000_DENSE_FP32/riepilogo_appaiato.json",
+    "source_sha256": "d59bbb3cf7bdcf1a17b3d8ba1bc22658f261a284faf7c934dbb592273ad6ce15",
+    "workspace_sha256": "d59bbb3cf7bdcf1a17b3d8ba1bc22658f261a284faf7c934dbb592273ad6ce15"
+  },
+  "risultati_storici/misure_appaiate.jsonl": {
+    "source": "/Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/H80000_DENSE_FP32/misure_appaiate.jsonl",
+    "source_sha256": "c965f4a741b6edcf0c4d304812dba17bb2d1a063912db40d52afd7dd5d8ae66f",
+    "workspace_sha256": "c965f4a741b6edcf0c4d304812dba17bb2d1a063912db40d52afd7dd5d8ae66f"
+  },
+  "risultati_storici/taratura_completa.json": {
+    "source": "/Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/H80000_DENSE_FP32/taratura_completa.json",
+    "source_sha256": "76ea622b3409ff6519c91450947e4870af5dc80d749d2d79d61490748b618137",
+    "workspace_sha256": "76ea622b3409ff6519c91450947e4870af5dc80d749d2d79d61490748b618137"
+  },
+  "risultati_storici/attribuzione_grezzi.jsonl": {
+    "source": "/Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/H80000_DENSE_FP32/attribuzione_grezzi.jsonl",
+    "source_sha256": "d6493a428024e59fe465d18544e302f3428499c39044521b4b7b447cfa8c5c24",
+    "workspace_sha256": "d6493a428024e59fe465d18544e302f3428499c39044521b4b7b447cfa8c5c24"
+  },
+  "risultati_storici/attribuzione_effetti.json": {
+    "source": "/Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/H80000_DENSE_FP32/attribuzione_effetti.json",
+    "source_sha256": "f6c3ccffa9e6ca044a61b197a45409b1da31813dc11ce598f8575f57de5fa8f7",
+    "workspace_sha256": "f6c3ccffa9e6ca044a61b197a45409b1da31813dc11ce598f8575f57de5fa8f7"
+  },
+  "risultati_storici/head_grezzi.jsonl": {
+    "source": "/Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/H80000_DENSE_FP32/head_grezzi.jsonl",
+    "source_sha256": "9b940d9c2402322cfbe1f197688fc7d0f76df5a7e3332c9e4443f6203daa6a9a",
+    "workspace_sha256": "9b940d9c2402322cfbe1f197688fc7d0f76df5a7e3332c9e4443f6203daa6a9a"
+  },
+  "risultati_storici/head_riepilogo.json": {
+    "source": "/Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/H80000_DENSE_FP32/head_riepilogo.json",
+    "source_sha256": "5ecc2c22f1fa539d4b705be0af3208c10d318703c2c34b76ffd448403f29d0c1",
+    "workspace_sha256": "5ecc2c22f1fa539d4b705be0af3208c10d318703c2c34b76ffd448403f29d0c1"
+  }
+}

@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T090",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Deve nascondersi l'uccello ma va il gatto; il gatto dice \"non puoi nasconderti da me\": ruoli confusi."
+  },
+  {
+   "id": "T091",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim e Sam si dondolano e fanno amicizia con l'uccello rumoroso: coerente."
+  },
+  {
+   "id": "T092",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Pranzano \"con il microscopio\", il microscopio \"un po' duro\": dettagli incoerenti."
+  },
+  {
+   "id": "T093",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily regala la sua palla a Tim che aveva perso la sua: coerente."
+  },
+  {
+   "id": "T094",
+   "grammar": 6,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "Dialogo senza senso, \"tagliò le uova a pezzetti\", \"ho finito, Lily\" detto dalla mamma: incomprensibile."
+  },
+  {
+   "id": "T095",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "La lana è di Mary ma Tim dice di averla persa; \"apparteneva a loro\": ambiguo."
+  },
+  {
+   "id": "T096",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "La nuova arrivata si chiama anche lei Lily e accoglie l'altra \"nella mia classe\": identità confuse."
+  },
+  {
+   "id": "T097",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Per il viaggio servono passaporti trovati in una casa nel bosco: trama vaga e ripetitiva."
+  },
+  {
+   "id": "T098",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Dipinge la lana e con la mamma aggiunge il giallo: coerente, ripetizioni lievi."
+  },
+  {
+   "id": "T099",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "La signora aiuta la bambina a ritrovare la bambola: coerente."
+  },
+  {
+   "id": "T100",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Vanno \"nella stanza di Lily\", si sveglia riposata \"pronta a tornare a dormire\": incoerente."
+  },
+  {
+   "id": "T101",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mia ripara i giocattoli con il nastro speciale: coerente."
+  },
+  {
+   "id": "T102",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Gli amici aiutano l'uccello a sollevare il tronco: coerente."
+  },
+  {
+   "id": "T103",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Entra nella porta della grotta e \"non riesce a tornare alla grotta\": contraddizione spaziale."
+  },
+  {
+   "id": "T104",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Joe era più geloso di Jill\", rumore nella biblioteca senza seguito: confuso."
+  },
+  {
+   "id": "T105",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Max e la gatta Lucy riportano Spike a casa: coerente."
+  },
+  {
+   "id": "T106",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il toro saggio risponde \"ti serve uno grande\": dialogo senza senso, trama debole."
+  },
+  {
+   "id": "T107",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La roccia parla in modo contraddittorio, arriva il pesce cattivo: confuso fino al troncamento."
+  },
+  {
+   "id": "T108",
+   "grammar": 6,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "\"Il ramo del boscaiolo gentile\", \"lavorava sul suo boscaiolo\": identità incomprensibili."
+  },
+  {
+   "id": "T109",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La mamma mette un cuscino sotto la palla e Lily la fa rotolare: coerente, ripetizioni."
+  },
+  {
+   "id": "T110",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lo scoiattolo magico porta Mia a cercare l'uccello giallo: fiabesco e coerente."
+  },
+  {
+   "id": "T111",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Scrivere sulla penna\", la penna sul naso, il gatto chiamato Kitty: confuso."
+  },
+  {
+   "id": "T112",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Torcere la zucca per farla entrare\" senza scopo chiaro: causalità assurda."
+  },
+  {
+   "id": "T113",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily e Tom danno pane al cane solo e lui gioca con loro: coerente, una frase spezzata."
+  },
+  {
+   "id": "T114",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "\"Sentirono un suono. Il buco era silenzioso\": contraddizione locale."
+  },
+  {
+   "id": "T115",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il pesce \"si nasconde dietro una nuvola\": incoerente."
+  },
+  {
+   "id": "T116",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Un albero nel cielo, il jet mangia la mela: eventi assurdi e scollegati."
+  },
+  {
+   "id": "T117",
+   "grammar": 6,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "La bambina \"rose\" chiama l'amica rosa, fiori blu, ladro: incomprensibile."
+  },
+  {
+   "id": "T118",
+   "grammar": 6,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "Le macchine vanno e tornano dal negozio e finiscono nella scatola: nessuna trama comprensibile."
+  },
+  {
+   "id": "T119",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Coda lunga e coda corta\", il cane spaventato corre verso di loro: contraddizioni."
+  }
+ ]
+}

@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T780",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "La mela per terra \"molto in alto\" parla e chiede la promessa di non mangiarla: incoerente."
+  },
+  {
+   "id": "T781",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il dottore porta Lucy al parco e le fa passare la paura: coerente."
+  },
+  {
+   "id": "T782",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "Tiny esce dalla gabbia con Doggy e guarda un nido: trama minima."
+  },
+  {
+   "id": "T783",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il cane scappa con il muffin di Sue: finale negativo coerente."
+  },
+  {
+   "id": "T784",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il bastone \"fa prudere il naso e sparisce\", poi lo cercano per grattarsi: confuso."
+  },
+  {
+   "id": "T785",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "La macchinina mangia nastro adesivo per vincere la gara: causalità assurda."
+  },
+  {
+   "id": "T786",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Rovesciare la palla\" e saltarci: azioni incomprensibili."
+  },
+  {
+   "id": "T787",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "La porta si chiude e si apre su una scatola; \"sapeva l'uccello il segreto\": incoerente."
+  },
+  {
+   "id": "T788",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La volpe porta l'uccello sulla schiena e lo fa volare: fiabesco e coerente."
+  },
+  {
+   "id": "T789",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il gatto nero rassicura l'uccello e diventano amici: coerente."
+  },
+  {
+   "id": "T790",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "La mamma di Tim chiama il cane \"mio figlio Max\" e lo lava al parco: identità confuse."
+  },
+  {
+   "id": "T791",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Lily ferisce Polly, la cura, poi \"ringrazia Polly di essersi presa cura di lei\": ruoli invertiti."
+  },
+  {
+   "id": "T792",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Compaiono Jenny, Fin e la balena Pete senza nesso; \"non sono un vero pesce\" ripetuto: identità confuse."
+  },
+  {
+   "id": "T793",
+   "grammar": 6,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "\"Mr. half\" rotto sparisce, Sue e Tom aiutano Tom: personaggi incomprensibili."
+  },
+  {
+   "id": "T794",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue e Tim litigano per il lecca-lecca e arriva la mamma: coerente fino al troncamento."
+  },
+  {
+   "id": "T795",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Timmy pulisce il dizionario sporco con la mamma: coerente."
+  },
+  {
+   "id": "T796",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il robot cucina troppo e gli amici si ammalano: finale negativo coerente."
+  },
+  {
+   "id": "T797",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "Vede una palla grande, ne chiede una alla mamma e ci gioca: trama minima."
+  },
+  {
+   "id": "T798",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "L'uccello restituisce la palla a Max: coerente, gioco del punteggio abbandonato."
+  },
+  {
+   "id": "T799",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'uccello arrabbiato \"prende tutta l'acqua del fiume\": conseguenza assurda."
+  },
+  {
+   "id": "T800",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mia scende più volte dallo scivolo e lo racconta al papà: coerente."
+  },
+  {
+   "id": "T801",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Il pesciolino ha perso un giocattolo e il vento \"solleva la corona di Tim\": oggetti e identità confusi."
+  },
+  {
+   "id": "T802",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La bambina \"prende la macchinina per Zoomy\" al negozio, poi ripara il pulsante: incoerente."
+  },
+  {
+   "id": "T803",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il leone \"fa il nodo più grande\" per prendere il giocattolo; \"non saltò più nell'albero\": scollegato."
+  },
+  {
+   "id": "T804",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Se non ti diverti ti porto allo zoo\", spinge Lily e sale sul bus che odia: contraddizioni."
+  },
+  {
+   "id": "T805",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "La zuppa piccante \"renderà i giocattoli puliti\": causalità incoerente."
+  },
+  {
+   "id": "T806",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il gatto rompe il barattolo di burro e puliscono: coerente."
+  },
+  {
+   "id": "T807",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il punto di cucito sul vestito non spiega nulla della caduta: causalità confusa."
+  },
+  {
+   "id": "T808",
+   "grammar": 6,
+   "consistency": 4,
+   "plot": 3,
+   "category": "N",
+   "reason": "\"Aprì la porta\" della macchinina, poi chiede a tutti più volte la stessa cosa: ripetizione patologica."
+  },
+  {
+   "id": "T809",
+   "grammar": 5,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "\"La scatola diede alla scatola un abbraccio\", \"la scatola e la scatola\": incomprensibile e ripetitivo."
+  }
+ ]
+}

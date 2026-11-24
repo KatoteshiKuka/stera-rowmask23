@@ -1,0 +1,91 @@
+
+\section{Atlante delle matrici del Transformer}
+\label{sec:atlante-matrici}
+
+Una difficoltà frequente nella lettura dei risultati consiste nel capire \emph{quali} matrici siano state effettivamente strutturate. RowMask23 non sostituisce un Transformer con un algoritmo diverso: cambia il modo in cui sono rappresentate le grandi proiezioni lineari, mentre l'attenzione causale, i collegamenti residui, le normalizzazioni e la perdita autoregressiva continuano a svolgere i rispettivi ruoli.
+
+La Figura~\ref{fig:atlante-matrici} riassume le dimensioni delle matrici usate dal solo modello addestrato STERA 30M. La matrice dei token è condivisa fra embedding iniziale e testa di uscita. Ogni strato contiene invece quattro proiezioni dell'attenzione e due proiezioni del feed-forward, tutte organizzate in blocchi da $128\times128$.
+
+\begin{figure}[htbp]
+\centering
+\input{figure/tikz/mosaico}
+\caption{Inventario visivo delle matrici strutturate di STERA 30M: una matrice condivisa per ingresso e uscita, più quattro proiezioni di attenzione e due del feed-forward in ciascuno dei sei strati. La figura mostra le dimensioni effettivamente impiegate, non uno schema architetturale generico.}
+\label{fig:atlante-matrici}
+\end{figure}
+
+\subsection{Embedding e testa di uscita: una sola matrice}
+
+Il tokenizzatore dispone di \num{50257} identificativi validi. Per dividere i tensori in blocchi da 128 elementi, la matrice fisica $E$ ha \num{50304} righe: le 47 righe eccedenti non rappresentano token validi. La dimensione dei vettori di embedding è 768. Ne deriva una matrice
+\[
+E\in\mathbb{R}^{50304\times768},
+\qquad
+\frac{50304}{128}\cdot\frac{768}{128}=393\cdot6=2358
+\]
+blocchi RowMask23. Quando il token $u_t$ entra nella rete, si usa la riga $E_{u_t,:}$; dopo i sei strati, lo stesso tensore fornisce i coefficienti per calcolare i punteggi di uscita. Il \emph{weight tying} significa dunque condivisione dei parametri, non la presenza di due tabelle uguali memorizzate separatamente.
+
+Per l'embedding la rappresentazione densa contiene
+\[
+50304\cdot768=\num{38633472}
+\]
+valori, mentre le sole coordinate RowMask23 sono
+\[
+2358\cdot3176=\num{7489008}.
+\]
+Questi numeri confrontano la componente strutturata con la matrice ricostruita: non comprendono ancora i fattori globali a basso rango né i guadagni per riga e colonna.
+
+\subsection{Le quattro proiezioni dell'attenzione}
+
+Ciascuno dei sei strati contiene le matrici $W_Q$, $W_K$, $W_V$ e $W_O$ di dimensione $768\times768$. Le prime tre trasformano le rappresentazioni in query, chiavi e valori; la quarta riporta il risultato delle teste nello spazio residuo del Transformer. Non si tratta di quattro matrici alternative, ma di quattro operazioni distinte necessarie nello stesso blocco di attenzione.
+
+Una proiezione $768\times768$ contiene $6\cdot6=36$ blocchi. Le quattro proiezioni di uno strato ne richiedono $4\cdot36=144$; in sei strati il totale diventa
+\[
+6\cdot4\cdot36=\num{864}\quad\text{blocchi}.
+\]
+L'attenzione del modello usa 16 teste da 48 componenti e alterna tre strati con visibilità sull'intero prefisso e tre con finestra causale di 256 posizioni. Questa scelta riguarda quali token possono interagire tra loro; la parametrizzazione RowMask23 riguarda invece la rappresentazione dei pesi delle proiezioni.
+
+\subsection{Le due proiezioni del feed-forward}
+
+Il feed-forward espande ciascun vettore da 768 a 3072 componenti, applica l'attivazione GELU e lo riporta a 768 componenti. La prima matrice ha dimensione $3072\times768$, dunque $24\cdot6=144$ blocchi; la seconda ha dimensione $768\times3072$, dunque $6\cdot24=144$ blocchi. I due versi sono distinti e devono essere contati entrambi.
+
+Nei sei strati vi sono quindi \num{864} blocchi per l'espansione e \num{864} per la proiezione di ritorno. Sommando attenzione e feed-forward, ogni strato possiede $144+144+144=432$ blocchi. I sei strati, da soli, contengono $6\cdot432=\num{2592}$ blocchi; con la matrice $E$ condivisa il totale è
+\[
+\num{2358}+\num{2592}=\boxed{\num{4950}\ \text{blocchi RowMask23}}.
+\]
+La stessa contabilità spiega le 37 matrici del modello: una matrice condivisa più $6\cdot(4+2)=36$ proiezioni interne.
+
+\subsection{Verifica contabile dal blocco al modello}
+\label{sec:contabilita-matrici}
+
+La Tabella~\ref{tab:atlante-matrici} attraversa la catena completa: numero di matrici, numero di blocchi, coordinate compresse e valori dell'espansione. Per evitare doppi conteggi, $E$ compare una volta sola.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\linewidth}{Xrrr}
+\toprule
+Famiglia di matrici & Matrici & Blocchi & Coordinate RowMask23 \\
+\midrule
+Embedding e testa condivisi $E$ & 1 & \num{2358} & \num{7489008} \\
+Attenzione $Q,K,V,O$ & 24 & \num{864} & \num{2744064} \\
+Feed-forward: espansione & 6 & \num{864} & \num{2744064} \\
+Feed-forward: ritorno & 6 & \num{864} & \num{2744064} \\
+\midrule
+\textbf{Totale} & \textbf{37} & \textbf{\num{4950}} & \textbf{\num{15721200}} \\
+\bottomrule
+\end{tabularx}
+\caption{Inventario esatto delle matrici e delle sole coordinate RowMask23 presenti in STERA 30M. Ogni blocco contiene \num{3176} coordinate. Le altre componenti allenabili sono riportate nella Tabella~\ref{tab:stera30m-parametri}.}
+\label{tab:atlante-matrici}
+\end{table}
+
+Gli elementi delle matrici dense corrispondenti sono
+\[
+\num{38633472}+3\cdot\num{14155776}
+=\num{81100800}.
+\]
+Questo è il numero di elementi delle 37 \emph{matrici principali}, non il numero complessivo di elementi del checkpoint espanso. Aggiungendo posizioni, normalizzazioni e bias, il conteggio totale riportato nell'inventario generale sale a \num{82721280}. Analogamente, le \num{15721200} coordinate dei blocchi non esauriscono i parametri allenabili: per ottenere \num{30346182} occorre includere anche scale, guadagni, fattori $U,V$ di rango 96 e gli altri tensori. La trasparenza di queste due somme è essenziale: chiamare «30M» un modello non equivale a dichiarare che la sua espansione operi con soli 30 milioni di moltiplicatori densi.
+
+\subsection{Come leggere la tabella senza confondere memoria e calcolo}
+
+Le coordinate RowMask23 sono i dati memorizzati; i valori densi sono i coefficienti matematici che la regola di ricostruzione può produrre. I due motori misurati nel capitolo sui tempi di esecuzione rappresentano quindi \emph{lo stesso} STERA 30M, ma organizzano diversamente gli accessi in memoria. Nel motore denso si costruiscono e si mantengono residenti le matrici ricostruite; nel percorso compatto si usano direttamente le coordinate, calcolando i contributi durante il prodotto matrice--vettore.
+
+Non si deve sommare la memoria della matrice densa a quella delle coordinate quando si confrontano i due formati come se fosse una sola rappresentazione obbligatoria. Nella pratica una singola implementazione può avere buffer temporanei e cache che aggiungono memoria al payload persistente: tali costi sono misurati e discussi separatamente. La riduzione teorica dei coefficienti di un singolo blocco non può inoltre essere trasferita indistintamente all'intero Transformer, perché i suoi parametri non sono tutti rappresentati con RowMask23.

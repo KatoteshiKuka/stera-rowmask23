@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T810",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Piegare una grande scatola in una scatola\" la rende una stella della classe: scollegato."
+  },
+  {
+   "id": "T811",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il gatto accende i fiammiferi con la zampa, poi Sam \"deve tornare a casa\" pur vivendo insieme."
+  },
+  {
+   "id": "T812",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lucy trova un sacco di giocattoli e gioca con un bambino: semplice e coerente."
+  },
+  {
+   "id": "T813",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'uomo nella stanza dà un fiore e Jack glielo restituisce: azioni senza senso."
+  },
+  {
+   "id": "T814",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily aiuta il bambino a prendere il dizionario dallo scaffale: coerente."
+  },
+  {
+   "id": "T815",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim dà da mangiare all'insetto e lo allontana dalla strada: coerente."
+  },
+  {
+   "id": "T816",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Ho un treno blu... di che colore è?\", \"è rosso e blu\": dialogo confuso."
+  },
+  {
+   "id": "T817",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim prova la macchinina trovata nella scatola: coerente."
+  },
+  {
+   "id": "T818",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily condivide lo spruzzino con l'amica: coerente."
+  },
+  {
+   "id": "T819",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La pianta che non brilla rende Mia felice, poi \"Tom non era così bravo\" e si rompe: incoerente."
+  },
+  {
+   "id": "T820",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim fa amicizia con il nuovo bambino in piscina: coerente."
+  },
+  {
+   "id": "T821",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Il manubrio duro diventa \"il grande sasso\" spinto giù dalla collina: oggetti incomprensibili."
+  },
+  {
+   "id": "T822",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Susie entra nel mulino e \"il mulino era scomparso\"; risposte della mamma senza senso: contraddizione centrale."
+  },
+  {
+   "id": "T823",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il cane lascia il frisbee, poi \"lo vuole\"; \"non avere paura\" detto al cane cattivo: confuso."
+  },
+  {
+   "id": "T824",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Non vuole bagnarsi ma gioca nel fango; si perde e trova la farfalla con la mamma: debole."
+  },
+  {
+   "id": "T825",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mia gioca con Max tra le foglie fino al tramonto: coerente."
+  },
+  {
+   "id": "T826",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "L'elefante e il coniglio si riparano dalla tempesta sotto l'albero: coerente."
+  },
+  {
+   "id": "T827",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il mostro insegue il bambino che si perde: finale negativo coerente."
+  },
+  {
+   "id": "T828",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il buco \"molto grande\" e poi \"molto piccolo\", il sasso è il tesoro: incoerente."
+  },
+  {
+   "id": "T829",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tommy corre fuori dalla sala e poi torna: coerente fino al troncamento."
+  },
+  {
+   "id": "T830",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 6,
+   "category": "S",
+   "reason": "Velvet gioca con la palla rossa e torna a casa: semplice e coerente."
+  },
+  {
+   "id": "T831",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Ellie incontra un vecchio gentile nel prato: coerente fino al troncamento."
+  },
+  {
+   "id": "T832",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'uccello si avvicina e la bambina \"non tornò mai più\": esito senza causa chiara."
+  },
+  {
+   "id": "T833",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Se vuoi essere pulito devi essere pulito\", il fungo diventa pulito da solo: tautologico."
+  },
+  {
+   "id": "T834",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La mamma schiaffeggia il cane cattivo e poi \"giornata divertente con il cane\": contraddizione."
+  },
+  {
+   "id": "T835",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il gatto è più veloce ma \"alla fine vinse il cane\": gara confusa."
+  },
+  {
+   "id": "T836",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Dice che lancia il frisbee e lancia la palla; il cane \"li prende in bocca\": incoerenze."
+  },
+  {
+   "id": "T837",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Al tempio Tim aiuta Sue a ritrovare il giocattolo: coerente."
+  },
+  {
+   "id": "T838",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Lo squalo senza soldi aiuta il pesce egoista a comprare il giocattolo: causalità debole."
+  },
+  {
+   "id": "T839",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Ho trovato il tuo giocattolo al parco, ti aiuto a cercarlo\": contraddizione."
+  }
+ ]
+}

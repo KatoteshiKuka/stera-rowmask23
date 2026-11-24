@@ -1,0 +1,128 @@
+{
+  "8M": {
+    "replicates": 3,
+    "framework": "Transformers/PyTorch 2.15.0 MPS",
+    "load_s": {
+      "median": 0.8537885000114329,
+      "min": 0.8259805839916226,
+      "max": 0.8903463340247981
+    },
+    "warm_ttft_ms": {
+      "median": 21.428167005069554,
+      "min": 19.728374987607822,
+      "max": 22.015249996911734
+    },
+    "warm_tps": {
+      "median": 121.67330595908788,
+      "min": 120.41722767798608,
+      "max": 126.96169047610975
+    },
+    "warm_total_s": {
+      "median": 0.8438882089976687,
+      "min": 0.8090673330007121,
+      "max": 0.8501743329979945
+    },
+    "sampled_peak_footprint_mib": {
+      "first_request_memory": {
+        "median": 1506.6437377929688,
+        "min": 1505.5187377929688,
+        "max": 1506.925048828125
+      },
+      "compiled_request_memory": {
+        "median": 1506.987548828125,
+        "min": 1505.5812377929688,
+        "max": 1508.2999877929688
+      }
+    },
+    "lifetime_peak_footprint_mib": {
+      "median": 1506.987548828125,
+      "min": 1505.5812377929688,
+      "max": 1508.2999877929688
+    },
+    "native_eager_parity": 3
+  },
+  "STERA": {
+    "replicates": 3,
+    "framework": "MLX/Metal v63",
+    "load_s": {
+      "median": 0.21823062500334345,
+      "min": 0.18165437498828396,
+      "max": 0.251937834022101
+    },
+    "warm_ttft_ms": {
+      "median": 111.72637500567362,
+      "min": 111.2256670021452,
+      "max": 155.57554198312573
+    },
+    "warm_tps": {
+      "median": 167.6086504695086,
+      "min": 149.50934769987938,
+      "max": 170.01694491979654
+    },
+    "warm_total_s": {
+      "median": 0.7078535839973483,
+      "min": 0.6999030420265626,
+      "max": 0.8244300419755746
+    },
+    "sampled_peak_footprint_mib": {
+      "first_request_memory": {
+        "median": 404.04913330078125,
+        "min": 402.78350830078125,
+        "max": 404.127197265625
+      },
+      "compiled_request_memory": {
+        "median": 407.84600830078125,
+        "min": 406.54913330078125,
+        "max": 408.04913330078125
+      }
+    },
+    "lifetime_peak_footprint_mib": {
+      "median": 407.84600830078125,
+      "min": 406.54913330078125,
+      "max": 408.04913330078125
+    },
+    "native_eager_parity": null
+  },
+  "33M": {
+    "replicates": 3,
+    "framework": "Transformers/PyTorch 2.15.0 MPS",
+    "load_s": {
+      "median": 0.8473775830061641,
+      "min": 0.8435543340165168,
+      "max": 1.031234416004736
+    },
+    "warm_ttft_ms": {
+      "median": 34.63787501095794,
+      "min": 29.552833002526313,
+      "max": 39.949208992766216
+    },
+    "warm_tps": {
+      "median": 73.34752833919757,
+      "min": 71.63889555116694,
+      "max": 75.0603978368676
+    },
+    "warm_total_s": {
+      "median": 1.3980103330104612,
+      "min": 1.3618132910050917,
+      "max": 1.4358389589760918
+    },
+    "sampled_peak_footprint_mib": {
+      "first_request_memory": {
+        "median": 1466.2374267578125,
+        "min": 1464.425048828125,
+        "max": 1466.3624267578125
+      },
+      "compiled_request_memory": {
+        "median": 1474.2686767578125,
+        "min": 1472.503173828125,
+        "max": 1474.3936767578125
+      }
+    },
+    "lifetime_peak_footprint_mib": {
+      "median": 1474.2686767578125,
+      "min": 1472.503173828125,
+      "max": 1474.3936767578125
+    },
+    "native_eager_parity": 3
+  }
+}

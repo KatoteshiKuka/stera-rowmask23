@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T030",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 6,
+   "category": "P",
+   "reason": "L'accappatoio di Tim diventa \"il tuo accappatoio\" di Sally: contraddizione di proprietà."
+  },
+  {
+   "id": "T031",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mia convince Tom a giocare con la sua macchinina: coerente."
+  },
+  {
+   "id": "T032",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Jack e la mamma prendono i giocattoli e fanno merenda: coerente, ripetizioni lievi."
+  },
+  {
+   "id": "T033",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Gli amici ridono del cappello, poi \"non lo trovavano divertente\"; morale sul tenere cose altrui: incoerente."
+  },
+  {
+   "id": "T034",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Sam rifiuta ma è Max ad avere paura; un igloo nella sabbia con sedie: contraddizioni."
+  },
+  {
+   "id": "T035",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Sam è il coraggioso ma \"troppo spaventato\"; Max distrugge la scatola: ruoli confusi."
+  },
+  {
+   "id": "T036",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim assaggia i broccoli per la torta e comincia a piacergli: coerente."
+  },
+  {
+   "id": "T037",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily e Tom giocano coi treni e vanno a pranzo: coerente fino al troncamento."
+  },
+  {
+   "id": "T038",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 6,
+   "category": "S",
+   "reason": "L'uccello condivide la mela con gli amici: semplice e coerente."
+  },
+  {
+   "id": "T039",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"L'autobus non è rumoroso, è solo rumoroso\"; la signora col cerotto compare senza motivo."
+  },
+  {
+   "id": "T040",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Lo squalo voleva il pesce grande\", la roccia rubata: eventi scollegati."
+  },
+  {
+   "id": "T041",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Sam è senza cappotto ma va a prenderne uno per Tim: ruoli invertiti."
+  },
+  {
+   "id": "T042",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Spike e gli amici decorano l'albero con le foglie: coerente."
+  },
+  {
+   "id": "T043",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Compra la palla rossa ma alla fine è orgoglioso della \"nuova macchinina\": contraddizione."
+  },
+  {
+   "id": "T044",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"L'ala opaca si spaventò\" come personaggio, poi brilla senza causa: confuso."
+  },
+  {
+   "id": "T045",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Salgono le scale con la coperta, la scatola \"troppo in alto\" per posarla: azioni poco chiare."
+  },
+  {
+   "id": "T046",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Lo scoiattolo vuole litigare e l'uccello chiede scusa; il gufo risolve con un inchino: debole."
+  },
+  {
+   "id": "T047",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Non sa nuotare, nessuno lo sente e poi è a riva; \"aveva paura ma non gli importava\": incoerente."
+  },
+  {
+   "id": "T048",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Arriva la guerra, poi solo pioggia e ballo: eventi scollegati."
+  },
+  {
+   "id": "T049",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "L'uccello parlante insegna a Mia a dondolarsi: coerente fino al troncamento."
+  },
+  {
+   "id": "T050",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La mamma cucina ma Alex dice di fare lui la zuppa; Bob chiede di venire quando è già lì."
+  },
+  {
+   "id": "T051",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Dividere il bastone da un lato all'altro della stanza\"; Sam se ne va due volte."
+  },
+  {
+   "id": "T052",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim scava, trova una chiave segreta e va a cercarne l'uso: coerente."
+  },
+  {
+   "id": "T053",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Litigano per il fiore, l'ape li spaventa e smettono: coerente."
+  },
+  {
+   "id": "T054",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il cane li ferisce e la morale \"sii gentile e lo saranno con te\" non c'entra."
+  },
+  {
+   "id": "T055",
+   "grammar": 6,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "\"Il seghetto fu tagliato dall'uomo\", \"ringraziarono il seghetto per il seghetto\": incomprensibile."
+  },
+  {
+   "id": "T056",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"L'amico di Tim, Tim\"; il trofeo e l'onestà senza nesso: confuso."
+  },
+  {
+   "id": "T057",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Un camion aiuta la famiglia e il paese a costruire la torre: coerente."
+  },
+  {
+   "id": "T058",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Sotto il letto trova \"un grande letto morbido con un gatto\": incoerente."
+  },
+  {
+   "id": "T059",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim gioca con l'uccellino vicino all'albero: coerente."
+  }
+ ]
+}

@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T600",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mia e la mamma lavano il vestito prima della festa: coerente, ripetizioni."
+  },
+  {
+   "id": "T601",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il venditore dice \"ora è mio\" dando la palla; morale \"apprezzare cose non tue\": incoerente."
+  },
+  {
+   "id": "T602",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Il topo chiede colla per un buco e lei gli incolla la coda: incoerenza."
+  },
+  {
+   "id": "T603",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "I bambini non riordinano e il cane distrugge gli strumenti: finale negativo coerente."
+  },
+  {
+   "id": "T604",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Desidera di non aver mangiato il cioccolato che non ha mai mangiato: contraddizione."
+  },
+  {
+   "id": "T605",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Jack parla con il sole e gioca con lui: fiabesco e coerente."
+  },
+  {
+   "id": "T606",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Il gatto affamato si trasforma senza motivo in un cane: trasformazione immotivata."
+  },
+  {
+   "id": "T607",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "La pallina d'argento viene dimenticata; Andy gioca con la farfalla: trama minima."
+  },
+  {
+   "id": "T608",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Ruba l'oggetto, la mamma è triste e lei \"si pente di non averlo preso\": contraddizioni."
+  },
+  {
+   "id": "T609",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Perché siete al tempio persone?\", cercano una torta al tempio: dialogo confuso."
+  },
+  {
+   "id": "T610",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Mise la sedia sulla sedia\", pesare la sedia diventa sedersi: incoerente."
+  },
+  {
+   "id": "T611",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Vietato l'ingresso agli elefanti\", \"troppo difficili da bere\": incomprensibile."
+  },
+  {
+   "id": "T612",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim lascia toccare a Sue l'accappatoio dopo il \"per favore\": coerente."
+  },
+  {
+   "id": "T613",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La macchina rossa fa amicizia con il camion: semplice e coerente."
+  },
+  {
+   "id": "T614",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Tim e Sue ritrovano la palla rossa sotto l'albero: coerente."
+  },
+  {
+   "id": "T615",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il cane è un disegno sul cartello, \"la panchina non era più calda\", poi il padrone: confuso."
+  },
+  {
+   "id": "T616",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Il papà consegna una scatola al papà\", \"sorpresa per te ma non per te\": incoerente."
+  },
+  {
+   "id": "T617",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il sasso è \"troppo piccolo\", lo \"mettono insieme\" facendo un buco: scollegato."
+  },
+  {
+   "id": "T618",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il mulo riporta a casa la bambina smarrita: coerente."
+  },
+  {
+   "id": "T619",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il riparatore non ripara nulla, la richiesta della bambina non viene detta: trama debole."
+  },
+  {
+   "id": "T620",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Ben chiede al nuovo arrivato Sam di insegnargli a giocare: coerente fino al troncamento."
+  },
+  {
+   "id": "T621",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Henry e Sally giocano con il procione Joe: coerente, chiusura confusa."
+  },
+  {
+   "id": "T622",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lucy e la mamma preparano la torta per il tè: coerente."
+  },
+  {
+   "id": "T623",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il cane restituisce il giocattolo e vanno alla parata: coerente."
+  },
+  {
+   "id": "T624",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Lily vuole accarezzare il cane, poi trascina via Tom pensando che sia cattivo: contraddizione."
+  },
+  {
+   "id": "T625",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il legno aggiustato diventa un arcobaleno: causalità confusa."
+  },
+  {
+   "id": "T626",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Tom parla con l'uomo, che risponde \"piccola\", e risponde Lily: dialogo confuso."
+  },
+  {
+   "id": "T627",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La balena accompagna il pesciolino smarrito con gli amici: coerente."
+  },
+  {
+   "id": "T628",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Gelo improvviso in una giornata di sole, i bambini \"scendono a terra\": incoerente."
+  },
+  {
+   "id": "T629",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Lucy aiuta l'uccellino a ritrovare casa: coerente."
+  }
+ ]
+}

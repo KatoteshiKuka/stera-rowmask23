@@ -1,0 +1,7 @@
+# F10 e baseline pubblica · Vincoli per il test sul disco interno
+
+Il 23 novembre il contenitore APFS interno aveva circa 13,6 GB non allocati. La copia pubblica Qwen3.5-9B occupa circa 19,3 GB. La preparazione standard di SWLP mantiene il download sorgente e produce altri file per lo streaming. Serve un budget vicino a 40 GB prima di avviare la procedura standard, da precisare con la dimensione effettiva degli shard del decoder testuale.
+
+Il file STERA514M da 534.280.288 byte in InternalSSD è l'unica copia della stessa dimensione trovata nei due alberi di progetto controllati. Il rapporto storico lo cita come artefatto verificato. Le copie Dense int4/int8 nella stessa cartella pesano complessivamente circa 703 MiB e sono esportazioni storiche. Anche aggiungendo le due famiglie di checkpoint Dense di novembre e le cartelle di compilazione già inventariate, il recupero resterebbe molto inferiore al fabbisogno. Nessuna eliminazione in questa fase.
+
+Quando il volume è pronto, la prova usa un solo Mac M1, lo stesso budget disponibile di memoria e l'SSD interno per gli shard. Il runtime a strati può utilizzare il budget per tenere in RAM una parte del modello. F10 usa il runtime compatto residente. I due bracci usano gli stessi testi e un budget dichiarato di generazione. Si registrano separatamente tokenizzazione, tempo al primo token, throughput, memoria e contatori del disco. I risultati precedenti della lettura in sequenza sono un riferimento di banda. Il throughput fuori RAM va misurato durante la generazione reale.

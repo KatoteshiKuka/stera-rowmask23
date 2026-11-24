@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T240",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Tom promette di trovare il nido, poi spargono foglie e il nido è dimenticato."
+  },
+  {
+   "id": "T241",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il mostro gioca con il giocattolo luccicante: semplice e coerente."
+  },
+  {
+   "id": "T242",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Mr. Iron presta la macchinina due volte e \"ricordò quanto Mr. Iron fosse affidabile\": ripetizione confusa."
+  },
+  {
+   "id": "T243",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "L'uomo ricco aiuta il bambino comprandogli un nuovo giocattolo: coerente."
+  },
+  {
+   "id": "T244",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily fa amicizia con un insetto nella natura: coerente."
+  },
+  {
+   "id": "T245",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Bob ascolta la famiglia e non mangia le bacche: coerente."
+  },
+  {
+   "id": "T246",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 4,
+   "category": "P",
+   "reason": "Ripetizione di \"pace\" in ogni frase senza sviluppo: trama ripetitiva."
+  },
+  {
+   "id": "T247",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Tom rifiuta la roccia e poi insiste per giocare con la roccia: contraddizione."
+  },
+  {
+   "id": "T248",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Alex e Bob trovano monete d'oro e le condividono: coerente."
+  },
+  {
+   "id": "T249",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il vento butta giù la scatola e \"Mia aveva fatto un errore\": causalità confusa."
+  },
+  {
+   "id": "T250",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Jill rompe il camion e Jack l'aiuta a ripararlo: coerente."
+  },
+  {
+   "id": "T251",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Max ruggisce ma è Lily il leone; rompe la lampada e parlano del tamburo: confuso."
+  },
+  {
+   "id": "T252",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"La fata esaudì il desiderio e la fata esaudì il desiderio\", la bacchetta passa da una all'altra: incoerente."
+  },
+  {
+   "id": "T253",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La palla va lontano e \"il gufo si perse\": incoerenza."
+  },
+  {
+   "id": "T254",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Pensava che le nuvole fossero reali\" e giocano sotto la pioggia: dialogo confuso."
+  },
+  {
+   "id": "T255",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Liberare il nido\", la mamma diventa \"le due amiche\": azione confusa."
+  },
+  {
+   "id": "T256",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tom il pirata gioca con Sue e le palle rosse: coerente."
+  },
+  {
+   "id": "T257",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Imparare a stare insieme\" e Lily ritrova la mamma senza spiegazione: causalità debole."
+  },
+  {
+   "id": "T258",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Sam sordo e \"cattivo\" li chiama \"benvenuto\"; la palla persa due volte: scollegato."
+  },
+  {
+   "id": "T259",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La signora cerca cibo per sé e poi per la bambina; \"grazie, albero\": dialogo confuso."
+  },
+  {
+   "id": "T260",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lila e Max vedono lo scoiattolo e lo raccontano alla mamma: coerente."
+  },
+  {
+   "id": "T261",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Stava nella sua stanza e si alzava\", poi \"scese dal letto\" dopo aver ballato: confuso."
+  },
+  {
+   "id": "T262",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Jack mette il casco e arriva in cima all'albero: coerente, ripetizioni."
+  },
+  {
+   "id": "T263",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Esce un uomo con un sacco e scappa, \"il mulino era dietro di loro\": scollegato."
+  },
+  {
+   "id": "T264",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il cartellone del gatto mostra un cane che ringrazia \"per essere un bravo cane\": incoerente."
+  },
+  {
+   "id": "T265",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Joe voleva essere geloso anche lui\", \"grazie per avermi reso geloso\": incoerente."
+  },
+  {
+   "id": "T266",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mia si arrabbia, strappa il libro e corre dalla mamma: capriccio coerente fino al troncamento."
+  },
+  {
+   "id": "T267",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "La rana Fred e il pesce Finny diventano amici: coerente."
+  },
+  {
+   "id": "T268",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Saltella \"fino in alto\", si allontana spaventato e l'uccello guarisce da solo: causalità debole."
+  },
+  {
+   "id": "T269",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Cercano una bicicletta, ne vedono una \"amichevole\" e poi lui la usa: sequenza confusa."
+  }
+ ]
+}

@@ -1,0 +1,96 @@
+{"offset": 10, "rep": 0, "compact": ["vocab"], "ms_per_token": 7.554821250087116}
+{"offset": 10, "rep": 0, "compact": ["attention", "vocab"], "ms_per_token": 7.192263329925481}
+{"offset": 10, "rep": 0, "compact": ["ffn"], "ms_per_token": 8.507010829926003}
+{"offset": 10, "rep": 0, "compact": [], "ms_per_token": 9.93861958006164}
+{"offset": 10, "rep": 0, "compact": ["attention", "ffn"], "ms_per_token": 10.163719580159523}
+{"offset": 10, "rep": 0, "compact": ["ffn", "vocab"], "ms_per_token": 6.103974999859929}
+{"offset": 10, "rep": 0, "compact": ["attention"], "ms_per_token": 9.993904169823509}
+{"offset": 10, "rep": 0, "compact": ["attention", "ffn", "vocab"], "ms_per_token": 7.389662500063423}
+{"offset": 10, "rep": 1, "compact": ["ffn"], "ms_per_token": 8.085501249879599}
+{"offset": 10, "rep": 1, "compact": ["attention", "ffn", "vocab"], "ms_per_token": 6.291132500045933}
+{"offset": 10, "rep": 1, "compact": [], "ms_per_token": 9.044615000020713}
+{"offset": 10, "rep": 1, "compact": ["attention", "ffn"], "ms_per_token": 9.177032089792192}
+{"offset": 10, "rep": 1, "compact": ["vocab"], "ms_per_token": 8.014277500042226}
+{"offset": 10, "rep": 1, "compact": ["attention", "vocab"], "ms_per_token": 7.082387919945177}
+{"offset": 10, "rep": 1, "compact": ["ffn", "vocab"], "ms_per_token": 6.819158339931164}
+{"offset": 10, "rep": 1, "compact": ["attention"], "ms_per_token": 10.937894999806304}
+{"offset": 25, "rep": 0, "compact": ["attention", "ffn", "vocab"], "ms_per_token": 6.6931354100233875}
+{"offset": 25, "rep": 0, "compact": ["vocab"], "ms_per_token": 8.145773749856744}
+{"offset": 25, "rep": 0, "compact": ["attention"], "ms_per_token": 9.233590420044493}
+{"offset": 25, "rep": 0, "compact": ["ffn"], "ms_per_token": 8.657767920230981}
+{"offset": 25, "rep": 0, "compact": ["ffn", "vocab"], "ms_per_token": 7.009678750182502}
+{"offset": 25, "rep": 0, "compact": [], "ms_per_token": 10.020050840103067}
+{"offset": 25, "rep": 0, "compact": ["attention", "vocab"], "ms_per_token": 6.678260830231011}
+{"offset": 25, "rep": 0, "compact": ["attention", "ffn"], "ms_per_token": 8.721774580189958}
+{"offset": 25, "rep": 1, "compact": ["ffn", "vocab"], "ms_per_token": 6.124704170215409}
+{"offset": 25, "rep": 1, "compact": ["ffn"], "ms_per_token": 8.919252500054426}
+{"offset": 25, "rep": 1, "compact": ["vocab"], "ms_per_token": 8.01719792012591}
+{"offset": 25, "rep": 1, "compact": ["attention", "ffn"], "ms_per_token": 8.526696249900851}
+{"offset": 25, "rep": 1, "compact": ["attention"], "ms_per_token": 9.55480999982683}
+{"offset": 25, "rep": 1, "compact": ["attention", "vocab"], "ms_per_token": 6.854095419985242}
+{"offset": 25, "rep": 1, "compact": ["attention", "ffn", "vocab"], "ms_per_token": 7.16903958003968}
+{"offset": 25, "rep": 1, "compact": [], "ms_per_token": 9.86809457972413}
+{"offset": 40, "rep": 0, "compact": ["attention", "ffn"], "ms_per_token": 9.172006669978146}
+{"offset": 40, "rep": 0, "compact": ["attention"], "ms_per_token": 9.378020419972017}
+{"offset": 40, "rep": 0, "compact": ["ffn"], "ms_per_token": 8.85240250005154}
+{"offset": 40, "rep": 0, "compact": [], "ms_per_token": 9.537463750166353}
+{"offset": 40, "rep": 0, "compact": ["attention", "ffn", "vocab"], "ms_per_token": 7.618924159905873}
+{"offset": 40, "rep": 0, "compact": ["attention", "vocab"], "ms_per_token": 7.047168330173008}
+{"offset": 40, "rep": 0, "compact": ["ffn", "vocab"], "ms_per_token": 8.115425419819076}
+{"offset": 40, "rep": 0, "compact": ["vocab"], "ms_per_token": 8.084977090184111}
+{"offset": 40, "rep": 1, "compact": ["attention", "vocab"], "ms_per_token": 6.800737080047838}
+{"offset": 40, "rep": 1, "compact": ["attention", "ffn"], "ms_per_token": 8.794944999972358}
+{"offset": 40, "rep": 1, "compact": ["attention"], "ms_per_token": 9.367807089874987}
+{"offset": 40, "rep": 1, "compact": ["vocab"], "ms_per_token": 8.019932080060244}
+{"offset": 40, "rep": 1, "compact": ["ffn"], "ms_per_token": 9.391577079950366}
+{"offset": 40, "rep": 1, "compact": ["attention", "ffn", "vocab"], "ms_per_token": 6.394333339994773}
+{"offset": 40, "rep": 1, "compact": [], "ms_per_token": 9.144567500043195}
+{"offset": 40, "rep": 1, "compact": ["ffn", "vocab"], "ms_per_token": 6.6574708398547955}
+{"offset": 55, "rep": 0, "compact": ["vocab"], "ms_per_token": 6.7691454201121815}
+{"offset": 55, "rep": 0, "compact": ["attention", "vocab"], "ms_per_token": 8.573030830011703}
+{"offset": 55, "rep": 0, "compact": ["attention", "ffn", "vocab"], "ms_per_token": 6.192918749875389}
+{"offset": 55, "rep": 0, "compact": [], "ms_per_token": 9.311134580057114}
+{"offset": 55, "rep": 0, "compact": ["attention"], "ms_per_token": 9.20198874984635}
+{"offset": 55, "rep": 0, "compact": ["ffn", "vocab"], "ms_per_token": 7.154521660122555}
+{"offset": 55, "rep": 0, "compact": ["ffn"], "ms_per_token": 10.287043749995064}
+{"offset": 55, "rep": 0, "compact": ["attention", "ffn"], "ms_per_token": 8.722285830008332}
+{"offset": 55, "rep": 1, "compact": [], "ms_per_token": 8.888706249999814}
+{"offset": 55, "rep": 1, "compact": ["attention"], "ms_per_token": 9.040189579827711}
+{"offset": 55, "rep": 1, "compact": ["vocab"], "ms_per_token": 8.014349580043927}
+{"offset": 55, "rep": 1, "compact": ["attention", "ffn", "vocab"], "ms_per_token": 6.720520000089891}
+{"offset": 55, "rep": 1, "compact": ["attention", "vocab"], "ms_per_token": 7.090724169975147}
+{"offset": 55, "rep": 1, "compact": ["ffn"], "ms_per_token": 9.54416584019782}
+{"offset": 55, "rep": 1, "compact": ["ffn", "vocab"], "ms_per_token": 6.67631792020984}
+{"offset": 55, "rep": 1, "compact": ["attention", "ffn"], "ms_per_token": 9.397152079909574}
+{"offset": 70, "rep": 0, "compact": ["attention"], "ms_per_token": 10.287355420005042}
+{"offset": 70, "rep": 0, "compact": [], "ms_per_token": 9.68767124984879}
+{"offset": 70, "rep": 0, "compact": ["vocab"], "ms_per_token": 7.186779579787981}
+{"offset": 70, "rep": 0, "compact": ["ffn"], "ms_per_token": 8.854830000200309}
+{"offset": 70, "rep": 0, "compact": ["ffn", "vocab"], "ms_per_token": 6.015853339922614}
+{"offset": 70, "rep": 0, "compact": ["attention", "ffn"], "ms_per_token": 9.832763329904992}
+{"offset": 70, "rep": 0, "compact": ["attention", "vocab"], "ms_per_token": 7.463295829948038}
+{"offset": 70, "rep": 0, "compact": ["attention", "ffn", "vocab"], "ms_per_token": 6.242388339887839}
+{"offset": 70, "rep": 1, "compact": [], "ms_per_token": 9.184089589980431}
+{"offset": 70, "rep": 1, "compact": ["attention"], "ms_per_token": 9.28164624987403}
+{"offset": 70, "rep": 1, "compact": ["vocab"], "ms_per_token": 8.335116670059506}
+{"offset": 70, "rep": 1, "compact": ["ffn", "vocab"], "ms_per_token": 6.671353330020793}
+{"offset": 70, "rep": 1, "compact": ["attention", "ffn", "vocab"], "ms_per_token": 6.483797499968205}
+{"offset": 70, "rep": 1, "compact": ["attention", "vocab"], "ms_per_token": 7.517346249951515}
+{"offset": 70, "rep": 1, "compact": ["attention", "ffn"], "ms_per_token": 8.13535832974594}
+{"offset": 70, "rep": 1, "compact": ["ffn"], "ms_per_token": 9.596869999950286}
+{"offset": 85, "rep": 0, "compact": ["attention", "ffn"], "ms_per_token": 10.188826250087004}
+{"offset": 85, "rep": 0, "compact": ["attention", "ffn", "vocab"], "ms_per_token": 6.449652080191299}
+{"offset": 85, "rep": 0, "compact": ["vocab"], "ms_per_token": 7.135580409958493}
+{"offset": 85, "rep": 0, "compact": ["ffn"], "ms_per_token": 8.66142624989152}
+{"offset": 85, "rep": 0, "compact": ["attention"], "ms_per_token": 10.425371250021271}
+{"offset": 85, "rep": 0, "compact": [], "ms_per_token": 9.561766659899149}
+{"offset": 85, "rep": 0, "compact": ["attention", "vocab"], "ms_per_token": 7.3714416701113805}
+{"offset": 85, "rep": 0, "compact": ["ffn", "vocab"], "ms_per_token": 6.573180420091376}
+{"offset": 85, "rep": 1, "compact": ["attention", "ffn"], "ms_per_token": 8.856639579753391}
+{"offset": 85, "rep": 1, "compact": ["ffn"], "ms_per_token": 9.956427919969428}
+{"offset": 85, "rep": 1, "compact": ["ffn", "vocab"], "ms_per_token": 7.902790000080131}
+{"offset": 85, "rep": 1, "compact": [], "ms_per_token": 9.16586917010136}
+{"offset": 85, "rep": 1, "compact": ["vocab"], "ms_per_token": 7.340133330144454}
+{"offset": 85, "rep": 1, "compact": ["attention", "ffn", "vocab"], "ms_per_token": 6.40301500010537}
+{"offset": 85, "rep": 1, "compact": ["attention"], "ms_per_token": 9.151015410025138}
+{"offset": 85, "rep": 1, "compact": ["attention", "vocab"], "ms_per_token": 8.018130830023438}

@@ -1,0 +1,8 @@
+# Motori di inferenza e misure di sistema (Mac con Apple Silicon)
+python>=3.11
+mlx==0.32.4
+numpy>=2.4
+tokenizers>=0.23
+# per i riferimenti TinyStories su MPS
+torch>=2.4
+transformers>=4.46

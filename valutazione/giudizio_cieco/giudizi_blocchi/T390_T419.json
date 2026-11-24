@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T390",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il vento porta via la colla e l'uccello fa un fiore: fiabesco e coerente."
+  },
+  {
+   "id": "T391",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tom e Sue giocano con la macchinina al parco: coerente, chiusura un po' strana."
+  },
+  {
+   "id": "T392",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'elefante saluta ed entra nel parco, \"la giraffa mangiando trottando a zig-zag\": confuso."
+  },
+  {
+   "id": "T393",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim cambia la fibbia e la condivide con Sam: coerente."
+  },
+  {
+   "id": "T394",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mia gioca a palla con il cane Max: coerente nonostante una frase strana."
+  },
+  {
+   "id": "T395",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Gli animali fanno una gara a chi trova più fiori: coerente."
+  },
+  {
+   "id": "T396",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "La bambina sogna di volare e la mamma la incoraggia a immaginare: coerente."
+  },
+  {
+   "id": "T397",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il termometro \"molto caldo che fa male agli occhi\" con il disegno di un pupazzo di neve: incoerente."
+  },
+  {
+   "id": "T398",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim gioca con la palla, fa una pausa e riprende: semplice e coerente."
+  },
+  {
+   "id": "T399",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Chiede \"il formaggio di pasta\" e diventa \"il miglior cuoco del negozio\": scollegato."
+  },
+  {
+   "id": "T400",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Cade dalla bici e la mamma lo loda per la prudenza; \"prudente quando faceva il pisolino\": incoerente."
+  },
+  {
+   "id": "T401",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "La palla sale, sogna, poi la palla \"sale ancora\" e si incastra: eventi slegati."
+  },
+  {
+   "id": "T402",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 6,
+   "category": "S",
+   "reason": "Buddy regala la palla d'acciaio alla bambina che piange: coerente."
+  },
+  {
+   "id": "T403",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Sue perde la cravatta, Tim chiede al gatto \"la mia cravatta\", la lega a Sue: confuso."
+  },
+  {
+   "id": "T404",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 6,
+   "category": "S",
+   "reason": "La farfalla balla per consolare il topo: coerente."
+  },
+  {
+   "id": "T405",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "L'insetto magico esaudisce il desiderio di Lily: fiabesco e coerente."
+  },
+  {
+   "id": "T406",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il rumore è \"un bambino\" che la famiglia accarezza: scollegato."
+  },
+  {
+   "id": "T407",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'albero \"pericoloso\" viene chiamato \"Gufo\" e risponde: identità confuse."
+  },
+  {
+   "id": "T408",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Il gatto vuole mangiare un uccello e l'uccello Sue lo aiuta, entrambi ne catturano uno: incomprensibile."
+  },
+  {
+   "id": "T409",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Una parola che ti dice cosa dice la parola\", poi compare Max: trama vuota."
+  },
+  {
+   "id": "T410",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Jane e il papà trovano una stanza dei giochi nel tronco: fiabesco e coerente."
+  },
+  {
+   "id": "T411",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Inzuppa la gelatina nella pozzanghera e \"appende la gelatina\": incoerente."
+  },
+  {
+   "id": "T412",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Gli amici liberano il ragno dalla ragnatela: coerente."
+  },
+  {
+   "id": "T413",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Ha paura della palla quando la mamma lo chiama: causalità mancante."
+  },
+  {
+   "id": "T414",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Porta il cavallo a casa come animale, poi va alla stalla a parlarci: contraddizione."
+  },
+  {
+   "id": "T415",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Non puoi andare al parco\" e poi la mamma lo porta al parco: contraddizione."
+  },
+  {
+   "id": "T416",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Pulisce la macchinina invece di riordinare, \"mise la macchina nella macchina\": confuso."
+  },
+  {
+   "id": "T417",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Lily è triste per la pera, poi Dolly dice \"è il mio frutto preferito\": dialogo confuso."
+  },
+  {
+   "id": "T418",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il leone non vuole mordere ma ci prova, \"il suo amico era ancora arrabbiato\": incoerente."
+  },
+  {
+   "id": "T419",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tom compra zucchero al forno e disegna; semplice e coerente."
+  }
+ ]
+}

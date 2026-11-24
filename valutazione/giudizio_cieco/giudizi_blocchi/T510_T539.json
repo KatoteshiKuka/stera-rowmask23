@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T510",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Era al sicuro perché era spaventato\"; il gatto cattivo diventa subito il migliore amico."
+  },
+  {
+   "id": "T511",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim non vuole dormire, la mamma insiste e lui va a letto scontento: coerente."
+  },
+  {
+   "id": "T512",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Invertire la palla per riportarla indietro\" e la colpiscono con un bastone: incoerente."
+  },
+  {
+   "id": "T513",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il pompiere riporta a casa Sue che si era persa: coerente."
+  },
+  {
+   "id": "T514",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il papà mostra a Tim la macchina nella scatola: coerente fino al troncamento."
+  },
+  {
+   "id": "T515",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Kitty impara a condividere il gomitolo con Doggy: coerente."
+  },
+  {
+   "id": "T516",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily gioca con lo scoiattolo e poi fa un pisolino: coerente."
+  },
+  {
+   "id": "T517",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il miglior amico è Doggy e poi \"una macchinina blu di nome Binky\": identità confuse."
+  },
+  {
+   "id": "T518",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'uccello vola via, poi lei lo abbraccia; \"triste di non aver aiutato ma fiera di aver aiutato\"."
+  },
+  {
+   "id": "T519",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Henry rompe la macchinina nonostante l'avvertimento del papà: coerente fino al troncamento."
+  },
+  {
+   "id": "T520",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily e il papà fanno la torta e l'uomo coi baffi ne dà una fetta: coerente."
+  },
+  {
+   "id": "T521",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Jack esplora il bosco con l'uccello Sky: coerente fino al troncamento."
+  },
+  {
+   "id": "T522",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "La figlia diventa \"calva\", \"non potevano riprendere il telefono\": incomprensibile."
+  },
+  {
+   "id": "T523",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'uccello \"vola al ruscello\" e Fred si spaventa perché vuole giocare in acqua: confuso."
+  },
+  {
+   "id": "T524",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Mettono dei sassi sulla fibbia e \"calza perfettamente\": causalità assurda."
+  },
+  {
+   "id": "T525",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"La riva era molto asciutta perché era così asciutta\", la \"verità\" sulla pietra non viene detta."
+  },
+  {
+   "id": "T526",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il cane spinge la punta nel terreno e \"entrambi\" tornano a casa tristi: confuso."
+  },
+  {
+   "id": "T527",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Fred e la nuova rana Tim giocano insieme: coerente."
+  },
+  {
+   "id": "T528",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Il palco lo salutò\", \"un grande palco al centro dello spettacolo\": incoerente."
+  },
+  {
+   "id": "T529",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim cucina con la mamma e scopre che le polpette sono buone: coerente."
+  },
+  {
+   "id": "T530",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "L'uccello recupera la corda dall'albero per Lucy: coerente."
+  },
+  {
+   "id": "T531",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tom, brutto ma gentile, trova cibo con l'uccello: coerente, morale confusa."
+  },
+  {
+   "id": "T532",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Il dottore ha un esame, i bambini sentono la mancanza \"della loro maestra\": identità confuse."
+  },
+  {
+   "id": "T533",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Vivono nel mulino ma \"andarono al mulino nascosto\" a cercare: contraddizione."
+  },
+  {
+   "id": "T534",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily festeggia il compleanno con la mamma: coerente."
+  },
+  {
+   "id": "T535",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Madre e figlia si perdono nella tempesta: finale negativo coerente."
+  },
+  {
+   "id": "T536",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mark prepara una bevanda alla frutta per gli amici: coerente."
+  },
+  {
+   "id": "T537",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Tim cercò di resistere ma gli amici no\", poi il \"cane maleducato\": incoerente."
+  },
+  {
+   "id": "T538",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "Si arrampicano sulla legna, poi un nascondino slegato: trama debole."
+  },
+  {
+   "id": "T539",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il topo ha fame e Max lo aiuta facendo yoga: causalità mancante, ripetitivo."
+  }
+ ]
+}

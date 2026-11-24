@@ -1,0 +1,69 @@
+{
+  "protocol": "STERA_SSD_IO_DIRECT_READ_NO_COMPUTE_V1",
+  "date": "2026-11-23",
+  "host": "macOS-26.5.2-arm64-arm-64bit",
+  "source_file": "/Users/andreanardoni/Desktop/STERA/Experiments/STERA_V3_NEXTGEN_20261115/kaggle_export_20261115/local_extended_v3_100_120_140m/science_diagnosis_20261116/official_gpt4_v2_20261116/TinyStoriesV2-GPT4-train.official.txt",
+  "source_bytes": 2227753162,
+  "io_cache_policy": "fcntl F_NOCACHE=48 (macOS), readv() in page-aligned mmap buffer, chunks up to 16 MiB, page-aligned source span and byte budget; sequential; pre-existing real file repeatedly read",
+  "trials": 3,
+  "scenarios": {
+    "compact_weight_payload": {
+      "payload_bytes": 4002707952,
+      "trials": [
+        {
+          "driver_read_bytes_delta": 250679296,
+          "bytes_read": 4002709504,
+          "seconds": 0.474150875,
+          "effective_GB_per_s": 8.44184776417422,
+          "file_rewinds": 1
+        },
+        {
+          "driver_read_bytes_delta": 250609664,
+          "bytes_read": 4002709504,
+          "seconds": 0.454236459,
+          "effective_GB_per_s": 8.811951186859707,
+          "file_rewinds": 1
+        },
+        {
+          "driver_read_bytes_delta": 250871808,
+          "bytes_read": 4002709504,
+          "seconds": 0.4811774590000002,
+          "effective_GB_per_s": 8.318572346091544,
+          "file_rewinds": 1
+        }
+      ],
+      "median_seconds": 0.474150875,
+      "median_GB_s": 8.44184776417422
+    },
+    "dense_equivalent_weights": {
+      "payload_bytes": 18597089280,
+      "trials": [
+        {
+          "driver_read_bytes_delta": 1165082624,
+          "bytes_read": 18597101568,
+          "seconds": 2.282934542,
+          "effective_GB_per_s": 8.146138763885768,
+          "file_rewinds": 8
+        },
+        {
+          "driver_read_bytes_delta": 1166528512,
+          "bytes_read": 18597101568,
+          "seconds": 2.2346550410000003,
+          "effective_GB_per_s": 8.322135285667116,
+          "file_rewinds": 8
+        },
+        {
+          "driver_read_bytes_delta": 1165000704,
+          "bytes_read": 18597101568,
+          "seconds": 2.4441833330000007,
+          "effective_GB_per_s": 7.608717937362678,
+          "file_rewinds": 8
+        }
+      ],
+      "median_seconds": 2.282934542,
+      "median_GB_s": 8.146138763885768
+    }
+  },
+  "interpretation": "I/O-only sequential read time for bytes corresponding to resident compact weights vs Dense-equivalent weights; not per-token model output; repeats same 2.23GB disk file; F_NOCACHE bypasses filesystem data cache; no 18.6GB Dense weights were created or multiplied. SSD data was not transformed into matrices. This is a lower-bound style operational reference, not a measured out-of-core Dense transformer.",
+  "safety": "No large files written; only small JSON/Markdown report."
+}

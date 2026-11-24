@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anteprima tesi</title>
+<style>
+  :root { --bg:#e9ebee; --bar:#ffffff; --fg:#1d2733; --muted:#5b6673; --ok:#2e7d4f; --err:#b3261e; }
+  body { margin:0; background:var(--bg); font:14px -apple-system,system-ui,sans-serif; color:var(--fg); }
+  #bar { position:sticky; top:0; z-index:2; background:var(--bar); border-bottom:1px solid #d3d7dc;
+         display:flex; gap:12px; align-items:center; padding:8px 16px; }
+  #stato { font-weight:600; }
+  #stato.ok { color:var(--ok); } #stato.errore { color:var(--err); }
+  #info { color:var(--muted); }
+  #zoom { margin-left:auto; display:flex; gap:6px; align-items:center; }
+  button { border:1px solid #c4c9cf; background:#fff; border-radius:6px; padding:3px 9px; cursor:pointer; }
+  #log { white-space:pre-wrap; color:var(--err); font:12px ui-monospace,monospace; padding:0 16px; }
+  #pagine { display:flex; flex-direction:column; align-items:center; gap:14px; padding:16px; }
+  canvas { background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.18); max-width:100%; height:auto; }
+</style>
+</head>
+<body>
+<div id="bar">
+  <span id="stato">avvio…</span><span id="info"></span>
+  <span id="zoom"><button id="meno">−</button><span id="z">100%</span><button id="piu">+</button></span>
+</div>
+<div id="log"></div>
+<div id="pagine"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+let versione = -1, scala = 1.0, rendering = false;
+const box = document.getElementById("pagine");
+
+async function disegna(v) {
+  rendering = true;
+  const y = window.scrollY, h = document.body.scrollHeight || 1;
+  const pdf = await pdfjsLib.getDocument({ url: "/main.pdf?v=" + v }).promise;
+  const frag = document.createDocumentFragment();
+  for (let i = 1; i <= pdf.numPages; i++) {
+    const page = await pdf.getPage(i);
+    const vp = page.getViewport({ scale: scala * 1.5 });
+    const c = document.createElement("canvas");
+    c.width = vp.width; c.height = vp.height;
+    c.style.width = (vp.width / 1.5) + "px";
+    await page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
+    frag.appendChild(c);
+  }
+  box.replaceChildren(frag);
+  window.scrollTo(0, y / h * document.body.scrollHeight);
+  document.getElementById("info").textContent =
+    pdf.numPages + " pagine · aggiornato " + new Date().toLocaleTimeString("it-IT");
+  rendering = false;
+}
+
+async function controlla() {
+  try {
+    const s = await (await fetch("/stato", { cache: "no-store" })).json();
+    const el = document.getElementById("stato");
+    el.textContent = s.status; el.className = s.status;
+    document.getElementById("log").textContent = s.status === "errore" ? s.log : "";
+    if (s.version && s.version !== versione && !rendering) { versione = s.version; await disegna(versione); }
+  } catch (e) { document.getElementById("stato").textContent = "server non raggiungibile"; }
+}
+function zoom(d) { scala = Math.max(.5, Math.min(2.5, scala + d));
+  document.getElementById("z").textContent = Math.round(scala * 100) + "%"; if (versione > 0) disegna(versione); }
+document.getElementById("piu").onclick = () => zoom(.1);
+document.getElementById("meno").onclick = () => zoom(-.1);
+setInterval(controlla, 1500); controlla();
+</script>
+</body>
+</html>

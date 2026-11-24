@@ -1,0 +1,282 @@
+In questo capitolo definiamo la famiglia di matrici RowMask23 e ne ricaviamo le proprietà che servono per usarla dentro una rete neurale. Procediamo per gradi. Prima introduciamo l'operazione di XOR tra indici e le matrici che ne derivano; poi definiamo il blocco RowMask23 di dimensione $128\times128$, contiamo i suoi gradi di libertà e mostriamo che la mappa dalle coordinate alla matrice è lineare e iniettiva. Ricaviamo quindi il gradiente rispetto alle coordinate, che è ciò che permette di addestrare la rete, e il prodotto veloce tramite trasformata di Walsh--Hadamard, che è ciò che permette di eseguirla senza ricostruire i pesi. Chiudiamo estendendo la costruzione a matrici rettangolari di dimensione qualunque.
+
+\section{Notazione}
+
+Fissiamo $N=2^n$ con $n=7$, cioè $N=128$. Gli indici di riga e di colonna vanno da $0$ a $N-1$ e li identifichiamo con la loro rappresentazione binaria a $n$ bit. Indichiamo con $\oplus$ lo XOR bit a bit:
+\[
+i\oplus j = \sum_{\ell=0}^{n-1} \big((i_\ell + j_\ell)\bmod 2\big)\,2^\ell,
+\]
+dove $i_\ell$ e $j_\ell$ sono i bit di posizione $\ell$. L'insieme $\{0,\dots,N-1\}$ con l'operazione $\oplus$ è un gruppo abeliano, isomorfo a $(\mathbb{Z}_2)^n$. Ogni elemento è l'inverso di sé stesso ($i\oplus i=0$) e l'elemento neutro è $0$. Due conseguenze ci serviranno spesso:
+\begin{itemize}
+\item per $i$ fissato, la funzione $j\mapsto i\oplus j$ è una biiezione di $\{0,\dots,N-1\}$ in sé;
+\item $i\oplus j = s$ se e solo se $j = i\oplus s$.
+\end{itemize}
+
+\section{Matrici XOR-circolanti}
+
+\begin{definizione}
+Dato un vettore $b\in\mathbb{R}^N$, la matrice XOR-circolante generata da $b$ è la matrice $B\in\mathbb{R}^{N\times N}$ con elementi
+\[
+B_{ij} = b_{i\oplus j}.
+\]
+\end{definizione}
+
+Il nome richiama le matrici circolanti, in cui l'elemento $(i,j)$ dipende da $(j-i)\bmod N$. Qui dipende invece da $i\oplus j$. Ogni riga di $B$ contiene tutti gli elementi di $b$, ciascuno una sola volta, in un ordine che cambia da riga a riga; lo stesso vale per le colonne. La matrice è simmetrica, perché $i\oplus j=j\oplus i$. L'elemento $b_0$ compare esattamente sulla diagonale principale.
+
+Possiamo pensare a $B$ come all'insieme di $N$ ``diagonali generalizzate'': la diagonale di indice $s$ è l'insieme delle posizioni $\{(i,i\oplus s): i=0,\dots,N-1\}$, e su di essa la matrice è costante e vale $b_s$. Le $N$ diagonali generalizzate formano una partizione delle $N^2$ posizioni della matrice. Questa struttura è il fondamento di RowMask23.
+
+\section{Il blocco RowMask23}
+
+Una matrice XOR-circolante ha solo $N$ gradi di libertà su $N^2$ posizioni: troppo pochi per una rete che deve imparare trasformazioni generali. RowMask23 parte da questa base e le aggiunge due componenti: una diagonale libera e un insieme fisso di correzioni per ogni riga.
+
+\subsection{Supporto delle correzioni}
+
+Per ogni riga $i\in\{1,\dots,N-1\}$ definiamo l'insieme di 23 offset
+\begin{equation}
+S_i = \big\{\,\sigma(i,k) : k=0,\dots,22\,\big\},\qquad
+\sigma(i,k) = 1 + \big((13k + 7i)\bmod 127\big).
+\label{eq:supporto}
+\end{equation}
+Ogni offset è un valore compreso tra $1$ e $127$, quindi diverso da zero. La riga $0$ non ha correzioni: $S_0=\emptyset$.
+
+\begin{proposizione}
+Per ogni riga $i\ge1$, i 23 offset $\sigma(i,0),\dots,\sigma(i,22)$ sono distinti.
+\end{proposizione}
+
+\begin{proof}
+Supponiamo $\sigma(i,k)=\sigma(i,k')$ con $0\le k,k'\le22$. Allora $13k+7i\equiv 13k'+7i \pmod{127}$, cioè $13(k-k')\equiv0\pmod{127}$. Poiché $127$ è primo e non divide $13$, deve dividere $k-k'$. Ma $|k-k'|\le22<127$, quindi $k=k'$.
+\end{proof}
+
+La scelta dei coefficienti $13$ e $7$ ha uno scopo pratico: distribuire le correzioni in modo che righe diverse usino offset diversi, evitando che alcune diagonali generalizzate ricevano molte correzioni e altre nessuna. Lo spostamento $7i$ fa ruotare l'insieme da una riga all'altra; il passo $13$ distanzia gli offset dentro la stessa riga.
+
+\subsection{Definizione}
+
+\begin{definizione}[Blocco RowMask23]
+Il vettore di coordinate di un blocco è $c=(d,b,e)$ con
+\begin{itemize}
+\item $d\in\mathbb{R}^{128}$, la \emph{diagonale}, con componenti $d_i$, $i=0,\dots,127$;
+\item $b\in\mathbb{R}^{127}$, la \emph{base XOR}, con componenti $b_s$, $s=1,\dots,127$;
+\item $e\in\mathbb{R}^{127\times23}$, le \emph{correzioni}, con componenti $e_{i,k}$, $i=1,\dots,127$, $k=0,\dots,22$.
+\end{itemize}
+La matrice $W=\Phi(c)\in\mathbb{R}^{128\times128}$ ha elementi
+\begin{equation}
+W_{ij} =
+\begin{cases}
+d_i & \text{se } i=j,\\[2pt]
+b_{i\oplus j} + e_{i,k} & \text{se } i\ne j \text{ e } i\oplus j=\sigma(i,k) \text{ per qualche } k,\\[2pt]
+b_{i\oplus j} & \text{altrimenti.}
+\end{cases}
+\label{eq:rowmask23}
+\end{equation}
+\end{definizione}
+
+In parole: la diagonale è libera; fuori dalla diagonale ogni elemento eredita il valore della base XOR della sua diagonale generalizzata; in 23 posizioni per riga, scelte da \eqref{eq:supporto}, a questo valore si aggiunge una correzione propria. Il nome ``RowMask23'' indica proprio questa maschera di 23 posizioni per riga.
+
+Equivalentemente, si può scrivere
+\begin{equation}
+W = D + B + R,
+\label{eq:scomposizione}
+\end{equation}
+dove $D=\mathrm{diag}(d)$, $B$ è la matrice XOR-circolante generata dal vettore $(0,b_1,\dots,b_{127})$ e $R$ è una matrice sparsa con $2.921$ elementi non nulli, $R_{i,\,i\oplus\sigma(i,k)}=e_{i,k}$.
+
+La Figura~\ref{fig:struttura} mostra la struttura di un blocco: a sinistra la posizione della diagonale, delle correzioni e degli elementi che dipendono solo dalla base; a destra l'indice $i\oplus j$ che decide quale coordinata della base si trova in ogni posizione.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=\textwidth]{figure/formalismo/struttura_blocco.pdf}
+\caption{Struttura di un blocco RowMask23 $128\times128$. A sinistra: diagonale (blu), posizioni con una correzione propria (rosso, 23 per riga dalla riga 1 in poi) e posizioni determinate solo dalla base XOR (grigio). A destra: il valore di $i\oplus j$, cioè l'indice della coordinata di base usata in ciascuna posizione.}
+\label{fig:struttura}
+\end{figure}
+
+\input{capitoli/03a-guida-visuale-rowmask}
+
+\subsection{Disposizione in memoria}
+
+Nel motore le coordinate di un blocco sono memorizzate in un unico vettore di lunghezza $3.176$ secondo questo schema:
+\begin{itemize}
+\item posizioni $0,\dots,127$: diagonale, $d_i$ in posizione $i$;
+\item posizioni $128,\dots,254$: base, $b_s$ in posizione $127+s$;
+\item posizioni $255,\dots,3175$: correzioni, $e_{i,k}$ in posizione $255+23(i-1)+k$.
+\end{itemize}
+Questa disposizione rende semplice sia la ricostruzione della matrice sia l'accumulo del gradiente, perché ogni coordinata ha un indice calcolabile in tempo costante.
+
+\section{Conteggio dei gradi di libertà}
+
+\begin{proposizione}
+Un blocco RowMask23 ha
+\[
+C = 128 + 127 + 127\cdot23 = 3.176
+\]
+coordinate, contro $D=128^2=16.384$ elementi di una matrice densa. Il rapporto è
+\[
+\frac{C}{D} = \frac{3.176}{16.384} \approx 0{,}1938,
+\]
+cioè una riduzione dell'$80{,}6\%$ dei gradi di libertà, equivalente a un fattore $5{,}16$.
+\end{proposizione}
+
+Il rapporto vale per qualunque precisione numerica, purché coordinate e matrice densa usino la stessa. In FP16 un blocco denso occupa $32.768$ byte e un blocco RowMask23 $6.352$ byte; in FP32 i valori raddoppiano. Si noti che le correzioni sono la parte di gran lunga più numerosa: il $92\%$ delle coordinate. La base XOR, da sola, occupa meno del $4\%$ del blocco ma tocca tutti i $16.256$ elementi fuori diagonale.
+
+\section{Linearità e iniettività}
+
+\begin{proposizione}
+La mappa $\Phi:\mathbb{R}^{3176}\to\mathbb{R}^{128\times128}$ è lineare e iniettiva. Di conseguenza la sua immagine, che chiamiamo \emph{famiglia RowMask23}, è un sottospazio lineare di dimensione $3.176$ dello spazio delle matrici $128\times128$.
+\end{proposizione}
+
+\begin{proof}
+La linearità è evidente da \eqref{eq:rowmask23}: ogni elemento di $W$ è una somma di al più due coordinate con coefficiente uno.
+
+Per l'iniettività basta mostrare che dalle entrate di $W$ si possono leggere tutte le coordinate. La diagonale dà direttamente $d_i=W_{ii}$. La riga $0$ non ha correzioni, quindi per $s\ge1$ vale $W_{0,s}=b_{0\oplus s}=b_s$: la prima riga fornisce l'intera base. Infine, per $i\ge1$ e per ogni $k$, la posizione $j=i\oplus\sigma(i,k)$ dà $e_{i,k}=W_{ij}-b_{\sigma(i,k)}$. Poiché tutte le coordinate si ricavano da $W$, due vettori diversi producono matrici diverse.
+\end{proof}
+
+Questa proprietà ha una conseguenza pratica: le coordinate sono una rappresentazione \emph{esatta} della matrice, senza perdita. Se si salvano le coordinate si può ricostruire la matrice bit per bit, e viceversa. La compressione non è un'approssimazione di una matrice densa: è la scelta di lavorare dentro un sottospazio.
+
+\section{Rango}
+
+Un timore naturale è che una matrice con pochi gradi di libertà sia degenere, cioè abbia rango basso come una fattorizzazione $UV^\top$. Non è così.
+
+\begin{proposizione}
+L'insieme dei vettori di coordinate $c$ per cui $\Phi(c)$ è singolare ha misura di Lebesgue nulla in $\mathbb{R}^{3176}$. In particolare, quasi ogni matrice RowMask23 ha rango pieno $128$.
+\end{proposizione}
+
+\begin{proof}
+La funzione $p(c)=\det\Phi(c)$ è un polinomio nelle coordinate, perché il determinante è un polinomio negli elementi e questi sono lineari in $c$. Il polinomio non è identicamente nullo: scegliendo $d_i=1$ per ogni $i$ e tutte le altre coordinate nulle si ottiene l'identità, con determinante $1$. L'insieme degli zeri di un polinomio non nullo ha misura nulla.
+\end{proof}
+
+La distinzione tra numero di parametri e rango è importante. Una fattorizzazione di rango 16 in dimensione 128 ha $2\cdot128\cdot16=4.096$ parametri, più di RowMask23, ma ignora $112$ direzioni dell'ingresso. Un blocco RowMask23 ne usa $3.176$ e, in generale, agisce su tutte le direzioni. Le due famiglie sono sottospazi diversi dello spazio delle matrici, con geometrie diverse.
+
+\section{Gradiente rispetto alle coordinate}
+
+Per addestrare una rete costruita con blocchi RowMask23 serve il gradiente della perdita rispetto alle coordinate. Supponiamo di conoscere $G=\partial\mathcal{L}/\partial W$, il gradiente rispetto alla matrice ricostruita, calcolato con la retropropagazione ordinaria \eqref{eq:linear-grad}. Poiché $W=\Phi(c)$ è lineare, la regola della catena dà
+\begin{equation}
+\nabla_c\mathcal{L} = J_\Phi^\top\,\mathrm{vec}(G),
+\end{equation}
+dove $J_\Phi$ è la matrice jacobiana di $\Phi$, costante. Non serve costruirla: dalla definizione \eqref{eq:rowmask23} si leggono direttamente le derivate parziali.
+
+\begin{proposizione}[Gradiente esatto]
+Per ogni blocco valgono
+\begin{align}
+\frac{\partial\mathcal{L}}{\partial d_i} &= G_{ii}, \label{eq:grad-d}\\
+\frac{\partial\mathcal{L}}{\partial b_s} &= \sum_{i=0}^{127} G_{i,\,i\oplus s}, \qquad s=1,\dots,127, \label{eq:grad-b}\\
+\frac{\partial\mathcal{L}}{\partial e_{i,k}} &= G_{i,\,i\oplus\sigma(i,k)}, \qquad i=1,\dots,127,\ k=0,\dots,22. \label{eq:grad-e}
+\end{align}
+\end{proposizione}
+
+\begin{proof}
+Ogni coordinata compare con coefficiente uno in un certo insieme di posizioni di $W$, e la sua derivata è la somma degli elementi di $G$ in quelle posizioni. La diagonale $d_i$ compare solo in $(i,i)$. Una correzione $e_{i,k}$ compare solo in $(i,i\oplus\sigma(i,k))$. La base $b_s$ compare in tutte le posizioni della diagonale generalizzata di indice $s$, cioè in $(i,i\oplus s)$ per ogni $i$.
+\end{proof}
+
+Il gradiente della base è una somma lungo una diagonale generalizzata: raccoglie il segnale di tutte le $128$ righe. Le correzioni e la diagonale, invece, ricevono il segnale di una sola posizione ciascuna. Questa asimmetria ha un significato intuitivo. La base cattura la parte della trasformazione comune a tutte le righe e si stima con molti dati; le correzioni catturano le eccezioni locali.
+
+\subsection{Il gradiente della base come correlazione XOR}
+
+Il gradiente \eqref{eq:grad-b} si può calcolare in modo efficiente senza formare $G$. In uno strato lineare $Y=XW^\top$ con ingressi $x^{(m)}$ e gradienti in uscita $g^{(m)}$, $m=1,\dots,M$, si ha $G=\sum_m g^{(m)}x^{(m)\top}$, e quindi
+\[
+\frac{\partial\mathcal{L}}{\partial b_s} = \sum_m \sum_i g^{(m)}_i\, x^{(m)}_{i\oplus s}.
+\]
+È una correlazione XOR tra $g^{(m)}$ e $x^{(m)}$, che si calcola con la trasformata di Walsh--Hadamard come la convoluzione della sezione seguente. Nella pratica del nostro motore, durante l'addestramento, si preferisce comunque ricostruire $W$ e $G$ per sfruttare i prodotti densi ottimizzati della GPU, e poi applicare \eqref{eq:grad-d}--\eqref{eq:grad-e}; la scelta è discussa nel Capitolo~\ref{cap:capitoli/04-architettura}.
+
+\subsection{Una conseguenza per l'ottimizzazione}
+
+L'ottimizzatore riceve $\nabla_c\mathcal{L}$ e aggiorna direttamente $c$. Ne segue che ogni iterata resta nella famiglia RowMask23: non esiste, in nessun momento, una copia densa dei pesi che si allontana dal sottospazio e che va poi riproiettata. È una differenza sostanziale rispetto ai metodi che addestrano una rete densa e la comprimono alla fine, e rispetto a quelli che aggiornano i pesi densi e li proiettano a ogni passo. Nel nostro caso il problema di ottimizzazione è, fin dall'inizio, un problema su $\mathbb{R}^{3176}$ per blocco.
+
+Vale la pena guardare anche la geometria della mappa. Nella matrice $J_\Phi^\top J_\Phi$ gli elementi diagonali valgono $1$ per la diagonale e per le correzioni e $128$ per ciascuna coordinata della base, perché $b_s$ tocca $128$ posizioni. Fuori dalla diagonale l'unico accoppiamento è tra una correzione $e_{i,k}$ e la base $b_{\sigma(i,k)}$, che condividono una posizione. La base riceve quindi gradienti con norma tipicamente maggiore delle altre coordinate. Un ottimizzatore adattivo come Adam, che normalizza ogni coordinata con la propria varianza stimata, compensa naturalmente questa differenza di scala.
+
+\section{Prodotto veloce tramite trasformata di Walsh--Hadamard}
+
+Veniamo ora all'esecuzione. Data la scomposizione \eqref{eq:scomposizione}, il prodotto $y=Wx$ si scrive
+\begin{equation}
+y_i = d_i x_i + \sum_{j} b_{i\oplus j}\,x_j + \sum_{k=0}^{22} e_{i,k}\,x_{i\oplus\sigma(i,k)},
+\label{eq:gemv}
+\end{equation}
+con la convenzione $b_0=0$. Il primo e il terzo termine costano rispettivamente $128$ e $2.921$ moltiplicazioni. Il secondo, calcolato direttamente, ne costerebbe $16.384$. Mostriamo che si può fare molto meglio.
+
+\subsection{La trasformata di Walsh--Hadamard}
+
+La matrice di Hadamard di ordine $N=2^n$ si definisce per ricorsione:
+\[
+H_1 = \begin{pmatrix}1\end{pmatrix},\qquad
+H_{2m} = \begin{pmatrix} H_m & H_m \\ H_m & -H_m \end{pmatrix}.
+\]
+In forma esplicita, $(H_N)_{uv} = (-1)^{\langle u,v\rangle}$, dove $\langle u,v\rangle=\sum_\ell u_\ell v_\ell$ è il prodotto scalare dei vettori di bit. La matrice è simmetrica e soddisfa $H_N^2 = N\,I$. La trasformata di Walsh--Hadamard di un vettore è il prodotto $Hx$; grazie alla struttura ricorsiva si calcola in $n$ stadi di somme e differenze a coppie, per un totale di $N\log_2 N$ operazioni e nessuna moltiplicazione \cite{fino1976unified,beauchamp1984applications}. Per $N=128$ sono $7$ stadi e $896$ addizioni.
+
+Lo schema di calcolo, detto \emph{a farfalla}, è illustrato nella Figura~\ref{fig:wht}.
+
+\begin{figure}[htbp]
+\centering
+\input{figure/tikz/wht}
+\caption{Trasformata di Walsh--Hadamard veloce per $N=8$. Ogni stadio combina le componenti distanti $h$ con una somma e una differenza.}
+\label{fig:wht}
+\end{figure}
+
+\subsection{Diagonalizzazione delle matrici XOR-circolanti}
+
+\begin{proposizione}
+Sia $B$ la matrice XOR-circolante generata da $b$. Allora
+\[
+H B H = N\,\mathrm{diag}(Hb),
+\]
+e di conseguenza, per ogni vettore $x$,
+\begin{equation}
+Bx = \frac{1}{N}\,H\big((Hb)\odot(Hx)\big),
+\label{eq:wht-conv}
+\end{equation}
+dove $\odot$ è il prodotto elemento per elemento.
+\end{proposizione}
+
+\begin{proof}
+Le righe di $H$ sono i caratteri del gruppo $(\mathbb{Z}_2)^n$: per ogni $u$ la funzione $\chi_u(i)=(-1)^{\langle u,i\rangle}$ soddisfa $\chi_u(i\oplus j)=\chi_u(i)\chi_u(j)$. Calcoliamo $B$ applicata a un carattere:
+\[
+(B\chi_u)_i = \sum_j b_{i\oplus j}\chi_u(j) = \sum_s b_s\,\chi_u(i\oplus s) = \chi_u(i)\sum_s b_s\chi_u(s) = (Hb)_u\,\chi_u(i),
+\]
+dove abbiamo posto $s=i\oplus j$ e usato il fatto che $j\mapsto i\oplus j$ è una biiezione. Ogni carattere è quindi un autovettore di $B$ con autovalore $(Hb)_u$. Poiché i caratteri sono le colonne di $H$, si ha $BH = H\,\mathrm{diag}(Hb)$. Moltiplicando a sinistra per $H$ e usando $H^2=NI$ si ottiene la tesi.
+\end{proof}
+
+La formula \eqref{eq:wht-conv} è l'analogo, per lo XOR, del teorema di convoluzione di Fourier. Il prodotto con la parte XOR della matrice si riduce a due trasformate e a $128$ moltiplicazioni. Il vettore $Hb$ dipende solo dai pesi e può essere calcolato una volta per tutte.
+
+\subsection{Costo del prodotto completo}
+
+Mettendo insieme i tre termini, il prodotto con un blocco RowMask23 richiede:
+\begin{itemize}
+\item una trasformata di $x$: $896$ addizioni;
+\item un prodotto elemento per elemento con $Hb$: $128$ moltiplicazioni;
+\item una trasformata inversa: $896$ addizioni e una divisione per $N$, che si può assorbire nei pesi;
+\item la diagonale: $128$ moltiplicazioni e addizioni;
+\item le correzioni: $2.921$ moltiplicazioni e addizioni.
+\end{itemize}
+In totale circa $3.200$ moltiplicazioni e $5.000$ addizioni, contro $16.384$ moltiplicazioni e altrettante addizioni del prodotto denso. Il numero di operazioni scende di circa tre volte. La quantità di dati da leggere scende invece di $5{,}16$ volte, perché si leggono $3.176$ coordinate invece di $16.384$ pesi; e, come abbiamo visto nella Sezione~\ref{sec:memory-bound}, è questa la grandezza che conta nella generazione token per token.
+
+È giusto sottolineare che il conteggio delle operazioni non si traduce automaticamente in velocità. Il prodotto denso è l'operazione più ottimizzata di ogni libreria numerica, mentre le correzioni richiedono accessi indiretti all'ingresso, $x_{i\oplus\sigma(i,k)}$, che sono meno regolari. Nel Capitolo~\ref{cap:capitoli/07-sistemi} misureremo quanto di questo vantaggio teorico si ritrova su una GPU reale.
+
+\section{Estensione a matrici rettangolari}
+
+Le matrici di un Transformer non sono tutte quadrate di ordine $128$: le proiezioni dell'attenzione sono $d\times d$, quelle del blocco feed-forward $f\times d$ e $d\times f$. Le gestiamo con una suddivisione in blocchi. Se $m$ e $n$ sono multipli di $128$, una matrice $W\in\mathbb{R}^{m\times n}$ si divide in $(m/128)\times(n/128)$ blocchi, e ciascun blocco $(p,q)$ è una matrice RowMask23 indipendente con coordinate proprie $c^{(p,q)}$, moltiplicata per un fattore di scala $\alpha^{(p,q)}$:
+\begin{equation}
+W_{[p],[q]} = \alpha^{(p,q)}\,\Phi\big(c^{(p,q)}\big).
+\end{equation}
+Il fattore di scala, anch'esso appreso, permette a blocchi diversi di avere ampiezze diverse senza che l'ottimizzatore debba spostare tutte le coordinate. Aggiunge un solo valore per blocco, trascurabile rispetto alle $3.176$ coordinate.
+
+Il prodotto $y=Wx$ si calcola blocco per blocco: l'ingresso viene diviso in segmenti di $128$ elementi, ogni blocco moltiplica il proprio segmento e le uscite dei blocchi sulla stessa riga si sommano. Il gradiente si calcola allo stesso modo, applicando \eqref{eq:grad-d}--\eqref{eq:grad-e} a ogni blocco del gradiente $G$, e per la scala
+\[
+\frac{\partial\mathcal{L}}{\partial\alpha^{(p,q)}} = \big\langle G_{[p],[q]},\,\Phi(c^{(p,q)})\big\rangle_F,
+\]
+dove $\langle\cdot,\cdot\rangle_F$ è il prodotto scalare di Frobenius.
+
+Per esempio, in STERA 30M, con $d=768$ e $f=3.072$, ogni proiezione dell'attenzione si divide in $36$ blocchi, ogni matrice del feed-forward in $144$. Uno strato contiene quindi $4\cdot36+2\cdot144=432$ blocchi, cioè $1.372.032$ coordinate invece di $7.077.888$ pesi.
+
+\section{Inizializzazione}
+
+Una rete neurale si addestra bene solo se, all'inizio, i segnali non esplodono né si spengono attraversando gli strati. Per le matrici dense si sceglie di solito di estrarre ogni peso da una normale di media nulla e deviazione standard $\sigma_0$ piccola, per esempio $0{,}02$. Con RowMask23 bisogna tenere conto del fatto che gli elementi fuori diagonale con una correzione sono la somma di \emph{due} coordinate indipendenti. Se ogni coordinata ha deviazione standard $\sigma$, la varianza media di un elemento della matrice vale
+\[
+\sigma^2\left(1 + \frac{2.921}{16.384}\right),
+\]
+perché $2.921$ dei $16.384$ elementi ricevono una seconda coordinata. Per ottenere la stessa varianza media di una matrice densa inizializzata con $\sigma_0$ si sceglie quindi
+\begin{equation}
+\sigma = \frac{\sigma_0}{\sqrt{1+2.921/16.384}}.
+\end{equation}
+Le scale dei blocchi si inizializzano a uno.
+
+\section{Riepilogo}
+
+La famiglia RowMask23 ha tre proprietà che la rendono adatta allo scopo della tesi. È un sottospazio lineare di dimensione $3.176$ su $16.384$, quindi le coordinate sono una rappresentazione esatta e cinque volte più compatta. Le sue matrici sono in generale a rango pieno, quindi non c'è una perdita strutturale di direzioni. Il gradiente rispetto alle coordinate ha una forma chiusa semplice e il prodotto matrice--vettore si calcola con una trasformata veloce, senza ricostruire la matrice.
+
+Nel prossimo capitolo vediamo come queste proprietà si traducono in un modello completo e in un motore che lo addestra e lo esegue.

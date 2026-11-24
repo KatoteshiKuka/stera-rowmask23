@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T300",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Le foglie \"non vanno bene per gli uccelli\", poi l'albero \"trova un nuovo albero\": scollegato."
+  },
+  {
+   "id": "T301",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Dopo lo scontro con l'albero l'amica lo aiuta \"ad andare più veloce\": causalità debole."
+  },
+  {
+   "id": "T302",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Lo scoiattolo prende le ciliegie per l'uccellino: coerente."
+  },
+  {
+   "id": "T303",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Sue ripara la macchinina rotta da Tim: coerente."
+  },
+  {
+   "id": "T304",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Un ago sul pavimento fa rimpicciolire la macchinina: causalità assurda."
+  },
+  {
+   "id": "T305",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tom restituisce i giocattoli e gioca con Amy: coerente."
+  },
+  {
+   "id": "T306",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Usa il bastone per le bacche senza raccoglierle, il cane gioca: azioni confuse."
+  },
+  {
+   "id": "T307",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Tim \"cercava di mostrare a Max che era un cane forte\": ruoli confusi."
+  },
+  {
+   "id": "T308",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il gattino gioca col parrucchiere, \"haons\", poi tornano a casa insieme: confuso."
+  },
+  {
+   "id": "T309",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La scatola cade, la vela finisce in acqua e la barca supera il porto: eventi caotici."
+  },
+  {
+   "id": "T310",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "\"Alla fine della passeggiata\" torna a casa a raccontare alla mamma con cui era: incoerenze."
+  },
+  {
+   "id": "T311",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "\"Indossò il rasoio\", la formica la pizzica, le restituisce il rasoio: eventi incomprensibili."
+  },
+  {
+   "id": "T312",
+   "grammar": 6,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "La fibbia troppo grande, una \"più piccola ma più grande\", \"non puoi tirarla su\": incomprensibile."
+  },
+  {
+   "id": "T313",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tom e Lily smettono di litigare per la palla grazie al vecchio: coerente."
+  },
+  {
+   "id": "T314",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily e la mamma visitano il mulino e fanno la farina: coerente."
+  },
+  {
+   "id": "T315",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "\"Va bene avere paura, ma va bene avere paura\"; \"non ebbe più paura dei sassi\": morale confusa."
+  },
+  {
+   "id": "T316",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sarah gioca col suo orsacchiotto e la pioggia la fa tornare a casa: coerente, ripetizioni."
+  },
+  {
+   "id": "T317",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Rifanno il pupazzo \"attenti a non toccare la neve\": contraddizione."
+  },
+  {
+   "id": "T318",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Un cuscino la fa \"scappare\" saltando fino al soffitto e si ritrova a casa: confuso."
+  },
+  {
+   "id": "T319",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "L'orso aiuta l'uccello smarrito e gioca con gli amici: coerente."
+  },
+  {
+   "id": "T320",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Il boscaiolo \"trova un buco in cui stare\" e dorme nella tana dello scoiattolo: incoerente."
+  },
+  {
+   "id": "T321",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il cane porta un giocattolo e Tim ringrazia Sally: causalità confusa."
+  },
+  {
+   "id": "T322",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Lily riporta a casa il coniglio smarrito: coerente."
+  },
+  {
+   "id": "T323",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Spot e Blue si riparano dall'incendio dietro l'albero: coerente."
+  },
+  {
+   "id": "T324",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "\"Prese l'orso e scappò\", l'orso spaventato lo insegue e lo mangia: contraddizioni centrali."
+  },
+  {
+   "id": "T325",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim gioca con il cane al parco fino al tramonto: coerente."
+  },
+  {
+   "id": "T326",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Chiede al papà se ha visto il tronco che stanno guardando; il tronco \"è mio, mi sono perso\": confuso."
+  },
+  {
+   "id": "T327",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily scende dallo scivolo e vince un premio: coerente."
+  },
+  {
+   "id": "T328",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "La palla \"rotola in un grande posto\" e la storia finisce: trama minima."
+  },
+  {
+   "id": "T329",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue rende felice la bambola triste: fiabesco e coerente."
+  }
+ ]
+}

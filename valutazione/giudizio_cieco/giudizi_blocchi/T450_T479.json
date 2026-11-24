@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T450",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La mamma dice che le caramelle fanno bene; impara a mangiare sano dopo aver mangiato caramelle."
+  },
+  {
+   "id": "T451",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tom si nasconde nella scatola e poi gioca con il cane: coerente."
+  },
+  {
+   "id": "T452",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La mamma protegge la bambina dal vento forte: coerente."
+  },
+  {
+   "id": "T453",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Il cielo si oscura e piove, ma \"vedeva ancora il cielo luminoso\": contraddizione."
+  },
+  {
+   "id": "T454",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il gattino firma un foglio e ottiene il taglio: coerente, ripetizioni."
+  },
+  {
+   "id": "T455",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue condivide la palla con Tom: coerente."
+  },
+  {
+   "id": "T456",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Pulisce i vestiti strofinandoli e \"la casa era pulita\", poi li butta e la casa è sporca: incoerente."
+  },
+  {
+   "id": "T457",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "I fratelli litigano sulla barca e un'onda la distrugge: finale negativo coerente."
+  },
+  {
+   "id": "T458",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim spinge la palla pesante e si fa male al pollice: coerente."
+  },
+  {
+   "id": "T459",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Kiki aiuta Lily a ritrovare il coniglietto: coerente."
+  },
+  {
+   "id": "T460",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'amico Tweet diventa \"Bird\" e il gatto vola in cielo con lui: identità e azioni confuse."
+  },
+  {
+   "id": "T461",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Andy e la lumaca portano l'oro al formicaio: coerente."
+  },
+  {
+   "id": "T462",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il coniglio porta il bottone agli amici e ci giocano: coerente."
+  },
+  {
+   "id": "T463",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Parte per un'avventura e va a scuola; \"prese gli amici\" e salirono in macchina: scollegato."
+  },
+  {
+   "id": "T464",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Il coniglio si fa coraggio, ma l'uccello gli ruba il frutto: finale negativo coerente."
+  },
+  {
+   "id": "T465",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Amy porta a casa il girasole e pianta un seme: coerente fino al troncamento."
+  },
+  {
+   "id": "T466",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il lecca-lecca magico trasforma Sue: fiabesco e coerente."
+  },
+  {
+   "id": "T467",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Buddy gioca con il gatto Sam e la palla d'acciaio: coerente."
+  },
+  {
+   "id": "T468",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Max e Lily si scambiano le battute sulla luna, \"puoi andare tu, Lily\" detto da Lily: confuso."
+  },
+  {
+   "id": "T469",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Jane dice al papà \"ti proteggo io\" e corre nel torrente: azioni incoerenti."
+  },
+  {
+   "id": "T470",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Era già nei guai\", \"dobbiamo farti uscire\": situazione incomprensibile."
+  },
+  {
+   "id": "T471",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Per scaldare l'uccello il gatto indossa lui la tuta: causalità assurda."
+  },
+  {
+   "id": "T472",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il mostro raccoglie ramoscelli \"e li fa volare\" verso lo zucchero: confuso."
+  },
+  {
+   "id": "T473",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La fontana ha bisogno d'acqua e loro bevono; l'uomo delle caramelle senza nesso: debole."
+  },
+  {
+   "id": "T474",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La bambina ritrova il giocattolo con la mamma: coerente."
+  },
+  {
+   "id": "T475",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il drago \"costoso\" e il cartello senza contenuto: trama vuota."
+  },
+  {
+   "id": "T476",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il camion rotto viene messo in marcia e \"riparte da solo\": causalità mancante."
+  },
+  {
+   "id": "T477",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue e il gatto giocano con la palla viola che parla: fiabesco e coerente."
+  },
+  {
+   "id": "T478",
+   "grammar": 6,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'uccellino nel nido \"non aveva un nido\", il nido chiamato \"K useless\": incoerente."
+  },
+  {
+   "id": "T479",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il giocattolo che \"sfreccia\" fa sorridere l'ospedale: trama minima."
+  }
+ ]
+}

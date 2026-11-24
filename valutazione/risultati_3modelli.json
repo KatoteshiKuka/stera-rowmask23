@@ -1,0 +1,147 @@
+{
+ "ratings_sha256": "40760acaa40fbe7c68bbe165aab757fbc72d7820de8b353a560e2f3ba4a5e8ea",
+ "giudice": "Claude Opus 5.5, singolo giudice cieco",
+ "models": {
+  "STERA30M": {
+   "n": 300,
+   "correct": 132,
+   "pct": 44.0,
+   "wilson95": [
+    38.49382095794712,
+    49.65790020202571
+   ],
+   "categories": {
+    "S": 132,
+    "N": 16,
+    "P": 152
+   },
+   "means": {
+    "grammar": 7.67,
+    "consistency": 5.26,
+    "plot": 5.373333333333333
+   }
+  },
+  "TinyStories-33M": {
+   "n": 300,
+   "correct": 145,
+   "pct": 48.333333333333336,
+   "wilson95": [
+    42.73534010031743,
+    53.97347133300835
+   ],
+   "categories": {
+    "P": 140,
+    "S": 145,
+    "N": 15
+   },
+   "means": {
+    "grammar": 7.913333333333333,
+    "consistency": 5.543333333333333,
+    "plot": 5.486666666666666
+   }
+  },
+  "TinyStories-8M": {
+   "n": 300,
+   "correct": 65,
+   "pct": 21.666666666666668,
+   "wilson95": [
+    17.3787117091094,
+    26.671082657428958
+   ],
+   "categories": {
+    "S": 65,
+    "P": 200,
+    "N": 35
+   },
+   "means": {
+    "grammar": 7.433333333333334,
+    "consistency": 4.736666666666666,
+    "plot": 4.956666666666667
+   }
+  }
+ },
+ "paired": {
+  "STERA30M vs TinyStories-33M": {
+   "delta_pp": -4.333333333333333,
+   "ci95_pp": [
+    -12.0,
+    3.6666666666666665
+   ],
+   "only_first": 66,
+   "only_second": 79,
+   "both": 66,
+   "neither": 89,
+   "mcnemar_p": 0.3189894748159884,
+   "holm_p": 0.3189894748159884
+  },
+  "STERA30M vs TinyStories-8M": {
+   "delta_pp": 22.333333333333332,
+   "ci95_pp": [
+    15.333333333333334,
+    29.333333333333332
+   ],
+   "only_first": 98,
+   "only_second": 31,
+   "both": 34,
+   "neither": 137,
+   "mcnemar_p": 2.723291354494315e-09,
+   "holm_p": 5.44658270898863e-09
+  },
+  "TinyStories-33M vs TinyStories-8M": {
+   "delta_pp": 26.666666666666668,
+   "ci95_pp": [
+    19.666666666666668,
+    33.666666666666664
+   ],
+   "only_first": 109,
+   "only_second": 29,
+   "both": 36,
+   "neither": 126,
+   "mcnemar_p": 4.201557931039116e-12,
+   "holm_p": 1.2604673793117347e-11
+  }
+ },
+ "nll": {
+  "STERA30M": {
+   "nll": 1.1739974938389326,
+   "ppl": 3.234898312239673,
+   "target_tokens": 57841,
+   "eos": 229
+  },
+  "TinyStories-33M": {
+   "nll": 1.3244558361951264,
+   "ppl": 3.7601386668198122,
+   "target_tokens": 57841,
+   "eos": 226
+  },
+  "TinyStories-8M": {
+   "nll": 1.5153486994741054,
+   "ppl": 4.551007784217279,
+   "target_tokens": 57841,
+   "eos": 233
+  }
+ },
+ "nll_paired": {
+  "STERA30M vs TinyStories-33M": {
+   "delta": -0.15045834235619382,
+   "ci95": [
+    -0.18646325846336986,
+    -0.11477402870331943
+   ]
+  },
+  "STERA30M vs TinyStories-8M": {
+   "delta": -0.34135120563517285,
+   "ci95": [
+    -0.3651016973857186,
+    -0.3186161356083623
+   ]
+  },
+  "TinyStories-33M vs TinyStories-8M": {
+   "delta": -0.19089286327897903,
+   "ci95": [
+    -0.20900956216691124,
+    -0.17338576500364145
+   ]
+  }
+ }
+}

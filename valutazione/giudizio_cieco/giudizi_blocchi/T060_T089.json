@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T060",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"L'albero era bloccato nel cortile\" e li abbraccia: premessa incoerente."
+  },
+  {
+   "id": "T061",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "Litigano per guardare l'insetto e diventano amici senza passaggio: trama debole."
+  },
+  {
+   "id": "T062",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "Trova un diamante e lo mostra alla famiglia: trama minima."
+  },
+  {
+   "id": "T063",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily legge sotto l'albero e poi gioca con la mamma: coerente."
+  },
+  {
+   "id": "T064",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim salta nella pozzanghera gelata e lo racconta alla mamma: coerente."
+  },
+  {
+   "id": "T065",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il mostro regala un orsacchiotto e partono insieme: coerente, finale ripetitivo."
+  },
+  {
+   "id": "T066",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Bob compra la palla rossa con l'incoraggiamento di Sue: coerente."
+  },
+  {
+   "id": "T067",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il bambino e l'uccello dipingono la lana per gli amici: coerente."
+  },
+  {
+   "id": "T068",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Per appendere la gelatina devi stare zitta\": consiglio senza senso."
+  },
+  {
+   "id": "T069",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Un razzo con un razzo\", \"ala di metallo metallo fatta di carta\": dettagli contraddittori."
+  },
+  {
+   "id": "T070",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "La balena deve fare il bagno, lo squalo chiede aiuto e \"nuotano via dallo squalo\" insieme a lui: incomprensibile."
+  },
+  {
+   "id": "T071",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "I bambini sono tristi perché \"non possono tornare dal jet\": causalità debole."
+  },
+  {
+   "id": "T072",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Un limone acido ha fatto i nostri disegni\": eventi confusi, poi limonata."
+  },
+  {
+   "id": "T073",
+   "grammar": 6,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Il nome della macchina cambia (Ceeny, Ceezy, Ceeeebo), la mamma ringrazia la figlia di averla servita: identità confuse."
+  },
+  {
+   "id": "T074",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sally va al parco e registra la sua avventura: coerente."
+  },
+  {
+   "id": "T075",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lo scarabeo mangia il frutto e torna a riposare: semplice e coerente."
+  },
+  {
+   "id": "T076",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il vento porta via la pistola giocattolo e non la ritrovano: finale negativo coerente."
+  },
+  {
+   "id": "T077",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Posso stare sopra di lei\", poi sale sull'albero da solo: incoerente."
+  },
+  {
+   "id": "T078",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Il dito esce e subito dopo \"era ancora incastrato\": contraddizione."
+  },
+  {
+   "id": "T079",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La principessa cura il principe ferito e diventano amici: coerente."
+  },
+  {
+   "id": "T080",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "Il gufo dice di fidarsi del gatto cattivo, la trappola fa uscire l'amico: eventi incomprensibili."
+  },
+  {
+   "id": "T081",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Usare la coda per fare una macchinina e incartare il regalo: scollegato."
+  },
+  {
+   "id": "T082",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Tim cade dalla bici, poi riprova con prudenza: coerente."
+  },
+  {
+   "id": "T083",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 5,
+   "category": "P",
+   "reason": "Bob e Tim giocano vicino al buco: trama minima."
+  },
+  {
+   "id": "T084",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La barca grande aiuta quella piccola a navigare: coerente."
+  },
+  {
+   "id": "T085",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily riprova e arriva in cima all'albero: coerente, finale ripetitivo."
+  },
+  {
+   "id": "T086",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Max fa cadere la palla con un bastone e gioca con gli altri: coerente."
+  },
+  {
+   "id": "T087",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim cade dall'albero e Mimi smette di ballare: finale negativo coerente."
+  },
+  {
+   "id": "T088",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim e Sam aprono la scatola e trovano un giocattolo: coerente."
+  },
+  {
+   "id": "T089",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Tenere il sole fuori dalla pioggia\"; esplorazione senza sviluppo: trama minima."
+  }
+ ]
+}

@@ -1,0 +1,6 @@
+{"file_bytes": 268435456, "allocated_bytes": 268435456}
+{"nocache": true, "bytes": 268435456, "s": 0.138106167, "device_bytes_delta": 268435456}
+{"nocache": true, "bytes": 268435456, "s": 0.130976792, "device_bytes_delta": 268435456}
+{"nocache": true, "bytes": 268435456, "s": 0.1309784999999999, "device_bytes_delta": 268435456}
+{"nocache": false, "bytes": 268435456, "s": 0.07846516700000006, "device_bytes_delta": 268500992}
+{"nocache": false, "bytes": 268435456, "s": 0.017321875000000153, "device_bytes_delta": 0}

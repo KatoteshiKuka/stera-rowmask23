@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T000",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Hanno paura e piangono, il mostro esce e \"non avevano paura\" e giocano nel buco: causalità incoerente."
+  },
+  {
+   "id": "T001",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Tagliano il melone, comprano mele, poi \"separare la frutta dal melone\": sequenza scollegata."
+  },
+  {
+   "id": "T002",
+   "grammar": 9,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il bambino aiuta la mamma a lavare il pavimento: coerente (il tagliere dell'incipit resta inutilizzato)."
+  },
+  {
+   "id": "T003",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il soldato \"sentì la mancanza del ladro\", cappello e cappello rosso si confondono: contraddizioni."
+  },
+  {
+   "id": "T004",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Tom canta con gli uccelli sull'albero: coerente."
+  },
+  {
+   "id": "T005",
+   "grammar": 6,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "Il mulino \"non si scioglierà\", risposte senza senso: nessuna trama comprensibile."
+  },
+  {
+   "id": "T006",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Brocca, acqua e succo si confondono senza senso: azioni incoerenti."
+  },
+  {
+   "id": "T007",
+   "grammar": 6,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "Il cliente e il negoziante si scambiano ruoli, \"la pasta felice di essere venduta dalla pasticceria\": incomprensibile."
+  },
+  {
+   "id": "T008",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Disegni ripetuti sulla lavagna, \"non voleva far male a nessuno\": trama ripetitiva."
+  },
+  {
+   "id": "T009",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Mr. Brown è il tutor ma cerca \"il suo tutor\" che l'uccello ha nel becco: identità contraddittoria."
+  },
+  {
+   "id": "T010",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "\"Uscirono di casa\" mentre sono al lago; \"non sentivano l'acqua, era fredda\": contraddizioni locali."
+  },
+  {
+   "id": "T011",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Kiki dà il frutto a Chirpy e poi \"Kiki prese il frutto e lo mangiò\": confusione dei ruoli."
+  },
+  {
+   "id": "T012",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La moglie compare solo alla fine, \"tornarono dentro\" mentre sono già dentro: trama debole."
+  },
+  {
+   "id": "T013",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mia e Tom risolvono il disaccordo costruendo una macchinina: coerente."
+  },
+  {
+   "id": "T014",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Bobby\" al posto di Bob, il granchio \"ama solo la punta\": dialogo confuso."
+  },
+  {
+   "id": "T015",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Suggerire qualcosa per lo scoiattolo\" e la ricerca della noce restano vaghi: causalità debole."
+  },
+  {
+   "id": "T016",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La bambina trova un gioiello e lo custodisce: coerente, ripetitivo."
+  },
+  {
+   "id": "T017",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Usare il rubinetto per girare il rubinetto\", \"la chiave del rubinetto\": incoerente."
+  },
+  {
+   "id": "T018",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Paura delle luci, \"preparò un'opera deliziosa\": incoerenze nel finale."
+  },
+  {
+   "id": "T019",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Lily e la mamma danno da mangiare all'uomo povero: coerente."
+  },
+  {
+   "id": "T020",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Una ciotola\", \"mise una tazza in bocca\", \"era così felice\": azioni confuse."
+  },
+  {
+   "id": "T021",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Arriva in cima, poi continua a salire fino in cima più volte: trama ripetitiva."
+  },
+  {
+   "id": "T022",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La barca grande chiede aiuto e poi promette di proteggere la piccola: ruoli invertiti."
+  },
+  {
+   "id": "T023",
+   "grammar": 9,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La scimmia riporta a casa il leone smarrito: coerente."
+  },
+  {
+   "id": "T024",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Aspettare di essere uno squalo buono\" per un giocattolo, la fame non c'entra: causalità debole."
+  },
+  {
+   "id": "T025",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il soldato educato gioca con la bambina: coerente."
+  },
+  {
+   "id": "T026",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il bambino cade nella fontana e il gatto non riesce a salvarlo: finale negativo coerente."
+  },
+  {
+   "id": "T027",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Il gatto recupera la palla di Sue con un bastone prestato: coerente."
+  },
+  {
+   "id": "T028",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Kiki porta l'uccello sulla schiena a ritrovare casa: coerente fino al troncamento."
+  },
+  {
+   "id": "T029",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Fiori nel barattolo, poi \"il muro le scivolò dalle mani\": azione confusa."
+  }
+ ]
+}

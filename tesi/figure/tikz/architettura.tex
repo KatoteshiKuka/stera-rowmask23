@@ -1,0 +1,31 @@
+\begin{tikzpicture}[
+  font=\small, >={Latex[length=2mm]},
+  box/.style={draw=steraGrigio, rounded corners=2pt, text width=60mm, minimum height=7mm, align=center, fill=white},
+  rm/.style={box, fill=steraBlu!12, draw=steraBlu},
+  op/.style={circle, draw=steraGrigio, inner sep=1pt, font=\footnotesize},
+  lab/.style={font=\footnotesize, text=steraGrigio, align=left}]
+\node[box] (in) {Token $u_t$ e posizione $t$};
+\node[rm, above=5mm of in] (emb) {Embedding: $x_t = E_{u_t,:} + P_{t,:}$};
+\node[box, above=8mm of emb] (ln1) {LayerNorm};
+\node[rm, above=3mm of ln1] (att) {Attenzione causale, 16 teste\\[-1pt]{\footnotesize $W_Q, W_K, W_V, W_O$ RowMask23}};
+\node[op, above=3mm of att] (s1) {$+$};
+\node[box, above=3mm of s1] (ln2) {LayerNorm};
+\node[rm, above=3mm of ln2] (ff) {Feed-forward con GELU, $768\to3072\to768$\\[-1pt]{\footnotesize $W_1, W_2$ RowMask23}};
+\node[op, above=3mm of ff] (s2) {$+$};
+\node[box, above=8mm of s2] (lnf) {LayerNorm finale};
+\node[rm, above=5mm of lnf] (out) {Logit: $z_t = E\,h_t$ \quad {\footnotesize (50.257 candidati)}};
+\node[box, above=5mm of out] (p) {$p(u_{t+1}\mid u_{\le t}) = \mathrm{softmax}(z_t)$};
+\draw[->] (in) -- (emb); \draw[->] (emb) -- (ln1); \draw[->] (ln1) -- (att); \draw[->] (att) -- (s1);
+\draw[->] (s1) -- (ln2); \draw[->] (ln2) -- (ff); \draw[->] (ff) -- (s2); \draw[->] (s2) -- (lnf);
+\draw[->] (lnf) -- (out); \draw[->] (out) -- (p);
+\coordinate (r0) at ($(emb.north)!.5!(ln1.south)$);
+\draw[->] (r0) -- ++(-38mm,0) |- (s1.west);
+\coordinate (r1) at ($(s1.north)!.5!(ln2.south)$);
+\draw[->] (r1) -- ++(-38mm,0) |- (s2.west);
+\begin{scope}[on background layer]
+\node[draw=steraGrigio, dashed, rounded corners=4pt, fit=(ln1)(att)(s1)(ln2)(ff)(s2), inner xsep=10mm, inner ysep=3mm] (blk) {};
+\end{scope}
+\node[lab, anchor=north west] at ([xshift=2mm,yshift=-2mm]blk.north east) {$\times 6$ strati};
+\node[lab, anchor=north west, text width=27mm] at ([xshift=2mm,yshift=-8mm]blk.north east) {strati 1, 3, 5: attenzione su tutto il prefisso\\ strati 2, 4, 6: finestra locale di 256 posizioni};
+\draw[->, steraBlu, dashed] (emb.west) -- ++(-20mm,0) |- node[pos=.25, left, font=\footnotesize, text=steraBlu]{stessa $E$} (out.west);
+\end{tikzpicture}

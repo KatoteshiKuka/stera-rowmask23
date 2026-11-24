@@ -1,0 +1,62 @@
+[
+  {
+    "run": "256",
+    "input_tokens": 256,
+    "generated_tokens": 8,
+    "layer_prefetch": true,
+    "ttft_s": 10.916253750008764,
+    "decode_s": 42.785704375011846,
+    "decode_toks_s": 0.16360604791370953,
+    "generation_s": 53.70195812502061,
+    "load_s": 4.568724124983419,
+    "os_peak_footprint_gib": 6.691082179546356,
+    "drive_reads_gb_including_load": 113.017798656,
+    "prompt_sha256": "510c7689e59171be6495d74465b2fd1391eb43c31e29f7d0f733f3dce2834ffe",
+    "completion_sha256": "6c02fdea1e8b8d3276dd7c57c1b9d2ee734cc18bcc0c40228423a02ce1bb58e7"
+  },
+  {
+    "run": "256_replica",
+    "input_tokens": 256,
+    "generated_tokens": 4,
+    "layer_prefetch": true,
+    "ttft_s": 12.064729459001683,
+    "decode_s": 19.65069308297825,
+    "decode_toks_s": 0.15266637096880054,
+    "generation_s": 31.715422541979933,
+    "load_s": 3.878505457978463,
+    "os_peak_footprint_gib": 7.634746968746185,
+    "drive_reads_gb_including_load": 57.150722048,
+    "prompt_sha256": "510c7689e59171be6495d74465b2fd1391eb43c31e29f7d0f733f3dce2834ffe",
+    "completion_sha256": "1bd720807ba26cbe44a7b30e32f8bbd20577285b224a94e73a3e0e51a821ab03"
+  },
+  {
+    "run": "256_serial",
+    "input_tokens": 256,
+    "generated_tokens": 4,
+    "layer_prefetch": false,
+    "ttft_s": 11.303824667003937,
+    "decode_s": 23.84858045799774,
+    "decode_toks_s": 0.12579365070737092,
+    "generation_s": 35.15240512500168,
+    "load_s": 3.4871260420186445,
+    "os_peak_footprint_gib": 5.834574460983276,
+    "drive_reads_gb_including_load": 56.893505536,
+    "prompt_sha256": "510c7689e59171be6495d74465b2fd1391eb43c31e29f7d0f733f3dce2834ffe",
+    "completion_sha256": "1bd720807ba26cbe44a7b30e32f8bbd20577285b224a94e73a3e0e51a821ab03"
+  },
+  {
+    "run": "4096",
+    "input_tokens": 4096,
+    "generated_tokens": 4,
+    "layer_prefetch": true,
+    "ttft_s": 95.54772537498502,
+    "decode_s": 20.35999629201251,
+    "decode_toks_s": 0.1473477675031276,
+    "generation_s": 115.90772166699753,
+    "load_s": 4.285744875000091,
+    "os_peak_footprint_gib": 7.454067707061768,
+    "drive_reads_gb_including_load": 154.499014656,
+    "prompt_sha256": "ee58d1862d85fb0486fc1d56e12a93375afc5334850293ff29019ea55cd0fee0",
+    "completion_sha256": "6dd142b1759ba6ccc3fc0f1d314ff1e9d272a6dd49c6f590fa88209fa60019bb"
+  }
+]

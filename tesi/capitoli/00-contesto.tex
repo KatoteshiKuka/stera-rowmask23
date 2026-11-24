@@ -1,0 +1,56 @@
+Questo capitolo spiega da dove nasce il problema affrontato nella tesi. Partiamo dalla crescita dei modelli linguistici e da cosa significhi, in termini concreti, eseguirne uno; arriviamo poi al caso che ci interessa di più, quello di un modello che deve funzionare su un singolo computer personale, e alla domanda che ne deriva: è possibile progettare i pesi in modo che occupino meno spazio \emph{senza} rinunciare alla capacità di apprendere?
+
+\section{La crescita dei modelli linguistici}
+
+Un modello linguistico assegna una probabilità a una sequenza di parole. L'idea è antica quanto la teoria dell'informazione \cite{shannon1948mathematical}, ma il salto di qualità è arrivato quando le reti neurali hanno sostituito i conteggi di $n$-grammi \cite{bengio2003neural} e, soprattutto, quando l'architettura Transformer \cite{vaswani2017attention} ha reso possibile addestrare reti molto profonde su quantità enormi di testo. Da GPT-2 \cite{radford2019language}, con 1,5 miliardi di parametri, si è passati in pochi anni a modelli con centinaia di miliardi \cite{brown2020language}.
+
+Questa corsa non è stata casuale. Kaplan e colleghi \cite{kaplan2020scaling} hanno mostrato che la perdita di un modello linguistico scende in modo regolare, secondo una legge di potenza, all'aumentare dei parametri, dei dati e del calcolo. Hoffmann e colleghi \cite{hoffmann2022training} hanno poi corretto il bilancio tra queste grandezze: a parità di calcolo conviene un modello più piccolo addestrato su più dati di quanto si pensasse. Il messaggio di fondo, però, è rimasto lo stesso. Più parametri e più token portano, entro certi limiti, a modelli migliori.
+
+Il numero di parametri non è soltanto una misura della capacità del modello: è anche una misura del suo ingombro. Ogni parametro va memorizzato, letto e moltiplicato. Ed è proprio su questo secondo aspetto, quello dell'ingombro, che si concentra il nostro lavoro.
+
+\section{Quanto pesa un modello}
+
+Prendiamo un modello da 7 miliardi di parametri, una taglia oggi considerata ``piccola'' tra i modelli di uso generale. In mezza precisione (FP16, due byte per numero) i soli pesi occupano circa 14~GB. A questi si aggiungono la cache delle chiavi e dei valori dell'attenzione, che cresce con la lunghezza del contesto, i buffer intermedi e la memoria del processo stesso. Un portatile con 16~GB di memoria condivisa tra processore e scheda grafica, come il Mac M1 su cui è stata svolta buona parte di questa tesi, non riesce a tenere in memoria un modello del genere senza comprimerlo.
+
+Durante l'addestramento la situazione è ancora più pesante. L'ottimizzatore Adam \cite{kingma2015adam} conserva per ogni parametro due momenti, uno del primo e uno del secondo ordine. Se i pesi principali sono in FP32 servono quindi almeno 16 byte per parametro (peso, gradiente, primo e secondo momento), a cui si aggiungono le attivazioni salvate per il passo all'indietro. Un modello da un miliardo di parametri richiede così almeno 16~GB solo per pesi, gradienti e stato dell'ottimizzatore.
+
+Ridurre il numero di valori da memorizzare ha quindi un effetto su entrambe le fasi. In inferenza diminuisce il modello da caricare. In addestramento diminuiscono anche i momenti dell'ottimizzatore, che hanno la stessa dimensione dei parametri allenabili.
+
+\section{La memoria come collo di bottiglia}
+\label{sec:memory-bound}
+
+Si potrebbe pensare che il costo principale della generazione di testo sia il calcolo, cioè le moltiplicazioni. Per la generazione token per token non è così. Quando il modello produce un token alla volta, ogni matrice di pesi viene moltiplicata per un solo vettore. Per ogni peso letto dalla memoria si eseguono una moltiplicazione e una somma, due operazioni in virgola mobile per due byte letti. L'intensità aritmetica, cioè il rapporto tra operazioni e byte trasferiti, vale circa uno.
+
+Il modello \emph{roofline} \cite{williams2009roofline} rende questa osservazione quantitativa. Un processore ha un tetto di calcolo, misurato in operazioni al secondo, e un tetto di banda, misurato in byte al secondo. Se l'intensità aritmetica di un algoritmo è bassa, la sua velocità è limitata dalla banda e il tetto di calcolo è irraggiungibile. Una GPU moderna può eseguire decine di migliaia di miliardi di operazioni al secondo, ma la sua memoria fornisce ``solo'' qualche centinaio di miliardi di byte al secondo. Nella generazione di un token il calcolatore passa la maggior parte del tempo ad aspettare i dati.
+
+Possiamo farci un'idea con un conto approssimato. Il chip M1 ha una banda di memoria nominale di circa 68~GB/s. Se un modello occupa 14~GB, ogni token richiede di leggerli tutti, e il limite superiore teorico è di circa cinque token al secondo, qualunque sia la potenza di calcolo. Dimezzare i byte del modello raddoppia questo limite. Per questo la compressione dei pesi è diventata il primo strumento per accelerare l'inferenza: meno byte significa meno attesa.
+
+\section{Quando il modello non entra in memoria}
+
+C'è un caso ancora più estremo, che diventa rilevante proprio sui dispositivi personali: il modello è più grande della memoria disponibile. Una soluzione è tenerlo sul disco a stato solido e caricarlo un pezzo alla volta durante il calcolo (\emph{swap-in}), liberando la memoria occupata da ciò che non serve più (\emph{swap-out}). Con il \emph{prefetch}, mentre un blocco del modello viene usato, il successivo viene già letto dal disco in un secondo buffer, e i due si alternano. Il Capitolo~\ref{cap:capitoli/01-elementi-teorici} formalizza il costo di queste politiche.
+
+Sistemi come FlexGen \cite{sheng2023flexgen} e il lavoro di Alizadeh e colleghi \cite{alizadeh2024llm} hanno mostrato che questa strada è percorribile, purché si riduca la quantità di dati da leggere. Il problema è evidente se si guardano le grandezze in gioco. Un SSD legge da qualche GB/s fino a circa 7~GB/s, da dieci a trenta volte meno della memoria principale: sul Mac usato nelle misure di questa tesi, circa 2,4~GB/s contro 68~GB/s. Un modello da 14~GB letto interamente a ogni token richiede almeno due secondi per token. In questo regime ogni byte risparmiato si traduce quasi direttamente in tempo risparmiato, e un formato dei pesi cinque volte più compatto rende utilizzabile ciò che altrimenti non lo sarebbe.
+
+\section{Eseguire i modelli sul dispositivo}
+
+Le ragioni per voler eseguire un modello linguistico localmente sono diverse. La prima è la riservatezza: un documento sanitario o legale elaborato sul proprio computer non lascia mai il dispositivo. La seconda è la disponibilità: un modello locale funziona senza rete e senza dipendere da un servizio esterno. La terza è il costo: l'inferenza su server ha un prezzo per token che, su larga scala, diventa significativo. Esistono infine contesti, come i sistemi industriali o i veicoli, in cui la latenza di una chiamata remota non è accettabile.
+
+Tutti questi scenari condividono gli stessi vincoli: memoria limitata, banda limitata e consumo energetico da contenere. Su questi dispositivi il numero di byte del modello conta più del numero di operazioni.
+
+\section{Il costo dell'addestramento}
+
+Il discorso fatto per l'inferenza vale, in forma diversa, anche per l'addestramento. Addestrare un modello competitivo richiede risorse che pochi gruppi di ricerca possiedono. Questo lavoro è stato svolto con un portatile Apple M1, usato per le misure di esecuzione, e con un server di calcolo dotato di due GPU NVIDIA P100, usato per l'addestramento.
+
+In queste condizioni la domanda ``quale modello è il migliore in assoluto'' non è quella giusta. Le domande utili sono più circoscritte: un modello con pesi strutturati riesce ad apprendere? Quanto si colloca vicino a modelli densi dello stesso dominio? Quanta memoria e quanto tempo fa risparmiare in esecuzione? Per rispondere non serve un modello enorme, ma un dominio in cui anche modelli piccoli producano risultati misurabili.
+
+\section{Modelli piccoli che sanno raccontare}
+
+Per valutare un modello piccolo serve un compito alla sua portata. Eldan e Li \cite{eldan2023tinystories} hanno costruito TinyStories, un corpus di racconti per bambini generati da GPT-3.5 e GPT-4 usando solo parole che un bambino di tre o quattro anni potrebbe conoscere. Hanno mostrato che su questo dominio anche modelli con poche decine di milioni di parametri imparano a scrivere storie grammaticalmente corrette, con personaggi coerenti e una trama che si sviluppa. Hanno inoltre proposto di valutare le storie facendole leggere e giudicare da un modello linguistico più grande, secondo una rubrica che comprende grammatica, coerenza, trama e creatività.
+
+TinyStories è quindi un banco di prova ideale per la nostra domanda. È abbastanza piccolo da permettere addestramenti completi con risorse di calcolo modeste, abbastanza ricco da mettere alla prova la capacità del modello di mantenere uno stato narrativo, e dispone di modelli di riferimento pubblicati con cui confrontarsi.
+
+\section{Obiettivo della tesi}
+
+Mettendo insieme i punti precedenti, l'obiettivo della tesi si può formulare così: progettare una famiglia di matrici che riduca di circa cinque volte i gradi di libertà di ogni blocco di pesi, addestrare da zero un Transformer le cui proiezioni sono costruite su di essa e verificare quattro cose: che il modello apprenda regolarità che generalizzano a testi mai visti; che la rappresentazione riduca davvero i byte dei pesi; che l'esecuzione diretta sulle coordinate sia più rapida di quella con le matrici dense equivalenti; che la qualità dei racconti generati sia confrontabile con quella di modelli densi pubblici dello stesso dominio. Sono le ipotesi H1--H4 formulate nell'Introduzione.
+
+I capitoli che seguono costruiscono gli strumenti per rispondere a queste domande. Prima però conviene fissare i concetti di base sui quali tutto il resto si appoggia.

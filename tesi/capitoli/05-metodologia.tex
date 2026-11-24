@@ -1,0 +1,103 @@
+Questo capitolo descrive il disegno sperimentale con cui la tesi verifica le proprie ipotesi: i dati e l'addestramento di STERA 30M, i modelli di riferimento, il protocollo di valutazione predittiva e narrativa, l'analisi statistica e le misure di memoria e tempo.
+
+\section{Ipotesi di lavoro}
+\label{sec:ipotesi}
+
+Le domande di ricerca dell'Introduzione si traducono in quattro ipotesi verificabili, ciascuna associata a una misura e a un confronto.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\linewidth}{lXX}
+\toprule
+& Ipotesi & Misura e confronto \\
+\midrule
+H1 & STERA 30M apprende regolarità linguistiche che generalizzano a racconti esclusi dall'addestramento. & NLL su DEV durante il training; NLL sui racconti TEST, confrontata con i due riferimenti. \\
+H2 & La parametrizzazione RowMask23 riduce i byte necessari per rappresentare i pesi. & Payload dei parametri compatti rispetto alla propria espansione densa e ai checkpoint di riferimento. \\
+H3 & Applicando le proiezioni direttamente alle coordinate, la generazione è più rapida che con le matrici dense equivalenti, a parità di pesi. & Tempo per token in decode dei due motori sullo stesso modello, con verifica dell'identità dei token generati. \\
+H4 & STERA 30M genera racconti di qualità confrontabile con quella dei riferimenti TinyStories. & Quota di racconti corretti in una valutazione cieca sugli stessi incipit, con confronti appaiati. \\
+\bottomrule
+\end{tabularx}
+\caption{Ipotesi della tesi e misure con cui sono verificate.}
+\label{tab:ipotesi}
+\end{table}
+
+\input{capitoli/05b-dati-pretraining}
+
+\section{Modelli di riferimento}
+\label{sec:metodo-modelli-tre}
+
+Il confronto linguistico impiega STERA 30M e due checkpoint pubblici della famiglia TinyStories \cite{eldan2023tinystories}, addestrati sullo stesso dominio e con lo stesso tokenizzatore (Tabella~\ref{tab:modelli-principali}). Il numero nel nome pubblico dei checkpoint TinyStories non coincide con il conteggio dei loro parametri: per tutti i modelli riportiamo il numero effettivo di valori memorizzati, contando una sola volta le matrici condivise.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\linewidth}{Xrrr}
+\toprule
+Modello & Parametri & Pesi FP32 (MB) & Strati \\
+\midrule
+TinyStories-8M & \num{19702528} & 78,810 & 8 \\
+\textbf{STERA 30M} & \textbf{\num{30346182}} & \textbf{121,385} & 6 \\
+TinyStories-33M & \num{68514048} & 274,056 & 4 \\
+\bottomrule
+\end{tabularx}
+\caption{Modelli del confronto linguistico. MB indica milioni di byte e comprende i soli parametri in FP32.}
+\label{tab:modelli-principali}
+\end{table}
+
+STERA 30M si colloca fra i due riferimenti per numero di parametri memorizzati: ne ha circa una volta e mezza quelli di TinyStories-8M e meno della metà di quelli di TinyStories-33M. Durante il calcolo, invece, le sue matrici espanse contano \num{82721280} valori: il costo aritmetico per token di STERA 30M è dunque paragonabile a quello di un modello denso di dimensione simile a TinyStories-33M, e il vantaggio atteso riguarda la memoria, non il numero di operazioni.
+
+\section{Protocollo di valutazione}
+\label{sec:metodo-confronto-generativo}
+
+La Figura~\ref{fig:protocollo} riassume il flusso completo, dai dati al confronto statistico.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\linewidth}{!}{\input{figure/tikz/protocollo}}
+\caption{Protocollo di validazione. In alto la preparazione del modello e degli incipit, in basso la valutazione: la NLL sui racconti di riferimento e il giudizio cieco sulle continuazioni generate.}
+\label{fig:protocollo}
+\end{figure}
+
+\subsection{Incipit di prova}
+
+Dalla partizione TEST sono estratti, con un seme fissato, 300 racconti. Di ciascuno si conservano come incipit le prime due frasi complete, purché contengano fra 12 e 64 token e lascino almeno 20 token di continuazione. La selezione usa solo il testo di riferimento e non dipende da alcun modello. Gli stessi 300 incipit sono usati per tutte le misure di questo capitolo.
+
+\subsection{Verosimiglianza dei racconti di riferimento}
+
+Per ogni modello si calcola la NLL dei 300 racconti TEST completi in \emph{teacher forcing}: a ogni posizione il modello riceve il prefisso reale e si misura la probabilità assegnata al token successivo corretto. I racconti contano complessivamente \num{57841} token bersaglio, con un massimo di 512 per racconto. La NLL è la media ponderata per token e la perplessità il suo esponenziale. I tre modelli condividono lo stesso tokenizzatore, quindi le NLL sono direttamente confrontabili.
+
+\subsection{Generazione delle continuazioni}
+
+Ogni modello continua ciascun incipit una sola volta, con la stessa procedura: campionamento top-$k$ con $k=40$ e temperatura $0{,}75$, al più 180 nuovi token, arresto al token di fine racconto, pesi in FP32 e seme del generatore dipendente dall'indice dell'incipit (Tabella~\ref{tab:stera30m-seed}). Poiché il campionamento usa un generatore su CPU con lo stesso seme per tutti i modelli, le differenze fra le continuazioni dipendono solo dalle distribuzioni prodotte dai modelli.
+
+\subsection{Giudizio cieco}
+\label{sec:metodo-giudizio}
+
+Le 900 continuazioni dei tre modelli sono rese anonime, mescolate in ordine casuale e divise in blocchi da 30. Ogni testo riceve un identificativo che non contiene informazioni sulla provenienza; la corrispondenza fra identificativi e modelli è conservata separatamente e usata solo dopo la conclusione del giudizio. I testi sono valutati da un modello linguistico, Claude Opus 5.5 \cite{anthropic2026claude}, uno alla volta, con la rubrica riportata in Appendice e ispirata a quella di Eldan e Li \cite{eldan2023tinystories}. Per ogni testo il giudice assegna tre voti interi da 1 a 10:
+\begin{itemize}
+\item \textbf{grammatica}: correttezza e scorrevolezza della lingua;
+\item \textbf{coerenza}: stabilità di identità, attributi, oggetti e fatti, anche rispetto all'incipit;
+\item \textbf{trama}: presenza di eventi collegati da una causalità comprensibile;
+\end{itemize}
+e una categoria: S (coerente), P (nucleo riconoscibile ma almeno una criticità sostanziale, con almeno un voto non superiore a 5) o N (perdita grave di coerenza, con almeno un voto non superiore a 3). Ogni giudizio è accompagnato da una motivazione specifica. Un racconto è \emph{corretto} se è classificato S, cioè se tutti e tre i voti sono almeno 6:
+\begin{equation}
+I_i=\mathbf 1\{g_i\geq6,\ c_i\geq6,\ p_i\geq6\}.
+\label{eq:regola-correttezza}
+\end{equation}
+Fantasia, animali parlanti, finali negativi e assenza di una morale non sono penalizzati; lo sono le contraddizioni, i cambi immotivati di identità, le ripetizioni prive di significato e l'incoerenza causale. Una continuazione interrotta dal limite di lunghezza non è considerata un errore se il nucleo narrativo è comprensibile.
+
+\section{Analisi statistica}
+\label{sec:metodo-statistica}
+
+\begin{itemize}
+\item \textbf{Proporzioni.} La quota di racconti corretti di ciascun modello è accompagnata dall'intervallo di Wilson al 95\%.
+\item \textbf{Differenze appaiate.} Per ogni coppia di modelli la differenza di correttezza è stimata sugli stessi 300 incipit; l'intervallo al 95\% è ottenuto con un bootstrap che ricampiona gli incipit tenendo unite le valutazioni dei modelli, con \num{25000} repliche.
+\item \textbf{Significatività.} La differenza è verificata con il test esatto di McNemar sulle coppie discordanti; i tre confronti a coppie sono corretti con il metodo di Holm.
+\item \textbf{NLL.} La differenza di NLL fra due modelli è accompagnata da un intervallo bootstrap al 95\% che ricampiona i racconti, con \num{10000} repliche.
+\end{itemize}
+
+\section{Misure di memoria e tempo}
+\label{sec:metodo-sistemi}
+
+Le misure distinguono il payload dei parametri, la memoria fisica occupata dal processo, il tempo al primo token e il tempo per i token successivi. Il confronto principale riguarda due motori che eseguono gli stessi pesi di STERA 30M: uno applica le proiezioni direttamente alle coordinate RowMask23, l'altro carica le matrici dense equivalenti. I tempi di esecuzione dipendono dalla forma del modello e non dai valori dei pesi. Lo studio dell'esecuzione con pesi che superano la memoria disponibile, descritto nel Capitolo~\ref{cap:capitoli/07-sistemi}, usa una configurazione STERA di scala maggiore e un modello pubblico eseguito con caricamento progressivo dei pesi dal disco.

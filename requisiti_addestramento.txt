@@ -1,0 +1,6 @@
+# Addestramento e valutazione (GPU NVIDIA o CPU)
+python>=3.11
+torch>=2.4
+numpy>=2.0
+tokenizers>=0.20
+transformers>=4.46

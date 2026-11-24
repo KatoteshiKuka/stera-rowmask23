@@ -1,0 +1,24 @@
+Il capitolo precedente ha definito la struttura matematica dei blocchi RowMask23. Qui descriviamo come questa \emph{parametrizzazione dei pesi} viene applicata alle proiezioni di un Transformer decoder-only. Il solo modello linguistico addestrato e valutato nella tesi è \textbf{STERA 30M}, dove 30M indica la classe dimensionale dei \num{30346182} parametri allenabili effettivamente memorizzati nella rappresentazione compatta. Non è il numero di elementi dopo l'espansione densa, né il nome di una nuova famiglia di architetture Transformer.
+
+\input{capitoli/stera30m}
+
+\input{capitoli/04a-atlante-matrici-stera}
+
+\section{Dal training alla generazione}
+
+In addestramento, il modello aggiorna direttamente le coordinate RowMask23, le scale, i guadagni, i fattori a basso rango e gli altri tensori elencati nella Tabella~\ref{tab:stera30m-parametri}. La ricostruzione della matrice serve a effettuare i prodotti nelle implementazioni di training, ma non introduce parametri densi indipendenti che l'ottimizzatore possa modificare liberamente. Questo vincolo è imposto durante l'apprendimento, non mediante una compressione successiva.
+
+Al termine dei \num{122000} aggiornamenti del pretraining, i pesi sono congelati. L'inferenza può utilizzare tre strategie:
+\begin{enumerate}
+\item \textbf{Espansione residente:} ricostruire una volta le matrici e conservarle in memoria; riduce il costo del prodotto matriciale ma richiede il payload denso.
+\item \textbf{Espansione al bisogno:} ricostruire una matrice prima del suo utilizzo e rilasciarla dopo; limita la memoria residente, ma ripete il lavoro di ricostruzione.
+\item \textbf{Prodotto diretto sulle coordinate:} usare l'identità di Walsh--Hadamard per la componente XOR e aggiungere i contributi diagonali, locali e a basso rango; non richiede di materializzare l'intera matrice.
+\end{enumerate}
+
+Questi tre percorsi rappresentano diverse implementazioni della medesima funzione matematica di STERA 30M. Possono esistere differenze numeriche per ordine delle operazioni e arrotondamenti. Il confronto misurato tra il motore compatto e quello denso equivalente non è quindi un confronto tra due modelli addestrati: impiega gli \emph{stessi parametri appresi}, organizzati in due rappresentazioni di esecuzione.
+
+\input{capitoli/04b-percorso-inferenza}
+
+\section{Sintesi}
+
+STERA 30M è l'unico modello STERA addestrato considerato negli esperimenti linguistici della tesi. Il capitolo successivo ne documenta corpus, token bersaglio, iperparametri, validazione e confronti con i due checkpoint pubblici TinyStories-8M e TinyStories-33M.

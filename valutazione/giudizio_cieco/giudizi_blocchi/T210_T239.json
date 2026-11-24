@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T210",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Il pesce insegna alla lontra a nuotare e poi è il pesce a imparare: ruoli centrali contraddittori."
+  },
+  {
+   "id": "T211",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il cacciatore e l'uccello dipingono insieme un quadro: coerente."
+  },
+  {
+   "id": "T212",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il bambino ha perso il giocattolo, poi Sally dice di averlo perso lei e di andare a giocarci: confuso."
+  },
+  {
+   "id": "T213",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "La balena aiuta il pesciolino smarrito: coerente."
+  },
+  {
+   "id": "T214",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Il gatto vinse e Spot vinse\": contraddizione nel finale."
+  },
+  {
+   "id": "T215",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La bambina trova una stanza del tesoro nell'albero: fiabesco e coerente."
+  },
+  {
+   "id": "T216",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il \"massaggio\" del gatto e la mamma del cane Tim compaiono senza nesso: trama scollegata."
+  },
+  {
+   "id": "T217",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily fa uscire Tiny dalla gabbia e giocano: coerente."
+  },
+  {
+   "id": "T218",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mr. Brown insegna a Timmy a leggere: coerente fino al troncamento."
+  },
+  {
+   "id": "T219",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "La mamma ripara la rete rotta con il nastro: coerente."
+  },
+  {
+   "id": "T220",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "La tenda dentro il letto annuisce; \"Lily sapeva di essere la stanza migliore\": incoerente."
+  },
+  {
+   "id": "T221",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "\"Agli altri libri mancava il dizionario gentile\" senza motivo: incoerenza."
+  },
+  {
+   "id": "T222",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Comprano una scatola nuova \"un po' disordinata, ma potevano comprarne una nuova\": confuso."
+  },
+  {
+   "id": "T223",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Ben aiuta Lily a imparare a palleggiare: coerente."
+  },
+  {
+   "id": "T224",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily e la mamma si prendono cura del coniglietto: coerente."
+  },
+  {
+   "id": "T225",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Un uccello salva Bob che cade dall'albero: coerente."
+  },
+  {
+   "id": "T226",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "La lontra gioca in acqua con l'uccello e poi riposano: semplice e coerente."
+  },
+  {
+   "id": "T227",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Mia fa amicizia con l'uccellino al parco: coerente."
+  },
+  {
+   "id": "T228",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim trova la scatola con la palla e gioca con gli amici: coerente."
+  },
+  {
+   "id": "T229",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Vuole raggiungere l'arcobaleno, frasi che si ripetono, fine dell'arcobaleno trovata senza spiegazione."
+  },
+  {
+   "id": "T230",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La foglia arancione è \"fatta di legno\" e torna \"verde\": contraddizioni."
+  },
+  {
+   "id": "T231",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim canta con l'uccello al parco: coerente."
+  },
+  {
+   "id": "T232",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mia balla con la statua che annuisce: fiabesco e coerente."
+  },
+  {
+   "id": "T233",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il pesciolino trova amici nel pesce grande e nel granchio: coerente."
+  },
+  {
+   "id": "T234",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Sai cos'è la guerra?\" porta a un gioco e a un giocattolo rotto: scollegato."
+  },
+  {
+   "id": "T235",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Riempie la brocca più volte; la morale non c'entra: trama ripetitiva."
+  },
+  {
+   "id": "T236",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il gatto se ne va due volte, la mamma dice \"Spot, sei salvo\": confuso."
+  },
+  {
+   "id": "T237",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim e gli amici fanno mucchi di foglie con il rastrello: coerente."
+  },
+  {
+   "id": "T238",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "Mettono la foto del gatto nella buca, poi a casa \"nella buca\": nessuna trama sensata."
+  },
+  {
+   "id": "T239",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Un gigante amichevole aiuta a pulire la stanza: fiabesco e coerente."
+  }
+ ]
+}

@@ -1,0 +1,7 @@
+MEASURED compact_active_weights trial 1 {"driver_read_bytes_delta": 260124672, "bytes_read": 4147491312, "seconds": 0.438997667, "effective_GB_per_s": 9.447638618088602, "file_rewinds": 1}
+MEASURED compact_active_weights trial 2 {"driver_read_bytes_delta": 260046848, "bytes_read": 4147491312, "seconds": 0.43940816699999996, "effective_GB_per_s": 9.438812528944188, "file_rewinds": 1}
+MEASURED compact_active_weights trial 3 {"driver_read_bytes_delta": 260046848, "bytes_read": 4147491312, "seconds": 0.437103209, "effective_GB_per_s": 9.488585822759312, "file_rewinds": 1}
+MEASURED dense_equivalent_weights trial 1 {"driver_read_bytes_delta": 1166147584, "bytes_read": 18597089280, "seconds": 2.039693958, "effective_GB_per_s": 9.117588061218349, "file_rewinds": 8}
+MEASURED dense_equivalent_weights trial 2 {"driver_read_bytes_delta": 1165463552, "bytes_read": 18597089280, "seconds": 2.0423460829999995, "effective_GB_per_s": 9.105748254322675, "file_rewinds": 8}
+MEASURED dense_equivalent_weights trial 3 {"driver_read_bytes_delta": 1165295616, "bytes_read": 18597089280, "seconds": 2.0569018749999994, "effective_GB_per_s": 9.041310869532852, "file_rewinds": 8}
+REPORT_READY /Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/evidenze_f10/ssd_1mib/SSD_STUDY_NOTE_20261123.md

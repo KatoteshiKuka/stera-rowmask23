@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T840",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Lily e Tom liberano l'uccello: coerente con morale."
+  },
+  {
+   "id": "T841",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Di notte un delfino arriva nella piscina e \"aiuta Tim a trovare la mamma\" che lo sta chiamando."
+  },
+  {
+   "id": "T842",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il dinosauro visto in TV, poi la mamma chiede \"ti sei divertito al museo?\": incoerente."
+  },
+  {
+   "id": "T843",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Per ritrovare il nido \"prima facciamo esercizio\", il nido è dimenticato: debole."
+  },
+  {
+   "id": "T844",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il camion si dondola e \"si accoccola al bambino\", \"sapeva di appartenere a qualcun altro\": scollegato."
+  },
+  {
+   "id": "T845",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "La rosa marcisce subito dopo averla raccolta, frasi molto ripetute: trama ripetitiva."
+  },
+  {
+   "id": "T846",
+   "grammar": 6,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "La penna rende i giocattoli \"grandi e piccoli\" a ripetizione; morale insensata: ripetizione patologica."
+  },
+  {
+   "id": "T847",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Salva l'animale, che esce dall'albero giorni dopo; \"il suo nuovo amico Ben\": identità confuse."
+  },
+  {
+   "id": "T848",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Vedono un numero in fondo al buco, poi tornano al buco e vedono una farfalla: trama ripetitiva."
+  },
+  {
+   "id": "T849",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La mamma del gatto, poi \"la mamma di Spike felice di vederlo\": identità confuse."
+  },
+  {
+   "id": "T850",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il robot cuoco ripara la sedia del bambino, \"come lavoro sul mio telefono\": scollegato."
+  },
+  {
+   "id": "T851",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Molly vince la timidezza e gioca con i bambini: coerente fino al troncamento."
+  },
+  {
+   "id": "T852",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il fratello rompe la lampada e scoppia un incendio; la lezione riguarda la corda: scollegato."
+  },
+  {
+   "id": "T853",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Rifiuta di vendere la zampa, \"nessun soldo per il bambino\", \"usò la zampa per vendergli il giocattolo\"."
+  },
+  {
+   "id": "T854",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'uccello vuole cambiare aspetto ma dipingono gli animali grandi: incoerente."
+  },
+  {
+   "id": "T855",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Sam vuole restare, poi dice \"torniamo a casa\"; \"il tempo si arrabbia\": contraddizione."
+  },
+  {
+   "id": "T856",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "La bambina gioca a nascondino con il gatto nero: coerente."
+  },
+  {
+   "id": "T857",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"L'unica stanza della casa\" ma l'uomo cerca in soffitta; \"estrasse un baule dal baule\": incoerente."
+  },
+  {
+   "id": "T858",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue porta una palla al gatto pigro che diventa attivo: semplice e coerente."
+  },
+  {
+   "id": "T859",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Gli amici \"lasciarono il gioco\" e Zoomy vince da solo; paura di rompere qualcosa in casa: confuso."
+  },
+  {
+   "id": "T860",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La bambina sposta il bastone pesante con un sasso: coerente, ripetitivo."
+  },
+  {
+   "id": "T861",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sam e Max giocano in soggiorno e poi fuori: coerente."
+  },
+  {
+   "id": "T862",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Si sedeva nei suoi bei capelli\", \"andò all'albero e lo diede al bambino\": incoerente."
+  },
+  {
+   "id": "T863",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "La mela per terra è \"troppo in alto\", poi la prende saltando: contraddizione."
+  },
+  {
+   "id": "T864",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mia gioca con lo scoiattolo giallo e lo racconta al papà: coerente."
+  },
+  {
+   "id": "T865",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il gatto è troppo veloce ma poi se ne va senza motivo; \"vissero felici\" con il gatto."
+  },
+  {
+   "id": "T866",
+   "grammar": 7,
+   "consistency": 2,
+   "plot": 4,
+   "category": "N",
+   "reason": "Il cane magico \"fa il sorriso del cane\" e si rivela essere la mamma di Tim: incomprensibile."
+  },
+  {
+   "id": "T867",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Lo scarabeo \"grande e spaventoso\", il gatto \"felice di riavere il suo scarabeo\": ruoli contraddittori."
+  },
+  {
+   "id": "T868",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mimi scaccia il mostro con un bastone e protegge la famiglia: coerente."
+  },
+  {
+   "id": "T869",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Tim è già presente ma Lily gli consegna la scatola; aprendola \"vide la scatola grande\"."
+  }
+ ]
+}

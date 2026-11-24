@@ -1,0 +1,17 @@
+{
+  "model_id": "/Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/confronto_pubblici/qwen35_9b_source",
+  "num_layers": 32,
+  "layer_weight_mb": 432.47,
+  "total_weight_mb": 13839.16,
+  "embed_file": "embed.pt",
+  "lm_head_file": "lm_head.pt",
+  "model_type": "qwen3_5",
+  "weight_dtype": "bfloat16",
+  "shard_format": "safetensors",
+  "shard_compression": "none",
+  "num_experts": 0,
+  "top_k": 0,
+  "expert_bank": false,
+  "expert_weight_mb": 0.0,
+  "source_quant": ""
+}

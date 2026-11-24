@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T750",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Sam arriva da Tim, poi \"quando Tim si svegliò\" va da Sam: sequenza confusa."
+  },
+  {
+   "id": "T751",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Jack e Jill fanno jogging e si arrampicano sull'albero: coerente."
+  },
+  {
+   "id": "T752",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Deve chiedere alla mamma ma chiede al negoziante, che regala il vestito; morale forzata."
+  },
+  {
+   "id": "T753",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue compra il lecca-lecca e lo mangia con la mamma: coerente."
+  },
+  {
+   "id": "T754",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La bambola si rompe e lei chiede \"perché l'hai sostituita?\", \"deve abituarsi alla nuova casa\": confuso."
+  },
+  {
+   "id": "T755",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il tagliere parlante aiuta la famiglia a fare la torta: fiabesco e coerente."
+  },
+  {
+   "id": "T756",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Max fa cadere la palla dall'albero e ci gioca: coerente."
+  },
+  {
+   "id": "T757",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il \"grande uccello\" non vuole unirsi, spingono la tempesta, \"l'uccello e i suoi amici sparirono\": incoerente."
+  },
+  {
+   "id": "T758",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "\"Parco caldo e ghiacciato\", il sole esce ma resta freddo, \"bel tempo\": contraddizioni centrali."
+  },
+  {
+   "id": "T759",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Deve essere paziente per la bambola, poi \"fa spazio alla casa giocattolo\" e \"tornano a casa\": vago."
+  },
+  {
+   "id": "T760",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il seghetto \"incoraggiò Lily a fare attenzione\", lei lo tocca ed è \"felice di aver aiutato\": vuoto."
+  },
+  {
+   "id": "T761",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Giocano a palla, riordinano i giocattoli al parco, il vento li porta via, \"il labirinto labirinto\"."
+  },
+  {
+   "id": "T762",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tom e Sue liberano la palla dal buco e giocano insieme: coerente."
+  },
+  {
+   "id": "T763",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Dentro la scatola \"qualcosa di sbagliato\" e poi un giocattolo magico; \"chiuse la porta\": confuso."
+  },
+  {
+   "id": "T764",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Clover diventa \"Clara\" e \"lei\"; il coniglio \"doveva sentirsi un po' triste\": incoerenze."
+  },
+  {
+   "id": "T765",
+   "grammar": 8,
+   "consistency": 3,
+   "plot": 5,
+   "category": "N",
+   "reason": "La sorellina di Ben si chiama Mia come l'amica che gioca con lui: identità centrale contraddittoria."
+  },
+  {
+   "id": "T766",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il giocattolo viene mostrato aggiustato e poi ancora riparato a lungo: trama ripetitiva."
+  },
+  {
+   "id": "T767",
+   "grammar": 6,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Perché non riesci a vedere come mi chiamo?\", gli uccelli \"seduti nel cielo\": confuso."
+  },
+  {
+   "id": "T768",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La bambina sale sull'albero e si consola guardando il panorama: coerente."
+  },
+  {
+   "id": "T769",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "\"Costruire una nuova casa albero nell'albero\" caduto; l'amico perso compare dal nulla."
+  },
+  {
+   "id": "T770",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue prende il gufetto e lo dà a Tim: coerente."
+  },
+  {
+   "id": "T771",
+   "grammar": 4,
+   "consistency": 3,
+   "plot": 2,
+   "category": "N",
+   "reason": "\"Giallo e giallo e giallo\" ripetuto in lunghe sequenze: ripetizione patologica."
+  },
+  {
+   "id": "T772",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Le bacche \"turbate\" e tristi, poi \"frutto magico\" che fa ridere: incoerente."
+  },
+  {
+   "id": "T773",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "Lo scarabeo si stende sulla foglia e \"si addormenta sotto la foglia\": trama minima."
+  },
+  {
+   "id": "T774",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il bambino aiuta la bambina a scendere dall'albero nel vento: coerente."
+  },
+  {
+   "id": "T775",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "È alla parata ma \"vuole vederla anche lei\", imbarazzata perché tutti applaudono: incoerente."
+  },
+  {
+   "id": "T776",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Blue nasconde il regalo, poi \"quando Blue aprì gli occhi\" tiene la mela: ruoli confusi."
+  },
+  {
+   "id": "T777",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "\"Tom è a casa mia\" detto alla madre di Tom, \"non voglio chiamarti\": dialogo incomprensibile."
+  },
+  {
+   "id": "T778",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il fattore \"ha più mele di lei\", \"una cavalcata ricca\": dettagli incoerenti."
+  },
+  {
+   "id": "T779",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Prende lo scoiattolo che scappa, poi \"lo rimettono sull'albero\": incoerente."
+  }
+ ]
+}

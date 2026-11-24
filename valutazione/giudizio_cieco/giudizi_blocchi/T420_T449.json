@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T420",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Mise la scatola nella grande scatola\", \"tornò a casa sua\" e ne costruì un'altra: scollegato."
+  },
+  {
+   "id": "T421",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "È Tom a fare i capricci ma l'autista punisce Lily portandola al parco: incoerente."
+  },
+  {
+   "id": "T422",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Vuoi sederti sul mio becco?\", \"il becco teneva il cibo dell'uccello\": azioni confuse."
+  },
+  {
+   "id": "T423",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il gioco sulla carta e la morale finale non si collegano: trama scollegata."
+  },
+  {
+   "id": "T424",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Tim aiuta Sue a ritrovare il giocattolo: coerente."
+  },
+  {
+   "id": "T425",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il soldato vuole vendere i giocattoli, ne costruisce uno, poi \"vende per avere aiuto\": piano incoerente."
+  },
+  {
+   "id": "T426",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue gioca con l'uomo dal cappello buffo: coerente."
+  },
+  {
+   "id": "T427",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'uccello in difficoltà e la fame di Tom si intrecciano senza nesso: trama debole."
+  },
+  {
+   "id": "T428",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il bambino parla alla farfalla \"sapevo che avevi ragione\", lei risponde senza senso: confuso."
+  },
+  {
+   "id": "T429",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "I genitori sono fuori e subito tornano a proporre l'impasto; \"posso fare cose che non posso\": incoerente."
+  },
+  {
+   "id": "T430",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Gioca tutto il giorno col topo parlante e poi si stupisce che parli: incoerente."
+  },
+  {
+   "id": "T431",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La mamma dell'uccello è \"qualcosa di luccicante nella terra\": incoerente."
+  },
+  {
+   "id": "T432",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "La palla rotola via e la inseguono più volte: trama ripetitiva."
+  },
+  {
+   "id": "T433",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "L'albero è gelato e poi vanno sull'altalena: coerente, frasi un po' strane."
+  },
+  {
+   "id": "T434",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue e Tom studiano un libro di storia e poi parlano dell'albero: coerente."
+  },
+  {
+   "id": "T435",
+   "grammar": 5,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "\"Ha una pelliccia marrone e pelliccia marrone\" ripetuto, \"un gatto marrone che vive nell'acqua\": ripetizione patologica."
+  },
+  {
+   "id": "T436",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il piatto cade in cucina e \"atterra sulla testa di Ben\" in soggiorno: incoerente."
+  },
+  {
+   "id": "T437",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Emma rema in barca lungo la strada e \"la porta era chiusa\": incoerente."
+  },
+  {
+   "id": "T438",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "La gonna cresce come una casa, \"non sapevano smettere di giocare\", altalena: scollegato."
+  },
+  {
+   "id": "T439",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mamma e papà festeggiano e regalano un giocattolo alla bambina: coerente."
+  },
+  {
+   "id": "T440",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La trappola sparisce e la morale è \"essere salvato da un orso\": incoerente."
+  },
+  {
+   "id": "T441",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il \"test\" da insegnare non viene mai spiegato: trama vaga."
+  },
+  {
+   "id": "T442",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim riceve la palla rossa al negozio: coerente."
+  },
+  {
+   "id": "T443",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "L'autista \"vide la bicicletta perfetta\", Max sale sulla sua bici e poi trova quella perfetta: incomprensibile."
+  },
+  {
+   "id": "T444",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il castello diventa una torre, \"mise il sole sul tetto\": incoerenze."
+  },
+  {
+   "id": "T445",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "La palla nel fango diventa il bastone bagnato, lavato al laghetto e poi ricomprato: oggetti confusi."
+  },
+  {
+   "id": "T446",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Abbinare i colori per trovare il giocattolo\" e la morale relativa: causalità assurda."
+  },
+  {
+   "id": "T447",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "L'albero aiuta il fungo sporco a pulirsi: fiabesco e coerente."
+  },
+  {
+   "id": "T448",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "La famiglia fa la spesa e cucina insieme: semplice e coerente."
+  },
+  {
+   "id": "T449",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il \"punteggio alto\" diventa contare fino a dieci: gioco vago, trama debole."
+  }
+ ]
+}

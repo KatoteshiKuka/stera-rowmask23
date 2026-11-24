@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T870",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "John \"partì per l'avventura\" più volte, i regali dimenticati: trama ripetitiva."
+  },
+  {
+   "id": "T871",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "È già dentro il negozio ma chiede ancora di entrare nell'edificio: contraddizione."
+  },
+  {
+   "id": "T872",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il coniglio pauroso si avvicina alla carota e la mangia: coerente."
+  },
+  {
+   "id": "T873",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "\"Saliamo sulla libreria\", in cima un cane arrabbiato che scappa due volte: incomprensibile."
+  },
+  {
+   "id": "T874",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Sue dice che l'albero è troppo grande e poi \"possiamo giocarci sotto\"; il bambino che piange: confuso."
+  },
+  {
+   "id": "T875",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La pistola è di Tim ma Max \"è felice di prestarla a Tim\": proprietà invertita."
+  },
+  {
+   "id": "T876",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La famiglia lega nastri al collo per la giornata speciale: coerente."
+  },
+  {
+   "id": "T877",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Tom e Sam litigano per i rottami e imparano a condividere: coerente."
+  },
+  {
+   "id": "T878",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La mamma propone di \"tirare la palla al ristorante\": comportamento incoerente."
+  },
+  {
+   "id": "T879",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Compare una bacchetta magica dal nulla che fa volare Pip: causalità forzata."
+  },
+  {
+   "id": "T880",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Polly regala il suo giocattolo e impara \"a non prendere cose altrui\": morale scollegata."
+  },
+  {
+   "id": "T881",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 6,
+   "category": "S",
+   "reason": "La barca grande accompagna quella piccola e lenta: coerente."
+  },
+  {
+   "id": "T882",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "È la rana a parlare al cane e poi le parole sono del cane: battute attribuite male."
+  },
+  {
+   "id": "T883",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La parola \"yist\", il frutto \"dolce ma amaro\", \"non è amaro, è dolce\": contraddizioni."
+  },
+  {
+   "id": "T884",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Trova un orologio verde e la mamma lo \"appende al muro\": scollegato, ripetitivo."
+  },
+  {
+   "id": "T885",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Ha paura dell'acqua ma rassicura la mamma; \"a volte è bene avere paura\": incoerente."
+  },
+  {
+   "id": "T886",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Tom vuole esplorare fuori e subito dice di voler restare dentro: contraddizione."
+  },
+  {
+   "id": "T887",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "Jane disobbedisce senza conseguenze e torna allo zoo ogni giorno: trama minima."
+  },
+  {
+   "id": "T888",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Ben e Mia costruiscono uno stadio di mattoncini: coerente fino al troncamento."
+  },
+  {
+   "id": "T889",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La corda \"incastrata\" nella stanza, la porta alla mamma, \"non era sua\": confuso."
+  },
+  {
+   "id": "T890",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Spot ha freddo e fa amicizia con Fluffy: coerente."
+  },
+  {
+   "id": "T891",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "John e la mamma tornano a casa prima della tempesta: coerente."
+  },
+  {
+   "id": "T892",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Per l'altalena cercano una collina, poi \"salì sulla collina e si sedette sull'altalena\": incoerente."
+  },
+  {
+   "id": "T893",
+   "grammar": 5,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "\"Il seghetto seghettava\", \"aiutava il legno raccogliendo mele\": incomprensibile."
+  },
+  {
+   "id": "T894",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "In ospedale dice \"fuori c'è un grande ospedale\", \"tutti sono gentili con lui\": incoerente."
+  },
+  {
+   "id": "T895",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Chiede di dare il suo giocattolo e lei vuole il suo; \"non tornò più al parco\" ma resta al parco."
+  },
+  {
+   "id": "T896",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il gioco delle nuvole diventa \"sei stordita perché giri\": dialogo incoerente."
+  },
+  {
+   "id": "T897",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Non fare troppo rumore con il rumore\"; il rumore li stanca: trama ripetitiva e confusa."
+  },
+  {
+   "id": "T898",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'amico Vroom è \"macchinina blu\" e poi \"macchinina rossa\"; non avevano la palla e ci giocano."
+  },
+  {
+   "id": "T899",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il gatto non sale sull'albero ma alla fine \"restarono nell'albero\": incoerente."
+  }
+ ]
+}

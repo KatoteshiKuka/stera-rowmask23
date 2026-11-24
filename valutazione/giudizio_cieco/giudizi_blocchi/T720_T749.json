@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T720",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Scrissero dell'anello\" ripetuto più volte: trama ripetitiva."
+  },
+  {
+   "id": "T721",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "La storia sul bambino che ascolta la storia, la carota portata al bambino della storia: incomprensibile."
+  },
+  {
+   "id": "T722",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Guarda il suo pallone sull'erba\", poi scappa ridendo dopo il litigio: debole."
+  },
+  {
+   "id": "T723",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "Il cane \"diventa troppo grasso per muoversi\", l'acqua sul gelato, beve e si ammala: incomprensibile."
+  },
+  {
+   "id": "T724",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Raggiungere la fila successiva\", Sam \"ragazzo competitivo vuole vedere la barca\": scollegato."
+  },
+  {
+   "id": "T725",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Dolore alla gamba e risposta \"volevo fare un giro in barca\": causalità mancante, troncato."
+  },
+  {
+   "id": "T726",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Mise il gesso sul muro\" riordinando, la mamma vede il disordine: incoerente."
+  },
+  {
+   "id": "T727",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il grande uccello rapisce i piccoli: finale negativo coerente, ripetizioni."
+  },
+  {
+   "id": "T728",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'iniezione \"innocua\" fa molto male, poi viene ripetuta \"molto piccola\": contraddizioni."
+  },
+  {
+   "id": "T729",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Tim condivide il muffin con Sue, poi \"lei aveva condiviso il suo muffin con Tim\": ruoli invertiti."
+  },
+  {
+   "id": "T730",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La gallina \"guida\" nel negozio e sbatte contro un sasso: incoerente."
+  },
+  {
+   "id": "T731",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Disobbedisce mangiando la caramella e la mamma è felice; compaiono biscotti: incoerente."
+  },
+  {
+   "id": "T732",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Chiamò un albero perché venisse a vedere\", l'albero cade: eventi senza senso."
+  },
+  {
+   "id": "T733",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "La mamma ringrazia la bambina \"di averla tenuta al sicuro\": ruoli invertiti."
+  },
+  {
+   "id": "T734",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Tim si nasconde nell'albero, ma è Sue che \"esce dall'albero\": confusione dei ruoli."
+  },
+  {
+   "id": "T735",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Jolly \"era spaventata\" della propria richiesta di bacio, \"cercò con le labbra\": incoerente."
+  },
+  {
+   "id": "T736",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Max chiede a un uccello una pistola \"da condividere con Lily\", che non era mai comparsa: scollegato."
+  },
+  {
+   "id": "T737",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "\"No, vogliamo giocare con te, sei cattivo\", \"farò ciò che volete\", \"lo colpì\": dialogo contraddittorio."
+  },
+  {
+   "id": "T738",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "I mirtilli parlanti chiedono di non essere mangiati, poi l'orso li mangia con l'uccello: incoerente."
+  },
+  {
+   "id": "T739",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Sam aiuta Tom a ritrovare la palla: coerente."
+  },
+  {
+   "id": "T740",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il giocattolo della nonna diventa una macchina vera: fiabesco e coerente."
+  },
+  {
+   "id": "T741",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "L'oggetto grande resta vago, \"la mamma di Sue e Tom\" compare: trama minima."
+  },
+  {
+   "id": "T742",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Il libro e il libro\", il leone mangia fieno e \"imparò\" da solo: confuso."
+  },
+  {
+   "id": "T743",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Corre verso il cartellone \"senza vederlo\" e cade: incoerenza locale."
+  },
+  {
+   "id": "T744",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "La fata desidera per sé, \"non potrai mai esplorare il mondo\" e la bambina vola felice: incoerente."
+  },
+  {
+   "id": "T745",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Comprano la bambola, vanno a casa e \"le persone dell'ospedale li videro\": incoerente."
+  },
+  {
+   "id": "T746",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'uccello dice \"non salire, sembra un bel gioco\"; la palla in cima all'albero sparisce."
+  },
+  {
+   "id": "T747",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Tom porta Polly da sua mamma; Lily dice \"grazie per aver aiutato Lily\": incoerente."
+  },
+  {
+   "id": "T748",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Trovano una palla verde e giocano con \"la grande palla rossa\": contraddizione."
+  },
+  {
+   "id": "T749",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Uno \"zigzag\" parlante in cucina, \"la porta della cucina aperta e la porta aperta\": vago e ripetitivo."
+  }
+ ]
+}

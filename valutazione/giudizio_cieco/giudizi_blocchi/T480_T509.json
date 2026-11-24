@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T480",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily riordina la stanza per guardare la TV con la mamma: coerente."
+  },
+  {
+   "id": "T481",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "\"Amici, la farfalla e la farfalla\"; il bambino \"felice di rivedere\" un giocattolo nuovo."
+  },
+  {
+   "id": "T482",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Mise la scatola nella scatola\", dal pulsante esce un cane: sequenze scollegate."
+  },
+  {
+   "id": "T483",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il piede incastrato, poi la palla in un buco dell'albero \"che cresce\": scollegato."
+  },
+  {
+   "id": "T484",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La volpe \"torna a casa e gioca sul tronco\", poi il cane la mangia: sequenza confusa."
+  },
+  {
+   "id": "T485",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily porta a casa il cucciolo parlante Max: coerente."
+  },
+  {
+   "id": "T486",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il cane anziano \"sta in piedi su un fiore\" e poi cade: azioni incoerenti."
+  },
+  {
+   "id": "T487",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il robot mangia troppo e si ammalano gli amici: causalità incoerente."
+  },
+  {
+   "id": "T488",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Lily si scusa con Tim per \"essere stata maleducata\" (era Tom): ruoli confusi."
+  },
+  {
+   "id": "T489",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"La barca si ferma. Non si ferma. Si ferma\", \"la barca è morta\": contraddizioni."
+  },
+  {
+   "id": "T490",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La mamma mette \"i pezzi di melone nel melone\" e lui ne tira fuori uno intero: incoerente."
+  },
+  {
+   "id": "T491",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La corda \"molto lunga e lunga\", poi \"esplorare la corda\": trama vaga."
+  },
+  {
+   "id": "T492",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Ho bisogno che la mamma ti faccia un regalo\", il regalo va a Tim: scollegato."
+  },
+  {
+   "id": "T493",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Si lanciano il ramo avanti e indietro ripetutamente sull'albero: trama ripetitiva."
+  },
+  {
+   "id": "T494",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il jet aiuta l'uccellino a ritrovare l'albero di casa: coerente."
+  },
+  {
+   "id": "T495",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La mamma insegna al cane ad aprire la scatola in garage, poi \"leggono libri sulla giornata\": debole."
+  },
+  {
+   "id": "T496",
+   "grammar": 6,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "Il biglietto dice di aver perso il gatto, il gatto è sotto il letto e poi \"Whiskers\" cerca il gatto: incomprensibile."
+  },
+  {
+   "id": "T497",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il cioccolato non compare: dorme, si sveglia e torna a dormire; trama minima."
+  },
+  {
+   "id": "T498",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mary presta la lana a Lucy e diventano amiche: coerente."
+  },
+  {
+   "id": "T499",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Bob entra nella casa e gioca a nascondino con gli animali: coerente."
+  },
+  {
+   "id": "T500",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il camion delle gite porta carburante, \"mettere carburante sul camion\" lo aggiusta: incoerente."
+  },
+  {
+   "id": "T501",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue divide il muffin con Tim che lo trova cattivo: coerente."
+  },
+  {
+   "id": "T502",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mark offre il caffè a Lily e lo bevono insieme: coerente."
+  },
+  {
+   "id": "T503",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il mulo gioca con Lily e diventano amici: coerente."
+  },
+  {
+   "id": "T504",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"La squadra andò dal cane e dal topo\" che ne fanno parte, poi litigano: confuso."
+  },
+  {
+   "id": "T505",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Kitty aspetta il cane e alla fine giocano insieme: coerente, ripetizioni."
+  },
+  {
+   "id": "T506",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "La mamma avverte Tim sulla palla grande e lui gioca con la barca: coerente."
+  },
+  {
+   "id": "T507",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Sue sale e tiene un ramo, Tim la ringrazia senza essere salito: causalità mancante."
+  },
+  {
+   "id": "T508",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim e Spot fuggono dal serpente: coerente."
+  },
+  {
+   "id": "T509",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Jolly libera il pesciolino dalla rete e cambia: coerente."
+  }
+ ]
+}

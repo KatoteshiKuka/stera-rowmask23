@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T270",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "La padella diventa \"figlia\" e poi ringrazia \"la figlia\", \"la padella e sua figlia\": identità contraddittorie."
+  },
+  {
+   "id": "T271",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Tim promette di aiutare l'uccello ma non fa nulla e \"diventano amici\": causalità mancante."
+  },
+  {
+   "id": "T272",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Ben dice che le ciliegie fanno bene e poi è \"geloso\"; \"la sua ciliegia\": contraddizioni."
+  },
+  {
+   "id": "T273",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il fantasma \"innocuo\" ripetuto più volte, poi lo nutrono: ripetitivo."
+  },
+  {
+   "id": "T274",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'albero è \"triste e affamato\", l'uccello vede di nuovo \"un grande albero\", il cane dà le ciliegie: confuso."
+  },
+  {
+   "id": "T275",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Spot e Tweet giocano facendo rumore: semplice e coerente."
+  },
+  {
+   "id": "T276",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Trovano una barchetta e un cane la porta via: coerente fino al troncamento."
+  },
+  {
+   "id": "T277",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue si nasconde dietro una grande erba e spaventa gli amici: coerente."
+  },
+  {
+   "id": "T278",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim spinge la sorella per le caramelle, poi si scusa e condivide: coerente."
+  },
+  {
+   "id": "T279",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Tom chiede a Mia perché non ha condiviso, ruoli invertiti: incoerente."
+  },
+  {
+   "id": "T280",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Prepara il caffè due volte e chiede aiuto senza motivo: trama minima e ripetitiva."
+  },
+  {
+   "id": "T281",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il cane trova la palla nel regalo e ci gioca: semplice e coerente."
+  },
+  {
+   "id": "T282",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il toro si fa coraggio e sale sulla collina: coerente."
+  },
+  {
+   "id": "T283",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "\"Fare un pisolino quando ti svegli\", \"è bene fare un pisolino senza farlo\": contraddizioni centrali."
+  },
+  {
+   "id": "T284",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "La carota \"non era sua\", corre, cade e la carota si rompe; morale confusa."
+  },
+  {
+   "id": "T285",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"I suoi amici, il cane e il gatto\" (è lui il gatto); rimpicciolendo \"fanno una casa\": incoerente."
+  },
+  {
+   "id": "T286",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Promette di restare vicino e poi \"erano lontani\"; il cane sordo abbaia: contraddizioni."
+  },
+  {
+   "id": "T287",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mr. Iron aiuta Lily ad arrampicarsi: fiabesco e coerente."
+  },
+  {
+   "id": "T288",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Max va in camera, Sam ricompare; la morale sul coraggio non c'entra."
+  },
+  {
+   "id": "T289",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Max \"porta via i giocattoli e glieli restituisce\": azione contraddittoria."
+  },
+  {
+   "id": "T290",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il mulino sparito non viene spiegato, morale \"le cose devono essere diverse\": scollegato."
+  },
+  {
+   "id": "T291",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue aiuta Tim a legare il bastone alla bici: coerente."
+  },
+  {
+   "id": "T292",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il bambino impara a dividere il melone con la sorella: coerente."
+  },
+  {
+   "id": "T293",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mia dà acqua e sole alla pianta che torna a brillare: fiabesco e coerente."
+  },
+  {
+   "id": "T294",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Fece cadere i giocattoli mentre era obbediente\": causalità confusa."
+  },
+  {
+   "id": "T295",
+   "grammar": 7,
+   "consistency": 2,
+   "plot": 4,
+   "category": "N",
+   "reason": "Jim, Bob e Toby si scambiano battute e ruoli: identità dei personaggi incomprensibili."
+  },
+  {
+   "id": "T296",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim consola il vecchio facendo jogging insieme: coerente."
+  },
+  {
+   "id": "T297",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Palo e corda si confondono, conta i numeri \"sul palo\": sequenza poco chiara."
+  },
+  {
+   "id": "T298",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La mamma dice di no, lui compra lo stesso, lei approva e torna a comprarlo: contraddizioni."
+  },
+  {
+   "id": "T299",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Spot sale sull'albero e lo racconta alla mamma: coerente."
+  }
+ ]
+}

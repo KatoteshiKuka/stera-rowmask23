@@ -1,0 +1,11 @@
+MEASURED compact_active_weights trial 1 {"driver_read_bytes_delta": 262508544, "bytes_read": 4147491312, "seconds": 0.790401666, "effective_GB_per_s": 5.247321065236723, "file_rewinds": 1}
+MEASURED compact_active_weights trial 2 {"driver_read_bytes_delta": 260218880, "bytes_read": 4147491312, "seconds": 0.740816708, "effective_GB_per_s": 5.598539108542893, "file_rewinds": 1}
+MEASURED compact_active_weights trial 3 {"driver_read_bytes_delta": 260816896, "bytes_read": 4147491312, "seconds": 0.720928542, "effective_GB_per_s": 5.752985310435941, "file_rewinds": 1}
+MEASURED compact_active_weights trial 4 {"driver_read_bytes_delta": 260124672, "bytes_read": 4147491312, "seconds": 0.766373083, "effective_GB_per_s": 5.411843662050955, "file_rewinds": 1}
+MEASURED compact_active_weights trial 5 {"driver_read_bytes_delta": 260902912, "bytes_read": 4147491312, "seconds": 0.8071610839999996, "effective_GB_per_s": 5.138368776956549, "file_rewinds": 1}
+MEASURED dense_equivalent_weights trial 1 {"driver_read_bytes_delta": 1166995456, "bytes_read": 18597089280, "seconds": 3.5608147919999995, "effective_GB_per_s": 5.222706140679278, "file_rewinds": 8}
+MEASURED dense_equivalent_weights trial 2 {"driver_read_bytes_delta": 1165893632, "bytes_read": 18597089280, "seconds": 3.433976874999999, "effective_GB_per_s": 5.415612846839571, "file_rewinds": 8}
+MEASURED dense_equivalent_weights trial 3 {"driver_read_bytes_delta": 1165225984, "bytes_read": 18597089280, "seconds": 3.414859, "effective_GB_per_s": 5.445931817389825, "file_rewinds": 8}
+MEASURED dense_equivalent_weights trial 4 {"driver_read_bytes_delta": 1165475840, "bytes_read": 18597089280, "seconds": 3.475854291000001, "effective_GB_per_s": 5.3503650392230995, "file_rewinds": 8}
+MEASURED dense_equivalent_weights trial 5 {"driver_read_bytes_delta": 1174798336, "bytes_read": 18597089280, "seconds": 3.31708875, "effective_GB_per_s": 5.6064491129458025, "file_rewinds": 8}
+REPORT_READY /Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/evidenze_f10/audit_blocchi/SSD_STUDY_NOTE_20261123.md

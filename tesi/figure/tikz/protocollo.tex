@@ -1,0 +1,16 @@
+\begin{tikzpicture}[font=\footnotesize, >={Latex[length=2mm]},
+  st/.style={draw=steraGrigio, rounded corners=2pt, fill=white, minimum width=30mm, minimum height=12mm, align=center, text width=28mm},
+  hi/.style={st, draw=steraBlu, fill=steraBlu!10}]
+\node[st] (a) {Corpus TinyStories,\\split per hash};
+\node[st, right=6mm of a] (b) {Addestramento su TRAIN, controllo su DEV};
+\node[st, right=6mm of b] (c) {Pesi congelati};
+\node[st, right=6mm of c] (d) {300 incipit da TEST, seme fisso};
+\node[hi, below=10mm of d] (e) {Generazione dei 3 modelli, stesso campionamento};
+\node[hi, left=6mm of e] (f) {900 testi anonimi, ordine casuale};
+\node[hi, left=6mm of f] (g) {Giudizio cieco con rubrica};
+\node[hi, left=6mm of g] (h) {Abbinamento ai modelli e statistica};
+\draw[->] (a) -- (b); \draw[->] (b) -- (c); \draw[->] (c) -- (d); \draw[->] (d) -- (e);
+\draw[->] (e) -- (f); \draw[->] (f) -- (g); \draw[->] (g) -- (h);
+\node[st, below=10mm of e, fill=steraArancio!10, draw=steraArancio] (nll) {NLL in teacher forcing sui 300 racconti};
+\draw[->] (d.east) -- ++(4mm,0) |- (nll.east);
+\end{tikzpicture}

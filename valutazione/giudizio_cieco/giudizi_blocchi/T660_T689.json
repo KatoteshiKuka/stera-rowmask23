@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T660",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Trova un gattino nella scatola chiusa e diventano amici: fiabesco ma coerente."
+  },
+  {
+   "id": "T661",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "L'uccello parla già con Lily e poi \"accadde una cosa inattesa: l'uccello cominciò a parlare\"."
+  },
+  {
+   "id": "T662",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sally si arrampica sull'albero con l'incoraggiamento di Henry: coerente."
+  },
+  {
+   "id": "T663",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim trova una palla sull'albero e gioca con Sue: coerente."
+  },
+  {
+   "id": "T664",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Riposa sotto l'albero, decide che \"è il nuovo parco giochi\" e torna a casa: trama debole."
+  },
+  {
+   "id": "T665",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il sacco \"pieno di energia\", lo rimette al parco e lo vuole tenere: contraddizioni."
+  },
+  {
+   "id": "T666",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Sa che non doveva toccare i fiori\" (era l'ape), \"hai ragione\": confuso."
+  },
+  {
+   "id": "T667",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily aiuta il bambino a ritrovare la macchinina: coerente."
+  },
+  {
+   "id": "T668",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "La penna magica fa sparire il calzino: coerente."
+  },
+  {
+   "id": "T669",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La zattera si mette in equilibrio sulla roccia e gioca con gli amici: coerente, ripetizioni."
+  },
+  {
+   "id": "T670",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'uccello \"pensava fossero acide anche lui\"; morale contraddittoria sull'acidità."
+  },
+  {
+   "id": "T671",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Dolly porta Tommy in volo e dividono la pesca: fiabesco e coerente."
+  },
+  {
+   "id": "T672",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue trova un gioiello e lo mostra a Tom: coerente."
+  },
+  {
+   "id": "T673",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La rete \"economica ma un po' costosa\", tornano a casa \"a farla volare\": incoerente."
+  },
+  {
+   "id": "T674",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "La bambina scopre il minerale al parco con la mamma: semplice e coerente."
+  },
+  {
+   "id": "T675",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"La macchina sale sul braccio\", \"non gli piacevano i minuti\": incoerente."
+  },
+  {
+   "id": "T676",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tom trasforma una scatola vuota in un gioco con gli amici: coerente."
+  },
+  {
+   "id": "T677",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Colpiscono il ragazzo in testa, poi cercano la palla e si scusano: sequenza confusa."
+  },
+  {
+   "id": "T678",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Rompe il baule coi denti e il venditore consiglia di \"migliorare la scatola\": incoerente."
+  },
+  {
+   "id": "T679",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Dal cane affamato si passa alla \"patente gialla\" della mamma: trama scollegata."
+  },
+  {
+   "id": "T680",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 5,
+   "category": "P",
+   "reason": "Bob e la farfalla giocano sotto il cielo: trama minima."
+  },
+  {
+   "id": "T681",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Creò un nuovo amico per l'uccello\", poi lo porta a casa e lo mette su un albero: confuso."
+  },
+  {
+   "id": "T682",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il cane vuole usare \"il braccio\"; prurito abbandonato; \"infilò la mano\": incoerenze."
+  },
+  {
+   "id": "T683",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim disegna un albero nel quaderno nuovo e lo mostra ai genitori: coerente."
+  },
+  {
+   "id": "T684",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily condivide sedia e giocattoli con Tim: coerente."
+  },
+  {
+   "id": "T685",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Kitty balla con l'uccello e diventano amici: coerente."
+  },
+  {
+   "id": "T686",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il ragazzo maleducato dice \"sono gentile\", \"mise via il piede\": confuso."
+  },
+  {
+   "id": "T687",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Lila diventa Lily, il padrone di casa è guardiano e padrone del cane: identità confuse."
+  },
+  {
+   "id": "T688",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La \"cosa pericolosa\" sparisce e si risolve andando all'opera: causalità mancante."
+  },
+  {
+   "id": "T689",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "\"Il gatto più grande che fosse mai stato\": frase incoerente, conflitto debole."
+  }
+ ]
+}

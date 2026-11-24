@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T570",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sally dà da mangiare al cane ferito e diventano amici: coerente."
+  },
+  {
+   "id": "T571",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La palla rotola nel bosco e un cane la rompe: coerente fino al troncamento."
+  },
+  {
+   "id": "T572",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La mamma dice di non mescolare, lei mescola e scivola su una buccia di banana: causalità debole."
+  },
+  {
+   "id": "T573",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "\"Se si arrampica avrà il suo stile\", il bastone salva il gatto: motivazione confusa."
+  },
+  {
+   "id": "T574",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "\"Perché la barca è così feroce?\", il bambino scappa ma \"non vuole lasciare casa\": incoerenze."
+  },
+  {
+   "id": "T575",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Timmy scrive una lettera al pupazzo di neve: fiabesco e coerente."
+  },
+  {
+   "id": "T576",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Gli amici Ben e Lily diventano \"Max e Lily\": identità confusa."
+  },
+  {
+   "id": "T577",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La mamma arrabbiata dice \"avete fatto un pasticcio, siete molto creativi\": incoerente."
+  },
+  {
+   "id": "T578",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Tu hai la bambola!\" detto da Lily che la tiene; \"per favore\" detto da Lily: dialogo confuso."
+  },
+  {
+   "id": "T579",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lucy porge il menu a Tim: semplice e coerente."
+  },
+  {
+   "id": "T580",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La mamma le vieta l'albero non suo e la bambina capisce: coerente."
+  },
+  {
+   "id": "T581",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "L'orso ospita l'uccellino smarrito e diventano amici: coerente."
+  },
+  {
+   "id": "T582",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "La signora aiuta a ritrovare il giocattolo che poi parla: fiabesco e coerente."
+  },
+  {
+   "id": "T583",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily scende dallo scivolo e gioca con il bambino triste: coerente."
+  },
+  {
+   "id": "T584",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "L'albero parlante permette a Lily di arrampicarsi: fiabesco e coerente."
+  },
+  {
+   "id": "T585",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Bob nasconde la foglia e gli amici sono tristi senza motivo: causalità mancante."
+  },
+  {
+   "id": "T586",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La macchinina è del bambino ma Lila \"non voleva condividere la sua macchina\": proprietà confusa."
+  },
+  {
+   "id": "T587",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Lily dà la palla a Tim e il giorno dopo \"condivide la sua grande palla rossa\": contraddizione."
+  },
+  {
+   "id": "T588",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "La roccia si rivela una tartaruga amica della balena: coerente."
+  },
+  {
+   "id": "T589",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily divide la mela con Tom e giocano: coerente."
+  },
+  {
+   "id": "T590",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily e Tom giocano a fare gli animali: coerente."
+  },
+  {
+   "id": "T591",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Fanno un pisolino sotto l'albero e poi vanno a letto; l'avvertimento sulla scatola resta sospeso."
+  },
+  {
+   "id": "T592",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily e il cane Max giocano con il filo nascosto: coerente, ripetizioni."
+  },
+  {
+   "id": "T593",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Kitty chiede a Doggy di sposarla e un pescatore li sposa: fiabesco e coerente."
+  },
+  {
+   "id": "T594",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "La pioggia aumenta \"e uscì il sole\", Spike \"troppo grande\" e \"rotto\": eventi incomprensibili."
+  },
+  {
+   "id": "T595",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Cercano la chiave per un barattolo e poi \"il barattolo di palline nel negozio\": incoerente."
+  },
+  {
+   "id": "T596",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"La collina è ripida e la collina è ripida\", cade e si fa male ma \"non si erano fatti male\": contraddizioni."
+  },
+  {
+   "id": "T597",
+   "grammar": 9,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Mangia tutto l'inchiostro \"buonissimo\" senza conseguenze dopo aver promesso prudenza: incoerente."
+  },
+  {
+   "id": "T598",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Una palla rossa incastrata dentro la punta\", \"non è dura\" dopo \"è dura\": confuso."
+  },
+  {
+   "id": "T599",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lucy e la mamma preparano un vestito per la festa: coerente."
+  }
+ ]
+}

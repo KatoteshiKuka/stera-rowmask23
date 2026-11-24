@@ -1,0 +1,49 @@
+
+\section{Una generazione, dall'ingresso al token successivo}
+\label{sec:guida-inferenza-stera}
+
+\begin{figure}[htbp]
+\centering
+\input{figure/tikz/strategie_inferenza}
+\caption{Tre modi di eseguire le stesse proiezioni RowMask23 in inferenza. Da sinistra a destra diminuisce la memoria occupata dai pesi e cresce il lavoro di calcolo per ricostruire o applicare la matrice.}
+\label{fig:percorso-inferenza-stera}
+\end{figure}
+
+La Figura~\ref{fig:percorso-inferenza-stera} confronta i tre modi di eseguire le proiezioni introdotti nella sezione precedente. Indipendentemente dal modo scelto, una generazione attraversa tre fasi che spesso vengono raccolte sotto un solo tempo di generazione, ma che hanno costi molto diversi. Descriverle separatamente è necessario per interpretare i benchmark: una soluzione può essere rapida per ogni token successivo e tuttavia più lenta sul primo token.
+
+\subsection{Prefill: elaborazione del prefisso}
+\label{sec:prefill-guida}
+
+Il modello riceve una sequenza di identificativi di token $(u_1,\dots,u_T)$, la converte in rappresentazioni di dimensione 768 e attraversa i sei strati causali. Durante questo passaggio viene costruita, per ogni strato, la cache delle chiavi e dei valori che potranno essere riutilizzati durante la generazione. L'attenzione causale impedisce a un token di leggere posizioni future.
+
+Gli strati ad attenzione globale considerano, nelle condizioni consentite dalla maschera causale, le precedenti posizioni del prefisso. Negli strati locali l'accesso è limitato alla finestra di 256 posizioni. Questo vincolo sull'attenzione è distinto dalla struttura delle matrici: le proiezioni $W_Q$, $W_K$, $W_V$, $W_O$ rimangono matrici matematiche della stessa forma indipendentemente dalla maschera temporale.
+
+Un motore con matrici dense residenti può eseguire molte proiezioni del prefill con operazioni dense altamente ottimizzate. Il motore compatto impiega la struttura XOR e le correzioni; se la realizzazione dei kernel non sfrutta adeguatamente il parallelismo sui token, può pagare un costo iniziale superiore. La tesi misura questa differenza e non deduce dal solo risparmio di byte che il prefill debba essere più rapido.
+
+\subsection{Il primo token e la distribuzione sul vocabolario}
+
+Dalla rappresentazione finale $h_T$ il modello calcola una distribuzione sulle \num{50257} voci valide:
+\[
+z_v=\big\langle E_{v,:},h_T\big\rangle,\qquad
+p(v\mid u_{\le T})=
+\frac{\exp(z_v)}{\sum_{j=0}^{50256}\exp(z_j)}.
+\]
+La testa di uscita utilizza la stessa matrice $E$ che ha fornito gli embedding: condividere $E$ riduce il numero di parametri fisici, ma non rimuove il costo del calcolo dei punteggi per i token candidati. Nei test di correttezza dei motori a parità di checkpoint viene applicata la medesima strategia di decoding, così il confronto non cambia la regola che seleziona il token.
+
+Il \emph{tempo al primo token} comprende l'elaborazione del prompt e la scelta del primo simbolo generato. È pertanto sensibile alla lunghezza del prompt e alla strategia di prefill. Non è corretto confrontarlo direttamente con il reciproco dei token al secondo misurati quando la cache è già popolata.
+
+\subsection{Decode autoregressivo: un passo alla volta}
+
+Dopo il primo token, l'ingresso della rete consiste normalmente nel solo token appena emesso. I sei strati aggiornano le rispettive cache KV e calcolano il successivo stato nascosto. Il ciclo si ripete fino al limite di generazione o alla condizione di arresto. In questa fase gran parte delle grandi matrici deve essere utilizzata di nuovo per ciascun token, mentre la quantità di calcolo per i nuovi vettori è assai più piccola che durante il prefill.
+
+Per un prodotto $y=Wx$, il motore compatto non deve necessariamente materializzare tutte le entrate di $W$: usa le coordinate dei blocchi e la trasformata veloce per la parte XOR, quindi aggiunge diagonale, correzioni e termine a basso rango. Il motore denso applica invece i prodotti alle matrici FP32 già ricostruite. Sotto la stessa precisione e a meno degli arrotondamenti, i due percorsi realizzano il medesimo peso matematico; il loro diverso throughput è una proprietà delle specifiche implementazioni misurate.
+
+\subsection{Formato dei pesi ed efficienza dell'implementazione}
+
+Nel benchmark con sei input appaiati, il motore denso produce il primo token più rapidamente, mentre quello compatto riduce il tempo mediano per passo di decode. La prova include l'identità dei token generati sui prompt misurati; non implica uguaglianza bit per bit di ogni intermedio numerico, né si generalizza automaticamente ad altri dispositivi e lunghezze di contesto.
+
+È importante distinguere l'\emph{efficienza del formato dei pesi}, ossia quanti byte devono essere memorizzati, dall'\emph{efficienza dell'implementazione}, ossia quanto rapidamente un kernel applica quei coefficienti. Il vantaggio strutturale sui byte è quantificabile dall'inventario delle coordinate; il vantaggio temporale è un risultato sperimentale che dipende da hardware, motore, kernel, cache e forma degli input.
+
+\subsection{Il limite del contesto e le prove a scala maggiore}
+
+Il modello STERA 30M è stato addestrato su finestre fino a 512 token bersaglio. La disponibilità di una tabella di posizioni fisiche più lunga non equivale a un addestramento o a una verifica della qualità narrativa su 2048 o 32768 token. Le prove con cache lunga e con pesi di grandi dimensioni del Capitolo~\ref{cap:capitoli/07-sistemi} riguardano quindi la fattibilità dell'esecuzione, non la qualità linguistica a contesto esteso.

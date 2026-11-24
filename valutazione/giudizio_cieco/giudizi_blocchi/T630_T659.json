@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T630",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"La maschera disordinata\" diventa pulita riordinando i giocattoli: causalità assurda."
+  },
+  {
+   "id": "T631",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Tim vuole aiutare persone e animali spaventati ma non fa nulla: causalità mancante."
+  },
+  {
+   "id": "T632",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Kitty dà un bastone a Max che \"è felice di avere il cesto\": incoerente."
+  },
+  {
+   "id": "T633",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim fa amicizia con il cane e trova il parco giochi: coerente."
+  },
+  {
+   "id": "T634",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Tenere ciò che obiettivo\", tengono la macchinina e vanno \"alla sala\" dove sono già."
+  },
+  {
+   "id": "T635",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il cane insegna a Tim a battere e lo rallegra: coerente."
+  },
+  {
+   "id": "T636",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "Va al negozio di pasta da quello di pasta, il venditore dà monete a Tim: sequenze insensate."
+  },
+  {
+   "id": "T637",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily e la mamma riordinano insieme la stanza: coerente."
+  },
+  {
+   "id": "T638",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily trova giocattoli nella scatola e gioca: semplice e coerente."
+  },
+  {
+   "id": "T639",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mimi rompe il cuscino e Lily la aiuta: coerente."
+  },
+  {
+   "id": "T640",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La mamma rifiuta il giocattolo ma a casa \"Tim gioca con il suo giocattolo\": contraddizione."
+  },
+  {
+   "id": "T641",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue apre la scatola di giocattoli e gioca con la mamma: coerente."
+  },
+  {
+   "id": "T642",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Fred aiuta la formica a portare le foglie: coerente."
+  },
+  {
+   "id": "T643",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"La campana l'aiutava ad arrampicarsi\", la palla \"importante\": dettagli incoerenti."
+  },
+  {
+   "id": "T644",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily va alla festa e la mamma le fa una torta: coerente."
+  },
+  {
+   "id": "T645",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Tim dice \"è nostra\" e subito \"dobbiamo condividere\"; Sue sparisce: incoerente."
+  },
+  {
+   "id": "T646",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Lavare la zuppa\", il fratello prepotente invece della sorella: confuso."
+  },
+  {
+   "id": "T647",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Scuote le ragnatele, piange e scappa, \"felice di non essere andato lontano dalle ragnatele\": trama debole."
+  },
+  {
+   "id": "T648",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Usò il bastone alla calamita\": azione incompleta, trama minima."
+  },
+  {
+   "id": "T649",
+   "grammar": 6,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "\"Devi resistermi\" ripetuto, \"il gatto grande e il saggio giocarono con il gatto grande\": incomprensibile."
+  },
+  {
+   "id": "T650",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Spot canta, poi è amico del bambino e \"ha un amico leale come Blue da condividere\": confuso."
+  },
+  {
+   "id": "T651",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Comprano l'orsacchiotto, poi un uomo \"non ci lascerà prendere l'orsacchiotto\" e pagano di nuovo: scollegato."
+  },
+  {
+   "id": "T652",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il gatto silenzioso chiede di fare rumore; la morale \"è bello essere rumorosi\" è confusa."
+  },
+  {
+   "id": "T653",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La formica prova a volare e alla fine \"può volare con gli amici\": incoerente."
+  },
+  {
+   "id": "T654",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue fa amicizia con Tom al parco: coerente, ripetizioni."
+  },
+  {
+   "id": "T655",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La protagonista diventa Lily; il cioccolato \"troppo duro\" e poi lo mangia: incoerente."
+  },
+  {
+   "id": "T656",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily lancia il filo, rompe la tazza e si pente: finale negativo coerente."
+  },
+  {
+   "id": "T657",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue e il gatto giocano alla festa: coerente."
+  },
+  {
+   "id": "T658",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Quando lei era grande, Doggy si unì\", poi il vento porta via la palla: confuso."
+  },
+  {
+   "id": "T659",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'unicorno \"è un portale magico\", \"gli unicorni viola della luna\": immaginazione confusa."
+  }
+ ]
+}

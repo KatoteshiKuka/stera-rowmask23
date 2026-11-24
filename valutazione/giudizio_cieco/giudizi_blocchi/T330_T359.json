@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T330",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim e Sue, entrambi paurosi, giocano insieme con la palla: coerente."
+  },
+  {
+   "id": "T331",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Cade nel fiume e nessuno lo aiuta; il villaggio impara \"a non arrendersi\": morale contraddittoria."
+  },
+  {
+   "id": "T332",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "L'uccello prende la farfalla e la porta a Tom: coerente."
+  },
+  {
+   "id": "T333",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Per aiutare il grande uccello gli mettono un cappello: causalità debole."
+  },
+  {
+   "id": "T334",
+   "grammar": 6,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "\"Accoppiare i fiammiferi\", il sole sorge e fa buio, la scatola diventa un fuoco: incomprensibile."
+  },
+  {
+   "id": "T335",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily e Tom hanno paura del cane, arriva un'anziana: coerente fino al troncamento."
+  },
+  {
+   "id": "T336",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La famiglia si ripara sotto l'albero durante la tempesta: semplice e coerente."
+  },
+  {
+   "id": "T337",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Il gruppo in forma\", due morali ripetute: trama minima."
+  },
+  {
+   "id": "T338",
+   "grammar": 7,
+   "consistency": 2,
+   "plot": 3,
+   "category": "N",
+   "reason": "Il drago diventa un pirata, \"una casetta che era anche un gioiello d'oro\": incomprensibile."
+  },
+  {
+   "id": "T339",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue consola il bambino salutandolo e giocano: coerente."
+  },
+  {
+   "id": "T340",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim e la mamma ritrovano il giocattolo perso: coerente."
+  },
+  {
+   "id": "T341",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 6,
+   "category": "S",
+   "reason": "La volpe e l'uccello giocano sul tronco: coerente."
+  },
+  {
+   "id": "T342",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Spike fa amicizia con l'uccello timoroso: coerente."
+  },
+  {
+   "id": "T343",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Sam propone il parco e poi \"non vuole giocare a hockey\"; \"buona notte\" al parco: confuso."
+  },
+  {
+   "id": "T344",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Lo lasciò tenere pulita la stanza\" mentre rifiuta di pulirla: contraddizione."
+  },
+  {
+   "id": "T345",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "La volpe gli rimprovera di aver mangiato carote non ancora mangiate, \"se mi fai entrare\": incoerenze."
+  },
+  {
+   "id": "T346",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lucy dondola sulla roccia con l'insetto parlante: fiabesco e coerente."
+  },
+  {
+   "id": "T347",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Mostra la mappa alla mamma due volte, \"hai trovato il tesoro\": sequenza confusa."
+  },
+  {
+   "id": "T348",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Arrivati al parco \"salirono in macchina e partirono\", miele nell'albero: incoerente."
+  },
+  {
+   "id": "T349",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tom cade, riprova e arriva in cima all'albero: coerente, ripetitivo."
+  },
+  {
+   "id": "T350",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 4,
+   "category": "P",
+   "reason": "Un'immagine nel cielo e poi a letto: trama minima."
+  },
+  {
+   "id": "T351",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Mette un sasso sotto la brocca per \"aiutare il cane\": causalità assurda."
+  },
+  {
+   "id": "T352",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Timmy gioca, aiuta a cucinare e disegna un dinosauro: coerente."
+  },
+  {
+   "id": "T353",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Gli amici fasciano la gamba di Tim punto da un insetto: coerente."
+  },
+  {
+   "id": "T354",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "\"Legò lo spago a uno spago\" per fare un'altalena; il giocattolo perso dimenticato."
+  },
+  {
+   "id": "T355",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Lily cura l'uccellino ferito che torna dalla famiglia: coerente."
+  },
+  {
+   "id": "T356",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily cura il seme che diventa una pianta: coerente."
+  },
+  {
+   "id": "T357",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Ti do i miei baffi\", il cane perso dimenticato, \"non più burbero\": incoerente."
+  },
+  {
+   "id": "T358",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La mamma dice di sì, il venditore di no, \"puoi comprarlo per noi\": contraddizioni."
+  },
+  {
+   "id": "T359",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il cartellone, il gatto che \"stampa\" il giocattolo, la foto da prendere: trama confusa."
+  }
+ ]
+}

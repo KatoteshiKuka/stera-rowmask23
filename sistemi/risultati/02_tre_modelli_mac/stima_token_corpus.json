@@ -1,0 +1,105 @@
+{
+  "dataset_url": "https://huggingface.co/datasets/roneneldan/TinyStories/resolve/f54c09fd23315a6f9c86f9dc80f725de7d8f9c64/TinyStories-train.txt",
+  "file_bytes": 1924281556,
+  "range_bytes": 262144,
+  "samples": [
+    {
+      "offset": 60002726,
+      "sample_sha256": "655a1717b71c098e9c232c8d6f6dd6bb006e5213b4fba6bafa0d33272dc07c67",
+      "counted_bytes": 261152,
+      "bpe_tokens": 65580
+    },
+    {
+      "offset": 180270323,
+      "sample_sha256": "1160bd4f33d6a7df36205ee5020ebcf7f8d496834aec579568f1b579fff21bf2",
+      "counted_bytes": 261376,
+      "bpe_tokens": 61150
+    },
+    {
+      "offset": 300537921,
+      "sample_sha256": "64814bf6541af1b62270f32b0ccc7c33c0e311215efff7ddb31e6ff923c4a407",
+      "counted_bytes": 261324,
+      "bpe_tokens": 62426
+    },
+    {
+      "offset": 420805518,
+      "sample_sha256": "e724b6f043771cc3bb76543bd4f7f4b9750e629afe5f3e27b950a3828c3ca0d1",
+      "counted_bytes": 260881,
+      "bpe_tokens": 62763
+    },
+    {
+      "offset": 541073115,
+      "sample_sha256": "3ee949e9ee72b6e4da37fb23e6d582c04b1fec7dabe683581ff93ed950465715",
+      "counted_bytes": 260639,
+      "bpe_tokens": 65501
+    },
+    {
+      "offset": 661340712,
+      "sample_sha256": "10a65bfbb671947dce395fdff46401b830300865d950c7fd53b6c84fd678254f",
+      "counted_bytes": 260864,
+      "bpe_tokens": 66680
+    },
+    {
+      "offset": 781608310,
+      "sample_sha256": "4c4e28cb564621416e49541d4c1a23e541cdcc236f5dfea20103237bc09e1f1a",
+      "counted_bytes": 261202,
+      "bpe_tokens": 63453
+    },
+    {
+      "offset": 901875907,
+      "sample_sha256": "9e794bde253c1b686af78f657ba9a47f5cdc00ed0f705d47ba6ed29ac2ab0a21",
+      "counted_bytes": 260339,
+      "bpe_tokens": 65304
+    },
+    {
+      "offset": 1022143504,
+      "sample_sha256": "6999c4bc5b3c76e432b5ab8c1ebf66b2071383ba59f64476fa442af763e1b3c9",
+      "counted_bytes": 261382,
+      "bpe_tokens": 66030
+    },
+    {
+      "offset": 1142411101,
+      "sample_sha256": "0768b6a3a9568473a2fed02a23c68261f88bd6e92a57702718955b0c6c558ad7",
+      "counted_bytes": 259961,
+      "bpe_tokens": 64601
+    },
+    {
+      "offset": 1262678699,
+      "sample_sha256": "dadf572e1a463c6b989a653026b9453cf044b22aae23476e06a0d349277e7706",
+      "counted_bytes": 260139,
+      "bpe_tokens": 64839
+    },
+    {
+      "offset": 1382946296,
+      "sample_sha256": "c095a219da8c89a010750175d91efcad044c59f9efb225ff97092d9e0bf8bc95",
+      "counted_bytes": 259810,
+      "bpe_tokens": 64388
+    },
+    {
+      "offset": 1503213893,
+      "sample_sha256": "f62d0898d3d17a8ccf6bb74b5d1784c376e2df57366b82fa935e180133242f36",
+      "counted_bytes": 261456,
+      "bpe_tokens": 64817
+    },
+    {
+      "offset": 1623481490,
+      "sample_sha256": "273de0fe6c3fa8294cd02a4db0a55e1d9c6b15973c265a7db9c2106a77962b6f",
+      "counted_bytes": 260988,
+      "bpe_tokens": 64967
+    },
+    {
+      "offset": 1743749088,
+      "sample_sha256": "1c5a2455ee452cf13a978aa6fee5670b0578eb7f8e8364c7a5d3b5ddd8d1b74b",
+      "counted_bytes": 261089,
+      "bpe_tokens": 63344
+    },
+    {
+      "offset": 1864016685,
+      "sample_sha256": "8d13f27615f98433cb05db846e3a8553a49b81c087ae73dbc00491b87306bb84",
+      "counted_bytes": 259952,
+      "bpe_tokens": 65022
+    }
+  ],
+  "approx_tokens_per_pass_released_bpe": 475410146,
+  "approx_tokens_for_20_passes_released_bpe": 9508202920
+}

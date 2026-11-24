@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T180",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sarah scivola sullo scivolo ghiacciato: coerente."
+  },
+  {
+   "id": "T181",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Recitano come una collina\" e corrono: gioco vago, trama minima."
+  },
+  {
+   "id": "T182",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il litigio con l'uccello dall'ala opaca resta immotivato, frasi molto ripetute."
+  },
+  {
+   "id": "T183",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Il papà porta \"Sammy\" in garage invece di Tommy; resto coerente."
+  },
+  {
+   "id": "T184",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Ha paura di toccare le bacche ma non vuole condividerle; le mettono in un buco dell'albero: incoerente."
+  },
+  {
+   "id": "T185",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La mamma dà a Gina una ciotola di latte caldo: coerente."
+  },
+  {
+   "id": "T186",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Spot aiuta Lucy a ritrovare la cravatta: coerente."
+  },
+  {
+   "id": "T187",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Le manca la casa e \"le manca il vento\"; \"il vento non poteva più essere triste\": scollegato."
+  },
+  {
+   "id": "T188",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il dialogo col papà sul \"buon sportivo\" non porta a nulla: trama debole."
+  },
+  {
+   "id": "T189",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Fin e Carl trovano una squama lucente: coerente."
+  },
+  {
+   "id": "T190",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Alex porta Bob al parco col permesso dei genitori: coerente."
+  },
+  {
+   "id": "T191",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily gioca al parco con il cane parlante: coerente."
+  },
+  {
+   "id": "T192",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Henry scopre di poter rimpicciolire i mattoncini e subito non ci riesce: contraddizione."
+  },
+  {
+   "id": "T193",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La fata chiede aiuto, poi dice \"ti aiuto io\" e Lisa la ringrazia: ruoli invertiti."
+  },
+  {
+   "id": "T194",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim gioca a baseball finché piove e la mamma lo consola: coerente."
+  },
+  {
+   "id": "T195",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Nuotava con le braccia fuori dalle mani\", il camion spaventa: dettagli confusi."
+  },
+  {
+   "id": "T196",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il gatto prova ad aprire la scatola più volte e \"torna a casa nella scatola\": ripetitivo."
+  },
+  {
+   "id": "T197",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sally esplora il fienile e torna a casa con la mamma: coerente."
+  },
+  {
+   "id": "T198",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Prese in braccio il cavallo e lo portò a casa\", hot dog alla stalla: incoerente."
+  },
+  {
+   "id": "T199",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue e Tom salutano la statua e il cane amichevole: coerente."
+  },
+  {
+   "id": "T200",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Posso allungare la rosa?\", \"stese la rosa sul terreno\": azioni senza senso."
+  },
+  {
+   "id": "T201",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 6,
+   "category": "P",
+   "reason": "La punta si rompe in due e poi \"ci giocarono insieme\": contraddizione."
+  },
+  {
+   "id": "T202",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'uccello prova a stare in equilibrio sui rami di continuo: trama ripetitiva."
+  },
+  {
+   "id": "T203",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il custode è cattivo e decidono di \"aiutarlo\"; \"trasformare lo stagno in barca\": incoerente."
+  },
+  {
+   "id": "T204",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Sally dice \"mi piace la tua mela\" (è sua), Tim diventa \"il bambino\": confuso."
+  },
+  {
+   "id": "T205",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "\"L'albero ti cerca\", l'uccello lo raggiunge e Jack sparisce: eventi incomprensibili."
+  },
+  {
+   "id": "T206",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Henry e l'uccello trovano mattoni e costruiscono: coerente."
+  },
+  {
+   "id": "T207",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Ben scappa con le ciliegie verso il divano, \"troppo indietro rispetto a lei\": confuso."
+  },
+  {
+   "id": "T208",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "L'orso condivide i mirtilli con il topo affamato: coerente."
+  },
+  {
+   "id": "T209",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il pompiere salva l'uccello e diventano amici: coerente."
+  }
+ ]
+}

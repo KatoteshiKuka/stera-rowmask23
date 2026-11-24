@@ -1,0 +1,95 @@
+Ridurre l'ingombro delle reti neurali è un problema studiato da molto tempo, e le soluzioni proposte sono numerose. In questo capitolo le raggruppiamo secondo il momento in cui intervengono e il tipo di struttura che impongono ai pesi. Lo scopo è duplice: dare un quadro dello stato dell'arte e mostrare in quale punto di questo quadro si colloca la famiglia RowMask23.
+
+Una distinzione è utile fin dall'inizio. Alcune tecniche agiscono \emph{dopo} l'addestramento: prendono una rete densa già pronta e ne riducono la dimensione, accettando una perdita di qualità che poi cercano di contenere. Altre agiscono \emph{prima}: scelgono una famiglia di matrici ridotta e addestrano la rete dentro quella famiglia. La quantizzazione post-addestramento e la potatura appartengono soprattutto alla prima categoria; le matrici strutturate, a cui appartiene il nostro lavoro, alla seconda.
+
+\section{Potatura}
+
+La potatura (\emph{pruning}) elimina i pesi ritenuti meno importanti, di solito quelli di valore assoluto più piccolo. Han, Mao e Dally \cite{han2016deep} hanno mostrato che combinando potatura, quantizzazione e codifica di Huffman si possono ridurre di decine di volte le reti convoluzionali dell'epoca senza perdita di accuratezza. L'ipotesi del biglietto della lotteria \cite{frankle2019lottery} ha poi suggerito che dentro una rete densa esistano sottoreti sparse che, addestrate da sole a partire dalla stessa inizializzazione, raggiungono la qualità della rete intera.
+
+Per i modelli linguistici di grandi dimensioni, SparseGPT \cite{frantar2023sparsegpt} riesce a rimuovere metà dei pesi in un solo passaggio, usando un'approssimazione del secondo ordine per correggere i pesi rimasti. La potatura ha però un limite pratico. Una sparsità non strutturata, in cui i pesi eliminati sono sparsi a caso, si traduce difficilmente in un guadagno di velocità sulle GPU: bisogna memorizzare anche gli indici delle posizioni non nulle e i kernel sparsi sono meno efficienti di quelli densi. Per ottenere benefici concreti servono schemi regolari, come la sparsità due-su-quattro supportata da alcune generazioni di hardware NVIDIA, che a loro volta limitano il rapporto di compressione.
+
+\section{Quantizzazione}
+
+La quantizzazione riduce il numero di bit usati per rappresentare ciascun peso. Il passaggio da 32 a 16 bit è ormai la norma; quello a 8 o 4 bit è la tecnica più usata per eseguire modelli linguistici su hardware limitato. Una panoramica dei metodi si trova in \cite{gholami2022survey}.
+
+\subsection{Dopo l'addestramento}
+
+La forma più semplice associa a ogni gruppo di pesi un fattore di scala e arrotonda ogni peso all'intero più vicino nella griglia così definita. Jacob e colleghi \cite{jacob2018quantization} hanno descritto come eseguire reti interamente in aritmetica intera. Nei modelli linguistici grandi, però, la quantizzazione ingenua incontra un problema: alcune dimensioni delle attivazioni assumono valori molto più grandi delle altre (\emph{outlier}), e arrotondarle con la stessa scala distrugge l'informazione. LLM.int8() \cite{dettmers2022llmint8} isola queste dimensioni e le tratta in precisione piena. GPTQ \cite{frantar2023gptq} quantizza una colonna alla volta e corregge le colonne successive per compensare l'errore introdotto, arrivando a 3--4 bit per peso. AWQ \cite{lin2024awq} osserva che una piccola frazione di canali è molto più importante delle altre e li protegge scalandoli prima della quantizzazione.
+
+\subsection{Rotazioni di Hadamard}
+
+Una linea di lavoro recente è particolarmente vicina al nostro. QuIP\# \cite{tseng2024quipsharp} e QuaRot \cite{ashkboos2024quarot} moltiplicano i pesi e le attivazioni per una matrice di Hadamard casualizzata prima di quantizzarli. Poiché la matrice di Hadamard è ortogonale, la rotazione non cambia il risultato del prodotto; però distribuisce l'energia in modo uniforme sulle componenti ed elimina gli outlier, rendendo la quantizzazione molto più precisa. In questi metodi la trasformata di Walsh--Hadamard è uno strumento per \emph{preparare} i pesi alla quantizzazione. In RowMask23 la stessa trasformata ha un ruolo diverso: è il modo naturale di calcolare il prodotto con la parte strutturata della matrice.
+
+\subsection{Durante l'addestramento}
+
+L'addestramento consapevole della quantizzazione (\emph{quantization-aware training}) simula l'arrotondamento durante il passo in avanti. Poiché la funzione di arrotondamento ha derivata nulla quasi ovunque, nel passo all'indietro la si sostituisce con l'identità, secondo lo \emph{straight-through estimator} \cite{bengio2013estimating}. BitNet \cite{wang2023bitnet} spinge questa idea all'estremo, addestrando da zero Transformer con pesi a un solo bit. Questi metodi mostrano che addestrare una rete dentro un insieme ristretto di pesi è possibile, se l'ottimizzazione tiene conto del vincolo fin dall'inizio.
+
+La quantizzazione e la struttura non sono alternative. La prima riduce i bit per valore, la seconda il numero di valori; i due rapporti si moltiplicano. Nel nostro lavoro teniamo separati i due aspetti e misuriamo il secondo a parità del primo.
+
+\section{Fattorizzazioni a basso rango}
+
+Una matrice $W\in\mathbb{R}^{m\times n}$ di rango $r$ si può scrivere come prodotto $UV^\top$ con $U\in\mathbb{R}^{m\times r}$ e $V\in\mathbb{R}^{n\times r}$, che richiede $r(m+n)$ valori invece di $mn$. Denil e colleghi \cite{denil2013predicting} hanno osservato che nelle reti neurali molti pesi sono prevedibili a partire da pochi altri, e che una parametrizzazione a basso rango ne conserva gran parte della capacità.
+
+Oggi la fattorizzazione a basso rango è usata soprattutto per l'adattamento: LoRA \cite{hu2022lora} congela i pesi di un modello preaddestrato e addestra solo una correzione $\Delta W = BA$ di rango piccolo. Per costruire un modello da zero la fattorizzazione ha un difetto: limita il rango della matrice, e quindi la dimensione dello spazio in cui la trasformazione può agire. Una matrice di rango 16 in uno spazio di dimensione 512 ignora completamente 496 direzioni dell'ingresso. Come vedremo, le matrici RowMask23 non hanno questo vincolo: pur avendo pochi gradi di libertà, sono in generale a rango pieno.
+
+Una generalizzazione della fattorizzazione è la decomposizione in \emph{tensor train} \cite{novikov2015tensorizing}, che reinterpreta una matrice come tensore a più indici e la scompone in una catena di tensori piccoli. Si ottengono compressioni molto elevate, al prezzo di un calcolo più complesso.
+
+\section{Condivisione dei pesi}
+
+Un'altra strada consiste nel far condividere lo stesso valore a più posizioni della matrice. Le \emph{HashedNets} \cite{chen2015compressing} assegnano ogni posizione a uno tra pochi valori tramite una funzione di hash: la matrice ha un numero arbitrario di elementi ma solo un numero fissato di parametri liberi. La rete si addestra normalmente; il gradiente di ogni parametro condiviso è la somma dei gradienti delle posizioni che lo usano. RowMask23 condivide i valori in modo simile, ma la regola di condivisione non è casuale: segue lo XOR degli indici, e proprio questa regolarità permette di calcolare il prodotto in modo veloce.
+
+\section{Matrici strutturate}
+
+Le matrici strutturate sono famiglie di matrici descritte da pochi parametri e dotate di un algoritmo di moltiplicazione più veloce di quello generale. Sono il filone a cui il nostro lavoro appartiene più direttamente.
+
+\subsection{Matrici circolanti e trasformate veloci}
+
+Una matrice circolante è definita dalla sua prima riga; ogni riga successiva è la precedente spostata di una posizione. Il prodotto con un vettore è una convoluzione circolare e si calcola con la trasformata di Fourier veloce in $O(n\log n)$ operazioni. Cheng e colleghi \cite{cheng2015exploration} hanno sostituito gli strati densi di una rete convoluzionale con proiezioni circolanti, ottenendo forti riduzioni dei parametri con perdite modeste. Sindhwani, Sainath e Kumar \cite{sindhwani2015structured} hanno studiato famiglie più ampie, a basso rango di spostamento, che comprendono matrici di Toeplitz e di Vandermonde.
+
+Le \emph{Deep Fried Convnets} \cite{yang2015deep} e il successivo strato ACDC \cite{moczulski2016acdc} compongono matrici diagonali apprese con trasformate fisse (Fourier, coseno, Hadamard). Ogni fattore è economico; la loro composizione può approssimare trasformazioni generali. Queste architetture mostrano un'idea che ritroveremo: una trasformata fissa e veloce, combinata con pochi parametri liberi, dà una famiglia espressiva a basso costo.
+
+\subsection{Butterfly e Monarch}
+
+Dao e colleghi \cite{dao2019learning} hanno osservato che molte trasformate veloci (Fourier, Hadamard, coseno) si scrivono come prodotto di $\log n$ matrici sparse a ``farfalla'', e hanno proposto di \emph{apprendere} i valori di questi fattori. Le matrici Butterfly risultanti hanno $O(n\log n)$ parametri e possono rappresentare esattamente molte trasformate note. Le matrici Monarch \cite{dao2022monarch} semplificano la struttura: sono il prodotto di due matrici diagonali a blocchi intervallate da permutazioni. Sono espressive, si moltiplicano con kernel densi a blocchi già ottimizzati e sono state usate per addestrare da zero Transformer e per accelerare l'addestramento di modelli noti.
+
+Qiu e colleghi \cite{qiu2024compute} hanno confrontato in modo sistematico diverse famiglie strutturate come sostitute degli strati densi, studiando come varia la loro efficienza al crescere del calcolo. La loro conclusione è che la struttura giusta può dare modelli migliori a parità di calcolo, ma che il vantaggio dipende molto da come si scalano gli iperparametri. È un risultato che invita a confronti accurati, a parità di dati e di budget, che indichiamo fra gli sviluppi futuri di questo lavoro.
+
+\section{Esecuzione con memoria limitata}
+
+Indipendentemente dal formato dei pesi, esiste una letteratura su come eseguire un modello quando la memoria non basta. FlexGen \cite{sheng2023flexgen} distribuisce pesi, attivazioni e cache tra GPU, memoria centrale e disco, e sceglie la politica di trasferimento risolvendo un problema di ottimizzazione; è pensato per l'elaborazione a lotti, dove il costo di lettura si ammortizza su molte sequenze. Alizadeh e colleghi \cite{alizadeh2024llm} si concentrano invece sui dispositivi personali e sfruttano la sparsità delle attivazioni per leggere dalla memoria flash solo le righe di pesi che serviranno. ZeRO-Infinity \cite{rajbhandari2021zero} estende la stessa idea all'addestramento, spostando parametri e stati dell'ottimizzatore fra GPU, memoria centrale e unità NVMe. PowerInfer \cite{song2023powerinfer} osserva che pochi neuroni sono attivati frequentemente e li mantiene residenti sulla GPU, lasciando gli altri sulla CPU. Gli strumenti di inferenza locale, come llama.cpp, mappano invece il file dei pesi in memoria virtuale e lasciano al sistema operativo il caricamento e lo scarto delle pagine. PagedAttention \cite{kwon2023efficient} gestisce la cache delle chiavi e dei valori come la memoria virtuale di un sistema operativo, riducendone lo spreco.
+
+Tutti questi lavori trattano il formato dei pesi come un dato. Un formato più compatto, come quello che proponiamo, è complementare: riduce il numero di byte da spostare e quindi rende più efficace qualunque politica di trasferimento.
+
+\section{Valutare i modelli piccoli}
+
+Valutare un modello linguistico piccolo è difficile perché le metriche standard, pensate per modelli grandi, danno risultati vicini al caso. Eldan e Li \cite{eldan2023tinystories} hanno risolto il problema costruendo un dominio su misura, TinyStories, e un protocollo di valutazione basato su un modello grande che legge le storie generate e assegna un voto da 1 a 10 a grammatica, coerenza, creatività e aderenza alla trama. Con questo protocollo hanno mostrato che modelli da pochi milioni di parametri, addestrati sul loro corpus, producono storie che modelli molto più grandi addestrati su testo generico non riescono a scrivere.
+
+L'uso di un modello linguistico come giudice è stato poi studiato in generale da Zheng e colleghi \cite{zheng2023judging}, che hanno misurato l'accordo tra giudici automatici e umani e hanno documentato alcune distorsioni, come la preferenza per la prima risposta presentata o per le risposte più lunghe. Queste distorsioni si riducono rendendo il giudizio cieco, presentando i testi in ordine casuale e valutando ogni testo in isolamento, con una rubrica fissata prima della generazione: è il protocollo che adottiamo nel Capitolo~\ref{cap:capitoli/05-metodologia}.
+
+\section{Dove si colloca RowMask23}
+
+La Tabella~\ref{tab:posizionamento} riassume le principali famiglie discusse e le confronta con la nostra proposta lungo quattro assi: quando intervengono, se limitano il rango della matrice, se esiste un prodotto veloce che non ricostruisce la matrice, e se il rapporto di compressione è fissato dalla struttura.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabularx}{\linewidth}{Xcccc}
+\toprule
+Famiglia & Fase & Rango limitato & Prodotto veloce & Rapporto fisso \\
+\midrule
+Potatura non strutturata & dopo & no & no & no \\
+Quantizzazione & dopo / durante & no & sì (interi) & sì (bit) \\
+Basso rango ($UV^\top$) & durante & sì & sì & sì \\
+HashedNets & durante & no & no & sì \\
+Circolanti, ACDC & durante & no & sì (FFT) & sì \\
+Butterfly, Monarch & durante & no & sì & sì \\
+\textbf{RowMask23} & \textbf{durante} & \textbf{no} & \textbf{sì (WHT)} & \textbf{sì (19,4\% per blocco)} \\
+\bottomrule
+\end{tabularx}
+\caption{Confronto qualitativo tra le principali famiglie di compressione dei pesi.}
+\label{tab:posizionamento}
+\end{table}
+
+RowMask23 condivide con le matrici circolanti l'idea di una componente costante lungo ``diagonali generalizzate'', sostituendo lo spostamento ciclico con lo XOR degli indici; con HashedNets condivide la condivisione dei valori e l'addestramento diretto dei parametri condivisi; con ACDC e con QuIP\# condivide l'uso della trasformata di Walsh--Hadamard. Se ne distingue per due aspetti. Il primo è l'aggiunta di correzioni libere per ogni riga, in numero fisso e in posizioni deterministiche, che danno alla matrice una flessibilità che la parte XOR da sola non avrebbe. Il secondo è che la stessa rappresentazione serve a tutte le fasi: il modello viene addestrato da zero direttamente sulle coordinate, i pesi vengono memorizzati come coordinate e, in inferenza, la matrice può essere applicata senza essere ricostruita.
+
+Nel prossimo capitolo definiamo la famiglia in modo formale.

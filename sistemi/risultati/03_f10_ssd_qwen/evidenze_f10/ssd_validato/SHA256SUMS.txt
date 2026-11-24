@@ -1,0 +1,2 @@
+8b69897b666ca20b32b7000b4d595ea3511aa95d14e45b438c6dda4a0d97984a  evidenze_f10/ssd_validato/bench_ssd_f10.py
+0d3c92002510b6e8bbf918babb5fb52673808d23a305f694e9271356459e8074  evidenze_f10/ssd_validato/ssd_validato.json

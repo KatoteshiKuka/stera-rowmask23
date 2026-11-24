@@ -1,0 +1,42 @@
+{
+  "schema": "STERA_TS68_ALL_GPT4_TRAIN_CONTENT_SPLIT_V1",
+  "source": "/Users/andreanardoni/Desktop/stera/Experiments/STERA_V3_NEXTGEN_20261115/kaggle_export_20261115/local_extended_v3_100_120_140m/science_diagnosis_20261116/official_gpt4_v2_20261116/TinyStoriesV2-GPT4-train.official.txt",
+  "source_sha256": "6418d412de72888f52b5142c761ac21a582f7d1166f0bfbdb5f03ccfdec90443",
+  "tokenizer": "/Users/andreanardoni/Documents/ChatGPT/TESIANDREA/experiments/official_tinystories33m_reserved300/model/tokenizer.json",
+  "tokenizer_sha256": "f6ed3d307010c244c22aeffbde05f419cf277c23e64cf98b673cac5449cfeff5",
+  "vocab": 50257,
+  "eos": 50256,
+  "bos": 50256,
+  "seed": 20261117,
+  "pack_sha256": "5ae58177e37ddc66f22bc5ac26c73b82d9b7b2702a1871a5cbfd517c1ae39066",
+  "index_sha256": "bbadffc0b26a2dcf13c396691880e9655a8646212356317c95a96e8d70c69774",
+  "stories": 2717495,
+  "blocks": 10616,
+  "split_stories": [
+    2660865,
+    29279,
+    27351
+  ],
+  "split_target_tokens": [
+    530189191,
+    5838521,
+    5441693
+  ],
+  "split_names": [
+    "TRAIN",
+    "VALIDATION",
+    "TEST"
+  ],
+  "split_policy": "content normalized whitespace/lowercase SHA256 modulo10000: <100 TEST,<200 VAL,else TRAIN; reserved2000 content groups forced VAL",
+  "duplicate_occurrences": 1,
+  "duplicate_groups_always_same_split": true,
+  "reserved_content_groups": 2000,
+  "full_source_used": true,
+  "no_narrative_quality_selection": true,
+  "no_story_length_truncation": true,
+  "index_format": "24 bytes little-endian QIIII: block byte offset,token offset,token length,source byte offset,split",
+  "block_format": "uint32 compressed bytes,uint32 raw bytes,zlib uint16 token sequence",
+  "test_used_for_gradient": false,
+  "official_sealed_test_opened": false,
+  "elapsed_s": 637.486871125
+}

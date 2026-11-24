@@ -1,0 +1,22 @@
+# Pesi e dati pesanti: non versionati (impronte SHA in docs/ARTEFATTI.md)
+pesi/*
+!pesi/LEGGIMI.md
+sistemi/modelli/*.npz
+sistemi/modelli/*.safetensors
+sistemi/modelli/TinyStories/
+esterni/
+sistemi/runs/
+# File di compilazione LaTeX e cache
+tesi/*.aux
+tesi/*.log
+tesi/*.toc
+tesi/*.lof
+tesi/*.lot
+tesi/*.out
+tesi/*.bbl
+tesi/*.blg
+tesi/main.pdf
+__pycache__/
+*.pyc
+.DS_Store
+.venv*/

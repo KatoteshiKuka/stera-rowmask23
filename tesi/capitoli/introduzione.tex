@@ -1,0 +1,27 @@
+La diffusione dei modelli linguistici basati su Transformer rende centrale il costo dei loro pesi. Durante la generazione autoregressiva, i coefficienti delle proiezioni lineari devono essere disponibili a ogni nuovo token: il numero di parametri determina quindi una parte rilevante della memoria richiesta e del traffico fra memoria e unità di calcolo. Quando un modello supera la memoria disponibile, i suoi pesi devono essere trasferiti dal disco durante l'esecuzione, e il tempo di generazione diventa dominato dalla quantità di byte da leggere.
+
+La presente tesi propone e valuta una \emph{parametrizzazione strutturata dei pesi} per le proiezioni lineari dei modelli linguistici Transformer. L'obiettivo è definire una rappresentazione delle matrici che sia usata direttamente durante l'addestramento, che riduca i byte necessari per memorizzare il modello e che possa essere applicata in inferenza senza ricostruire le matrici dense. Il lavoro non introduce una nuova famiglia di architetture neurali: mantiene la struttura del Transformer autoregressivo e interviene sulla rappresentazione dei coefficienti delle sue proiezioni.
+
+Il sistema sperimentale prende il nome di \textbf{STERA}, acronimo di \emph{Structured Training, Execution and Reconstruction Architecture}. Il termine \emph{Architecture} descrive l'organizzazione delle procedure di addestramento, esecuzione e ricostruzione associate alla parametrizzazione, non un'alternativa all'architettura Transformer. Il contributo matematico centrale è \emph{RowMask23}, una famiglia di blocchi $128\times128$ determinati da \num{3176} coordinate anziché da \num{16384} coefficienti indipendenti. La diagonale dispone di valori liberi; fuori diagonale, l'operazione XOR fra gli indici seleziona una base condivisa e una maschera fissa individua le posizioni di 23 correzioni per riga. La parte XOR si applica a un vettore mediante la trasformata di Walsh--Hadamard. Nel modello completo, le matrici combinano i blocchi con scale, guadagni per riga e per colonna e un termine aggiuntivo a basso rango.
+
+Il modello linguistico addestrato e valutato è \textbf{STERA 30M}: un Transformer a sei strati, con dimensione nascosta 768, 16 teste di attenzione e feed-forward di dimensione \num{3072}, le cui proiezioni sono rappresentate con RowMask23. Il modello conta \num{30346182} parametri allenabili, che determinano \num{82721280} valori nella rappresentazione densa equivalente. È stato addestrato da zero sul corpus TinyStories per \num{122000} aggiornamenti, pari a \num{1529514422} token bersaglio.
+
+\section*{Ipotesi}
+
+La tesi verifica quattro ipotesi.
+\begin{enumerate}
+\item[\textbf{H1}] \textbf{Apprendimento.} Un Transformer le cui proiezioni sono vincolate a RowMask23 apprende regolarità linguistiche che generalizzano a testi esclusi dall'addestramento.
+\item[\textbf{H2}] \textbf{Rappresentazione.} La parametrizzazione riduce i byte necessari per rappresentare i pesi, rispetto alla propria espansione densa e a modelli densi del dominio.
+\item[\textbf{H3}] \textbf{Inferenza.} Applicando le proiezioni direttamente alle coordinate, la generazione è più rapida che con le matrici dense equivalenti, a parità di pesi.
+\item[\textbf{H4}] \textbf{Qualità narrativa.} Il modello genera racconti di qualità confrontabile con quella di modelli densi pubblici dello stesso dominio.
+\end{enumerate}
+
+\section*{Risultati principali}
+
+Sui 300 racconti TEST, STERA 30M ottiene una NLL di $1{,}174$ nat per token, inferiore a quella di TinyStories-8M ($1{,}515$) e di TinyStories-33M ($1{,}324$), due checkpoint pubblici che contano rispettivamente \num{19702528} e \num{68514048} parametri. In una valutazione cieca delle continuazioni generate per gli stessi 300 incipit, STERA 30M produce racconti corretti nel 44,0\% dei casi, contro il 21,7\% di TinyStories-8M e il 48,3\% di TinyStories-33M: la differenza rispetto al modello piccolo è ampia e significativa, quella rispetto al modello più grande non è significativa.
+
+I pesi compatti di STERA 30M occupano 121,385~MB in FP32, il 63,3\% in meno della loro espansione densa e il 55,7\% in meno di TinyStories-33M; con le sole coordinate RowMask23 quantizzate a INT8 il payload scende a 74,241~MB. Sullo stesso modello, il motore che applica le proiezioni direttamente alle coordinate produce gli stessi token del motore con matrici dense e riduce del 26,9\% il tempo mediano per token in decode. A scala maggiore, la rappresentazione compatta permette di mantenere interamente in memoria su un dispositivo da 16~GiB un modello la cui forma densa richiederebbe il trasferimento dei pesi dal disco.
+
+\section*{Organizzazione del testo}
+
+Il Capitolo~1 presenta il contesto e le motivazioni. Il Capitolo~2 richiama i fondamenti teorici: modelli autoregressivi, Transformer, addestramento, generazione e trasferimento dei pesi fra memoria e disco. Il Capitolo~3 discute lo stato dell'arte sulla compressione dei modelli, sulle matrici strutturate e sull'esecuzione con memoria limitata. Il Capitolo~4 definisce RowMask23 e ne dimostra le proprietà. Il Capitolo~5 descrive STERA 30M e il suo addestramento. Il Capitolo~6 presenta la metodologia di validazione, il Capitolo~7 i risultati su apprendimento e qualità dei racconti e il Capitolo~8 quelli su memoria e tempi di esecuzione. Le conclusioni riassumono l'esito delle ipotesi, i limiti del lavoro e gli sviluppi futuri.

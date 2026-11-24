@@ -1,0 +1,131 @@
+# Riproduzione completa
+
+Questa guida porta da zero ai numeri della tesi. Ogni passo indica cosa produce e come verificarlo.
+I file pesanti vanno in una cartella `esterni/` (ignorata da git) nella radice del repository.
+
+## 0. Ambiente
+
+| Parte | Hardware usato nella tesi | Software |
+|---|---|---|
+| Preparazione dati, addestramento, valutazione | server con 2 × NVIDIA P100 16 GB, Slurm | Python 3.12, PyTorch, tokenizers 0.20, transformers 4.46 (`requisiti_addestramento.txt`) |
+| Valutazione di TinyStories-8M, statistiche, figure | Mac con Apple M1, 16 GB | Python 3.9+, PyTorch 2.8 su CPU |
+| Misure di sistema | Mac con Apple M1, 16 GB | Python 3.11, MLX 0.32.4 (`requisiti_sistemi.txt`) |
+| Tesi | qualunque | [Tectonic](https://tectonic-typesetting.github.io) |
+
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install -r requisiti_addestramento.txt
+```
+
+## 1. Dati
+
+Scaricare il corpus e il tokenizer alle revisioni usate nella tesi:
+
+```bash
+mkdir -p esterni
+curl -L -o esterni/TinyStoriesV2-GPT4-train.txt \
+  https://huggingface.co/datasets/roneneldan/TinyStories/resolve/f54c09fd23315a6f9c86f9dc80f725de7d8f9c64/TinyStoriesV2-GPT4-train.txt
+curl -L -o esterni/tokenizer.json \
+  https://huggingface.co/roneneldan/TinyStories-33M/resolve/2ad0a164221b7c4d21cac7c46aec74f6f98dbfc8/tokenizer.json
+shasum -a 256 esterni/TinyStoriesV2-GPT4-train.txt esterni/tokenizer.json
+```
+
+Le impronte attese sono `6418d412…dec90443` (corpus, 2.227.753.162 byte) e `f6ed3d30…cfeff5` (tokenizer).
+
+Tokenizzazione e split:
+
+```bash
+export STERA_CORPUS=esterni/TinyStoriesV2-GPT4-train.txt
+export STERA_TOKENIZER=esterni/tokenizer.json
+export STERA_DATI=esterni/corpus_tokenizzato
+python addestramento/prepara_dati.py
+```
+
+Lo script assegna ogni racconto a TRAIN, DEV o TEST in base all'hash SHA-256 del testo normalizzato (spazi uniformati, minuscole), modulo 10.000: valori 0–99 a TEST, 100–199 a DEV, il resto a TRAIN. I 2.000 racconti di `addestramento/dati/racconti_riservati_dev_2000.jsonl` sono forzati in DEV. Racconti identici finiscono sempre nella stessa partizione.
+
+**Verifica:** `esterni/corpus_tokenizzato/MANIFEST.json` deve coincidere con `addestramento/dati/MANIFEST_DATI.json` nei campi `pack_sha256` (`5ae58177…`), `index_sha256` (`bbadffc0…`), `split_stories` (2.660.865 / 29.279 / 27.351) e `split_target_tokens`. Il file `CONTRACT` deve coincidere con `addestramento/dati/CONTRACT`.
+
+## 2. Addestramento di STERA 30M
+
+```bash
+export STERA_RUN=esterni/checkpoint
+sbatch addestramento/addestra_stera30m.sh        # oppure: bash addestramento/addestra_stera30m.sh
+```
+
+Configurazione: 6 strati, guadagni per riga e colonna, termine a basso rango 96; lotti da 64 sequenze di al più 512 token, AdamW ($\beta_1=0{,}9$, $\beta_2=0{,}95$, decadimento 0,1), tasso di apprendimento con warmup di 300 passi fino a $6\cdot10^{-4}$, costante fino al passo 64.000, discesa lineare fino a $6\cdot10^{-5}$ al passo 80.000 e poi costante. Un checkpoint completo (pesi, momenti di Adam, cursore dei dati) è salvato ogni 2.000 passi; lo script riprende dall'ultimo se viene rilanciato.
+
+Tempo indicativo: circa 12.000 token/s su due P100, cioè circa 35 ore per 122.000 aggiornamenti. La corsa della tesi è stata eseguita in tre job consecutivi dello stesso script.
+
+**Verifica:** le righe `VAL` del log devono seguire `addestramento/log_addestramento_0_122k.txt` (NLL DEV 10,928 al passo 0, 1,172 a 80.000, 1,152 a 122.000). Il checkpoint finale della tesi ha impronta `418becfb…6ed0887`.
+
+## 3. Incipit di prova
+
+Il file `valutazione/protocollo/incipit_test300.json` è già nel repository (SHA-256 `95bcffdb…032ec`). Per rigenerarlo:
+
+```bash
+python valutazione/protocollo/seleziona_incipit.py     # usa STERA_DATI e STERA_TOKENIZER
+```
+
+## 4. NLL e generazione dei tre modelli
+
+Scaricare i due riferimenti in `esterni/` alle revisioni indicate in `sistemi/modelli/manifest_tinystories.json` (8M: `8612e3b1…`, 33M: `2ad0a164…`), per esempio con `huggingface-cli download roneneldan/TinyStories-33M --revision 2ad0a164… --local-dir esterni/TinyStories-33M`.
+
+```bash
+cd valutazione/protocollo
+python valuta_modello.py stera30m --checkpoint ../../esterni/checkpoint/TS68V2_STEP122000.ckpt.gz \
+       --tokenizer ../../esterni/tokenizer.json --device cuda --out stera30m.jsonl
+python valuta_modello.py hf --modello ../../esterni/TinyStories-33M --device cuda --out tinystories33m.jsonl
+python valuta_modello.py hf --modello ../../esterni/TinyStories-8M  --device cpu  --out tinystories8m.jsonl
+```
+
+Lo stesso script calcola la NLL dei 300 racconti di riferimento (57.841 token bersaglio) e genera una continuazione per incipit con top-$k$ 40, temperatura 0,75, al più 180 nuovi token. Il generatore casuale è su CPU con il seme dell'incipit, quindi le continuazioni non dipendono dal dispositivo.
+
+**Verifica:** le continuazioni coincidono token per token con quelle in `valutazione/generazioni/`; lo abbiamo controllato rieseguendo su CPU i primi incipit di STERA 30M e TinyStories-33M, generati originariamente su P100. Le NLL per racconto differiscono di pochi millesimi di nat per effetto degli arrotondamenti.
+
+## 5. Giudizio cieco
+
+```bash
+python valutazione/giudizio_cieco/prepara_insieme_cieco.py
+```
+
+crea `racconti_anonimi_900.json`, i 30 blocchi da 30 testi e `abbinamento_modelli.json`. Il giudice riceve solo i blocchi e `rubrica.txt`; per ogni testo restituisce i voti di grammatica, coerenza e trama (1–10), la categoria S/P/N e una motivazione. Nella tesi il giudice è Claude Opus 5.5, che ha valutato i 900 testi in un'unica sessione senza accesso all'abbinamento; i suoi giudizi sono in `giudizi_blocchi/`.
+
+```bash
+python valutazione/giudizio_cieco/aggrega_e_decodifica.py
+```
+
+verifica che tutti i 900 testi siano stati giudicati in modo coerente con la rubrica, apre l'abbinamento e calcola quote con intervalli di Wilson, differenze appaiate con bootstrap (25.000 repliche), test di McNemar con correzione di Holm e differenze di NLL con bootstrap (10.000 repliche). Il risultato è `valutazione/risultati_3modelli.json`; l'impronta dei giudizi è `40760aca…a5e8ea`.
+
+## 6. Misure di sistema (Mac con Apple Silicon)
+
+I motori in `sistemi/motori/` leggono i pesi da `sistemi/modelli/`:
+
+| File | Contenuto | Come si ottiene |
+|---|---|---|
+| `H80000_fp32_weights.npz` | coordinate e tensori FP32 di STERA 30M | esportazione del checkpoint (`ts68_core.read_native` → `numpy.savez`) |
+| `H80000_int8_weights.npz` | coordinate INT8 per blocco, scale FP32 | stessa esportazione, quantizzazione simmetrica per blocco |
+| `H80000_DENSE_FP32.safetensors` | matrici dense equivalenti | `python sistemi/benchmark/esporta_denso.py` |
+
+Le misure di tempo e memoria sono state eseguite sui pesi del checkpoint a 80.000 aggiornamenti della stessa corsa: forma, numero di parametri e byte sono identici a quelli del checkpoint finale, e i tempi di esecuzione non dipendono dai valori dei pesi.
+
+```bash
+pip install -r requisiti_sistemi.txt
+sh sistemi/benchmark/confronto_appaiato.sh                 # motore compatto vs denso, 6 input appaiati
+sh sistemi/benchmark/TinyStories/esegui_confronto_tesi.sh  # STERA 30M e i due TinyStories su MPS
+```
+
+I risultati della tesi, con i report che li descrivono, sono in `sistemi/risultati/`:
+
+- `01_motore_compatto_vs_denso/`: decode appaiato (−26,9%), attribuzione del tempo per operatore;
+- `02_tre_modelli_mac/`: primo token, decode e picco di memoria dei tre modelli;
+- `03_f10_ssd_qwen/`: prototipo F10 (pesi compatti 4,003 GB contro 18,597 GB densi), lettura validata dall'SSD, Qwen3.5-9B con caricamento degli strati dal disco.
+
+## 7. Figure e tesi
+
+```bash
+cd tesi/scripts_figure
+python fig_pretraining.py && python fig_narrativa.py && python fig_sistemi.py
+cd .. && tectonic -X compile main.tex
+```
+
+Per lavorare sul testo con anteprima automatica: `python tesi/anteprima/server.py` e aprire `http://localhost:8765`.

@@ -1,0 +1,26 @@
+\begin{tikzpicture}[font=\small, >={Latex[length=2mm]},
+  col/.style={draw=steraGrigio, rounded corners=3pt, minimum width=44mm, minimum height=50mm, anchor=north},
+  co/.style={draw=steraBlu, fill=steraBlu!15, minimum width=10mm, minimum height=10mm},
+  de/.style={draw=steraGrigio, fill=steraGrigio!15, minimum width=22mm, minimum height=22mm},
+  tit/.style={font=\bfseries\small, align=center}]
+\foreach \x/\t in {0/{Espansione\\residente}, 46/{Espansione\\al bisogno}, 92/{Prodotto diretto\\sulle coordinate}} {
+  \node[col] at (\x mm,0) {};
+  \node[tit, anchor=north] at (\x mm,-2mm) {\t};
+}
+% 1
+\node[de] at (0,-24mm) {$W$};
+\node[font=\footnotesize, align=center] at (0,-42mm) {in memoria: matrice densa\\calcolo: $y=Wx$};
+% shift group 2
+\begin{scope}[xshift=46mm]
+\node[co] (c2b) at (-13mm,-20mm) {$c$};
+\node[de, minimum width=14mm, minimum height=14mm, dashed] (w2b) at (12mm,-20mm) {$W$};
+\draw[->] (c2b) -- node[above, font=\scriptsize]{espandi} (w2b);
+\node[font=\footnotesize, align=center] at (0,-38mm) {in memoria: coordinate\\e una matrice temporanea\\calcolo: espansione $+$ $Wx$};
+\end{scope}
+\begin{scope}[xshift=92mm]
+\node[co] (c3) at (0,-18mm) {$c$};
+\node[font=\scriptsize, align=center] at (0,-30mm) {$y = d\odot x + \tfrac{1}{N}H\big((Hb)\odot(Hx)\big)$\\$+\ \text{correzioni} + U(V^{\top}x)$};
+\node[font=\footnotesize, align=center] at (0,-42mm) {in memoria: solo coordinate\\calcolo: trasformate veloci};
+\end{scope}
+\draw[->, steraGrigio] (-21mm,-53mm) -- node[below, font=\footnotesize]{memoria occupata dai pesi decrescente} (113mm,-53mm);
+\end{tikzpicture}

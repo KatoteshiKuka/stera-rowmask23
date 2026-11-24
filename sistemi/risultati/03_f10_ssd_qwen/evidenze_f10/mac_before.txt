@@ -1,0 +1,44 @@
+2026-11-23T09:12:06+01:00
+hw.model: MacBookAir10,1
+hw.memsize: 17179869184
+ProductName:		macOS
+ProductVersion:		26.5.2
+BuildVersion:		25F84
+Filesystem   1024-blocks      Used Available Capacity iused     ifree %iused  Mounted on
+/dev/disk3s5   239362496 187070420  13683384    94% 2032309 136833840    1%   /System/Volumes/Data
+Mach Virtual Memory Statistics: (page size of 16384 bytes)
+Pages free:                                     4910.
+Pages active:                                 421644.
+Pages inactive:                               419600.
+Pages speculative:                              1897.
+Pages throttled:                                   0.
+Pages wired down:                             132227.
+Pages purgeable:                               11568.
+"Translation faults":                      202153289.
+Pages copy-on-write:                         6827585.
+Pages zero filled:                         337629475.
+Pages reactivated:                          11542088.
+Pages purged:                                4959205.
+File-backed pages:                            376284.
+Anonymous pages:                              466857.
+Pages stored in compressor:                   190876.
+Pages occupied by compressor:                  32457.
+Decompressions:                             26612763.
+Compressions:                               34335857.
+Pageins:                                     8695588.
+Pageouts:                                      62446.
+Swapins:                                     4428582.
+Swapouts:                                    5128180.
+vm.swapusage: total = 2048,00M  used = 850,44M  free = 1197,56M  (encrypted)
+COMM              %CPU
+/System/Library/  39,9
+/Applications/Ch  26,9
+/Applications/Ch   8,2
+/Applications/Wh   3,0
+node               2,8
+/opt/homebrew/Ce   2,5
+/System/Library/   1,2
+/Applications/Ch   0,6
+/opt/homebrew/bi   0,6
+/Users/andreanar   0,5
+/usr/libexec/run   0,2

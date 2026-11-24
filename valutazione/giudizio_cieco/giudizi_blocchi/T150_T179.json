@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T150",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Tim mangia il dolce e poi aspettano che \"sia pronto\": contraddizione temporale."
+  },
+  {
+   "id": "T151",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Lucy corre in casa e la mamma dice \"è ora di entrare\": sequenza incoerente."
+  },
+  {
+   "id": "T152",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mia cura la pianta che torna a brillare: fiabesco e coerente."
+  },
+  {
+   "id": "T153",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La \"promessa\" non viene mai detta, la torta compare dal nulla: trama debole."
+  },
+  {
+   "id": "T154",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Bob attacca un fiore al nido, il fiore cade: finale negativo coerente."
+  },
+  {
+   "id": "T155",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La torre è \"troppo economica\" per essere vista: motivazione senza senso."
+  },
+  {
+   "id": "T156",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Fa cadere la moneta \"nella nave del tesoro\" e ringrazia gli amici di averla trovata: confuso."
+  },
+  {
+   "id": "T157",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il gatto tocca le cose colorate ripetutamente: trama ripetitiva e minima."
+  },
+  {
+   "id": "T158",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim gioca con lo spago e il cane parlante: coerente."
+  },
+  {
+   "id": "T159",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Le foglie gialle diventarono gialle\", cambi di colore insensati."
+  },
+  {
+   "id": "T160",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Spot e Fluffy si perdono sotto la pioggia: finale negativo coerente."
+  },
+  {
+   "id": "T161",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Trovano il tesoro, poi cercano i genitori senza trovarli e \"giornata migliore di sempre\": incoerente."
+  },
+  {
+   "id": "T162",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Sulla tazza c'è il disegno di un formaggio e il topo lo morde: incoerenza."
+  },
+  {
+   "id": "T163",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Guardano l'uccello, vanno a casa, tornano al parco e lo \"portano al parco\": ripetitivo e confuso."
+  },
+  {
+   "id": "T164",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Restituisce la palla e impara \"è meglio rubare e condividere\": morale contraddittoria."
+  },
+  {
+   "id": "T165",
+   "grammar": 6,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Posso servirti un lavoro per la mia scatola dei giochi\": frase incomprensibile, trama vaga."
+  },
+  {
+   "id": "T166",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'albero cade e la gelatina vola, poi la mamma arrabbiata la aiuta: incoerente."
+  },
+  {
+   "id": "T167",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Dorme dall'amico ma c'è la mamma, \"sveglierai tua sorella\", finisce in braccio alla sorella: incomprensibile."
+  },
+  {
+   "id": "T168",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Remy e gli amici giocano a saltare dalla botte: coerente."
+  },
+  {
+   "id": "T169",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "La protagonista è Lila e poi Lily; Ben si presenta due volte: incoerenze."
+  },
+  {
+   "id": "T170",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La lontra apre la scatola, poi la bambina \"aiuta ad aprire\" la scatola già aperta; \"la lontra e la lontra\"."
+  },
+  {
+   "id": "T171",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La mamma dice \"la troveremo\" e subito \"non puoi prenderla\": incoerenza, trama minima."
+  },
+  {
+   "id": "T172",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Tim \"seppellisce Spot nel buco\" e bevono cioccolata mentre corrono: eventi incomprensibili."
+  },
+  {
+   "id": "T173",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il nuovo personaggio \"le fece sapere che lui era lei\": identità confusa."
+  },
+  {
+   "id": "T174",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim assaggia i broccoli e scopre che gli piacciono: coerente."
+  },
+  {
+   "id": "T175",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Carta dal frigorifero\", \"sarà la fine dell'universo per noi\": dialogo confuso."
+  },
+  {
+   "id": "T176",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Le persone sulla zattera diventano \"le persone della fattoria\": identità confuse."
+  },
+  {
+   "id": "T177",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 6,
+   "category": "P",
+   "reason": "Trova la chiave sul pavimento e poi la cercano al parco: contraddizione."
+  },
+  {
+   "id": "T178",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il cane ruba la palla al gatto: finale negativo coerente."
+  },
+  {
+   "id": "T179",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim convince Sam a giocare e diventano amici: coerente."
+  }
+ ]
+}

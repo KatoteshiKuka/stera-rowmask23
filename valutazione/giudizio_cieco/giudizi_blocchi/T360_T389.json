@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "T360",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Dà a Spot una palla più piccola e \"ora potevano giocare con la palla grande\": contraddizione."
+  },
+  {
+   "id": "T361",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Si usa per cucinare hot dog e persone che non hanno bisogno di una griglia\": frase incoerente."
+  },
+  {
+   "id": "T362",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "L'orso sta male, poi aiuta il coniglio a piantare mirtilli, \"non voglio la sua pancia\": scollegato."
+  },
+  {
+   "id": "T363",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La spada giocattolo si rompe e la principessa si scusa: coerente."
+  },
+  {
+   "id": "T364",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "\"Un telefono e un telefono per chiamare aiuto\", parlano al cane al telefono: incoerente."
+  },
+  {
+   "id": "T365",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Chiede la macchina, poi due palle con dialoghi ripetuti: trama ripetitiva."
+  },
+  {
+   "id": "T366",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il tagliere si scalda e \"si scioglie\" rimpicciolendo: causalità assurda."
+  },
+  {
+   "id": "T367",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "L'uomo bussa a casa propria e apre una bambina che vuole vedere \"la tua torre\": confuso."
+  },
+  {
+   "id": "T368",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Disse che le piaceva la pillola, disse che non la voleva\", \"che non mordesse\": contraddizioni."
+  },
+  {
+   "id": "T369",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Una signora restituisce a Sarah l'orsacchiotto perso: coerente."
+  },
+  {
+   "id": "T370",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il bambino va verso l'edificio luminoso e incontra un vecchio: coerente fino al troncamento."
+  },
+  {
+   "id": "T371",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sally e la mamma curano il cane ferito con un massaggio: coerente."
+  },
+  {
+   "id": "T372",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il viaggio dell'uccellino non ha uno sviluppo: trama minima."
+  },
+  {
+   "id": "T373",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tom ritrova il giocattolo nella scatola e impara a riporlo: coerente."
+  },
+  {
+   "id": "T374",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Compare \"Timmy\" (l'orsacchiotto?) che si arrampica, poi scendono per la porta in cima: confuso."
+  },
+  {
+   "id": "T375",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La bambina cura la rosa che diventa enorme: fiabesco e coerente."
+  },
+  {
+   "id": "T376",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il riparatore non riesce mai a riparare il giocattolo, frasi ripetute: trama ripetitiva."
+  },
+  {
+   "id": "T377",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "\"Non devi mangiarla\", \"ti punirò, ma se mangi la padella ti insegno\": incomprensibile."
+  },
+  {
+   "id": "T378",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Una stanza \"senza pareti\", un sasso in mezzo alla stanza, \"registrarlo ogni giorno\": scollegato."
+  },
+  {
+   "id": "T379",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Kip chiede aiuto all'uccello cattivo contro l'uccello cattivo \"in cui era\": identità confuse."
+  },
+  {
+   "id": "T380",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il gattino va dal parrucchiere ed è felice del taglio: coerente, ripetizioni."
+  },
+  {
+   "id": "T381",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Lily entra nella casa arancione e diventa amica dell'anziana: coerente."
+  },
+  {
+   "id": "T382",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "La mamma fa aspettare il pranzo prima delle ciliegie: coerente fino al troncamento."
+  },
+  {
+   "id": "T383",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Tommy diventa Tom, prova ad aprire la finestra per l'auto, la mamma cambia idea: confuso."
+  },
+  {
+   "id": "T384",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La bambina è con lui, scappa, poi \"non la trovarono mai\": incoerente."
+  },
+  {
+   "id": "T385",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim e gli amici giocano con il cane dal cappello buffo: coerente."
+  },
+  {
+   "id": "T386",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"Uno dei gemelli diede a Joe un fiore\", \"il tipo di sorella\": identità confuse."
+  },
+  {
+   "id": "T387",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il pirata prova a \"prendere la barca\" più volte e torna a casa: trama ripetitiva."
+  },
+  {
+   "id": "T388",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Tim vuole mostrare di possedere l'auto del ricco, torna senza cappotto: eventi incomprensibili."
+  },
+  {
+   "id": "T389",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue gioca col gatto e va bene all'esame: coerente."
+  }
+ ]
+}

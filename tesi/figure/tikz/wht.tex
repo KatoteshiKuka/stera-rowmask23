@@ -1,0 +1,19 @@
+\begin{tikzpicture}[x=26mm, y=-6.5mm, font=\footnotesize]
+\tikzset{pt/.style={circle, fill=steraBlu, inner sep=1.2pt}}
+\foreach \s in {0,...,3} \foreach \i in {0,...,7} \node[pt] (p\s\i) at (\s,\i) {};
+\foreach \i in {0,...,7} {\node[anchor=east] at (-.1,\i) {$x_{\i}$}; \node[anchor=west] at (3.1,\i) {$(Hx)_{\i}$};}
+% stadi: h = 1, 2, 4
+\foreach \s/\h in {0/1, 1/2, 2/4} {
+  \pgfmathtruncatemacro{\t}{\s+1}
+  \foreach \i in {0,...,7} {
+    \pgfmathtruncatemacro{\bit}{mod(floor(\i/\h),2)}
+    \ifnum\bit=0
+      \pgfmathtruncatemacro{\j}{\i+\h}
+      \draw[steraGrigio] (p\s\i) -- (p\t\i); \draw[steraGrigio] (p\s\i) -- (p\t\j);
+      \draw[steraGrigio] (p\s\j) -- (p\t\i); \draw[steraArancio, thick, densely dashed] (p\s\j) -- (p\t\j);
+    \fi
+  }
+  \node[font=\scriptsize] at (\s+.5,-1) {stadio \t, $h=\h$};
+}
+\node[align=left, anchor=north west, text width=88mm] at (-.2,8.2) {ogni coppia $(i,\,i+h)$ diventa $(u_i+u_{i+h},\;u_i-u_{i+h})$; per $N=128$ servono 7 stadi, cioè $7\cdot64=448$ coppie e 896 addizioni o sottrazioni. In arancio tratteggiato i contributi con segno negativo.};
+\end{tikzpicture}

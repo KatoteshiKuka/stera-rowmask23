@@ -1,0 +1,308 @@
+{
+  "checkpoint": "STERA H80000",
+  "source": "/Users/andreanardoni/Desktop/STERA/Experiments/STERA_H_STORIES_20261121/H80000_fp32_weights.npz",
+  "source_sha256": "028fa67574bdecc51778349fe779d081ee53e570a5d45cdcb799069edb56b728",
+  "sha256": "40ac09c8c8110267b73cfbb60f6aeb8b4877dab030c216bf23a788f1127e0d1c",
+  "serialized_bytes": 330892003,
+  "tensor_payload_bytes": 330885120,
+  "fp32_elements": 82721280,
+  "tensors": {
+    "position.weight": [
+      2048,
+      768
+    ],
+    "layers.5.q": [
+      768,
+      768
+    ],
+    "layers.5.ln1.weight": [
+      768
+    ],
+    "layers.5.k": [
+      768,
+      768
+    ],
+    "layers.5.fc": [
+      3072,
+      768
+    ],
+    "layers.4.proj.bias": [
+      768
+    ],
+    "layers.4.proj": [
+      768,
+      3072
+    ],
+    "layers.4.o": [
+      768,
+      768
+    ],
+    "layers.4.ln1.bias": [
+      768
+    ],
+    "layers.5.o.bias": [
+      768
+    ],
+    "layers.4.fc.bias": [
+      3072
+    ],
+    "layers.4.fc": [
+      3072,
+      768
+    ],
+    "layers.3.v": [
+      768,
+      768
+    ],
+    "layers.3.q": [
+      768,
+      768
+    ],
+    "layers.3.proj.bias": [
+      768
+    ],
+    "layers.3.proj": [
+      768,
+      3072
+    ],
+    "layers.3.o": [
+      768,
+      768
+    ],
+    "layers.3.ln2.weight": [
+      768
+    ],
+    "layers.3.ln2.bias": [
+      768
+    ],
+    "layers.5.fc.bias": [
+      3072
+    ],
+    "layers.3.ln1.weight": [
+      768
+    ],
+    "layers.3.k": [
+      768,
+      768
+    ],
+    "layers.5.ln2.bias": [
+      768
+    ],
+    "layers.2.v": [
+      768,
+      768
+    ],
+    "layers.2.q": [
+      768,
+      768
+    ],
+    "layers.2.proj.bias": [
+      768
+    ],
+    "layers.0.fc.bias": [
+      3072
+    ],
+    "layers.2.o": [
+      768,
+      768
+    ],
+    "layers.0.fc": [
+      3072,
+      768
+    ],
+    "layers.1.ln1.weight": [
+      768
+    ],
+    "layers.2.ln2.weight": [
+      768
+    ],
+    "layers.3.ln1.bias": [
+      768
+    ],
+    "layers.2.ln1.weight": [
+      768
+    ],
+    "layers.2.k": [
+      768,
+      768
+    ],
+    "layers.2.fc": [
+      3072,
+      768
+    ],
+    "layers.5.o": [
+      768,
+      768
+    ],
+    "layers.1.v": [
+      768,
+      768
+    ],
+    "layers.4.q": [
+      768,
+      768
+    ],
+    "layers.4.ln2.weight": [
+      768
+    ],
+    "layers.1.proj.bias": [
+      768
+    ],
+    "layers.5.ln1.bias": [
+      768
+    ],
+    "layers.1.proj": [
+      768,
+      3072
+    ],
+    "layers.5.proj.bias": [
+      768
+    ],
+    "layers.4.o.bias": [
+      768
+    ],
+    "layers.1.o.bias": [
+      768
+    ],
+    "layers.3.o.bias": [
+      768
+    ],
+    "layers.0.ln2.weight": [
+      768
+    ],
+    "layers.1.k": [
+      768,
+      768
+    ],
+    "layers.3.fc": [
+      3072,
+      768
+    ],
+    "layers.2.ln2.bias": [
+      768
+    ],
+    "layers.1.ln2.bias": [
+      768
+    ],
+    "embedding": [
+      50304,
+      768
+    ],
+    "layers.0.k": [
+      768,
+      768
+    ],
+    "layers.1.fc.bias": [
+      3072
+    ],
+    "layers.2.fc.bias": [
+      3072
+    ],
+    "final_norm.bias": [
+      768
+    ],
+    "layers.0.v": [
+      768,
+      768
+    ],
+    "layers.3.fc.bias": [
+      3072
+    ],
+    "layers.5.v": [
+      768,
+      768
+    ],
+    "layers.5.proj": [
+      768,
+      3072
+    ],
+    "layers.1.ln2.weight": [
+      768
+    ],
+    "layers.0.ln1.bias": [
+      768
+    ],
+    "layers.0.q": [
+      768,
+      768
+    ],
+    "layers.2.o.bias": [
+      768
+    ],
+    "layers.5.ln2.weight": [
+      768
+    ],
+    "layers.0.proj": [
+      768,
+      3072
+    ],
+    "layers.4.k": [
+      768,
+      768
+    ],
+    "layers.0.o.bias": [
+      768
+    ],
+    "layers.1.ln1.bias": [
+      768
+    ],
+    "layers.4.ln2.bias": [
+      768
+    ],
+    "layers.0.o": [
+      768,
+      768
+    ],
+    "layers.4.v": [
+      768,
+      768
+    ],
+    "layers.0.ln2.bias": [
+      768
+    ],
+    "layers.0.ln1.weight": [
+      768
+    ],
+    "layers.1.o": [
+      768,
+      768
+    ],
+    "layers.0.proj.bias": [
+      768
+    ],
+    "layers.4.ln1.weight": [
+      768
+    ],
+    "layers.2.proj": [
+      768,
+      3072
+    ],
+    "layers.1.q": [
+      768,
+      768
+    ],
+    "final_norm.weight": [
+      768
+    ],
+    "layers.2.ln1.bias": [
+      768
+    ],
+    "layers.1.fc": [
+      3072,
+      768
+    ]
+  },
+  "architecture": {
+    "layers": 6,
+    "hidden": 768,
+    "ffn": 3072,
+    "heads": 16,
+    "vocab": 50257,
+    "padded_vocab": 50304,
+    "local_window": 256,
+    "tied_embedding_head": true
+  },
+  "roundtrip_bitwise_equal": true,
+  "greedy_reference_ids_equal": 100,
+  "prompt_sha256": "0ed529d9dae65527f5256151e53e3f08765101454190ef9cbe6ea54da68d130f"
+}

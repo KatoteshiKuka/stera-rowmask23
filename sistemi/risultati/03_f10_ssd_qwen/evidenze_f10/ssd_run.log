@@ -1,0 +1,5 @@
+MEASURED compact_active_weights trial 1 {"bytes_read": 4147491312, "seconds": 1.751763292, "effective_GB_per_s": 2.3676094429771855, "file_rewinds": 1}
+MEASURED compact_active_weights trial 2 {"bytes_read": 4147491312, "seconds": 0.775298791, "effective_GB_per_s": 5.349539248797823, "file_rewinds": 1}
+MEASURED dense_equivalent_weights trial 1 {"bytes_read": 18597089280, "seconds": 3.592271, "effective_GB_per_s": 5.176972806338942, "file_rewinds": 8}
+MEASURED dense_equivalent_weights trial 2 {"bytes_read": 18597089280, "seconds": 3.516897874999999, "effective_GB_per_s": 5.287924170957056, "file_rewinds": 8}
+REPORT_READY /Users/andreanardoni/Desktop/TESI_CHIUSURA_20261123/evidenze_f10/SSD_STUDY_NOTE_20261123.md

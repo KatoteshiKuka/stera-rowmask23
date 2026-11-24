@@ -1,0 +1,4 @@
+Lettura su Tesla da /mnt/sdb1/workspace/andreanardoni/stera/ts68/runs/final-*.out
+1795333804 V2 step=80000 t=80000 labels=1002967223 loss=1.13655 grad_norm=0.7083 lr=6.00337e-05 tok_s=12167
+1795333818 V2_CHECKPOINT_OK path=/mnt/scratch/andreanardoni/ts68/run_final/TS68V2_STEP80000.ckpt.gz sha256=da8512b3c8ab661808b32a76e814fbf33ccad5ce139520ba7f225729ccc96975
+1795333835 VAL step=80000 t=80000 labels=1002967223 nll=1.172074
