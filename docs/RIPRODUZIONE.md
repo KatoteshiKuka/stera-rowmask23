@@ -43,7 +43,13 @@ python addestramento/prepara_dati.py
 
 Lo script assegna ogni racconto a TRAIN, DEV o TEST in base all'hash SHA-256 del testo normalizzato (spazi uniformati, minuscole), modulo 10.000: valori 0–99 a TEST, 100–199 a DEV, il resto a TRAIN. I 2.000 racconti di `addestramento/dati/racconti_riservati_dev_2000.jsonl` sono forzati in DEV. Racconti identici finiscono sempre nella stessa partizione.
 
-**Verifica:** `esterni/corpus_tokenizzato/MANIFEST.json` deve coincidere con `addestramento/dati/MANIFEST_DATI.json` nei campi `pack_sha256` (`5ae58177…`), `index_sha256` (`bbadffc0…`), `split_stories` (2.660.865 / 29.279 / 27.351) e `split_target_tokens`. Il file `CONTRACT` deve coincidere con `addestramento/dati/CONTRACT`.
+Poi si scrive il contratto dei dati, che il trainer registra nei checkpoint:
+
+```bash
+python addestramento/sigilla_dati.py
+```
+
+**Verifica:** `esterni/corpus_tokenizzato/MANIFEST.json` deve coincidere con `addestramento/dati/MANIFEST_DATI.json` nei campi `pack_sha256` (`5ae58177…`), `index_sha256` (`bbadffc0…`), `split_stories` (2.660.865 / 29.279 / 27.351) e `split_target_tokens`. Il file `CONTRACT` deve coincidere con `addestramento/dati/CONTRACT` (lo script lo controlla e stampa `coincide con la tesi: True`).
 
 ## 2. Addestramento di STERA 30M
 
@@ -102,8 +108,8 @@ I motori in `sistemi/motori/` leggono i pesi da `sistemi/modelli/`:
 
 | File | Contenuto | Come si ottiene |
 |---|---|---|
-| `H80000_fp32_weights.npz` | coordinate e tensori FP32 di STERA 30M | esportazione del checkpoint (`ts68_core.read_native` → `numpy.savez`) |
-| `H80000_int8_weights.npz` | coordinate INT8 per blocco, scale FP32 | stessa esportazione, quantizzazione simmetrica per blocco |
+| `H80000_fp32_weights.npz` | coordinate e tensori FP32 di STERA 30M | `python sistemi/benchmark/esporta_pesi.py <checkpoint> <sha256> H80000` |
+| `H80000_int8_weights.npz` | coordinate INT8 per blocco, scale FP32 | prodotto dallo stesso comando |
 | `H80000_DENSE_FP32.safetensors` | matrici dense equivalenti | `python sistemi/benchmark/esporta_denso.py` |
 
 Le misure di tempo e memoria sono state eseguite sui pesi del checkpoint a 80.000 aggiornamenti della stessa corsa: forma, numero di parametri e byte sono identici a quelli del checkpoint finale, e i tempi di esecuzione non dipendono dai valori dei pesi.
@@ -118,7 +124,9 @@ I risultati della tesi, con i report che li descrivono, sono in `sistemi/risulta
 
 - `01_motore_compatto_vs_denso/`: decode appaiato (−26,9%), attribuzione del tempo per operatore;
 - `02_tre_modelli_mac/`: primo token, decode e picco di memoria dei tre modelli;
-- `03_f10_ssd_qwen/`: prototipo F10 (pesi compatti 4,003 GB contro 18,597 GB densi), lettura validata dall'SSD, Qwen3.5-9B con caricamento degli strati dal disco.
+- `03_f10_ssd_qwen/`: prototipo F10 (motore `sistemi/motori/stera_independent_fp32_transposed_jit_v28.py`, lettura dal disco `evidenze_f10/ssd_validato/bench_ssd_f10.py`) (pesi compatti 4,003 GB contro 18,597 GB densi), lettura validata dall'SSD, Qwen3.5-9B con caricamento degli strati dal disco, eseguito con [SWLP](https://github.com/Rishav-Upadhaya/SWLP) al commit `3941963812850f9ad6821f3bec78754d695143ac` (script `prepara_swlp.py`, `misura_swlp.py`, `riepiloga_swlp.py`); modello `Qwen/Qwen3.5-9B` scaricato da Hugging Face (revisione registrata nei metadati di download: `c202236235762e1c871ad0ccb60c8ee5ba337b9a`).
+
+L'archivio senza perdita dei pesi FP32 (102.298.136 byte) si ottiene con `sistemi/benchmark/archivio_senza_perdita/steraf32_byteplane.py` e si ripristina bit per bit con `restore_lossless_archive.py`.
 
 ## 7. Figure e tesi
 

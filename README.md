@@ -49,6 +49,7 @@ STERA-RowMask23/
 │   └── ARTEFATTI.md              impronte SHA-256 di dati, modelli e risultati
 ├── addestramento/
 │   ├── prepara_dati.py           tokenizzazione del corpus e split TRAIN/DEV/TEST per hash
+│   ├── sigilla_dati.py           contratto dei dati registrato nei checkpoint
 │   ├── ts68_core.py              blocchi RowMask23, modello, lettura e scrittura dei checkpoint
 │   ├── ts68_v3.py                trainer distribuito (PyTorch, 2 GPU) con guadagni e basso rango
 │   ├── addestra_stera30m.sh      comando di addestramento 0 → 122.000 aggiornamenti
@@ -73,7 +74,7 @@ STERA-RowMask23/
 │   └── risultati_3modelli.json   risultato finale del confronto
 ├── sistemi/
 │   ├── motori/                   motori MLX/Metal: prodotto diretto sulle coordinate e denso equivalente
-│   ├── benchmark/                misure di decode appaiate, attribuzione, TinyStories su MPS, esportazione
+│   ├── benchmark/                misure appaiate, attribuzione, TinyStories su MPS, esportazione dei pesi, archivio senza perdita
 │   ├── modelli/                  tokenizer e manifesti (i pesi non sono versionati)
 │   └── risultati/                dati grezzi e report delle misure del Capitolo 8
 ├── tesi/
@@ -106,7 +107,7 @@ STERA-RowMask23/
 export STERA_CORPUS=esterni/TinyStoriesV2-GPT4-train.txt
 export STERA_TOKENIZER=esterni/tokenizer.json
 export STERA_DATI=esterni/corpus_tokenizzato
-python addestramento/prepara_dati.py
+python addestramento/prepara_dati.py && python addestramento/sigilla_dati.py
 
 # 2. addestramento (2 GPU)
 export STERA_RUN=esterni/checkpoint
