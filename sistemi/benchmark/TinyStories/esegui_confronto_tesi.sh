@@ -2,7 +2,7 @@
 set -eu
 cd "$(dirname "$0")/../.."
 out="$1"
-mkdir "$out"
+mkdir -p "$out"
 for offset in 5 35 65; do
     case "$offset" in
         5) order="STERA 8M 33M" ;;

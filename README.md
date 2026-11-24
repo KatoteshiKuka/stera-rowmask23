@@ -34,7 +34,7 @@ Su 300 racconti TEST, con gli stessi incipit, lo stesso tokenizzatore e la stess
 - STERA 30M − TinyStories-8M: **+22,3 punti** (IC 95% [+15,3; +29,3], McNemar con Holm p < 10⁻⁸).
 - STERA 30M − TinyStories-33M: **−4,3 punti** (IC 95% [−12,0; +3,7], p = 0,32, non significativa).
 - Pesi compatti FP32: **121,385 MB**, contro 330,885 MB dell'espansione densa (−63,3%) e 274,056 MB di TinyStories-33M (−55,7%); 74,241 MB con le coordinate in INT8.
-- Decode sullo stesso modello: **−26,9%** di tempo mediano per token del motore compatto rispetto al motore denso (Mac M1, MLX/Metal), con token identici.
+- Decode sullo stesso modello: **−36,1%** di tempo mediano per token del motore compatto rispetto al motore denso (Mac M1, MLX/Metal, 30 misure appaiate in cinque campagne), con token identici.
 
 Dettagli e numeri completi: [`docs/RISULTATI.md`](docs/RISULTATI.md).
 
@@ -46,6 +46,7 @@ STERA-RowMask23/
 ├── docs/
 │   ├── RIPRODUZIONE.md           procedura completa, passo per passo
 │   ├── RISULTATI.md              tutti i numeri della tesi e da dove vengono
+│   ├── VERIFICA_RIPRODUCIBILITA.md   esito della riesecuzione di ogni passo
 │   └── ARTEFATTI.md              impronte SHA-256 di dati, modelli e risultati
 ├── addestramento/
 │   ├── prepara_dati.py           tokenizzazione del corpus e split TRAIN/DEV/TEST per hash

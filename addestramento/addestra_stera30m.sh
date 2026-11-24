@@ -12,8 +12,15 @@ set -euo pipefail
 : "${STERA_DATI:?impostare STERA_DATI alla cartella prodotta da prepara_dati.py}"
 : "${STERA_RUN:?impostare STERA_RUN alla cartella dei checkpoint}"
 TOTALE=${TOTALE:-122000}
-cd "$(dirname "$0")"
+# percorsi assoluti, perche lo script cambia cartella
 mkdir -p "$STERA_RUN"
+STERA_DATI=$(cd "$STERA_DATI" && pwd); STERA_RUN=$(cd "$STERA_RUN" && pwd)
+# sotto sbatch $0 punta a una copia dello script: in quel caso si risale al file originale
+QUI=$(dirname "$0")
+if [ ! -f "$QUI/ts68_v3.py" ] && [ -n "${SLURM_JOB_ID:-}" ]; then
+  QUI=$(dirname "$(scontrol show job "$SLURM_JOB_ID" | sed -n 's/^ *Command=\([^ ]*\).*/\1/p')")
+fi
+cd "$QUI"
 ULTIMO=$(ls -1 "$STERA_RUN"/TS68V2_STEP*.ckpt.gz 2>/dev/null | sort -V | tail -1 || true)
 if [ -z "$ULTIMO" ]; then
   INIZIO="--scratch"; PASSI=$TOTALE

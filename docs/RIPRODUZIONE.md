@@ -9,8 +9,8 @@ I file pesanti vanno in una cartella `esterni/` (ignorata da git) nella radice d
 |---|---|---|
 | Preparazione dati, addestramento, valutazione | server con 2 × NVIDIA P100 16 GB, Slurm | Python 3.12, PyTorch, tokenizers 0.20, transformers 4.46 (`requisiti_addestramento.txt`) |
 | Valutazione di TinyStories-8M, statistiche, figure | Mac con Apple M1, 16 GB | Python 3.9+, PyTorch 2.8 su CPU |
-| Misure di sistema | Mac con Apple M1, 16 GB | Python 3.11, MLX 0.32.4 (`requisiti_sistemi.txt`) |
-| Tesi | qualunque | [Tectonic](https://tectonic-typesetting.github.io) |
+| Misure di sistema | Mac con Apple M1, 16 GB | Python 3.11, MLX 0.32.4, PyTorch 2.15 MPS, Transformers 5 (`requisiti_sistemi.txt`) |
+| Figure e tesi | qualunque | matplotlib 3.9.4 (figure identiche al pixel), [Tectonic](https://tectonic-typesetting.github.io) |
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
@@ -61,6 +61,17 @@ sbatch addestramento/addestra_stera30m.sh        # oppure: bash addestramento/ad
 Configurazione: 6 strati, guadagni per riga e colonna, termine a basso rango 96; lotti da 64 sequenze di al più 512 token, AdamW ($\beta_1=0{,}9$, $\beta_2=0{,}95$, decadimento 0,1), tasso di apprendimento con warmup di 300 passi fino a $6\cdot10^{-4}$, costante fino al passo 64.000, discesa lineare fino a $6\cdot10^{-5}$ al passo 80.000 e poi costante. Un checkpoint completo (pesi, momenti di Adam, cursore dei dati) è salvato ogni 2.000 passi; lo script riprende dall'ultimo se viene rilanciato.
 
 Tempo indicativo: circa 12.000 token/s su due P100, cioè circa 35 ore per 122.000 aggiornamenti. La corsa della tesi è stata eseguita in tre job consecutivi dello stesso script.
+
+**Verifica rapida senza GPU.** La NLL DEV del checkpoint finale si ottiene senza addestrare: il trainer valuta prima del primo passo, quindi con `--steps 0` stampa solo `VAL`. Su una macchina senza `torchrun` funzionante basta impostare a mano le variabili del processo unico:
+
+```bash
+RANK=0 LOCAL_RANK=0 WORLD_SIZE=1 MASTER_ADDR=127.0.0.1 MASTER_PORT=29511 \
+  python addestramento/ts68_v3.py --data "$STERA_DATI" --output /tmp/stera_val \
+  --ckpt pesi/stera30m_step122000.ckpt.gz --sha256 418becfbcaddcefd56f828f295138bbc865f9405a9060930c060ff7e6ced0887 \
+  --layers 6 --gains --rank 96 --steps 0 --ctx 512 --nval 512
+```
+
+Il risultato atteso è `VAL step=122000 nll=1.152155`. Allo stesso modo, 20 passi da zero su CPU riproducono esattamente le prime righe del log (perdita 9,34693 al passo 20; vedi `addestramento/verifica_20261124/`).
 
 **Verifica:** le righe `VAL` del log devono seguire `addestramento/log_addestramento_0_122k.txt` (NLL DEV 10,928 al passo 0, 1,172 a 80.000, 1,152 a 122.000). Il checkpoint finale della tesi ha impronta `418becfb…6ed0887`.
 
@@ -115,14 +126,24 @@ I motori in `sistemi/motori/` leggono i pesi da `sistemi/modelli/`:
 Le misure di tempo e memoria sono state eseguite sui pesi del checkpoint a 80.000 aggiornamenti della stessa corsa: forma, numero di parametri e byte sono identici a quelli del checkpoint finale, e i tempi di esecuzione non dipendono dai valori dei pesi.
 
 ```bash
-pip install -r requisiti_sistemi.txt
-sh sistemi/benchmark/confronto_appaiato.sh                 # motore compatto vs denso, 6 input appaiati
-sh sistemi/benchmark/TinyStories/esegui_confronto_tesi.sh  # STERA 30M e i due TinyStories su MPS
+python3.11 -m venv .venv-sistemi && .venv-sistemi/bin/pip install -r requisiti_sistemi.txt
+sh sistemi/benchmark/confronto_appaiato.sh                 # una campagna: motore compatto vs denso, 6 input appaiati
+sh sistemi/benchmark/TinyStories/esegui_confronto_tesi.sh  # una campagna: STERA 30M e i due TinyStories su MPS
 ```
+
+I numeri della tesi vengono da cinque campagne complete, ciascuna avviata quando la media di carico a un minuto scende sotto 1,5 e dopo 60 s di pausa, con il Mac alimentato dalla rete:
+
+```bash
+PYTHON=.venv-sistemi/bin/python sh sistemi/benchmark/campagne_tempi.sh sistemi/risultati/campagne_20261124/protocollo 5
+.venv-sistemi/bin/python sistemi/benchmark/riepiloga_campagne.py sistemi/risultati/campagne_20261124/protocollo
+```
+
+Il riepilogo verifica prima che i token coincidano fra i due motori, con l'implementazione eager dei TinyStories e fra tutte le campagne, poi calcola le mediane. I token prodotti non dipendono dalla macchina; i tempi sì, e su un altro Mac ci si aspettano valori diversi.
 
 I risultati della tesi, con i report che li descrivono, sono in `sistemi/risultati/`:
 
-- `01_motore_compatto_vs_denso/`: decode appaiato (−26,9%), attribuzione del tempo per operatore;
+- `campagne_20261124/protocollo/`: le cinque campagne usate nella tesi e `riepilogo.json` (decode appaiato −36,1%, tempi e picchi dei tre modelli); `campagne_20261124/preliminari/` contiene tre campagne precedenti senza controllo del carico, con gli stessi token;
+- `01_motore_compatto_vs_denso/`: misure appaiate precedenti e attribuzione del tempo per operatore;
 - `02_tre_modelli_mac/`: primo token, decode e picco di memoria dei tre modelli;
 - `03_f10_ssd_qwen/`: prototipo F10 (motore `sistemi/motori/stera_independent_fp32_transposed_jit_v28.py`, lettura dal disco `evidenze_f10/ssd_validato/bench_ssd_f10.py`) (pesi compatti 4,003 GB contro 18,597 GB densi), lettura validata dall'SSD, Qwen3.5-9B con caricamento degli strati dal disco, eseguito con [SWLP](https://github.com/Rishav-Upadhaya/SWLP) al commit `3941963812850f9ad6821f3bec78754d695143ac` (script `prepara_swlp.py`, `misura_swlp.py`, `riepiloga_swlp.py`); modello `Qwen/Qwen3.5-9B` scaricato da Hugging Face (revisione registrata nei metadati di download: `c202236235762e1c871ad0ccb60c8ee5ba337b9a`).
 

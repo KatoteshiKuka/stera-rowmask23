@@ -15,18 +15,22 @@ ax.set_yticks(range(len(rows))); ax.set_yticklabels([r[0] for r in rows], fontsi
 ax.set_xlabel("Milioni di byte"); ax.set_xlim(0, 380); ax.grid(axis="y", visible=False)
 fig.savefig(out/"byte_pesi_stera30m.pdf")
 # 2) decode appaiato
-inp = [10, 25, 40, 55, 70, 85]; var = [-28.08, -30.41, -25.64, -1.34, -34.15, -11.41]
-td = [0.885, 0.945, 0.902, 0.896, 0.996, 0.889]; ts = [0.705, 0.698, 0.732, 0.954, 0.705, 0.848]
+# mediane delle cinque campagne di misura (sistemi/risultati/campagne_20261124/protocollo/riepilogo.json)
+import json
+RJ = json.loads((R.parent/"sistemi/risultati/campagne_20261124/protocollo/riepilogo.json").read_text())["confronto_appaiato"]
+inp = ["10", "25", "40", "55", "70", "85"]; var = [RJ["variazione_decode_pct_per_input"][o] for o in inp]
+td = [RJ["totale_s_per_input"][o]["denso"] for o in inp]; ts = [RJ["totale_s_per_input"][o]["compatto"] for o in inp]
+med = RJ["variazione_decode_pct"]["mediana"]
 fig, (a, b) = plt.subplots(1, 2, figsize=(6.3, 2.5), gridspec_kw={"wspace": .45})
-a.bar(range(6), var, color=C["stera"], width=.6); a.axhline(-26.86, color=C["ts33"], lw=1, ls="--")
-a.text(5.45, -26.86, "mediana\n$-26{,}9\\%$", va="center", ha="left", fontsize=8, color=C["ts33"])
+a.bar(range(6), var, color=C["stera"], width=.6); a.axhline(med, color=C["ts33"], lw=1, ls="--")
+a.text(5.45, med, "mediana\n$" + it(med, 1).replace(",", "{,}") + "\\%$", va="center", ha="left", fontsize=8, color=C["ts33"])
 a.set_xticks(range(6)); a.set_xticklabels([f"P{i+1}" for i in range(6)]); a.set_ylabel("Variazione tempo per token (%)")
 a.set_ylim(-40, 0); a.set_xlim(-.6, 6.6); a.yaxis.set_major_formatter(FuncFormatter(lambda v, _: it(v)))
 a.set_title("(a) Decode, compatto rispetto a denso", fontsize=9.5); a.grid(axis="x", visible=False)
 for i in range(6):
     b.plot([0, 1], [td[i], ts[i]], color=C["chiaro"], lw=.9, zorder=1)
 b.scatter([0]*6, td, color=C["neutro"], zorder=2, s=16, label="Denso"); b.scatter([1]*6, ts, color=C["stera"], zorder=2, s=16, label="Compatto")
-b.set_xticks([0, 1]); b.set_xticklabels(["Denso", "Compatto"]); b.set_xlim(-.4, 1.4); b.set_ylim(.6, 1.05)
+b.set_xticks([0, 1]); b.set_xticklabels(["Denso", "Compatto"]); b.set_xlim(-.4, 1.4); b.set_ylim(.5, 1.0)
 b.set_ylabel("Tempo totale (s)"); b.yaxis.set_major_formatter(FuncFormatter(lambda v, _: it(v, 2)))
 b.set_title("(b) Tempo totale della richiesta", fontsize=9.5); b.grid(axis="x", visible=False)
 fig.savefig(out/"decode_appaiato_stera30m.pdf")

@@ -1,0 +1,5 @@
+{"trainable_params": 30346182, "start_step": 0, "targets": 0, "ordinal": 0, "world": 1, "ckpt": null, "sha256": "", "output": "/private/tmp/claude-501/-Users-andreanardoni-Desktop-STERA-RowMask23/16a8b1de-0f4d-4952-97eb-f3e64b5c302c/scratchpad/train20", "steps": 20, "batch": 64, "ctx": 512, "lr": 0.0006, "warmup": 300, "budget_steps": 80000, "decay_frac": 0.2, "wd": 0.1, "beta2": 0.95, "save_steps": 2000, "nval": 512, "micro": 8, "rank": 96, "layers": 6, "sched_offset": 0, "signs": false, "gains": true, "scratch": true}
+VAL step=0 nll=10.927510
+V2 step=20 t=20 labels=245375 loss=9.34693 grad_norm=5.7446 lr=4e-05 tok_s=205
+V2_CHECKPOINT_OK path=/private/tmp/claude-501/-Users-andreanardoni-Desktop-STERA-RowMask23/16a8b1de-0f4d-4952-97eb-f3e64b5c302c/scratchpad/train20/TS68V2_STEP20.ckpt.gz sha256=e2b93cc2665d297590b4b302181ccc34d73a798e05e2860b96085f0bf2cfd43e
+VAL step=20 t=20 labels=245375 nll=9.274780
