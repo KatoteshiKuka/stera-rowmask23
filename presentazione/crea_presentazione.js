@@ -278,12 +278,12 @@ testo(s, [
 // ---------- 13. memoria ----------
 pres.addSection({ title: "Costi di esecuzione" });
 s = nuova("Costi di esecuzione", "Memoria: più capace in meno byte",
-  "I pesi di STERA 30M occupano 121 MB in FP32: il 63% in meno della propria forma densa e il 56% in meno di TinyStories-33M. Durante l'esecuzione sul Mac, il processo di STERA occupa al massimo 413 MiB, contro circa 1,5 GiB dei due TinyStories, che però girano su un'altra libreria.");
-s.addChart(pres.charts.BAR, [{ name: "MB", labels: ["TinyStories-8M", "STERA 30M", "TinyStories-33M", "STERA 30M, forma densa"], values: [78.8, 121.4, 274.1, 330.9] }], {
+  "I blocchi RowMask23 garantiscono l'80,6% di valori in meno sulla parte strutturata; con scale, guadagni e basso rango STERA 30M occupa 121 MB in FP32, il 63% in meno della propria forma densa e il 56% in meno di TinyStories-33M. Il termine a basso rango si quantizza a 8 bit senza perdite misurabili (NLL +0,007%, giudizio non significativamente diverso): i pesi scendono a 86 MB, il 74% in meno della forma densa.");
+s.addChart(pres.charts.BAR, [{ name: "MB", labels: ["TinyStories-8M", "STERA 30M, rango 8 bit", "STERA 30M", "TinyStories-33M", "STERA 30M, forma densa"], values: [78.8, 86.1, 121.4, 274.1, 330.9] }], {
   x: M, y: 1.5, w: 7.4, h: 4.8, barDir: "bar", chartColors: [HEX.stera], barGapWidthPct: 45, showValue: true, dataLabelPosition: "outEnd",
   dataLabelFormatCode: "0.0", dataLabelColor: HEX.testo, showLegend: false, valAxisHidden: true, showTitle: true, title: "Pesi FP32 (MB)",
   titleFontFace: "+mn-lt", titleFontSize: S, titleColor: HEX.testo, catAxisOrientation: "maxMin", valAxisMaxVal: 400, ...assi, valGridLine: { style: "none" } });
-[["−63%", "byte rispetto alla stessa rete in forma densa"], ["413 MiB", "picco di memoria in esecuzione, contro circa 1,5 GiB dei TinyStories"]].forEach(([n, l], k) => {
+[["−63%", "byte rispetto alla stessa rete in forma densa; −80,6% garantito sui blocchi"], ["86 MB", "con il basso rango a 8 bit, senza perdite misurabili"]].forEach(([n, l], k) => {
   const y = 1.6 + k * 2.4; riquadro(s, 8.4, y, 4.35, 2.1);
   testo(s, n, { x: 8.7, y: y + 0.25, w: 3.8, h: 0.7, fontSize: T, bold: true, color: C.accent1 });
   testo(s, l, { x: 8.7, y: y + 1.0, w: 3.8, h: 1.0 });
@@ -291,14 +291,14 @@ s.addChart(pres.charts.BAR, [{ name: "MB", labels: ["TinyStories-8M", "STERA 30M
 
 // ---------- 14. tempi, modelli piccoli ----------
 s = nuova("Costi di esecuzione", "Tempi: più veloce della propria forma densa",
-  "Stesso modello, stessi pesi, due motori sul Mac M1: il motore che lavora sulle coordinate riduce del 34,8% il tempo per token rispetto a quello con le matrici dense, con token identici in tutte le 30 coppie misurate. Fra i tre modelli, STERA 30M ha il decode più rapido, circa 202 token al secondo, e completa la richiesta per primo. I TinyStories rispondono prima al primo token: l'elaborazione del prompt è il punto da migliorare.");
+  "Stesso modello, stessi pesi, due motori sul Mac M1: il motore che lavora sulle coordinate riduce del 34,8% il tempo per token rispetto a quello con le matrici dense, con token identici in tutte le 30 coppie, e il vantaggio resta costante da 32 a 384 token di ingresso. Eseguendo i tre modelli con lo stesso motore, STERA 30M è più veloce di TinyStories-33M e più lento di TinyStories-8M, che fa circa un quarto dei calcoli. Con il basso rango a 8 bit arriva a 242 token al secondo. Il primo token resta più lento del denso; espandere le matrici solo durante il prefill dimezza il divario.");
 riquadro(s, M, 1.6, 4.6, 4.6);
 testo(s, "−34,8%", { x: M + 0.35, y: 1.9, w: 3.9, h: 0.8, fontSize: T, bold: true, color: C.accent1 });
 testo(s, "tempo per token rispetto allo stesso modello con matrici dense", { x: M + 0.35, y: 2.8, w: 3.9, h: 1.3 });
 testo(s, "Token identici in 30 coppie su 30. Mac M1, MLX/Metal, 256 token in ingresso", { x: M + 0.35, y: 4.6, w: 3.9, h: 1.2, fontSize: S, color: C.accent4 });
-barreModelli(s, [149.8, 202.4, 90.6], { x: 5.6, y: 1.5, w: 7.15, h: 4.3, showTitle: true, title: "Token generati al secondo (decode)", titleFontFace: "+mn-lt",
-  titleFontSize: S, titleColor: HEX.testo, dataLabelFormatCode: "0.0", valAxisMinVal: 0, valAxisMaxVal: 250 });
-testo(s, "STERA 30M completa la richiesta per primo: 0,59 s contro 0,69 s e 1,14 s", { x: 5.6, y: 5.9, w: 7.15, h: 0.5, fontSize: S, color: C.text1 });
+barreModelli(s, [311.9, 201.0, 158.0], { x: 5.6, y: 1.5, w: 7.15, h: 4.3, showTitle: true, title: "Token generati al secondo, stesso motore MLX", titleFontFace: "+mn-lt",
+  titleFontSize: S, titleColor: HEX.testo, dataLabelFormatCode: "0.0", valAxisMinVal: 0, valAxisMaxVal: 380 });
+testo(s, "Con il basso rango a 8 bit: 242 token/s e richiesta completa in 0,47 s", { x: 5.6, y: 5.9, w: 7.15, h: 0.5, fontSize: S, color: C.text1 });
 
 // ---------- 15. tempi, modelli grandi ----------
 s = nuova("Costi di esecuzione", "Quando il modello non entra in memoria",
@@ -323,8 +323,8 @@ testo(s, "F10: prototipo più grande di STERA, non addestrato, usato solo per mi
 pres.addSection({ title: "Conclusioni" });
 s = nuova("Conclusioni", "Limiti e sviluppi futuri",
   "Limiti: un solo addestramento con un solo seme; i modelli di riferimento hanno dati e budget diversi; il vantaggio è sui byte da memorizzare e trasferire, non sul numero di operazioni; l'elaborazione del prompt è più lenta del motore denso. Sviluppi: un confronto controllato con stessi dati e più semi, modelli più grandi e altri domini, un kernel diretto anche per il prompt, coordinate quantizzate già in addestramento.");
-[["Limiti", ["Un solo addestramento, un solo seme", "Riferimenti con dati e budget diversi", "Vantaggio sui byte, non sulle operazioni", "Prompt più lento del motore denso"], HEX.ts33],
- ["Sviluppi futuri", ["Confronto controllato: stessi dati, più semi", "Modelli più grandi e altri domini", "Kernel diretto anche per il prompt", "Coordinate quantizzate in addestramento"], HEX.stera]].forEach(([h, voci, col], k) => {
+[["Limiti", ["Un solo addestramento, un solo seme", "Riferimenti con dati e budget diversi", "Studi delle componenti a posteriori", "Misure su un solo dispositivo"], HEX.ts33],
+ ["Sviluppi futuri", ["Confronto controllato: stessi dati, più semi", "Rango scelto prima dell'addestramento", "Prefill diretto sulle coordinate", "Coordinate quantizzate in addestramento"], HEX.stera]].forEach(([h, voci, col], k) => {
   const x = M + k * 6.25; riquadro(s, x, 1.6, 5.85, 4.75);
   testo(s, h, { x: x + 0.4, y: 1.85, w: 5.0, h: 0.6, bold: true, color: col });
   testo(s, voci.map((v, i) => ({ text: v, options: { bullet: true, breakLine: i < voci.length - 1, paraSpaceAfter: 14 } })), { x: x + 0.4, y: 2.65, w: 5.1, h: 3.5 });
