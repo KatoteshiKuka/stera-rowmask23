@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "R0180",
+   "grammar": 3,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Due frasi ripetitive sulla creazione di giocattoli, poi \"Ou\" ripetuto."
+  },
+  {
+   "id": "R0181",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"saw a Demonic in his recollection\" ripetuto: incomprensibile."
+  },
+  {
+   "id": "R0182",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"made her thread\" ripetuto e poi \"binary\" all'infinito."
+  },
+  {
+   "id": "R0183",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The critically\" ripetuto; Fred sparisce."
+  },
+  {
+   "id": "R0184",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The dominated\" ripetuto."
+  },
+  {
+   "id": "R0185",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"VC\" ed \"elementary\" ripetuti."
+  },
+  {
+   "id": "R0186",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo \"Whenever\" ripetuto."
+  },
+  {
+   "id": "R0187",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The Pluto\" ripetuto."
+  },
+  {
+   "id": "R0188",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He\" per Amy e \"prefix\" ripetuto."
+  },
+  {
+   "id": "R0189",
+   "grammar": 6,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Tim dà il giocattolo alla mamma che ci gioca; si rompe, \"did not have to pay\" poi \"had to pay\": eventi contraddittori."
+  },
+  {
+   "id": "R0190",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Asterischi e \"alot\" ripetuti."
+  },
+  {
+   "id": "R0191",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo \"illions\" ripetuto."
+  },
+  {
+   "id": "R0192",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo token \"xa\" ripetuti."
+  },
+  {
+   "id": "R0193",
+   "grammar": 5,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Orso e amici con un oggetto \"Dmit\"/\"flashy\" non definito; il protagonista diventa \"The Witches\"; morale troncata e incoerente."
+  },
+  {
+   "id": "R0194",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The backstory\" ripetuto; nessuna corda."
+  },
+  {
+   "id": "R0195",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He wanted to do and the\" poi \"126\" ripetuto."
+  },
+  {
+   "id": "R0196",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He lived in the Commentary\" ripetuto."
+  },
+  {
+   "id": "R0197",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"Every, everyone, and the Burgess\" ripetuto."
+  },
+  {
+   "id": "R0198",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"explore the\" e poi \"omas\", \"CLASS\", \"Summoner\" ripetuti."
+  },
+  {
+   "id": "R0199",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo \"1999\" ripetuto."
+  },
+  {
+   "id": "R0200",
+   "grammar": 3,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Una frase sui fiori, poi \"Neuroscience\" ripetuto."
+  },
+  {
+   "id": "R0201",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"They wanted that she\" e \"eco\" ripetuto."
+  },
+  {
+   "id": "R0202",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"They, the Skills\" ripetuto."
+  },
+  {
+   "id": "R0203",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"unfocusedRange\" ripetuto."
+  },
+  {
+   "id": "R0204",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Frammenti senza senso (\"He, he wanted to\") e \"Stead\" ripetuto."
+  },
+  {
+   "id": "R0205",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"When the adequate\" ripetuto."
+  },
+  {
+   "id": "R0206",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"dominated\" ripetuto."
+  },
+  {
+   "id": "R0207",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"They Burgess\" ripetuto; Mimi sparisce."
+  },
+  {
+   "id": "R0208",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"They had a delegate\" ripetuto."
+  },
+  {
+   "id": "R0209",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"It had a supplemental\" ripetuto."
+  }
+ ]
+}

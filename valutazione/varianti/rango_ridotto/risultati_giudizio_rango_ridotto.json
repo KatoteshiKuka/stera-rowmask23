@@ -1,0 +1,197 @@
+{
+ "giudizi_sha256": "389af1d7e4f1b7f5781bca21a12c40a5dfa9c0a5d292f8033c083983b175f331",
+ "giudice": "Claude Opus 5.5, cieco, 6 sessioni su testi mescolati di tutti i ranghi",
+ "nota": "rango 96 = giudizio della tesi (sessione dei 900 testi)",
+ "ranghi": {
+  "96": {
+   "nll_test": 1.173986,
+   "corretti": 132,
+   "pct": 44.0,
+   "wilson95": [
+    38.49382095794712,
+    49.65790020202571
+   ],
+   "categorie": {
+    "S": 132,
+    "N": 16,
+    "P": 152
+   },
+   "medie": {
+    "grammar": 7.67,
+    "consistency": 5.26,
+    "plot": 5.373333333333333
+   }
+  },
+  "64": {
+   "nll_test": 1.474252,
+   "corretti": 60,
+   "pct": 20.0,
+   "wilson95": [
+    15.865617190196184,
+    24.892988609667952
+   ],
+   "categorie": {
+    "N": 142,
+    "P": 98,
+    "S": 60
+   },
+   "medie": {
+    "grammar": 4.593333333333334,
+    "consistency": 3.84,
+    "plot": 3.74
+   },
+   "vs_rango96": {
+    "delta_pp": -24.0,
+    "ci95_pp": [
+     -31.0,
+     -17.0
+    ],
+    "solo_ridotto": 29,
+    "solo_96": 101,
+    "mcnemar_p": 1.5826818064866035e-10,
+    "holm_p": 1.5826818064866035e-10
+   }
+  },
+  "48": {
+   "nll_test": 1.981037,
+   "corretti": 0,
+   "pct": 0.0,
+   "wilson95": [
+    0.0,
+    1.264342999773566
+   ],
+   "categorie": {
+    "N": 283,
+    "P": 17
+   },
+   "medie": {
+    "grammar": 2.3333333333333335,
+    "consistency": 2.1166666666666667,
+    "plot": 1.6233333333333333
+   },
+   "vs_rango96": {
+    "delta_pp": -44.0,
+    "ci95_pp": [
+     -49.666666666666664,
+     -38.333333333333336
+    ],
+    "solo_ridotto": 0,
+    "solo_96": 132,
+    "mcnemar_p": 3.6734198463196485e-40,
+    "holm_p": 2.204051907791789e-39
+   }
+  },
+  "32": {
+   "nll_test": 2.893139,
+   "corretti": 0,
+   "pct": 0.0,
+   "wilson95": [
+    0.0,
+    1.264342999773566
+   ],
+   "categorie": {
+    "N": 300
+   },
+   "medie": {
+    "grammar": 1.51,
+    "consistency": 1.4533333333333334,
+    "plot": 1.0666666666666667
+   },
+   "vs_rango96": {
+    "delta_pp": -44.0,
+    "ci95_pp": [
+     -49.666666666666664,
+     -38.333333333333336
+    ],
+    "solo_ridotto": 0,
+    "solo_96": 132,
+    "mcnemar_p": 3.6734198463196485e-40,
+    "holm_p": 2.204051907791789e-39
+   }
+  },
+  "16": {
+   "nll_test": 4.235995,
+   "corretti": 0,
+   "pct": 0.0,
+   "wilson95": [
+    0.0,
+    1.264342999773566
+   ],
+   "categorie": {
+    "N": 300
+   },
+   "medie": {
+    "grammar": 1.08,
+    "consistency": 1.07,
+    "plot": 1.0
+   },
+   "vs_rango96": {
+    "delta_pp": -44.0,
+    "ci95_pp": [
+     -49.666666666666664,
+     -38.333333333333336
+    ],
+    "solo_ridotto": 0,
+    "solo_96": 132,
+    "mcnemar_p": 3.6734198463196485e-40,
+    "holm_p": 2.204051907791789e-39
+   }
+  },
+  "8": {
+   "nll_test": 4.980179,
+   "corretti": 0,
+   "pct": 0.0,
+   "wilson95": [
+    0.0,
+    1.264342999773566
+   ],
+   "categorie": {
+    "N": 300
+   },
+   "medie": {
+    "grammar": 1.0433333333333332,
+    "consistency": 1.01,
+    "plot": 1.0
+   },
+   "vs_rango96": {
+    "delta_pp": -44.0,
+    "ci95_pp": [
+     -49.666666666666664,
+     -38.333333333333336
+    ],
+    "solo_ridotto": 0,
+    "solo_96": 132,
+    "mcnemar_p": 3.6734198463196485e-40,
+    "holm_p": 2.204051907791789e-39
+   }
+  },
+  "0": {
+   "nll_test": 5.81298,
+   "corretti": 0,
+   "pct": 0.0,
+   "wilson95": [
+    0.0,
+    1.264342999773566
+   ],
+   "categorie": {
+    "N": 300
+   },
+   "medie": {
+    "grammar": 1.0033333333333334,
+    "consistency": 1.0033333333333334,
+    "plot": 1.0
+   },
+   "vs_rango96": {
+    "delta_pp": -44.0,
+    "ci95_pp": [
+     -49.666666666666664,
+     -38.333333333333336
+    ],
+    "solo_ridotto": 0,
+    "solo_96": 132,
+    "mcnemar_p": 3.6734198463196485e-40,
+    "holm_p": 2.204051907791789e-39
+   }
+  }
+ }
+}

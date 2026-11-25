@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "R0270",
+   "grammar": 3,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Una frase sulla piscina, poi \"Aus\", \"vents\", \"REST\" ripetuti."
+  },
+  {
+   "id": "R0271",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He looked in his\" seguito da trattini ripetuti."
+  },
+  {
+   "id": "R0272",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Parole rotte (\"utzutz\", \"manipulativeimeoimeo\", \"governmentimeo\") rendono incomprensibile il viaggio del mostro."
+  },
+  {
+   "id": "R0273",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The432 was named432\", \"microsc\" ripetuto: incomprensibile."
+  },
+  {
+   "id": "R0274",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Token \"lift\" e \"much\" ripetuti."
+  },
+  {
+   "id": "R0275",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The Shay\" ripetuto."
+  },
+  {
+   "id": "R0276",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The Heads\" ripetuto."
+  },
+  {
+   "id": "R0277",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"a68\" e \"nause\" ripetuto."
+  },
+  {
+   "id": "R0278",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"They put the 387\" ripetuto; l'autobus sparisce."
+  },
+  {
+   "id": "R0279",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"shortly\", \"civilians\", \"attain\" ripetuti."
+  },
+  {
+   "id": "R0280",
+   "grammar": 5,
+   "consistency": 4,
+   "plot": 2,
+   "category": "N",
+   "reason": "Frasi strane sull'ospedale (\"visit people who had to work\"), poi \"1976\" ripetuto."
+  },
+  {
+   "id": "R0281",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The Epidem\" ripetuto."
+  },
+  {
+   "id": "R0282",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"WAS\" e \"mana\" ripetuti."
+  },
+  {
+   "id": "R0283",
+   "grammar": 5,
+   "consistency": 3,
+   "plot": 2,
+   "category": "N",
+   "reason": "Due frasi coerenti su Kiki e il sole, poi \"ciation\" ripetuto."
+  },
+  {
+   "id": "R0284",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"mechanical mechanical\", \"masculine\", \"Tuls\" ripetuti."
+  },
+  {
+   "id": "R0285",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo \"ouls\" ripetuto."
+  },
+  {
+   "id": "R0286",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He had a\" seguito da \"ciation\" ripetuto."
+  },
+  {
+   "id": "R0287",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"It saw a yuan\" ripetuto."
+  },
+  {
+   "id": "R0288",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He was very in the Valid\" ripetuto."
+  },
+  {
+   "id": "R0289",
+   "grammar": 6,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Bambina sola nella stanza invita amiche, ma \"covered in a room\", la mamma la porta a casa pur essendo in casa e \"felice di essere tornata a casa\": logica confusa."
+  },
+  {
+   "id": "R0290",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"She wanted to the platoon\" ripetuto."
+  },
+  {
+   "id": "R0291",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"They wanted to find\" poi \"Australia\" ripetuto."
+  },
+  {
+   "id": "R0292",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He dominated\" ripetuto."
+  },
+  {
+   "id": "R0293",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo \"iever\" ripetuto."
+  },
+  {
+   "id": "R0294",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"made more words\", caratteri estranei e \"YOU\" ripetuto."
+  },
+  {
+   "id": "R0295",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"On everyone\" e \"aterasu\" ripetuto."
+  },
+  {
+   "id": "R0296",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo \"vd\" ripetuto."
+  },
+  {
+   "id": "R0297",
+   "grammar": 4,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "Personaggi nuovi (Jack, Ben) confondono i gemelli; \"a good 747\", \"Bombay\", gelosia e felicità contraddittorie."
+  },
+  {
+   "id": "R0298",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"play with her\" seguito da \"stab\" ripetuto."
+  },
+  {
+   "id": "R0299",
+   "grammar": 6,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Tim disegna un \"pageant\" (parola fuori luogo); ingrandire/rimpicciolire contraddittorio (\"too big for the pageant\") e ripetitivo."
+  }
+ ]
+}

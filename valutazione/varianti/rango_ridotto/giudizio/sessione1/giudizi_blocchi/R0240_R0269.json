@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "R0240",
+   "grammar": 8,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Lily nella natura incontra un insetto parlante e diventano amici; semplice e coerente."
+  },
+  {
+   "id": "R0241",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Battuta senza senso (\"I said, but it was not\") e poi simboli ripetuti."
+  },
+  {
+   "id": "R0242",
+   "grammar": 3,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"a special inher\" ripetuto: l'inchiostro non è sviluppato."
+  },
+  {
+   "id": "R0243",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He had a\" seguito da token \"quant\" ripetuti."
+  },
+  {
+   "id": "R0244",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"D saw aetieseties on the Ashes\", poi \"reptiles\" ripetuto."
+  },
+  {
+   "id": "R0245",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Penna magica che si rompe e viene riparata, ma \"the pen made the pen shine\" e lo \"shield\" appare dal nulla nel finale."
+  },
+  {
+   "id": "R0246",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"Ger\", \"rypted\", \"1860\" ripetuti."
+  },
+  {
+   "id": "R0247",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"She and the\" poi \"cern\" ripetuto."
+  },
+  {
+   "id": "R0248",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"play with a\" seguito da \"WAS\" ed \"escap\" ripetuti."
+  },
+  {
+   "id": "R0249",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"play with his\" seguito da simboli ripetuti."
+  },
+  {
+   "id": "R0250",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Grammatica semplice; desiderio di diventare stella, fiore \"troppo grande da prendere\", poi diventa la miglior stella e il miglior saltatore senza causa."
+  },
+  {
+   "id": "R0251",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Frammenti (\"He was very. He was in.\") poi \"Humanity\" ripetuto."
+  },
+  {
+   "id": "R0252",
+   "grammar": 4,
+   "consistency": 3,
+   "plot": 2,
+   "category": "N",
+   "reason": "Inizio coerente (pianta annaffiata che brilla), poi diventa \"reptiles\" ripetuto."
+  },
+  {
+   "id": "R0253",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"It would be the\" poi \"icularly\" ripetuto."
+  },
+  {
+   "id": "R0254",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"Tim found a CLE\" ripetuto."
+  },
+  {
+   "id": "R0255",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"She, it in the negotiator\" ripetuto."
+  },
+  {
+   "id": "R0256",
+   "grammar": 5,
+   "consistency": 3,
+   "plot": 2,
+   "category": "N",
+   "reason": "Dialogo coerente sulla punta trovata, poi \"made a pretty Abel\" ripetuto."
+  },
+  {
+   "id": "R0257",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"iPads\", \"genome\", \"presumption\" ripetuti: incomprensibile."
+  },
+  {
+   "id": "R0258",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He was very one\" e \"bered\" ripetuto."
+  },
+  {
+   "id": "R0259",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"she did not permit\" ripetuto."
+  },
+  {
+   "id": "R0260",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo token \"WI\" ripetuti."
+  },
+  {
+   "id": "R0261",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He wanted to have any when the\" poi \"810\" ripetuto."
+  },
+  {
+   "id": "R0262",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"play in the Pengu\" ripetuto."
+  },
+  {
+   "id": "R0263",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"But the QR\" ripetuto."
+  },
+  {
+   "id": "R0264",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"Element\" e \"GMOs\" ripetuti."
+  },
+  {
+   "id": "R0265",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"It on the Pis\" ripetuto."
+  },
+  {
+   "id": "R0266",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"Amy\" ripetuto e token \"agame\"."
+  },
+  {
+   "id": "R0267",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The orth\" ripetuto."
+  },
+  {
+   "id": "R0268",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He was a subsequently\" ripetuto."
+  },
+  {
+   "id": "R0269",
+   "grammar": 4,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "L'oggetto/personaggio \"PAY\" ora luogo ora essere che ha paura e sorride: scena incomprensibile."
+  }
+ ]
+}
