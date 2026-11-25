@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "R0060",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"But today is a\" poi \"Patty\" ripetuto."
+  },
+  {
+   "id": "R0061",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He showed the\" poi \"Commentary\" ripetuto."
+  },
+  {
+   "id": "R0062",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo token \"ELF\" incollati."
+  },
+  {
+   "id": "R0063",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The Interactive\" ripetuto; nessun contenuto sull'ospedale."
+  },
+  {
+   "id": "R0064",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The box was a\" seguito da \"Syd\" ripetuto."
+  },
+  {
+   "id": "R0065",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"wanted to go inside\" contraddittorio, poi numeri \"126\" ripetuti."
+  },
+  {
+   "id": "R0066",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The undue\" ripetuto; elefante e coniglio scompaiono."
+  },
+  {
+   "id": "R0067",
+   "grammar": 6,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Grammatica semplice; l'amico \"Sponsor\" è indefinito e la storia è una sequenza di giochi senza sviluppo (bimba triste ignorata)."
+  },
+  {
+   "id": "R0068",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"he had a big\" poi \"Quan\" ripetuto."
+  },
+  {
+   "id": "R0069",
+   "grammar": 5,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Dialoghi contraddittori (\"No, I want to fly with you\", \"I am not dangerous\") e oggetto \"WAS WAS\"; morale finale poco collegata."
+  },
+  {
+   "id": "R0070",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"Dunham\" e \"intestine\" ripetuti senza senso, poi degenerazione."
+  },
+  {
+   "id": "R0071",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Una frase sensata poi \"Gomez\", \"349\" ripetuti."
+  },
+  {
+   "id": "R0072",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Parole intruse (\"Ladies Assassin\", \"drains\") ripetute."
+  },
+  {
+   "id": "R0073",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"play with the\" seguito da \"mainline\" ripetuto."
+  },
+  {
+   "id": "R0074",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"In the parallels\" ripetuto."
+  },
+  {
+   "id": "R0075",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"One. They played and the\" poi \"isol\" ripetuto."
+  },
+  {
+   "id": "R0076",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo \"ly\" ripetuto."
+  },
+  {
+   "id": "R0077",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"Monica\" e \"646\" ripetuti."
+  },
+  {
+   "id": "R0078",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He had a\" seguito da simboli \">]\" ripetuti."
+  },
+  {
+   "id": "R0079",
+   "grammar": 6,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Lontra triste che non vuole giocare con il bambino, poi gioca con l'albero; \"ot ot ot\" e ragioni poco chiare."
+  },
+  {
+   "id": "R0080",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"athe of her\", \"the Organic of her Rein\", poi \"linking\" ripetuto."
+  },
+  {
+   "id": "R0081",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"She wanted to have a\" poi \"Minimum\" ripetuto."
+  },
+  {
+   "id": "R0082",
+   "grammar": 6,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il gatto insegue il topo che scappa terrorizzato, poi \"erano amici\" senza spiegazione; \"show the mouse to the fountain\" insensato."
+  },
+  {
+   "id": "R0083",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"take his\" seguito da \"Elev\" ripetuto."
+  },
+  {
+   "id": "R0084",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"They had a\" seguito da \"icators\" ripetuto."
+  },
+  {
+   "id": "R0085",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"! The\" poi \"Australia\" ripetuto."
+  },
+  {
+   "id": "R0086",
+   "grammar": 4,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Inizio coerente (gatto con abito, bambina), poi \"456456\" e \"thecollarcollar\" rendono confusa la seconda metà."
+  },
+  {
+   "id": "R0087",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"Dublin\" ripetuto; la zattera sparisce."
+  },
+  {
+   "id": "R0088",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo \"utherland\" ripetuto."
+  },
+  {
+   "id": "R0089",
+   "grammar": 3,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"famously\" usato come oggetto e poi ripetuto all'infinito."
+  }
+ ]
+}

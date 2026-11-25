@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "R0120",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"They were very friends\", poi \"Wool\" ripetuto."
+  },
+  {
+   "id": "R0121",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"find his\" seguito da \"fellowship\" ripetuto."
+  },
+  {
+   "id": "R0122",
+   "grammar": 4,
+   "consistency": 4,
+   "plot": 2,
+   "category": "N",
+   "reason": "Ripetizioni sui fiori senza eventi, poi \"Simmons\"/\"conferences\" ripetuti."
+  },
+  {
+   "id": "R0123",
+   "grammar": 5,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "La brocca da riempire d'acqua: Jimmy ci salta dentro, si riempie di colori, rientra; azioni contraddittorie e ripetitive."
+  },
+  {
+   "id": "R0124",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo token \"erol\" ripetuti."
+  },
+  {
+   "id": "R0125",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"It was very nice\" poi \"ensu\" ripetuto."
+  },
+  {
+   "id": "R0126",
+   "grammar": 3,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Battuta della mamma iniziata, poi \"BG\" ripetuto."
+  },
+  {
+   "id": "R0127",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"They saw a big\" poi \"snag\" ripetuto."
+  },
+  {
+   "id": "R0128",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He decided it again\" e \"analys\" ripetuto."
+  },
+  {
+   "id": "R0129",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo \"stress\" ripetuto."
+  },
+  {
+   "id": "R0130",
+   "grammar": 4,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "Balena e bambino: \"take care of the sea and give it to the sea\", portano la balena al mare in cui già vive; logica incomprensibile."
+  },
+  {
+   "id": "R0131",
+   "grammar": 3,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Tim \"gave his toy\" prima di comprarlo, poi \"ciation\" ripetuto."
+  },
+  {
+   "id": "R0132",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He asked a\" poi token \"endar\" ripetuti."
+  },
+  {
+   "id": "R0133",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"She loved her\" poi \"cern\" ripetuto."
+  },
+  {
+   "id": "R0134",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Storia della pietra comprensibile ma contraddizioni: vuole seppellirla per mostrarla, \"they told Tim's mom and dad\" pur essendo loro i genitori."
+  },
+  {
+   "id": "R0135",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo \"Whenever\" ripetuto."
+  },
+  {
+   "id": "R0136",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo \"actly\" ripetuto."
+  },
+  {
+   "id": "R0137",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"PAY PAY PAY\", \"Dunham\", simboli \".$\": incomprensibile."
+  },
+  {
+   "id": "R0138",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"They and the Burgess\" ripetuto."
+  },
+  {
+   "id": "R0139",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"Tim saw a memorandum\" ripetuto."
+  },
+  {
+   "id": "R0140",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He\" errato per Lucy e \"Recently\" ripetuto."
+  },
+  {
+   "id": "R0141",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"muff\" e \"Fresh\" ripetuti; nessuna storia."
+  },
+  {
+   "id": "R0142",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"I saw the\" e poi \"ayan\" ripetuto."
+  },
+  {
+   "id": "R0143",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The Burgess\" ripetuto."
+  },
+  {
+   "id": "R0144",
+   "grammar": 4,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Sue che scrive e lavora con la mamma è riconoscibile, ma l'oggetto è il frammento \"eties\" incollato ovunque."
+  },
+  {
+   "id": "R0145",
+   "grammar": 5,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Orso e amici giocano con una palla; ripetitivo, frasi contraddittorie (\"they were not\", vuole giocare ma si allontana) e nessuno sviluppo."
+  },
+  {
+   "id": "R0146",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He tried to the\" poi \"759\" ripetuto."
+  },
+  {
+   "id": "R0147",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"igionigion\" e \"oubted\" ripetuti: incomprensibile."
+  },
+  {
+   "id": "R0148",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Domanda alla mamma iniziata, poi \"Kobe\" ripetuto."
+  },
+  {
+   "id": "R0149",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"play with her forbids\" e \"endangered\" ripetuti."
+  }
+ ]
+}

@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "R0090",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He was three this\" e poi \"Hamilton\" ripetuto."
+  },
+  {
+   "id": "R0091",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "La buca contiene \"beans\" ripetuti senza senso fino alla fine."
+  },
+  {
+   "id": "R0092",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo \"cir\" ripetuto; l'uccello sparisce."
+  },
+  {
+   "id": "R0093",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"playing with her\" seguito da \"igion\" ripetuto."
+  },
+  {
+   "id": "R0094",
+   "grammar": 5,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Trama riconoscibile (Spot aiuta Blue a trovare il giocattolo) ma la \"swear swear\" è un'entità incomprensibile, ora luogo ora personaggio."
+  },
+  {
+   "id": "R0095",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"She was a Lens\" e \"Zeus\" ripetuti: incomprensibile."
+  },
+  {
+   "id": "R0096",
+   "grammar": 3,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Inizio coerente nella stanza, poi \"quint\", \"Irving\" ripetuti."
+  },
+  {
+   "id": "R0097",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"started to the champions\" ripetuto."
+  },
+  {
+   "id": "R0098",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"There she and the budgetary\" ripetuto; ciliegie dimenticate."
+  },
+  {
+   "id": "R0099",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"They people and they'd to the involvement\" ripetuto."
+  },
+  {
+   "id": "R0100",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"There. The\" poi \"actly\" ripetuto."
+  },
+  {
+   "id": "R0101",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He bin\" ripetuto."
+  },
+  {
+   "id": "R0102",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He was on to the\" poi \"Comments\" ripetuto."
+  },
+  {
+   "id": "R0103",
+   "grammar": 4,
+   "consistency": 3,
+   "plot": 2,
+   "category": "N",
+   "reason": "Buon inizio con il rumore misterioso, poi la spiegazione degenera in \"debian\" ripetuto."
+  },
+  {
+   "id": "R0104",
+   "grammar": 3,
+   "consistency": 2,
+   "plot": 2,
+   "category": "N",
+   "reason": "Antagonista \"resembled resembled\" incomprensibile; ruoli di chi urla, chi scappa e cosa si mangia confusi."
+  },
+  {
+   "id": "R0105",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"They had undue\" ripetuto."
+  },
+  {
+   "id": "R0106",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"There, little hither\" ripetuto."
+  },
+  {
+   "id": "R0107",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The Burgess\" ripetuto; nessun nascondino."
+  },
+  {
+   "id": "R0108",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He was not to have too all in one\" poi \"Secur\" ripetuto."
+  },
+  {
+   "id": "R0109",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"They saw a\" seguito da \"Items\" ripetuto."
+  },
+  {
+   "id": "R0110",
+   "grammar": 3,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Una frase coerente sul gioco con la palla, poi \"Stevenson\" ripetuto."
+  },
+  {
+   "id": "R0111",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Una frase poi \"Demonic\", \"Intervention\" ripetuti."
+  },
+  {
+   "id": "R0112",
+   "grammar": 3,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Due frasi sensate su Amy e Tom, poi \"ingestion\" ripetuto."
+  },
+  {
+   "id": "R0113",
+   "grammar": 5,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "Cartellone parlante con \"a drunken on me\", azioni insensate (spingono il cartellone, \"not a drunken\"); motivazioni incomprensibili."
+  },
+  {
+   "id": "R0114",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The exhibitions\" ripetuto."
+  },
+  {
+   "id": "R0115",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He was very, and the Hots\" ripetuto."
+  },
+  {
+   "id": "R0116",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"he wanted a\" seguito da \"umerable\" ripetuto."
+  },
+  {
+   "id": "R0117",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He was very and he\" e \"philosophers\" ripetuto."
+  },
+  {
+   "id": "R0118",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "L'oggetto/personaggio \"Simmons\" ripetuto confonde tutti i ruoli; testo incomprensibile."
+  },
+  {
+   "id": "R0119",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Amy trova \"a Items\" ripetuto: nessuna storia."
+  }
+ ]
+}

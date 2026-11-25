@@ -13,11 +13,13 @@ ROOT = Path(__file__).resolve().parents[2]
 BASE = ROOT / "modelli"
 KERNELS = ROOT / "motori"
 PUBLIC = BASE / "TinyStories"
+LUNGHEZZA = int(os.getenv("PROMPT_LEN", "256"))   # token in ingresso (256 nelle misure principali)
 
 def prompt_ids(model, offset=0):
     from tokenizers import Tokenizer
     ref = Tokenizer.from_file(str(BASE / "tokenizer.json"))
-    tok = ref if model == "STERA" else Tokenizer.from_file(str(PUBLIC / model / "tokenizer.json"))
+    base = model.split("-")[0]
+    tok = ref if base == "STERA" else Tokenizer.from_file(str(PUBLIC / base / "tokenizer.json"))
     rows = json.loads((BASE / "PROMPTS_FRESH_TEST100.json").read_text())
     ids = [50256]
     for row in rows[offset:]:
@@ -26,8 +28,8 @@ def prompt_ids(model, offset=0):
         if a != b:
             raise ValueError("Different prompt tokenization")
         ids.extend(a)
-        if len(ids) >= 256:
-            return ids[:256]
+        if len(ids) >= LUNGHEZZA:
+            return ids[:LUNGHEZZA]
     raise ValueError("Prompt too short")
 
 def optimized_attention(self, query, key, value, attention_mask=None):
@@ -94,6 +96,52 @@ def stera(ids):
     return cold
 
 
+def mlx_denso(ids, name):
+    """Motore denso MLX con le stesse ottimizzazioni del motore denso di STERA (motori/gptneo_denso_mlx.py)."""
+    import mlx.core as mx
+    sys.path.insert(0, str(KERNELS))
+    import gptneo_denso_mlx as G
+    blocco = int(os.getenv("MLX_PREFILL_BLOCK", "256"))
+    start = time.perf_counter()
+    pesi = (G.carica_stera_denso(BASE / f"{os.getenv('STERA_PESI', 'H122000')}_DENSE_FP32.safetensors") if name == "STERA-DENSO-MLX"
+            else G.carica_tinystories(PUBLIC / name.split("-")[0]))
+    model = G.DensoMLX(pesi, 512)
+    mx.synchronize()
+    load = time.perf_counter() - start
+    def next_token(inp, position):
+        out = mx.argmax(model.step(inp, position)).astype(mx.int32)
+        mx.eval(out)
+        return out
+    def measure():
+        model.azzera()
+        start = time.perf_counter()
+        for position in range(0, len(ids), blocco):
+            logits = model.prefill(ids[position:position + blocco], position)
+        nxt = mx.argmax(logits).astype(mx.int32)
+        mx.eval(nxt)
+        ttft = time.perf_counter() - start
+        outputs = [nxt]
+        times = []
+        start = time.perf_counter()
+        for position in range(len(ids), len(ids) + 100):
+            t = time.perf_counter()
+            nxt = next_token(nxt, position)
+            times.append(time.perf_counter() - t)
+            outputs.append(nxt)
+        decode = time.perf_counter() - start
+        return load, ttft, decode, times, {"framework": "MLX/Metal denso (gptneo_denso_mlx)", "prefill": f"block{blocco}",
+            "outputs": [int(v) for v in outputs], "active_mib": mx.get_active_memory() / 2**20}
+    with observe_request() as cold_memory:
+        cold = measure()
+    with observe_request() as warm_memory:
+        warm = measure()
+    assert cold[-1]["outputs"] == warm[-1]["outputs"]
+    cold[-1]["warm"] = {"ttft_s": warm[1], "decode_tps": 100 / warm[2], "total_s": warm[1] + warm[2]}
+    cold[-1]["compiled_request_memory"] = warm_memory
+    cold[-1]["first_request_memory"] = cold_memory
+    return cold
+
+
 def dense(ids, name):
     import torch
     from transformers import AutoModelForCausalLM
@@ -147,13 +195,14 @@ def dense(ids, name):
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("model", choices=["STERA", "8M", "28M", "33M"])
+parser.add_argument("model", choices=["STERA", "8M", "28M", "33M", "8M-MLX", "33M-MLX", "STERA-DENSO-MLX"])
 parser.add_argument("rep", type=int)
 args = parser.parse_args()
 ids = prompt_ids(args.model, int(os.getenv("PROMPT_OFFSET", "0")))
-load, ttft, decode, times, detail = stera(ids) if args.model == "STERA" else dense(ids, args.model)
+load, ttft, decode, times, detail = (stera(ids) if args.model == "STERA" else mlx_denso(ids, args.model) if args.model.endswith("-MLX")
+                                     else dense(ids, args.model))
 print(json.dumps({"model": args.model, "rep": args.rep, "dtype": "float32", "batch": 1,
-    "prompt_tokens": 256, "prompt_sha256": hashlib.sha256(json.dumps(ids).encode()).hexdigest(),
+    "prompt_tokens": len(ids), "prompt_sha256": hashlib.sha256(json.dumps(ids).encode()).hexdigest(),
     "decode_steps": 100, "load_s": load, "ttft_after_load_s": ttft, "decode_s": decode,
     "decode_tps": 100 / decode, "total_after_load_s": ttft + decode,
     "median_step_ms": statistics.median(times) * 1000, **detail}), flush=True)

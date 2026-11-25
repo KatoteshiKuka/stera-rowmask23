@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "R0000",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Dopo \"She said\" la continuazione degenera nella ripetizione di \"cern\": nessun contenuto."
+  },
+  {
+   "id": "R0001",
+   "grammar": 4,
+   "consistency": 4,
+   "plot": 3,
+   "category": "N",
+   "reason": "Frasi sgrammaticate (\"Be to be careful\", \"aOST\"), dialoghi autocontraddittori sulla prudenza; la buca sparisce, nessuna trama."
+  },
+  {
+   "id": "R0002",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Dopo mezza frase degenera in \"inher\" ripetuto all'infinito."
+  },
+  {
+   "id": "R0003",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"she had a\" seguito da \"perce\" ripetuto: testo incomprensibile."
+  },
+  {
+   "id": "R0004",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"She saw a big\" seguito da \"internally\" ripetuto: nessuna narrazione."
+  },
+  {
+   "id": "R0005",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Degenera subito in \"Explan\" ripetuto; nessun legame con il caffè."
+  },
+  {
+   "id": "R0006",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Grammatica semplice corretta, ma Tom va in ospedale, poi corre tutto il giorno e si diverte in ospedale: successione contraddittoria."
+  },
+  {
+   "id": "R0007",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Frammento senza senso (\"This, he had, when\") e poi \"Epidem\" ripetuto."
+  },
+  {
+   "id": "R0008",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Nessuna risposta alla domanda sul mulino; \"Trafford\" ripetuto."
+  },
+  {
+   "id": "R0009",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Bici che \"soffre\" ed è stanca; la maniglia della bici viene persa e ritrovata in casa senza motivo: causalità debole."
+  },
+  {
+   "id": "R0010",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo \"revol\" ripetuto; nessun testo."
+  },
+  {
+   "id": "R0011",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"playing with his\" poi \"matte\" ripetuto."
+  },
+  {
+   "id": "R0012",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Parole intruse (\"Battlefield\", \"MSM\") e frasi spezzate, poi degenerazione."
+  },
+  {
+   "id": "R0013",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Una frase sensata poi sequenza di simboli /\" ripetuti."
+  },
+  {
+   "id": "R0014",
+   "grammar": 4,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Struttura riconoscibile (incontro e saluti nel parco) ma l'entità \"808 808 808\" è incomprensibile e ci sono parole rotte (\"theirkeleton\")."
+  },
+  {
+   "id": "R0015",
+   "grammar": 8,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Toro saggio trova cibo, fa amicizia con un cane e lo condivide; semplice e coerente."
+  },
+  {
+   "id": "R0016",
+   "grammar": 6,
+   "consistency": 5,
+   "plot": 3,
+   "category": "N",
+   "reason": "Inizio coerente (filo, amica), ma \"made a beautiful thread\" e poi degenera in \"759\" ripetuto."
+  },
+  {
+   "id": "R0017",
+   "grammar": 6,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "\"two people who did too\" incomprensibile; finale confuso (felice/triste, nuova amica non introdotta), trama minima."
+  },
+  {
+   "id": "R0018",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"One day, with the\" poi \"Commentary\" ripetuto."
+  },
+  {
+   "id": "R0019",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He. He he, the\" e poi \"Consider\" ripetuto."
+  },
+  {
+   "id": "R0020",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The Skills\" ripetuto; nessun contenuto sul riccio."
+  },
+  {
+   "id": "R0021",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo token incollati \"charge\"/\"Launch\" ripetuti."
+  },
+  {
+   "id": "R0022",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"They wanted to have\" poi \"Obst\" ripetuto e simboli."
+  },
+  {
+   "id": "R0023",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"She wanted an\" poi \"as\" incollato ripetuto."
+  },
+  {
+   "id": "R0024",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"They They wanted to grab. He\" poi \"captivity\" ripetuto."
+  },
+  {
+   "id": "R0025",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The\" poi \"ove\" ripetuto; nessuna storia."
+  },
+  {
+   "id": "R0026",
+   "grammar": 3,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Due frasi ripetitive (\"happy, and the jet was happy\") poi \"TOM\" ripetuto."
+  },
+  {
+   "id": "R0027",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He\" seguito da \"dominated\" ripetuto."
+  },
+  {
+   "id": "R0028",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Cane e gatto incartano un regalo ma la logica si perde (\"make the house strong\", \"put the box in a box\", aspettano la scatola)."
+  },
+  {
+   "id": "R0029",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The\" seguito da \"exhibitions\" ripetuto."
+  }
+ ]
+}

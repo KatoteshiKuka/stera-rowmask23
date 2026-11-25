@@ -1,0 +1,41 @@
+{
+ "descrizione": "Confronto sullo stesso motore MLX: STERA 30M compatto (v63) e denso, TinyStories-8M e 33M nel motore denso MLX gptneo_denso_mlx; 5 campagne a sistema scarico, 3 input da 256 token, 100 passi",
+ "modelli": {
+  "8M-MLX": {
+   "n": 15,
+   "decode_tps": 311.87032993282276,
+   "ttft_ms": 13.28399998601526,
+   "totale_s": 0.3344399589695968,
+   "picco_richiesta_mib": 510.7843017578125,
+   "decode_min": 282.1206394918217,
+   "decode_max": 339.68511431784043
+  },
+  "STERA": {
+   "n": 15,
+   "decode_tps": 200.9623924327985,
+   "ttft_ms": 100.89862497989088,
+   "totale_s": 0.5986367500154302,
+   "picco_richiesta_mib": 412.73675537109375,
+   "decode_min": 194.77376527592145,
+   "decode_max": 204.55855339488375
+  },
+  "33M-MLX": {
+   "n": 15,
+   "decode_tps": 157.97353645694668,
+   "ttft_ms": 20.753709017299116,
+   "totale_s": 0.653600541932974,
+   "picco_richiesta_mib": 879.206787109375,
+   "decode_min": 140.6596952045829,
+   "decode_max": 161.329798428423
+  },
+  "STERA-DENSO-MLX": {
+   "n": 15,
+   "decode_tps": 130.1210493968324,
+   "ttft_ms": 29.450208006892353,
+   "totale_s": 0.7998774169245735,
+   "picco_richiesta_mib": 569.0650634765625,
+   "decode_min": 124.74856022990562,
+   "decode_max": 135.49081372173086
+  }
+ }
+}

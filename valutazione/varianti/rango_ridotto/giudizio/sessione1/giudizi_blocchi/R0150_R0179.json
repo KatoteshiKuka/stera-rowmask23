@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "R0150",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Amy trova \"a Items\" e poi \"Tin\", \"claw\", \"Flash\" ripetuti."
+  },
+  {
+   "id": "R0151",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"pull the\" poi numeri \"070\" ripetuti."
+  },
+  {
+   "id": "R0152",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"Every and\" e token \"aration\" ripetuti; la fata sparisce."
+  },
+  {
+   "id": "R0153",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Parole intruse ovunque (\"Pref\", \"Yellowstone\", \"Technical\"); nessun legame con la zampa da vendere."
+  },
+  {
+   "id": "R0154",
+   "grammar": 3,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Mamma \"who was three years\", dialogo senza senso, poi \"tal\" ripetuto; il mulino non è spiegato."
+  },
+  {
+   "id": "R0155",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Sue, il gatto e la cena: semplice e coerente; piccola stranezza (\"did not understand\")."
+  },
+  {
+   "id": "R0156",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"play with the\" poi \"126\" ripetuto."
+  },
+  {
+   "id": "R0157",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"She gave her rebel\" e \"sensational\" ripetuto; la sete non è risolta."
+  },
+  {
+   "id": "R0158",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo \"Everywhere\" ripetuto."
+  },
+  {
+   "id": "R0159",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo token \"uin\" ripetuti."
+  },
+  {
+   "id": "R0160",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo \"holiday\" ripetuto."
+  },
+  {
+   "id": "R0161",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "L'uccello è felice e poi \"cherry\" ripetuto all'infinito."
+  },
+  {
+   "id": "R0162",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Uccellino spaventato dalla tempesta, il vento porta via la nuvola; coerente, morale un po' vaga."
+  },
+  {
+   "id": "R0163",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The Zelda\" ripetuto."
+  },
+  {
+   "id": "R0164",
+   "grammar": 4,
+   "consistency": 3,
+   "plot": 2,
+   "category": "N",
+   "reason": "Inizio coerente su Max e Lily, poi \"Psal\" ripetuto."
+  },
+  {
+   "id": "R0165",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"resembled\" ripetuto come entità e poi all'infinito."
+  },
+  {
+   "id": "R0166",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"They wanted to the Debate\" ripetuto."
+  },
+  {
+   "id": "R0167",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"domest\"/\"dominated\" ripetuti."
+  },
+  {
+   "id": "R0168",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"She wanted the roadside\" ripetuto."
+  },
+  {
+   "id": "R0169",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"One day her applicant\" ripetuto."
+  },
+  {
+   "id": "R0170",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"They wanted to the doctrines\" ripetuto."
+  },
+  {
+   "id": "R0171",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He was all little\" e \"mistakes\" ripetuto."
+  },
+  {
+   "id": "R0172",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"have a\" seguito da simboli /\" ripetuti."
+  },
+  {
+   "id": "R0173",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"going to the\" seguito da backtick ripetuti."
+  },
+  {
+   "id": "R0174",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"one of money\", \"mortgages\" ripetuto."
+  },
+  {
+   "id": "R0175",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"climb out of his\" poi \"disqual\" ripetuto."
+  },
+  {
+   "id": "R0176",
+   "grammar": 4,
+   "consistency": 3,
+   "plot": 2,
+   "category": "N",
+   "reason": "Inizio coerente con le macchinine, poi \"Miche\", \"serum\", \"Cait\" incomprensibili e ripetuti."
+  },
+  {
+   "id": "R0177",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He felt his\" poi \"brow\" ripetuto."
+  },
+  {
+   "id": "R0178",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"concentrations\" ripetuto."
+  },
+  {
+   "id": "R0179",
+   "grammar": 6,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Cane curioso in cucina, ma \"accidentally accidentally\", \"dropped the stove\" e \"brave520520\": eventi confusi."
+  }
+ ]
+}

@@ -1,0 +1,244 @@
+{
+ "ratings": [
+  {
+   "id": "R0030",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He had a\" seguito da \"emits\" ripetuto; la penna magica sparisce."
+  },
+  {
+   "id": "R0031",
+   "grammar": 3,
+   "consistency": 3,
+   "plot": 2,
+   "category": "N",
+   "reason": "Due frasi coerenti sulla creatività, poi \"tribunal\" ripetuto fino alla fine."
+  },
+  {
+   "id": "R0032",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo \"Burgess\" ripetuto."
+  },
+  {
+   "id": "R0033",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"draw in the\" poi numeri \"467\" ripetuti."
+  },
+  {
+   "id": "R0034",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Parole inventate (\"theplement\", \"aggies\") e degenerazione."
+  },
+  {
+   "id": "R0035",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Una frase sensata, poi \"EB\" ripetuto."
+  },
+  {
+   "id": "R0036",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Lily trova \"a expulsion\" ripetuto all'infinito."
+  },
+  {
+   "id": "R0037",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Domanda di Mum sensata, poi \"sounded\" ripetuto."
+  },
+  {
+   "id": "R0038",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"The exhibitions\" ripetuto; nessuna storia."
+  },
+  {
+   "id": "R0039",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Token \"lift\" incollati e simboli ▬: nessun contenuto."
+  },
+  {
+   "id": "R0040",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "Due frasi sensate poi \"Azerbai\" ripetuto."
+  },
+  {
+   "id": "R0041",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"It to the regional\" ripetuto: incomprensibile."
+  },
+  {
+   "id": "R0042",
+   "grammar": 2,
+   "consistency": 2,
+   "plot": 2,
+   "category": "N",
+   "reason": "Oggetti senza senso (\"VC\", \"opting\") e ripetizioni; non si capisce cosa accade."
+  },
+  {
+   "id": "R0043",
+   "grammar": 4,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Struttura riconoscibile (paura, coraggio, amicizia) ma l'altro personaggio è un simbolo \"(_ (_\" incomprensibile; la scusa è attribuita al personaggio sbagliato."
+  },
+  {
+   "id": "R0044",
+   "grammar": 3,
+   "consistency": 2,
+   "plot": 2,
+   "category": "N",
+   "reason": "Parole insensate (\"Veteran\", \"Wel\", \"Flare\") rendono il carico e l'aiuto incomprensibili."
+  },
+  {
+   "id": "R0045",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"dress up a\" seguito da \"daily\" ripetuto."
+  },
+  {
+   "id": "R0046",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He each\" e poi \"staples\" ripetuto."
+  },
+  {
+   "id": "R0047",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"It made he wanted\" e \"folklore\" ripetuto."
+  },
+  {
+   "id": "R0048",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He\" non identificato vuole trovare \"Pric\" ripetuto."
+  },
+  {
+   "id": "R0049",
+   "grammar": 4,
+   "consistency": 3,
+   "plot": 2,
+   "category": "N",
+   "reason": "Inizio coerente (freddo, avviso della mamma), poi \"rices\"/\"aspirations\" ripetuti."
+  },
+  {
+   "id": "R0050",
+   "grammar": 4,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Struttura di passeggiata coerente, ma la meta è \"intermittent intermittent\" ripetuto, ora luogo ora compagno."
+  },
+  {
+   "id": "R0051",
+   "grammar": 3,
+   "consistency": 2,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"make people\" insensato, poi numeri \"339\" ripetuti."
+  },
+  {
+   "id": "R0052",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He and the Archie\" ripetuto."
+  },
+  {
+   "id": "R0053",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"They was in the bans\" ripetuto."
+  },
+  {
+   "id": "R0054",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"Kobe\" ripetuto; nessuna storia."
+  },
+  {
+   "id": "R0055",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Solo token \"esley\" incollati."
+  },
+  {
+   "id": "R0056",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"It some\" poi \"207\" ripetuto."
+  },
+  {
+   "id": "R0057",
+   "grammar": 1,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "Soggetto \"They\" errato e \"Swap\" ripetuto."
+  },
+  {
+   "id": "R0058",
+   "grammar": 2,
+   "consistency": 1,
+   "plot": 1,
+   "category": "N",
+   "reason": "\"He was a suburb\", \"made him\", poi \"verdict\" ripetuto."
+  },
+  {
+   "id": "R0059",
+   "grammar": 6,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Grammatica discreta ma l'oggetto \"theblowblow\" è incomprensibile; genitori che ignorano la paura e finale (\"never went home\", \"ponds left\") incoerente."
+  }
+ ]
+}
