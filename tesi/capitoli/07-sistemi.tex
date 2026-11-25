@@ -1,6 +1,7 @@
 Questo capitolo verifica le ipotesi H2 e H3 e studia il comportamento di STERA quando i pesi si avvicinano al limite della memoria disponibile. Descriviamo prima i kernel che operano sulle coordinate, poi la banda di lettura del disco, il peso dei modelli, il confronto fra i due motori dello stesso STERA 30M, l'inferenza dei tre modelli del confronto linguistico e infine l'esecuzione con pesi che superano la memoria. Per leggere i risultati distinguiamo il tempo al primo token, che include l'elaborazione del prompt, il decode, cioè la produzione dei token successivi, e il tempo totale della richiesta.
 
 \section{Due kernel per RowMask23}
+\label{sec:kernel-rowmask}
 
 Le misure richiedono due operazioni che non esistono nelle librerie standard. Le abbiamo scritte come kernel Metal, eseguiti sulla GPU del chip M1 attraverso l'interfaccia C++ di MLX.
 

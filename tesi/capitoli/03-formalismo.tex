@@ -145,6 +145,7 @@ La funzione $p(c)=\det\Phi(c)$ è un polinomio nelle coordinate, perché il dete
 La distinzione tra numero di parametri e rango è importante. Una fattorizzazione di rango 16 in dimensione 128 ha $2\cdot128\cdot16=4.096$ parametri, più di RowMask23, ma ignora $112$ direzioni dell'ingresso. Un blocco RowMask23 ne usa $3.176$ e, in generale, agisce su tutte le direzioni. Le due famiglie sono sottospazi diversi dello spazio delle matrici, con geometrie diverse.
 
 \section{Gradiente rispetto alle coordinate}
+\label{sec:gradiente-coordinate}
 
 Per addestrare una rete costruita con blocchi RowMask23 serve il gradiente della perdita rispetto alle coordinate. Supponiamo di conoscere $G=\partial\mathcal{L}/\partial W$, il gradiente rispetto alla matrice ricostruita, calcolato con la retropropagazione ordinaria \eqref{eq:linear-grad}. Poiché $W=\Phi(c)$ è lineare, la regola della catena dà
 \begin{equation}
