@@ -1,0 +1,2404 @@
+{
+ "ratings": [
+  {
+   "id": "V000",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "Frase del padre senza senso ('così non ti stanchi'); il ricordo delle sue parole non motiva il ritorno a casa e il viaggio del giorno dopo è slegato."
+  },
+  {
+   "id": "V001",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Amicizia zattera-rana semplice e coerente; piccola imprecisione sulla zattera che 'nuota'."
+  },
+  {
+   "id": "V002",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Bacche 'tristi' poi raccolte comunque; 'fece un grande piatto', 'raccolse senza guardare', 'le diede di nuovo' rendono confusa la sequenza."
+  },
+  {
+   "id": "V003",
+   "grammar": 7,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Lily cura il prurito di Max con la crema; frase iniziale sul naso nel prurito sgrammaticata ma trama chiara."
+  },
+  {
+   "id": "V004",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Manipolazione del melone contraddittoria: lo toglie dal piatto, forchette su pezzi, 'melone speciale sopra' non interpretabile."
+  },
+  {
+   "id": "V005",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 8,
+   "category": "S",
+   "reason": "Scatola con lampadina magica che parla ed esaudisce un desiderio; sviluppo lineare e coerente."
+  },
+  {
+   "id": "V006",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Tim triste per il giocattolo perso, la mamma gli trova un orsetto; semplice e coerente."
+  },
+  {
+   "id": "V007",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Gioco del battere le mani poco sensato e cane sordo che risponde all'invito, ma passeggiata semplice e interpretabile."
+  },
+  {
+   "id": "V008",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 8,
+   "category": "S",
+   "reason": "Sasso magico che parla e si trasforma esplicitamente in bambina; sviluppo chiaro."
+  },
+  {
+   "id": "V009",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Orso con la proboscide; fugge lontano dallo zoo; finale contraddittorio ('l'orso spaventato la rendeva felice')."
+  },
+  {
+   "id": "V010",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Uccellino Bob fa amicizia con la formica Tim; semplice ma coerente, finale ripetuto."
+  },
+  {
+   "id": "V011",
+   "grammar": 7,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Spot aiuta l'uccellino con una foglia sulle ali; 'lots of leaves fall' sgrammaticato, trama coerente."
+  },
+  {
+   "id": "V012",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "'Spezzare un ramo dal ramo' senza scopo; colpo di scena 'non era un uccello ma un uccellino' insensato; ricerca di Doggy abbandonata."
+  },
+  {
+   "id": "V013",
+   "grammar": 8,
+   "consistency": 3,
+   "plot": 5,
+   "category": "N",
+   "reason": "Il protagonista gatto Clover diventa senza spiegazione 'Rabbit'; rumore dentro casa ma fata in cielo."
+  },
+  {
+   "id": "V014",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Gina beve da sola dalla ciotola dopo aver chiesto aiuto; strano ma la sequenza resta interpretabile."
+  },
+  {
+   "id": "V015",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Il bambino dipinge la lana al parco con gli amici; semplice e coerente."
+  },
+  {
+   "id": "V016",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "La paura per la palla alla chiamata della mamma è immotivata e la risoluzione ('ricordò di avere paura' quindi gioca) manca di causalità."
+  },
+  {
+   "id": "V017",
+   "grammar": 8,
+   "consistency": 8,
+   "plot": 6,
+   "category": "S",
+   "reason": "Gatto che tocca e mangia la pasta; coerente ma ripetitivo e minimo."
+  },
+  {
+   "id": "V018",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Sally tocca i baffi poi 'prova a toccarli ma sono troppo grandi'; battuta finale 'è grazie a te' senza senso."
+  },
+  {
+   "id": "V019",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Auto sbatte per la velocità e l'amica la aiuta ad andare più veloce: morale strana ma eventi collegati."
+  },
+  {
+   "id": "V020",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La domanda sul mulino scomparso non riceve risposta sensata ('il giorno dopo ci sarà lo stesso giorno'); sorpresa slegata dall'incipit."
+  },
+  {
+   "id": "V021",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La stanza disordinata trema e appare un cane che ringrazia per 'la mia stanza pulita' ed era perso: causalità mancante."
+  },
+  {
+   "id": "V022",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Cane offre il bastone alla bambina, poi lo perde nella pozzanghera; finale negativo ma coerente."
+  },
+  {
+   "id": "V023",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Un solo scambio Lila/Lily e dialogo un po' ripetitivo, troncato; nucleo coerente."
+  },
+  {
+   "id": "V024",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Tim mangia tutta la torta, poi tutti mangiano la torta insieme; pulizia del piatto sporco poco motivata."
+  },
+  {
+   "id": "V025",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Palla trovata e bucata da un cane; frase 'Tim cercò di resistere ma gli amici no' oscura, trama semplice."
+  },
+  {
+   "id": "V026",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Pesciolino solitario trova amici pesce grande e granchio; semplice e coerente."
+  },
+  {
+   "id": "V027",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Vestito appeso ai rami della casa del vicino ma chiesto in prestito alla mamma come 'tuo'; gomma da masticare slegata."
+  },
+  {
+   "id": "V028",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Lily decide di liberare l'uccellino ma lo porta a casa; la mamma 'spaventata anche lei' senza motivo."
+  },
+  {
+   "id": "V029",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "La tazza viene portata a casa poi ripresa al parco e data alla mamma che era a casa; il collegamento con 'non farla cadere' è confuso."
+  },
+  {
+   "id": "V030",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Braccio rotto da 'riparare', 'fix clothes', Mr. Fox ringraziato senza aver fatto nulla; sequenza confusa e troncata."
+  },
+  {
+   "id": "V031",
+   "grammar": 9,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La lontra cerca i propri amici ma trovano quelli dell'uccello; l'obiettivo iniziale viene abbandonato senza spiegazione."
+  },
+  {
+   "id": "V032",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Festa a casa propria ma Tim 'vuole andarci'; morale incongrua, sequenza pulizia-festa comunque interpretabile."
+  },
+  {
+   "id": "V033",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Tim rifiuta di condividere lo spago, la mamma lo convince e diventa amico del cane; coerente."
+  },
+  {
+   "id": "V034",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "La polvere che 'fa sparire le cose' produce invece una pila di carta volante; effetto contraddittorio, finale troncato."
+  },
+  {
+   "id": "V035",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "Ben si siede su un ramo per bere, la palla cade, arriva il padre con torcia e bastone: eventi poco collegati e troncati."
+  },
+  {
+   "id": "V036",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Andy trova cibo che si rivela cattivo e l'albero diventa appiccicoso; semplice, finale negativo coerente."
+  },
+  {
+   "id": "V037",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tom convince Sue a salire sulla collina e scivola; 'none of them were there' oscuro, finale troncato."
+  },
+  {
+   "id": "V038",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim non trova il menu, la mamma lo trova sotto il tavolo; 'not complain' sgrammaticato, trama minima."
+  },
+  {
+   "id": "V039",
+   "grammar": 9,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "L'albero diventa un parco giochi con altalene e Sam compare dal nulla; viaggio comunque interpretabile."
+  },
+  {
+   "id": "V040",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La porta segreta appare senza essere trovata e si apre 'dopo i turni'; scoperta della stanza coerente."
+  },
+  {
+   "id": "V041",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Orsetto giocattolo che parla alla festa, poi cercano un libro; la passione per la scrittura è ripresa debolmente."
+  },
+  {
+   "id": "V042",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Tim pulisce la stanza, poi trova caramelle sul pavimento e 'deve pulire la stanza' di nuovo; sequenza ripetitiva e incoerente."
+  },
+  {
+   "id": "V043",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il gioiello fa vedere cose buffe e poi 'non le faceva vedere'; frasi ripetute ('The cat was sad too') e contraddittorie."
+  },
+  {
+   "id": "V044",
+   "grammar": 8,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Lily consegna la scatola a Tim, poi la dà a Sam (mostro dentro), poi torna a consegnarla a Tim: consegna centrale contraddittoria."
+  },
+  {
+   "id": "V045",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Tim presta l'accappatoio al gatto, l'accappatoio è magico ed esaudisce il desiderio; coerente."
+  },
+  {
+   "id": "V046",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily va al parco e resta vicina al papà; coerente ma minimale."
+  },
+  {
+   "id": "V047",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il 'nuovo sport' è lo stesso calciare la palla; ripetitivo ma coerente."
+  },
+  {
+   "id": "V048",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Mama invidiosa 'chiede a sua mamma'; il sonnellino e la paura sono immotivati; scena confusa."
+  },
+  {
+   "id": "V049",
+   "grammar": 8,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Max, che vive nel mulino, chiede di entrarvi; il mugnaio chiede un dono e risponde Tim dando l'auto a Max: ruoli non interpretabili."
+  },
+  {
+   "id": "V050",
+   "grammar": 9,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Bob dice che non si può aprire la scatola e subito 'quindi' la aprono: contraddizione non risolta."
+  },
+  {
+   "id": "V051",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il 'potere di cedere' dell'albero è privo di senso; l'uccello ha paura perché 'era così alto' ambiguo; trama vaga."
+  },
+  {
+   "id": "V052",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 7,
+   "category": "S",
+   "reason": "Il mulo aiuta un uccello a trovare gli amici; 'big bird' chiamato 'little bird' e il 'naso lungo' sono imprecisioni minori."
+  },
+  {
+   "id": "V053",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Confusione tra l'amico Cat e il gatto cattivo: 'saving the cat from the cat'; Tim prende il rasoio dopo averlo lasciato."
+  },
+  {
+   "id": "V054",
+   "grammar": 6,
+   "consistency": 4,
+   "plot": 3,
+   "category": "N",
+   "reason": "Il camion per gite consegna carburante, causa uno 'spreco' indefinito; 'the bad ending was ... give away to the bad ending' privo di senso."
+  },
+  {
+   "id": "V055",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La zampa viene 'venduta ogni giorno' pur essendo unica; 'troppo piccola per tenerla' contraddice il fatto che la conserva."
+  },
+  {
+   "id": "V056",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Cane smarrito nella buca, poi compare un padrone scortese; brusco ma interpretabile, finale negativo."
+  },
+  {
+   "id": "V057",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il topo Max esce dalla scatola e poi la ruba; 'si incontrarono di nuovo' pur vivendo insieme è minore."
+  },
+  {
+   "id": "V058",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim scava, trova una chiave e la mamma dice che non è un tesoro; frasi goffe ma sequenza chiara."
+  },
+  {
+   "id": "V059",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Bob cerca ombra ma mette il pesce su una roccia al sole caldo e piacevole; 'sun was alert', 'the sun was a good day' incoerenti."
+  },
+  {
+   "id": "V060",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim triste senza motivo chiaro, la mamma lo incoraggia e riesce a prendere la palla; semplice e coerente."
+  },
+  {
+   "id": "V061",
+   "grammar": 6,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Max sale su una bici prima di chiederla all'amico; 'new bike with the new bike' e 'la bici per avere una bici nuova' confusi."
+  },
+  {
+   "id": "V062",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "L'infermiera dice che Lily non è malata contro l'incipit; sotto il letto a guardare il sole; frasi ripetute e motivazioni contraddittorie."
+  },
+  {
+   "id": "V063",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Doveva chiedere alla mamma ma chiede al negoziante; dopo la promessa 'prenderà vestiti senza permesso', contraddicendo la morale."
+  },
+  {
+   "id": "V064",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il pesce grande diventa 'small fish'; lo squalo si sente 'cattivo' senza motivo; aiuto per i soldi non risolto."
+  },
+  {
+   "id": "V065",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "La famiglia corre a casa e chiude la porta, ma la bambina si perde e finiscono in ospedale: eventi centrali non interpretabili."
+  },
+  {
+   "id": "V066",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Max fa yoga per salvare il gatto bloccato sull'albero senza alcun nesso causale; morale incongrua."
+  },
+  {
+   "id": "V067",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Torre di blocchi per arrivare in cima, uccello magico; il nuovo amico richiesto resta ambiguo ma la sequenza regge."
+  },
+  {
+   "id": "V068",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Jane e il papà sollevano il tronco 'fuori dalla foresta' e il tronco diventa un castello senza spiegazione."
+  },
+  {
+   "id": "V069",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "I 'rami della crepa' trascinano Molly che 'non fu più vista' ma poi 'rimase lì per paura'; contraddittorio."
+  },
+  {
+   "id": "V070",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "La sorella maggiore diventa 'big brother', il fratellino parla a se stesso, il gioiello trovato viene chiesto al fratello: identità confuse."
+  },
+  {
+   "id": "V071",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'uomo che mescola cappello e aria fa tremare e rompere la stanza: causalità arbitraria e finale ripetitivo."
+  },
+  {
+   "id": "V072",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Gioco 'Match' senza senso, trovano un uccellino blu, l'uccello salta fuori 'per dare cibo' al lupo; sequenza scollegata."
+  },
+  {
+   "id": "V073",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Tim e Sue fanno amicizia con un grande cane che parla; coerente."
+  },
+  {
+   "id": "V074",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "La rana Fred trova un sasso magico che esaudisce il desiderio di saltare meglio; coerente."
+  },
+  {
+   "id": "V075",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il tronco diventa un aquilone senza motivo; la lezione di volo è abbandonata ('not a real flying plan')."
+  },
+  {
+   "id": "V076",
+   "grammar": 9,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il gatto cattura Dolly ma la cattura non viene risolta: Tommy le porta solo il frutto e lo mangiano insieme."
+  },
+  {
+   "id": "V077",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Lo scoiattolo parla e si presenta, poi 'inaspettatamente iniziò a parlare': contraddizione evidente."
+  },
+  {
+   "id": "V078",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il bambino mette le foglie nel buco e si rovinano; minimale ma coerente."
+  },
+  {
+   "id": "V079",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Mal di pancia per fame, il venditore 'dà' la macchinina che diventa 'cattiva' e dice di averla presa: causalità assente."
+  },
+  {
+   "id": "V080",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Pericolo mai specificato; fugge a casa ma scopre che 'l'opera non era sicura'; eventi vaghi e scollegati."
+  },
+  {
+   "id": "V081",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "La palla diventa 'il mio autobus', l'autobus è 'sul marciapiede' e 'troppo alto': oggetto centrale non interpretabile."
+  },
+  {
+   "id": "V082",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Mia si nasconde dietro la scatola ma Ben la trova dentro insieme a Lily, che stava cercando con lui."
+  },
+  {
+   "id": "V083",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Pranzo diventa notte; 'scoprì che era broccolo'; dopo averli apprezzati 'non li mangiò mai più': contraddizione."
+  },
+  {
+   "id": "V084",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Sue è triste dopo un sì; nonno e 'non rompo cose con la mia mamma' incongrui; riparazione comprensibile."
+  },
+  {
+   "id": "V085",
+   "grammar": 9,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Jack e Jill trovano il tesoro, il pericolo è vago ma tornano a casa salvi; semplice."
+  },
+  {
+   "id": "V086",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il cane apre il regalo e gioca a palla con il gatto; 'unexpected' senza sorpresa ma coerente."
+  },
+  {
+   "id": "V087",
+   "grammar": 6,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "Il nuovo amico è sulla barca e dall'altra parte dell'acqua; frasi ripetute e dialogo finale incomprensibile ('they say they are not a friend')."
+  },
+  {
+   "id": "V088",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "La mamma invita a salire poi dice che non è sicuro; arrivano due volte in cima; la sala vista dall'albero confonde la scena."
+  },
+  {
+   "id": "V089",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "Lily 'va a cercare una festa' per la propria festa; il rifiuto finale degli ospiti non ha motivo."
+  },
+  {
+   "id": "V090",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il dizionario 'apre la sua porta' e Lily ripete la richiesta; storia minima ma interpretabile."
+  },
+  {
+   "id": "V091",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "Rumore metallico diventa un bambino, poi un animale chiamato Tiny, poi 'ora sei un bambino': identità centrale non interpretabile."
+  },
+  {
+   "id": "V092",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'arco usato per fare coperte per la casa; borsa magica ignorata; 'special special' e uso dell'oggetto incoerente."
+  },
+  {
+   "id": "V093",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il boscaiolo ha paura di perdersi andando 'dall'altra parte di un albero' e trova come amico un alberello; causalità debole."
+  },
+  {
+   "id": "V094",
+   "grammar": 9,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tom spaventa Polly, non riesce a prenderla e impara la lezione; pentimento poco motivato ma coerente."
+  },
+  {
+   "id": "V095",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Al tempio Tim chiede aiuto per trovare una torta e l'uomo buffo lo aiuta; domanda dell'uomo sgrammaticata."
+  },
+  {
+   "id": "V096",
+   "grammar": 6,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Spiegazioni del padre prive di senso ('cold and wet and cold ... rise to the sun'), ripetizioni e storia troncata."
+  },
+  {
+   "id": "V097",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Sue trova un gattino nella scatola sotto il letto e se ne prende cura; 'portarlo dentro' pur essendo già in casa è minore."
+  },
+  {
+   "id": "V098",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tom supera la paura di andare al parco grazie a una macchinina; semplice e coerente."
+  },
+  {
+   "id": "V099",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "La rana Bob gioca a palla e canta con Sue; minimale, troncato, coerente."
+  },
+  {
+   "id": "V100",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Velvet dice che 'prenderà il cane' ma scappa da sola; 'disse a Blue dov'era' dopo essere tornata: azione confusa."
+  },
+  {
+   "id": "V101",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Gatto e cane recitano, un uccello li urta per giocare; ripetitivo ma coerente."
+  },
+  {
+   "id": "V102",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Gelatina appesa all'albero che 'non si apre', si scuote l'albero, poi corre dentro a mostrarla alla mamma che era lì: oggetto e azioni incomprensibili."
+  },
+  {
+   "id": "V103",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Sue 'entra' nella scatola e il biglietto risulta rovinato senza motivo; disobbedienza e conseguenza comunque collegate."
+  },
+  {
+   "id": "V104",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Il topo parla tutto il giorno e solo dopo Mia è sorpresa che i topi parlino, pensando fosse finto."
+  },
+  {
+   "id": "V105",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "'Il bastone colpì il bastone'; Buddy attacca l'uccello con un bastone appuntito e poi diventano migliori amici senza motivo."
+  },
+  {
+   "id": "V106",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 8,
+   "category": "S",
+   "reason": "Sasso magico parlante esaudisce il desiderio di nuovi amici; sviluppo chiaro."
+  },
+  {
+   "id": "V107",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Mimi rompe il cuscino ballando e lo ripara con l'amico; 'mise i pezzi sul cuscino' goffo ma comprensibile."
+  },
+  {
+   "id": "V108",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Ricerca della 'parola migliore' vaga; lezioni sull'essere diversi e sulle parole della stessa forma non collegate."
+  },
+  {
+   "id": "V109",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Tom calma il cane arrabbiato ballando e diventano amici; coerente."
+  },
+  {
+   "id": "V110",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Mescolare una palla con la pentola; prima 'molto brava' poi 'non sapeva mescolare'; disordine non descritto."
+  },
+  {
+   "id": "V111",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Ben 'attento' diventa subito incauto e arrabbiato, 'takes the flower and the flower', poi chiede il fiore che avrebbe preso."
+  },
+  {
+   "id": "V112",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La bambina 'scala' un'onda fino in cima senza alcuna magia esplicita; finale vago."
+  },
+  {
+   "id": "V113",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Legno e chiodi diventano una palla rotonda, poi un'altalena; ripetizione insensata di 'fit'."
+  },
+  {
+   "id": "V114",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La mamma risponde come fosse la parrucchiera; la parrucchiera 'ordina' un taglio: ruoli confusi."
+  },
+  {
+   "id": "V115",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "La mela rossa diventa gialla; dopo averla trovata, salta 'finché trovò la mamma' di nuovo."
+  },
+  {
+   "id": "V116",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "Brocca riempita poi vuota senza motivo, bambini nel parco 'arrivato a casa', 'l'ho riempita, ora la riempio': azione centrale incomprensibile."
+  },
+  {
+   "id": "V117",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Biglietti incongrui ('Do not open at the door', 'You must surrender') e morale slegata; scoperta della torta comprensibile."
+  },
+  {
+   "id": "V118",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Sue parlava già con la mamma ma il muffin magico 'le fa parlare'; finale 'parlando al muffin' incoerente."
+  },
+  {
+   "id": "V119",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Lavagna, biglietto nella scatola e disegni scollegati; pulizia della stanza e morale ('big day') senza nesso."
+  },
+  {
+   "id": "V120",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Emily ammira la casa arancione e poi ci cena con la mamma; passaggio cena a casa/casa arancione un po' confuso ma interpretabile."
+  },
+  {
+   "id": "V121",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il gorilla giocattolo sussurra e Tim, nel posto segreto, perde la paura; risoluzione poco spiegata ma coerente."
+  },
+  {
+   "id": "V122",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Kip si dondola sull'altalena con gli amici; ringraziamento finale un po' incongruo, storia semplice."
+  },
+  {
+   "id": "V123",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Salendo la torre compare una collina; l'uccello butta il giocattolo giù e Tim ringrazia; in cima un albero: scena incoerente."
+  },
+  {
+   "id": "V124",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il gioco del punteggio viene accantonato per la palla sull'albero, recuperata da un uccello; semplice ma collegato."
+  },
+  {
+   "id": "V125",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Descrizione ripetitiva del tuono; Mia 'lascia cadere il libro' che non aveva ancora preso."
+  },
+  {
+   "id": "V126",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Il cane caccia il gatto che voleva le ciliegie dell'uccello; lineare e coerente."
+  },
+  {
+   "id": "V127",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "'Non era uno spettacolo di danza ma uno terribile' goffo; gli amici migliorano lo spettacolo, trama semplice."
+  },
+  {
+   "id": "V128",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "Drago 'costoso' che vola già ma 'trova il cielo' e 'non si perderà più' senza essersi perso: sviluppo vuoto."
+  },
+  {
+   "id": "V129",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il jet stanco si riposa e torna a volare; personificazione minima ma coerente."
+  },
+  {
+   "id": "V130",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily e Max costruiscono astronavi e le uniscono; coerente, troncato."
+  },
+  {
+   "id": "V131",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Sue aiuta Tim ad adattare la fibbia grande alla scarpa; semplice e coerente."
+  },
+  {
+   "id": "V132",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Chiusura contraddittoria: 'il quaderno era il miglior albero del mondo'."
+  },
+  {
+   "id": "V133",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Cadono sulla collina e una signora li soccorre; tovagliolo 'attorno a loro' e morale ridondante, nucleo chiaro."
+  },
+  {
+   "id": "V134",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Sue trova giocattoli magici che esaudiscono un desiderio per il gatto; il gatto ordinato resta marginale ma coerente."
+  },
+  {
+   "id": "V135",
+   "grammar": 6,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "Chiedono a Papà di restare in auto, l'auto è nel bosco mentre la guidano, giorni e notte confusi: eventi non interpretabili."
+  },
+  {
+   "id": "V136",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Un uomo osserva e restituisce la palla; 'the man who are' e 'la palla è sparita' detto da chi l'ha presa, interpretabile."
+  },
+  {
+   "id": "V137",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Nuvola di cenere con logica invertita, Lily 'aiuta' dando un fiore; nesso con lo stretching insensato."
+  },
+  {
+   "id": "V138",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Mia vuole mostrare la gonna ma è Tom a mostrare la 'sua nuova gonna': scambio di ruolo sull'oggetto centrale."
+  },
+  {
+   "id": "V139",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Spot e Blue trovano una bilancia luccicante e la mostrano agli amici; ripetitivo ma coerente."
+  },
+  {
+   "id": "V140",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Sam ama la casa nonostante il parco, pulisce i muri con i giocattoli, la stanza diventa soffitta."
+  },
+  {
+   "id": "V141",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La palla finisce sull'albero, un cane morde Lily; 'Ow' detto da Tom strano, finale negativo ma coerente."
+  },
+  {
+   "id": "V142",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Spike ha perso la famiglia ma 'sapeva che la famiglia ci sarebbe sempre stata'; ricerca abbandonata."
+  },
+  {
+   "id": "V143",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Zoomy gioca a nascondino all'ospedale dei giocattoli; motivazioni deboli ('bravo a nascondersi perché obbediente')."
+  },
+  {
+   "id": "V144",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il vento fa crollare la torre e i genitori li consolano; blocchi 'in pezzi' e vento in casa minori."
+  },
+  {
+   "id": "V145",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Frutto messo nel 'coffee book' e mescolato, uccello guarda il 'cooler': oggetti incoerenti, trama vaga."
+  },
+  {
+   "id": "V146",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Sarah triste per una caramella aspra, i bambini condividono caramelle mai menzionate in piscina."
+  },
+  {
+   "id": "V147",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'incipit colloca Tim nel nido ma lui 'non ha un nido'; Sue costruisce il nido a casa sua."
+  },
+  {
+   "id": "V148",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il coniglio dice 'era il mio lago' senza senso; consiglio del pesce generico, dialogo incoerente."
+  },
+  {
+   "id": "V149",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il coniglio 'non vuole tanta pace' contro l'incipit, l'elefante prende 'il suo osso', genere del coniglio oscilla."
+  },
+  {
+   "id": "V150",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "'Una casa, un albero e una casa'; la faccia felice sull'albero rende amico l'insetto: semplice e interpretabile."
+  },
+  {
+   "id": "V151",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Il cane che ruba il giocattolo è 'su un albero' e restituisce il gioco con un bastone; perdita iniziale non risolta."
+  },
+  {
+   "id": "V152",
+   "grammar": 9,
+   "consistency": 9,
+   "plot": 7,
+   "category": "S",
+   "reason": "L'orso condivide i mirtilli con l'uccellino e diventano amici; coerente e lineare."
+  },
+  {
+   "id": "V153",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Voler 'raccogliere' un albero, il ragazzo alto diventa 'old boy', scuse ripetute senza motivo: sequenza confusa."
+  },
+  {
+   "id": "V154",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Bob è già nel negozio quando vanno 'al negozio insieme'; palla che diventa palloncino senza spiegazione."
+  },
+  {
+   "id": "V155",
+   "grammar": 9,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il gatto cattura l'uccello ma gli amici gli lucidano l'ala: la cattura non viene risolta."
+  },
+  {
+   "id": "V156",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Joe 'vuole essere geloso anche lui', 'castello per fare un castello', regalo cercato insieme: motivazioni centrali incomprensibili."
+  },
+  {
+   "id": "V157",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "La macchinina 'non veloce né lenta' e il gioco con l'amico; un po' ripetitivo ma interpretabile."
+  },
+  {
+   "id": "V158",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Perde il cane 'perché troppo grande', la mamma prende 'una scatoletta dalla scatola' e il cane è dentro: incoerente."
+  },
+  {
+   "id": "V159",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Tom sempre sporco ma cerca di tenersi pulito; rifiuta il cane sporco poi impara a condividere; contraddizione sugli attributi."
+  },
+  {
+   "id": "V160",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "John tocca una ragnatela, la mamma lo avverte; 'non sapevo che ci fosse' incongruo ma trama comprensibile."
+  },
+  {
+   "id": "V161",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "L'albero si rivela un gigante che apprezza il canto; colpo di scena esplicito, dialogo ripetitivo."
+  },
+  {
+   "id": "V162",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Il cappello volato via 'non era un cappello ma un palloncino': cambio immotivato di oggetto, finale vago."
+  },
+  {
+   "id": "V163",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Cercavano una macchinina lunga e comprano un bastone; finale cita 'la nuova macchinina' mai comprata."
+  },
+  {
+   "id": "V164",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Jack riceve l'inchiostro costoso dal papà e disegna; frasi goffe ma sequenza chiara."
+  },
+  {
+   "id": "V165",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "La mamma rifiuta il giocattolo ma a casa Tim ci gioca; 'se mi dai un desiderio ti do un regalo' invertito."
+  },
+  {
+   "id": "V166",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "'Voglio essere mio amico' e l'uccello che chiede al ragno di non mangiarlo: ruoli invertiti in modo incongruo."
+  },
+  {
+   "id": "V167",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Al parco la mamma impone il sapone, Tim mette le mani nell'acqua 'per non sporcarsi', poi va a casa: gioco annunciato non avviene."
+  },
+  {
+   "id": "V168",
+   "grammar": 9,
+   "consistency": 4,
+   "plot": 6,
+   "category": "P",
+   "reason": "La penna fa 'sparire le cose' ma viene usata per creare un gelato: contraddizione con l'incipit."
+  },
+  {
+   "id": "V169",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il cioccolato si rivela aspro e la bambina ci rinuncia; 'aspro e delizioso' contraddittorio ma nucleo chiaro."
+  },
+  {
+   "id": "V170",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Il vento porta la punta sull'albero e l'albero la fa cadere su richiesta; coerente."
+  },
+  {
+   "id": "V171",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Sue si sente sola senza motivo, dipinge il cartellone e il gatto ne salta fuori senza spiegazione."
+  },
+  {
+   "id": "V172",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Un uccellino aiuta Henry a costruire la torre più alta e se ne va; coerente."
+  },
+  {
+   "id": "V173",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "L'albero è 'pericoloso', viene chiamato 'Dog', dice 'qui è sicuro' e poi va a casa con l'uccello: identità non interpretabile."
+  },
+  {
+   "id": "V174",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Vietata la pozzanghera, vuole arrampicarsi e 'quindi' gioca nella pozzanghera; tristezza e lezione non collegate."
+  },
+  {
+   "id": "V175",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Sue indipendente gioca con un'amica; il nascondino è lasciato a metà; il bambino che urla diventa 'la sua amica'."
+  },
+  {
+   "id": "V176",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il gatto e il bambino si passano la palla fino a sera; semplice e coerente."
+  },
+  {
+   "id": "V177",
+   "grammar": 7,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il topo morde la torta senza conseguenze ('had Nothing'); episodio del topo non collegato al finale."
+  },
+  {
+   "id": "V178",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tom pigro si chiude nella scatola, gioca con il cane e impara che giocare è bello; semplice."
+  },
+  {
+   "id": "V179",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Un anziano con mal di pancia viene invitato a correre e guarisce; 'corsero fino al parco' pur essendoci già."
+  },
+  {
+   "id": "V180",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Fin e gli amici trovano il giocattolo di Sue sotto un sasso; bambina in mare e 'ricordò l'amico pesciolino' incongrui ma interpretabili."
+  },
+  {
+   "id": "V181",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il toro saggio è 'troppo piccolo'; l'aiuto dell'uccello consiste nel volare da solo; il problema non è risolto."
+  },
+  {
+   "id": "V182",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sarah osserva le anatre con la mamma; dialogo tautologico e anatre che salutano, scena semplice."
+  },
+  {
+   "id": "V183",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Dall'hockey al brutto sogno, poi 'porta buia della casa di Sam' e un buco nella recinzione scavalcato: eventi poco collegati, troncato."
+  },
+  {
+   "id": "V184",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "'Il sole sorse e il cielo si fece buio', Sam si pente di aver ignorato Max mentre il consiglio era ignorare il sasso; finale confuso."
+  },
+  {
+   "id": "V185",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Lily chiama la bambola 'la mia macchina', Ben 'non amava i minuti' ed è triste per 'la sua bambola': oggetti e proprietari confusi."
+  },
+  {
+   "id": "V186",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Mia gioca sull'altalena e fa amicizia con un cane; semplice e coerente."
+  },
+  {
+   "id": "V187",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Max trova un dizionario e impara parole con il gatto Tom; coerente."
+  },
+  {
+   "id": "V188",
+   "grammar": 6,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "La sega rubata 'non aiutò', 'la sega migliorò la sega' e costruisce una casa con il ladro: trama incomprensibile."
+  },
+  {
+   "id": "V189",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lucy costruisce un castello di blocchi e ci gioca fuori; 'tocco che lo rende vivace' vago, trama minima."
+  },
+  {
+   "id": "V190",
+   "grammar": 9,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il vento porta via la pistola giocattolo; morale 'non tutti sono gentili' non pertinente ma eventi chiari."
+  },
+  {
+   "id": "V191",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Tom non cattura la farfalla ma alla fine è 'felice di averla catturata'; il sole tramonta e 'torna'."
+  },
+  {
+   "id": "V192",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il cacciatore brutto aiuta a trovare cibo con l'uccello; morale contorta ma storia coerente."
+  },
+  {
+   "id": "V193",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Max compare senza presentazione; l'incapacità di ascoltare la storia è vaga e il finale non ha causalità."
+  },
+  {
+   "id": "V194",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "'Mr. half', la figura 'rotta' cerca un amico; vanno 'al parco' pur essendoci; morale contraddittoria."
+  },
+  {
+   "id": "V195",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "Lily legge il libro e 'vede gli amici e gli animali'; sviluppo vago senza un vero evento."
+  },
+  {
+   "id": "V196",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tom vuole avvicinarsi allo stagno, Lily lo trattiene; coerente, troncato."
+  },
+  {
+   "id": "V197",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Sam va a casa di Tim, Tim si sveglia e va da Sam, poi 'quando Sam tornò a casa': il pigiama party annunciato non avviene."
+  },
+  {
+   "id": "V198",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "La pianta 'non pronta ad essere pianta' viene strofinata con un panno e poi 'sul terreno'; logica vaga."
+  },
+  {
+   "id": "V199",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "I giocattoli dicono di non voler giocare con Lily ma lei è felice e giocano insieme ogni giorno: contraddizione."
+  },
+  {
+   "id": "V200",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Sally mette la padella col cibo sulla zampa ferita; la cura della ferita non avviene."
+  },
+  {
+   "id": "V201",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Dei sassi messi insieme diventano un fiore che sboccia; 'aggiustato il giardino' senza problema iniziale definito."
+  },
+  {
+   "id": "V202",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Amy cura l'uccellino ferito che guarisce; frase su cibo e acqua ripetuta, trama chiara."
+  },
+  {
+   "id": "V203",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Lucy aiuta l'uccellino a ritrovare la mamma; coerente."
+  },
+  {
+   "id": "V204",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il gomitolo 'si crepa' e 'si rompe' due volte con uno schiocco; la chiave sotto appare dal nulla."
+  },
+  {
+   "id": "V205",
+   "grammar": 8,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "La fata fa volare la bambina; risposta 'Yes, I can!' e finale un po' goffi, coerente."
+  },
+  {
+   "id": "V206",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim teme che l'insetto rovini il microscopio e lo rimette 'nel cassetto'; minimale ma interpretabile."
+  },
+  {
+   "id": "V207",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Lavaggio delle ciliegie confuso: ciotola nella ciotola, ciliegie a terra, 'dobbiamo prima lavarle' dopo averle lavate."
+  },
+  {
+   "id": "V208",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Fred decide di rubare la palla; la frase dell'orso è incomprensibile e la 'cosa giusta' non è chiara; troncato."
+  },
+  {
+   "id": "V209",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Il limone acido fa diventare rossa la faccia che 'cadde dal piatto': frase incoerente; resto semplice."
+  },
+  {
+   "id": "V210",
+   "grammar": 9,
+   "consistency": 6,
+   "plot": 7,
+   "category": "S",
+   "reason": "Mr. Iron aiuta Lucy a ritrovare il giocattolo; il 'ti perdono' finale è incongruo ma la trama è chiara."
+  },
+  {
+   "id": "V211",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Gruppi di biglie per colore si confondono (gelosia, piani, cerchio 'verdi e rosse'): relazioni centrali non interpretabili."
+  },
+  {
+   "id": "V212",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Bobo vuole saltare come Kiki e gli animali lo aiutano; un uccello che non vola è strano ma la sequenza regge."
+  },
+  {
+   "id": "V213",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "'Amici, la farfalla e la farfalla' e 'la farfalla, il bambino e la farfalla': identità ripetute in modo confuso; ritrovamento coerente."
+  },
+  {
+   "id": "V214",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Spike fa amicizia con un uccellino timoroso; semplice e coerente."
+  },
+  {
+   "id": "V215",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Tim aiuta Sue a trovare il giocattolo; lineare e coerente."
+  },
+  {
+   "id": "V216",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Tim supera la paura di un insetto brutto e diventano amici; coerente."
+  },
+  {
+   "id": "V217",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "La palla viene dimenticata, Tim riaccompagna il gatto a casa nell'albero; semplice e coerente."
+  },
+  {
+   "id": "V218",
+   "grammar": 7,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "La mamma calma la bambina spaventata dal vento; errori ('didn't be scared', 'a bit wind') ma storia chiara."
+  },
+  {
+   "id": "V219",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Timmy mangia la pasta che poi parla; 'mostrare che era uguale' oscuro, pasta mangiata che parla tollerabile come magia."
+  },
+  {
+   "id": "V220",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lily gioca a fare il leone e ritrova il nido dell'uccellino; ritrovamento non descritto ma coerente."
+  },
+  {
+   "id": "V221",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Una bambina di tre anni solleva una poltrona; 'softness of the softness of her skin' e finale vago."
+  },
+  {
+   "id": "V222",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Confusione fra Rose e la rosa: la rosa 'cerca di nasconderla', la rosa colta viene rubata dal cespuglio ed 'era nello stesso posto'."
+  },
+  {
+   "id": "V223",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Tim aiuta a cucinare per la festa con la padella e viene ringraziato; coerente."
+  },
+  {
+   "id": "V224",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "La barca grande si vergogna vedendo un pesce e si pente di aver aiutato: causalità assente."
+  },
+  {
+   "id": "V225",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Lily spaventa con un camion; mentre giocano insieme 'non c'era'; Timmy vede il dinosauro sullo scaffale ma lo strappa a Lily assente."
+  },
+  {
+   "id": "V226",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Tim non può comprare la macchinina e un uomo gentile gliene regala una; coerente."
+  },
+  {
+   "id": "V227",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "'Her car' per Tommy, 'loop around the loop'; desiderio finale di un anello come gli amici contraddice l'orgoglio."
+  },
+  {
+   "id": "V228",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Riva 'secca' con 'sabbia piena d'acqua'; la mamma dice che la barca è casa loro ma non bisogna salirci."
+  },
+  {
+   "id": "V229",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "I giocattoli persi vengono trovati sull'albero; 'their mom' e spiegazione mancante ma eventi interpretabili."
+  },
+  {
+   "id": "V230",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 7,
+   "category": "S",
+   "reason": "Il pallone si sgonfia ('flat tire') e la mamma lo ripara con la colla; imprecisione ma trama collegata."
+  },
+  {
+   "id": "V231",
+   "grammar": 9,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "L'orsetto nella scatola prende vita; la stanza 'mai più disordinata' non è motivata ma la storia regge."
+  },
+  {
+   "id": "V232",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il pirata calcia la palla, cadono mele dall'albero; la 'mamma' del pirata e 'voi due' strani ma coerente."
+  },
+  {
+   "id": "V233",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Richiesta di nuovi amici diventa 'cucina e guarda la TV', poi lezione di cucina; obiettivo abbandonato, troncato."
+  },
+  {
+   "id": "V234",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "L'uccello vuole 'separare' i grandi per giocarci, gli animali grandi 'prendono vita' ed erano anche piccoli: non interpretabile."
+  },
+  {
+   "id": "V235",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Cielo diventato buio ma poi sole sotto l'albero; 'suono delle nuvole' e 'corse da lei la prossima volta' incoerenti."
+  },
+  {
+   "id": "V236",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il papà esclude la figlia e poi la consola con un discorso incoerente ('not be so stupid'); risoluzione poco motivata."
+  },
+  {
+   "id": "V237",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Sue ripete la stessa ipotesi di Tom, la nuvola diventa palloncino, rimorso per una torta mai mangiata e mamma mai presente."
+  },
+  {
+   "id": "V238",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Appena sveglia ma avventura notturna; Ellie 'vola' tra gli alberi seguendo l'uccello senza spiegazione."
+  },
+  {
+   "id": "V239",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Il giorno dopo il gatto ha 'un pezzo del suo panino' e mangia 'il pezzo di pane': oggetto incoerente."
+  },
+  {
+   "id": "V240",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "Il robot generoso vuole mangiare da solo e cucinare per impedire agli amici di mangiare; finale 'non poté salvare gli amici' senza senso."
+  },
+  {
+   "id": "V241",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Tim apre con la mamma la scatola-sorpresa di Sam e trova una palla; coerente."
+  },
+  {
+   "id": "V242",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il suono 'come un uccello' è un camion rotto fuori; poi scatola dei nonni in cucina; eventi poco collegati, troncato."
+  },
+  {
+   "id": "V243",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Risposta della mamma contraddittoria sull'arcobaleno; il sasso magico porta un 'amico giallo', sequenza comprensibile."
+  },
+  {
+   "id": "V244",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "La palla della storia letta rotola in una casa reale, viene restituita e poi usata per giocare; la macchinina persa di Tom sparisce."
+  },
+  {
+   "id": "V245",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Per aiutare l'uccello infreddolito il gatto indossa lui il vestito; aiuto alla bambina appena abbozzato."
+  },
+  {
+   "id": "V246",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 4,
+   "category": "P",
+   "reason": "Moneta trovata e 'qualcosa di brutto' non specificato; la bambina resta nel fango 'per sempre' senza nesso con la moneta."
+  },
+  {
+   "id": "V247",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "L'uomo presta 'il suo giocattolo perso'; la caduta del cappello rattrista la bambina senza motivo; parata ignorata."
+  },
+  {
+   "id": "V248",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Visita all'ospedale senza motivo; le persone dell'ospedale vedono Lily giocare a casa: incoerenza di luogo."
+  },
+  {
+   "id": "V249",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Bob cade ma 'non riesce a scendere', poi l'albero cade: sequenza contraddittoria."
+  },
+  {
+   "id": "V250",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il soldato triste per l'insetto morto lo considera un gioco, si arrabbia perché è morto e poi è felice 'senza l'insetto'."
+  },
+  {
+   "id": "V251",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "La bambina scopre un minerale nel parco e lo tocca con permesso; minimale ma coerente."
+  },
+  {
+   "id": "V252",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il fungo diventa fiore, il gufo 'dà il fiore al fungo' e torna fungo: trasformazioni immotivate e confuse."
+  },
+  {
+   "id": "V253",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il biglietto invita Tim ad aiutare e lui aiuta Sue a trovare il giocattolo; semplice e coerente."
+  },
+  {
+   "id": "V254",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 6,
+   "category": "S",
+   "reason": "L'orso conforta l'uccellino smarrito e diventano amici; minimale ma coerente."
+  },
+  {
+   "id": "V255",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 7,
+   "category": "S",
+   "reason": "Il seme in vaso diventa un albero magico in giardino che parla; passaggio vaso-giardino impreciso."
+  },
+  {
+   "id": "V256",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Avventura con regali diventa stanza con uccello gigante, mamma presente, invidia/gelosia incongrue; sequenza scollegata."
+  },
+  {
+   "id": "V257",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Trovano una pila di palle 'ma non videro palle'; il gioco proposto non viene svolto."
+  },
+  {
+   "id": "V258",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sally trova una chiave e apre la scatola dei giocattoli; 'sotto la serratura' e divieto della mamma ignorato minori."
+  },
+  {
+   "id": "V259",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Henry, rimasto sotto, accompagna per mano Sally in cima all'albero verso l'arcobaleno: posizioni contraddittorie."
+  },
+  {
+   "id": "V260",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Gli amici dell'uccello 'erano tutti gatti arancioni': cambio d'identità immotivato; ordinamento della legna insensato."
+  },
+  {
+   "id": "V261",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "I bambini vogliono aggiustare la bici rotta della signora; domanda iniziale strana, troncato, coerente."
+  },
+  {
+   "id": "V262",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "L'uccello mette due volte la palla a terra e Spot riesce ad arrampicarsi: aiuto privo di causalità."
+  },
+  {
+   "id": "V263",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Il cane prende e restituisce il giocattolo di Sue; desiderio iniziale di un amico e perdita del giocattolo leggermente slegati."
+  },
+  {
+   "id": "V264",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tiny esce dalla gabbia, porta il pesce al gatto e diventano amici; semplice, uscita dalla gabbia non spiegata."
+  },
+  {
+   "id": "V265",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tim lancia la palla per distrarre il cane, che poi diventa amico; trasformazione poco motivata ma interpretabile."
+  },
+  {
+   "id": "V266",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Istruzioni della mamma sul pollice nell'acqua prive di senso; nuotare nello stagno e orgoglio finale scollegati."
+  },
+  {
+   "id": "V267",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "I genitori sono fuori ma le dicono di nascondersi; la sorpresa non viene mai descritta e lei 'trova la sorpresa'."
+  },
+  {
+   "id": "V268",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tom scaccia l'insetto agitando il bastone; ripetitivo ma coerente."
+  },
+  {
+   "id": "V269",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 6,
+   "category": "S",
+   "reason": "Lo scarabeo spinge una palla tutto il giorno e torna all'albero; minimale e coerente."
+  },
+  {
+   "id": "V270",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "Lucy e Tom liberano la corda incastrata nell'albero; coerente e collegato."
+  },
+  {
+   "id": "V271",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "'Dovremo lasciare la torre' oscuro; l'uccello con l'ala ferita, visto fuori, viene 'portato fuori' e vola via senza cura."
+  },
+  {
+   "id": "V272",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue consola la bambola triste e salutano insieme la gente; semplice e coerente."
+  },
+  {
+   "id": "V273",
+   "grammar": 7,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "'Whistle and a whistle', il treno passa di mano senza senso e la paura di 'essere colpiti dal sasso' è incongrua; troncato."
+  },
+  {
+   "id": "V274",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Tim e la mamma tagliano un albero con la manopola della bici: azione centrale priva di senso."
+  },
+  {
+   "id": "V275",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Tom gioca con la macchinina di Sue, riposa e tornano a giocare; minimale ma coerente."
+  },
+  {
+   "id": "V276",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Il topo teme il nodo della coda del leone e un uccello lo scioglie; coerente."
+  },
+  {
+   "id": "V277",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il cibo che fa ammalare viene condiviso dopo un piano incomprensibile del gufo ('quando arriva la gente non saremo malati')."
+  },
+  {
+   "id": "V278",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "'The toilet and the toilet', acqua versata sul water, si siedono sul secchio: azioni senza scopo, Sam 'torna' senza essere uscito."
+  },
+  {
+   "id": "V279",
+   "grammar": 9,
+   "consistency": 6,
+   "plot": 5,
+   "category": "P",
+   "reason": "'Correre con la moneta' non ha significato chiaro; il ritrovamento non porta sviluppo."
+  },
+  {
+   "id": "V280",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "In una giornata gelida il sole diventa caldissimo; la coperta calda sul ghiaccio produce 'iceballs': causalità assurda."
+  },
+  {
+   "id": "V281",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "Il filo 'rovesciato' a terra e la tazza citata senza ruolo; lezione sulla prudenza comprensibile."
+  },
+  {
+   "id": "V282",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Jolly 'spaventata' accetta il proprio patto, i baci ritrovano la famiglia di 'Lily' invece di Finn: identità confuse."
+  },
+  {
+   "id": "V283",
+   "grammar": 9,
+   "consistency": 8,
+   "plot": 7,
+   "category": "S",
+   "reason": "La principessa salva il gatto dall'albero e viene applaudita; coerente."
+  },
+  {
+   "id": "V284",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "La mamma chiede di mostrarle il gattino che già vede e lo chiama 'Lily'; confusione di identità marginale ma evidente."
+  },
+  {
+   "id": "V285",
+   "grammar": 6,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "Frase corrotta ('Let'sSur TV!'), ma la balena e gli amici sfamano il pesce grande: nucleo interpretabile."
+  },
+  {
+   "id": "V286",
+   "grammar": 8,
+   "consistency": 6,
+   "plot": 6,
+   "category": "S",
+   "reason": "CeeCee e Tommy mangiano frutti, il vento abbatte l'albero e li raccolgono; 'Cee' e ordine degli eventi un po' imprecisi."
+  },
+  {
+   "id": "V287",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "'Dopo aver cucinato andarono in cucina' e cucinano entrambi lo stesso cibo; la famiglia ringrazia i cuochi che sono loro stessi."
+  },
+  {
+   "id": "V288",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il topo vuole 'la tua lana più della mia', Tom, andato a casa, ricompare e chiede di condividere con 'i miei amici'."
+  },
+  {
+   "id": "V289",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 6,
+   "category": "S",
+   "reason": "Sue aiuta Spot ad arrampicarsi e guardano il cielo dal ramo; insolito ma coerente."
+  },
+  {
+   "id": "V290",
+   "grammar": 8,
+   "consistency": 4,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il cavallo 'luccica', è rosso e 'miagola'; il proprietario parla di un regalo inesistente: attributi contraddittori."
+  },
+  {
+   "id": "V291",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il medico spedisce un giocattolo 'non sicuro' per renderlo sicuro; gli amici 'vanno a trovare il medico' lontano: logica debole."
+  },
+  {
+   "id": "V292",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 3,
+   "category": "N",
+   "reason": "Tom 'compra un sacco di soldi', la mamma gli dà i soldi dopo aver rifiutato, l'amico gli dà la macchinina 'comprata': transazione centrale incomprensibile."
+  },
+  {
+   "id": "V293",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Barca 'ricca' che porta la palla sul dorso e poi gareggia contro la palla: elementi contraddittori."
+  },
+  {
+   "id": "V294",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Il taglio era sull'albero ma viene bendato l'uccello; il seme magico che la rimpicciolisce come regalo non ha senso."
+  },
+  {
+   "id": "V295",
+   "grammar": 7,
+   "consistency": 4,
+   "plot": 4,
+   "category": "P",
+   "reason": "Il giocattolo si rompe mentre lo ripara, poi un'operazione in ospedale senza causa; testo molto ripetitivo."
+  },
+  {
+   "id": "V296",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 6,
+   "category": "P",
+   "reason": "L'uccello dice 'ho sentito che mi hai trovato'; nascondino interrotto, l'uccello inizia a svanire; troncato."
+  },
+  {
+   "id": "V297",
+   "grammar": 8,
+   "consistency": 5,
+   "plot": 5,
+   "category": "P",
+   "reason": "Le bambole 'abbaiano', devono 'ripetere' il limone lanciato; il limone acquista poteri senza motivo."
+  },
+  {
+   "id": "V298",
+   "grammar": 7,
+   "consistency": 3,
+   "plot": 4,
+   "category": "N",
+   "reason": "Sam sordo 'li chiama welcome' per cattiveria, poi gioca già con Tom, l'uomo estrae 'una canzone' dalla borsa: non interpretabile."
+  },
+  {
+   "id": "V299",
+   "grammar": 9,
+   "consistency": 7,
+   "plot": 7,
+   "category": "S",
+   "reason": "Tim persevera, arriva in cima all'albero e l'uccello si scusa; coerente."
+  }
+ ]
+}

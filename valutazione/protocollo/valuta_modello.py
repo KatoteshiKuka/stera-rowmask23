@@ -9,6 +9,8 @@ Uso:
   python valuta_modello.py stera30m  --checkpoint ../../pesi/stera30m_step122000.ckpt.gz --out stera30m.jsonl
   python valuta_modello.py hf        --modello <cartella checkpoint HF TinyStories> --out tinystories33m.jsonl
 Opzioni: --device cpu|cuda|mps  --n 300
+         --rango-bit 8 (solo stera30m): quantizza a 8 bit i soli fattori U, V del termine a basso rango,
+         con una scala simmetrica FP32 per colonna; tutti gli altri parametri restano FP32.
 """
 import argparse, hashlib, json, math, pathlib, sys
 import torch
@@ -31,7 +33,22 @@ def sha256(p):
     return h.hexdigest()
 
 
-def carica_stera30m(path, device):
+def quantizza_rango(model, matrici, bit):
+    """Quantizzazione simmetrica per colonna dei soli fattori U e V; i valori vengono riportati in FP32 per il calcolo."""
+    q = 2 ** (bit - 1) - 1; err2 = ref2 = 0.0; valori = scale = 0
+    with torch.no_grad():
+        for n, _, _ in matrici:
+            for k in (".U", ".V"):
+                t = model.weight[n + k]
+                s = t.abs().amax(dim=0, keepdim=True).clamp_min(1e-30) / q
+                tq = torch.round(t / s).clamp(-q, q) * s
+                err2 += float(((tq - t) ** 2).sum()); ref2 += float((t ** 2).sum()); valori += t.numel(); scale += s.numel()
+                t.copy_(tq)
+    print(json.dumps({"rango_bit": bit, "valori_quantizzati": valori, "scale_fp32": scale,
+                      "rmse_relativo_rango": math.sqrt(err2 / ref2)}), flush=True)
+
+
+def carica_stera30m(path, device, rango_bit=None):
     import ts68_v3 as V
     import ts68_core as T
     sha = sha256(path)
@@ -45,6 +62,8 @@ def carica_stera30m(path, device):
     assert st["step"] == 122000
     assert sum(t.numel() for t in st["weights"].values()) == 30346182
     model = V.TS68X(st, torch.device(device), False, True, 96)
+    if rango_bit:
+        quantizza_rango(model, V.matrices(), rango_bit)
     with torch.inference_mode():
         w = {n: model.w(n, r, c).contiguous() for n, r, c in V.matrices()}
     model.w = lambda name, rows, cols: w[name]
@@ -67,12 +86,13 @@ def main():
     a.add_argument("--tokenizer", default=None, help="tokenizer.json (default: quello del modello HF)")
     a.add_argument("--device", default="cpu"); a.add_argument("--n", type=int, default=300)
     a.add_argument("--out", required=True)
+    a.add_argument("--rango-bit", type=int, default=None)
     x = a.parse_args()
     torch.set_grad_enabled(False)
     tokp = x.tokenizer or (pathlib.Path(x.modello) / "tokenizer.json" if x.modello else None)
     assert tokp and sha256(tokp) == SHA_TOKENIZER, "serve il tokenizer GPT-Neo di TinyStories (--tokenizer)"
     tok = Tokenizer.from_file(str(tokp))
-    forward = carica_stera30m(x.checkpoint, x.device) if x.tipo == "stera30m" else carica_hf(x.modello, x.device)
+    forward = carica_stera30m(x.checkpoint, x.device, x.rango_bit) if x.tipo == "stera30m" else carica_hf(x.modello, x.device)
     righe = json.loads((QUI / "incipit_test300.json").read_text())[: x.n]
     tot_nll = tot_tok = 0.0
     with torch.inference_mode(), open(x.out, "w") as f:

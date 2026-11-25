@@ -1,0 +1,54 @@
+{
+ "giudizi_sha256": "e92d63f1bcf385ebe154a27d75e8862c2c73026106544ceb5d726fca86cb1c1a",
+ "giudice": "Claude Opus 5.5, singolo giudice cieco, sessione separata",
+ "rango_8bit": {
+  "n": 300,
+  "corretti": 124,
+  "pct": 41.333333333333336,
+  "wilson95": [
+   35.90477647572888,
+   46.9810429775652
+  ],
+  "categorie": {
+   "P": 151,
+   "S": 124,
+   "N": 25
+  },
+  "medie": {
+   "grammar": 7.883333333333334,
+   "consistency": 5.41,
+   "plot": 5.416666666666667
+  }
+ },
+ "fp32_tesi": {
+  "n": 300,
+  "corretti": 132,
+  "pct": 44.0,
+  "wilson95": [
+   38.49382095794712,
+   49.65790020202571
+  ],
+  "categorie": {
+   "S": 132,
+   "N": 16,
+   "P": 152
+  },
+  "medie": {
+   "grammar": 7.67,
+   "consistency": 5.26,
+   "plot": 5.373333333333333
+  }
+ },
+ "appaiato": {
+  "delta_pp": -2.6666666666666665,
+  "ci95_pp": [
+   -9.666666666666666,
+   4.666666666666667
+  ],
+  "solo_rango8": 55,
+  "solo_fp32": 63,
+  "entrambi": 69,
+  "nessuno": 113,
+  "mcnemar_p": 0.5194908187566281
+ }
+}
