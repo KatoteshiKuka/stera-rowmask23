@@ -1,3 +1,5 @@
+> **Misure precedenti, non usate nella tesi.** Questo report riguarda i pesi del checkpoint a 80.000 aggiornamenti. I tempi e la memoria riportati nella tesi provengono dal checkpoint finale: `sistemi/risultati/campagne_20261124/protocollo/riepilogo.json`.
+
 # H80000 e TinyStories ufficiali · Pesi, addestramento e inferenza
 
 | Checkpoint | Parametri allenabili | Pesi FP32, MB | File ufficiale o di lavoro, MB | Token di training |

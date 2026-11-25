@@ -1,3 +1,5 @@
+> **Misure precedenti, non usate nella tesi.** Questo report riguarda i pesi del checkpoint a 80.000 aggiornamenti. I tempi e la memoria riportati nella tesi provengono dal checkpoint finale: `sistemi/risultati/campagne_20261124/protocollo/riepilogo.json`.
+
 # Da dove viene il vantaggio nel decode di STERA H80000
 
 ## Risultato

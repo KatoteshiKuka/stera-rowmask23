@@ -8,9 +8,9 @@
 | Tokenizer GPT-Neo (TinyStories-33M, revisione 2ad0a164) | `f6ed3d307010c244c22aeffbde05f419cf277c23e64cf98b673cac5449cfeff5` |
 | Corpus tokenizzato: pacchetto / indice | `5ae58177e37ddc66f22bc5ac26c73b82d9b7b2702a1871a5cbfd517c1ae39066` / `bbadffc0b26a2dcf13c396691880e9655a8646212356317c95a96e8d70c69774` |
 | STERA 30M, checkpoint finale (122.000 aggiornamenti) | `418becfbcaddcefd56f828f295138bbc865f9405a9060930c060ff7e6ced0887` |
-| Pesi per le misure di sistema, FP32 (.npz) | `028fa67574bdecc51778349fe779d081ee53e570a5d45cdcb799069edb56b728` |
-| Pesi per le misure di sistema, INT8 (.npz) | `b4763facdc1b86c5fdc8a405eb16c061a55eca8211e68f7d43b284b8cce8cb11` |
-| Matrici dense equivalenti (.safetensors) | `40ac09c8c8110267b73cfbb60f6aeb8b4877dab030c216bf23a788f1127e0d1c` |
+| Pesi FP32 del checkpoint finale per le misure di sistema (`H122000_fp32_weights.npz`) | `864d03dc63b5d5a8977eba0c7c8bec60530a33a1ef52762ab5b96aeb2201018c` |
+| Coordinate INT8 del checkpoint finale (`H122000_int8_weights.npz`) | `19e9850e763f9ba210b016bca8400dc752ae46ff149bfe12f5ae83783af1075b` |
+| Matrici dense equivalenti del checkpoint finale (`H122000_DENSE_FP32.safetensors`) | `ce96ce4b54a7a094279d9c7f6447a0563edb8142d89634e8de4da1e624e52f7f` |
 | TinyStories-33M, pytorch_model.bin | `41316d3bad3cf7766cbc36443a71c5ef05321a1c4fa14855df537998c6dad302` |
 | TinyStories-8M, pytorch_model.bin | `22c355bfabebc1f6c861b3f5d7a801e96c7f6da4af4bb0f7780096ab82ea6716` |
 
@@ -28,3 +28,12 @@
 | `addestramento/log_addestramento_0_122k.txt` | `f5cb546dd9bcf330db910be0bcbfce6dc3cd85ff7b3b1e8cc3a33c7c8462ca4c` |
 
 Impronta dei 900 giudizi (calcolata da `aggrega_e_decodifica.py` sul contenuto ordinato): `40760acaa40fbe7c68bbe165aab757fbc72d7820de8b353a560e2f3ba4a5e8ea`.
+
+## Misure di sistema della tesi
+
+| File | SHA-256 |
+|---|---|
+| `sistemi/risultati/campagne_20261124/protocollo/riepilogo.json` (tempi e memoria, Capitolo 8) | `6e1afd9f5c4f05284a52441c43180f385b3d8087499656503d33c8a96a16bac1` |
+| `sistemi/modelli/PROMPTS_FRESH_TEST100.json` (ingressi delle misure di tempo) | `362f0c50045175cd141b422f80376e303ecc5b42d14496bd4adc7ff5af8e656f` |
+
+I file `.npz` e `.safetensors` si rigenerano dal checkpoint finale con `esporta_pesi.py` ed `esporta_denso.py`; il controllo determinante è l'uguaglianza bit per bit dei tensori, che gli script verificano.

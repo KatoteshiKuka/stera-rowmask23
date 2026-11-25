@@ -1,3 +1,5 @@
+> **Misure precedenti, non usate nella tesi.** Questo report riguarda i pesi del checkpoint a 80.000 aggiornamenti. I tempi e la memoria riportati nella tesi provengono dal checkpoint finale: `sistemi/risultati/campagne_20261124/protocollo/riepilogo.json`.
+
 # H80000 Dense e STERA · Generazione con entrambi i motori ottimizzati
 
 Entrambi i percorsi eseguono la funzione del checkpoint H80000 su MacBook Air M1, GPU Metal con MLX, pesi FP32 già caricati, attenzione SDPA, cache KV FP32 da 512 token, decode compilato e batch 1. Il Dense carica il file Safetensors verificato e usa QKV fusa e moltiplicazioni MLX. STERA usa le proiezioni Metal sulle coordinate compatte. Entrambi elaborano il prompt in parallelo.

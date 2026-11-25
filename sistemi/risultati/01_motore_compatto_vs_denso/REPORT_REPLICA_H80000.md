@@ -1,3 +1,5 @@
+> **Misure precedenti, non usate nella tesi.** Questo report riguarda i pesi del checkpoint a 80.000 aggiornamenti. I tempi e la memoria riportati nella tesi provengono dal checkpoint finale: `sistemi/risultati/campagne_20261124/protocollo/riepilogo.json`.
+
 # Replica H80000 a download Qwen terminato
 
 MacBook Air M1, alimentato da rete, MLX/Metal, FP32, batch 1, 256 token in ingresso, cache KV da 512 posizioni e 100 passi greedy dopo il primo token. I pesi sono già caricati. Prefill a blocchi da 128 per STERA e 256 per Dense. Sei processi separati per motore, con ordine alternato. Su ciascun input i due motori producono gli stessi 101 ID sia alla prima richiesta sia a caldo. Il desktop era attivo e lo swap allocato di sistema era circa 398 MiB prima della replica. Il download Qwen era terminato.
