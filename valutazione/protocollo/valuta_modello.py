@@ -11,6 +11,8 @@ Uso:
 Opzioni: --device cpu|cuda|mps  --n 300
          --rango-bit 8 (solo stera30m): quantizza a 8 bit i soli fattori U, V del termine a basso rango,
          con una scala simmetrica FP32 per colonna; tutti gli altri parametri restano FP32.
+         --rango-ridotto k (solo stera30m): sostituisce U V^T con la sua migliore approssimazione di rango k (SVD);
+         k = 0 elimina il termine a basso rango. --solo-nll: calcola solo la NLL, senza generazione.
 """
 import argparse, hashlib, json, math, pathlib, sys
 import torch
@@ -48,7 +50,23 @@ def quantizza_rango(model, matrici, bit):
                       "rmse_relativo_rango": math.sqrt(err2 / ref2)}), flush=True)
 
 
-def carica_stera30m(path, device, rango_bit=None):
+def riduci_rango(model, matrici, k):
+    """Sostituisce U V^T con la sua migliore approssimazione di rango k (teorema di Eckart-Young), calcolata in FP64."""
+    err2 = ref2 = 0.0
+    with torch.no_grad():
+        for n, _, _ in matrici:
+            U, V = model.weight[n + ".U"], model.weight[n + ".V"]
+            W = model.w(n, U.shape[0], V.shape[0]).double()
+            qu, ru = torch.linalg.qr(U.double()); qv, rv = torch.linalg.qr(V.double())
+            a, sv, bh = torch.linalg.svd(ru @ rv.T)
+            Uk = qu @ a[:, :k] * sv[:k]; Vk = qv @ bh[:k].T
+            U.zero_(); V.zero_(); U[:, :k] = Uk.float(); V[:, :k] = Vk.float()
+            Wk = model.w(n, U.shape[0], V.shape[0]).double()
+            err2 += float(((Wk - W) ** 2).sum()); ref2 += float((W ** 2).sum())
+    print(json.dumps({"rango_ridotto": k, "errore_relativo_matrici": math.sqrt(err2 / ref2)}), flush=True)
+
+
+def carica_stera30m(path, device, rango_bit=None, rango_ridotto=None):
     import ts68_v3 as V
     import ts68_core as T
     sha = sha256(path)
@@ -62,6 +80,8 @@ def carica_stera30m(path, device, rango_bit=None):
     assert st["step"] == 122000
     assert sum(t.numel() for t in st["weights"].values()) == 30346182
     model = V.TS68X(st, torch.device(device), False, True, 96)
+    if rango_ridotto is not None:
+        riduci_rango(model, V.matrices(), rango_ridotto)
     if rango_bit:
         quantizza_rango(model, V.matrices(), rango_bit)
     with torch.inference_mode():
@@ -87,12 +107,14 @@ def main():
     a.add_argument("--device", default="cpu"); a.add_argument("--n", type=int, default=300)
     a.add_argument("--out", required=True)
     a.add_argument("--rango-bit", type=int, default=None)
+    a.add_argument("--rango-ridotto", type=int, default=None)
+    a.add_argument("--solo-nll", action="store_true")
     x = a.parse_args()
     torch.set_grad_enabled(False)
     tokp = x.tokenizer or (pathlib.Path(x.modello) / "tokenizer.json" if x.modello else None)
     assert tokp and sha256(tokp) == SHA_TOKENIZER, "serve il tokenizer GPT-Neo di TinyStories (--tokenizer)"
     tok = Tokenizer.from_file(str(tokp))
-    forward = carica_stera30m(x.checkpoint, x.device, x.rango_bit) if x.tipo == "stera30m" else carica_hf(x.modello, x.device)
+    forward = carica_stera30m(x.checkpoint, x.device, x.rango_bit, x.rango_ridotto) if x.tipo == "stera30m" else carica_hf(x.modello, x.device)
     righe = json.loads((QUI / "incipit_test300.json").read_text())[: x.n]
     tot_nll = tot_tok = 0.0
     with torch.inference_mode(), open(x.out, "w") as f:
@@ -101,7 +123,7 @@ def main():
             ids_ref = torch.tensor([ref[:-1]], device=x.device)
             nll = float(F.cross_entropy(forward(ids_ref).reshape(-1, 50257).float().cpu(), torch.tensor(ref[1:]), reduction="sum"))
             ids = r["tokens"][:]; start = len(ids); g = torch.Generator(device="cpu").manual_seed(r["seed"]); eos = False
-            for _ in range(min(180, 256 - start)):
+            for _ in range(0 if x.solo_nll else min(180, 256 - start)):
                 lg = forward(torch.tensor([ids], device=x.device))[0, -1].float().cpu()
                 v, k = torch.topk(lg, 40)
                 nx = int(k[torch.multinomial(torch.softmax(v / .75, dim=0), 1, generator=g)])

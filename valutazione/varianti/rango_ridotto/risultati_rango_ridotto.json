@@ -1,0 +1,54 @@
+{
+ "descrizione": "STERA 30M finale, termine U V^T sostituito dalla migliore approssimazione di rango k (SVD); NLL sui 300 racconti TEST, P100",
+ "risultati": [
+  {
+   "rango": 96,
+   "nll_test": 1.173986,
+   "errore_relativo_matrici": 1.285011690131828e-07,
+   "parametri_salvati": 30346182,
+   "risparmio_vs_denso_pct": 63.3151445432179
+  },
+  {
+   "rango": 64,
+   "nll_test": 1.474252,
+   "errore_relativo_matrici": 0.1541373022714529,
+   "parametri_salvati": 26057670,
+   "risparmio_vs_denso_pct": 68.49943569538576
+  },
+  {
+   "rango": 48,
+   "nll_test": 1.981037,
+   "errore_relativo_matrici": 0.20013727760355782,
+   "parametri_salvati": 23913414,
+   "risparmio_vs_denso_pct": 71.09158127146968
+  },
+  {
+   "rango": 32,
+   "nll_test": 2.893139,
+   "errore_relativo_matrici": 0.2470516437966152,
+   "parametri_salvati": 21769158,
+   "risparmio_vs_denso_pct": 73.68372684755361
+  },
+  {
+   "rango": 16,
+   "nll_test": 4.235995,
+   "errore_relativo_matrici": 0.30262023514361497,
+   "parametri_salvati": 19624902,
+   "risparmio_vs_denso_pct": 76.27587242363755
+  },
+  {
+   "rango": 8,
+   "nll_test": 4.980179,
+   "errore_relativo_matrici": 0.33868347189013204,
+   "parametri_salvati": 18552774,
+   "risparmio_vs_denso_pct": 77.57194521167952
+  },
+  {
+   "rango": 0,
+   "nll_test": 5.81298,
+   "errore_relativo_matrici": 0.44330831369761425,
+   "parametri_salvati": 17480646,
+   "risparmio_vs_denso_pct": 78.86801799972147
+  }
+ ]
+}

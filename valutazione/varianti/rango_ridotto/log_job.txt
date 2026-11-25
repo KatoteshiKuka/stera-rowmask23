@@ -1,0 +1,23 @@
+== k=96
+{"rango_ridotto": 96, "errore_relativo_matrici": 1.285011690131828e-07}
+racconti 300  NLL 1.173986  perplessita 3.2349
+== k=64
+{"rango_ridotto": 64, "errore_relativo_matrici": 0.1541373022714529}
+racconti 300  NLL 1.474252  perplessita 4.3678
+== k=48
+{"rango_ridotto": 48, "errore_relativo_matrici": 0.20013727760355782}
+racconti 300  NLL 1.981037  perplessita 7.2503
+== k=32
+{"rango_ridotto": 32, "errore_relativo_matrici": 0.2470516437966152}
+racconti 300  NLL 2.893139  perplessita 18.0499
+== k=16
+{"rango_ridotto": 16, "errore_relativo_matrici": 0.30262023514361497}
+racconti 300  NLL 4.235995  perplessita 69.1304
+== k=8
+{"rango_ridotto": 8, "errore_relativo_matrici": 0.33868347189013204}
+racconti 300  NLL 4.980179  perplessita 145.5005
+== k=0
+{"rango_ridotto": 0, "errore_relativo_matrici": 0.44330831369761425}
+racconti 300  NLL 5.812980  perplessita 334.6149
+
+[exited with code 0]
