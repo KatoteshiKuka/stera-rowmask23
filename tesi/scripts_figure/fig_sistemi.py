@@ -4,10 +4,10 @@ from matplotlib.ticker import FuncFormatter
 R = pathlib.Path(__file__).resolve().parent.parent
 out = R/"figure/risultati"
 # 1) byte dei pesi
-rows = [("STERA 30M, coordinate INT8", 74.241, C["stera"]), ("TinyStories-8M, FP32", 78.810, C["ts8"]),
-        ("STERA 30M, archivio senza perdita", 102.353, C["chiaro"]), ("STERA 30M, FP32", 121.385, C["stera"]),
-        ("TinyStories-33M, FP32", 274.056, C["ts33"]), ("STERA 30M, espansione densa FP32", 330.885, C["neutro"])]
-fig, ax = plt.subplots(figsize=(6.0, 2.6))
+rows = [("TinyStories-8M, FP32", 78.810, C["ts8"]), ("STERA 30M, basso rango a 8 bit", 86.097, C["chiaro"]),
+        ("STERA 30M, FP32", 121.385, C["stera"]), ("TinyStories-33M, FP32", 274.056, C["ts33"]),
+        ("STERA 30M, espansione densa FP32", 330.885, C["neutro"])]
+fig, ax = plt.subplots(figsize=(6.0, 2.3))
 for i, (lab, v, col) in enumerate(rows):
     ax.barh(i, v, color=col, height=.62, hatch="///" if "espansione" in lab else None, edgecolor="white" if "espansione" not in lab else "#ffffff")
     ax.text(v+4, i, it(v, 1), va="center", fontsize=8.5)
@@ -48,4 +48,30 @@ b.set_xticks([0, 1]); b.set_xticklabels(["4,0 GB\ncompatto", "18,6 GB\nespanso"]
 b.set_ylabel("Lettura da SSD (s)"); b.set_ylim(0, 9.2); b.set_title("(b) Lettura sequenziale", fontsize=9.5); b.grid(axis="x", visible=False)
 b.yaxis.set_major_formatter(FuncFormatter(lambda v, _: it(v)))
 fig.savefig(out/"soglia_ram_m1.pdf")
+
+# 4) lunghezza dell'ingresso e prefill (stesso motore MLX, 5 campagne)
+import json
+B = R.parent / "sistemi/risultati/campagne_20261124"
+ctx = json.loads((B / "contesto_mlx/riepilogo.json").read_text())["mediane"]
+pre = json.loads((B / "prefill_mlx/riepilogo.json").read_text())["mediane"]
+Ls = [32, 64, 128, 256, 384]
+fig, (a, b) = plt.subplots(1, 2, figsize=(6.3, 2.7), gridspec_kw={"wspace": .38})
+serie_a = [("STERA, prefill compatto", pre, "STERA", C["stera"], "-"), ("STERA, espansione al volo", pre, "STERA-ESP", C["stera"], "--"),
+           ("STERA denso", pre, "STERA-DENSO-MLX", C["neutro"], "-"), ("TinyStories-33M", ctx, "33M-MLX", C["ts33"], "-"),
+           ("TinyStories-8M", ctx, "8M-MLX", C["ts8"], "-")]
+for nome, d, k, col, ls in serie_a:
+    a.plot(Ls, [1000 * d[f"{k}|{L}"]["ttft_s"] for L in Ls], color=col, ls=ls, marker="o", ms=3, lw=1.4, label=nome)
+a.set_xlabel("Token in ingresso"); a.set_ylabel("Primo token (ms)"); a.set_title("(a) Elaborazione del prefisso", fontsize=9.5)
+a.set_xticks(Ls); a.yaxis.set_major_formatter(FuncFormatter(lambda v, _: it(v)))
+serie_b = [("STERA, basso rango a 8 bit", pre, "STERA-R8-ESP", C["chiaro"], "--"), ("STERA", pre, "STERA", C["stera"], "-"),
+           ("STERA denso", pre, "STERA-DENSO-MLX", C["neutro"], "-"), ("TinyStories-33M", ctx, "33M-MLX", C["ts33"], "-"),
+           ("TinyStories-8M", ctx, "8M-MLX", C["ts8"], "-")]
+for nome, d, k, col, ls in serie_b:
+    b.plot(Ls, [d[f"{k}|{L}"]["decode_tps"] for L in Ls], color=col, ls=ls, marker="o", ms=3, lw=1.4, label=nome)
+b.set_xlabel("Token in ingresso"); b.set_ylabel("Decode (token/s)"); b.set_title("(b) Generazione", fontsize=9.5)
+b.set_xticks(Ls); b.set_ylim(0, 340); b.yaxis.set_major_formatter(FuncFormatter(lambda v, _: it(v)))
+h1, l1 = a.get_legend_handles_labels(); h2, l2 = b.get_legend_handles_labels()
+fig.legend(h1 + h2[:1], l1 + l2[:1], loc="lower center", ncol=3, fontsize=7.5, frameon=False, bbox_to_anchor=(.5, -.2))
+fig.savefig(out / "contesto_prefill_mlx.pdf")
+print("ok contesto")
 print("ok")

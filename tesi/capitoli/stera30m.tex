@@ -18,18 +18,16 @@ In questo percorso lo stesso elemento di $E$ può influire sia sul vettore che e
 
 \subsection{Come si costruiscono le matrici}
 
-Ogni matrice principale contiene un mosaico di blocchi RowMask23. Ciascun blocco possiede la propria tabella con 127 valori di base fuori diagonale, 128 valori diagonali e 2.921 correzioni, pari a 23 per ognuna delle righe da 1 a 127. Lo XOR degli indici determina quale valore della tabella usare, mentre la maschera determina dove aggiungere una correzione. La disposizione delle correzioni nel blocco è quella della Figura~\ref{fig:struttura}.
-
-Per una matrice di $m$ righe e $n$ colonne, indichiamo con $R(c,s)$ il mosaico ricostruito da coordinate $c$ e scale $s$, una per blocco. La matrice effettiva è
+Ogni matrice principale di STERA 30M è una proiezione STERA nel senso della Definizione~\ref{def:proiezione-stera}: un mosaico di blocchi RowMask23 con una scala per blocco, guadagni per riga e per colonna e un termine a basso rango. In STERA 30M il rango è $r=96$ in tutte le proiezioni, cioè $\kappa=r/d=1/8$:
 \begin{equation}
- W = \operatorname{diag}(g_{\mathrm{out}})\,R(c,s)\,
+ W = \operatorname{diag}(g_{\mathrm{out}})\,\widetilde W\,
      \operatorname{diag}(g_{\mathrm{in}}) + UV^\top,
  \qquad U \in \mathbb{R}^{m\times96},\quad V \in \mathbb{R}^{n\times96}.
  \label{eq:stera30m-peso}
 \end{equation}
-I guadagni agiscono per riga e per colonna. Il termine globale $UV^\top$ ha rango al più 96 e può modificare anche posizioni appartenenti a blocchi diversi.
+Il ruolo, il gradiente e il costo di ciascuna componente sono descritti nelle Sezioni~\ref{sec:scale}, \ref{sec:guadagni} e~\ref{sec:basso-rango}. Tutti i parametri, compresi i fattori $U$ e $V$, sono memorizzati e addestrati in FP32.
 
-La matrice condivisa $E$ conta $393\cdot6=2.358$ blocchi. Ogni strato ha quattro matrici $768\times768$ da 36 blocchi ciascuna e due proiezioni feed-forward da 144 blocchi ciascuna. Il totale è $1+6\cdot6=37$ matrici e $2358+6(4\cdot36+2\cdot144)=\num{4950}$ blocchi.
+La matrice condivisa $E$ conta $393\cdot6=2.358$ blocchi. Ogni strato ha quattro matrici $768\times768$ da 36 blocchi ciascuna e due proiezioni feed-forward da 144 blocchi ciascuna. Il totale è $1+6\cdot6=37$ matrici e $2358+6(4\cdot36+2\cdot144)=\num{4950}$ blocchi. La Tabella~\ref{tab:stera30m-parametri} riporta i parametri allenabili; il bilancio rispetto alla forma densa ($63{,}32\%$ in meno) è ricavato nella Sezione~\ref{sec:bilancio-parametri}.
 
 \begin{table}[htbp]
 \centering
@@ -49,7 +47,7 @@ Bias delle proiezioni & \num{27648} \\
 Totale & \textbf{\num{30346182}} \\
 \bottomrule
 \end{tabular}
-\caption{Inventario dei parametri di STERA 30M. La matrice condivisa è contata una volta. La rappresentazione espansa contiene \num{82721280} valori, inclusi i parametri già densi.}
+\caption{Inventario dei parametri di STERA 30M, tutti in FP32. La matrice condivisa è contata una volta. La rappresentazione espansa contiene \num{82721280} valori, inclusi i parametri già densi.}
 \label{tab:stera30m-parametri}
 \end{table}
 
@@ -64,7 +62,7 @@ In una posizione con token bersaglio $y_t$, la perdita scalare è $\mathcal L_t=
 \label{fig:stera30m-backward}
 \end{figure}
 
-Per una base XOR $b_x$, il gradiente somma i contributi di tutte le caselle del blocco con $i\oplus j=x$. Alla somma concorrono i guadagni delle righe e colonne interessate e la scala del blocco. Una correzione riceve il contributo della propria casella. Se $G=\partial\mathcal L/\partial W$, i gradienti del termine a basso rango sono $GV$ per $U$ e $G^\top U$ per $V$. AdamW aggiorna i tensori allenabili della Tabella~\ref{tab:stera30m-parametri}.
+Dal gradiente $G=\partial\mathcal L/\partial W$ di ogni proiezione si ottengono i gradienti di tutte le componenti con le formule del Capitolo~\ref{cap:capitoli/03-formalismo}: le coordinate con \eqref{eq:grad-d}--\eqref{eq:grad-e}, scale, guadagni e basso rango con quelle delle Sezioni~\ref{sec:scale}--\ref{sec:basso-rango}. AdamW aggiorna i tensori allenabili della Tabella~\ref{tab:stera30m-parametri}; il decadimento dei pesi si applica a coordinate, fattori $U$ e $V$ e posizioni, non a scale, guadagni, normalizzazioni e bias.
 
 \subsection{Training e motori misurati}
 

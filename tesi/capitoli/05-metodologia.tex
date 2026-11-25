@@ -101,3 +101,20 @@ Fantasia, animali parlanti, finali negativi e assenza di una morale non sono pen
 \label{sec:metodo-sistemi}
 
 Le misure distinguono il payload dei parametri, la memoria fisica occupata dal processo, il tempo al primo token e il tempo per i token successivi. Il confronto principale riguarda due motori che eseguono gli stessi pesi di STERA 30M: uno applica le proiezioni direttamente alle coordinate RowMask23, l'altro carica le matrici dense equivalenti. I tempi di esecuzione dipendono dalla forma del modello e non dai valori dei pesi. Lo studio dell'esecuzione con pesi che superano la memoria disponibile, descritto nel Capitolo~\ref{cap:capitoli/07-sistemi}, usa una configurazione STERA di scala maggiore e un modello pubblico eseguito con caricamento progressivo dei pesi dal disco.
+
+\paragraph{Protocollo delle misure di tempo.} Tutte le misure di tempo sono eseguite sullo stesso Mac con chip M1 e 16~GiB di memoria unificata, con i pesi del checkpoint finale già caricati, batch 1, greedy e cache KV di capacità 512. Ogni configurazione è misurata in cinque campagne complete; ciascuna campagna parte solo quando la media di carico del sistema a un minuto è scesa sotto 1,5, dopo una pausa di 60 secondi. Ogni processo esegue una prima richiesta e una seconda a caldo, che è quella riportata; i valori sono mediane fra campagne e input, e in ogni campagna si verifica che i token generati coincidano fra le varianti e fra le campagne.
+
+\paragraph{Confronto alla pari con i riferimenti.} I checkpoint TinyStories sono eseguiti in due modi. Il primo è il motore standard con cui sono distribuiti, Transformers su PyTorch con backend MPS. Il secondo è un motore denso MLX con le stesse ottimizzazioni del motore denso di STERA 30M, che carica i pesi pubblici e produce gli stessi token dell'implementazione di riferimento. Solo il secondo confronto attribuisce le differenze di tempo ai modelli anziché ai framework.
+
+\paragraph{Variazioni dell'ingresso e del prefill.} Oltre ai 256 token di ingresso delle misure principali, si misurano prefissi di 32, 64, 128 e 384 token, sempre con 100 token generati. Per il motore compatto si misurano due modi di elaborare il prefisso: il prodotto diretto a blocchi di token e l'espansione al bisogno delle matrici strato per strato.
+
+\section{Analisi delle componenti delle proiezioni}
+\label{sec:metodo-componenti}
+
+Per misurare quanto il modello addestrato dipenda da scale, guadagni e termine a basso rango, e se queste componenti si possano rappresentare con meno bit, si applicano a posteriori, sul checkpoint finale, le seguenti modifiche:
+\begin{itemize}
+\item \textbf{eliminazione} di scale o guadagni, riportati a 1;
+\item \textbf{riduzione del rango} del termine $UV^\top$ alla migliore approssimazione di rango $k\in\{64,48,32,16,8,0\}$, ottenuta con la decomposizione ai valori singolari;
+\item \textbf{quantizzazione a 8 bit} di scale, guadagni o fattori $U$ e $V$, simmetrica con una scala per matrice per scale e guadagni e per gruppi di valori per $U$ e $V$; per i fattori si misura anche l'errore relativo della matrice densa equivalente.
+\end{itemize}
+Per ogni variante si calcola la NLL sui 300 racconti TEST. Per le varianti del basso rango si generano anche le continuazioni dei 300 incipit, con la stessa procedura e gli stessi semi, e si ripete il giudizio cieco: i testi di tutte le varianti sono mescolati e anonimizzati e valutati dallo stesso giudice con la stessa rubrica, in sessioni separate da quella dei tre modelli. Queste prove misurano la dipendenza del modello già addestrato dalle singole componenti, non l'effetto di addestrare il modello senza di esse.

@@ -15,7 +15,7 @@ Al termine dei \num{122000} aggiornamenti del pretraining, i pesi sono congelati
 \item \textbf{Prodotto diretto sulle coordinate:} usare l'identità di Walsh--Hadamard per la componente XOR e aggiungere i contributi diagonali, locali e a basso rango; non richiede di materializzare l'intera matrice.
 \end{enumerate}
 
-Questi tre percorsi rappresentano diverse implementazioni della medesima funzione matematica di STERA 30M. Possono esistere differenze numeriche per ordine delle operazioni e arrotondamenti. Il confronto misurato tra il motore compatto e quello denso equivalente non è quindi un confronto tra due modelli addestrati: impiega gli \emph{stessi parametri appresi}, organizzati in due rappresentazioni di esecuzione.
+Le strategie si possono combinare: il prefill, che elabora molti token insieme, beneficia dell'espansione al bisogno, mentre il decode, che elabora un token alla volta, beneficia del prodotto diretto. Tutti questi percorsi rappresentano diverse implementazioni della medesima funzione matematica di STERA 30M. Possono esistere differenze numeriche per ordine delle operazioni e arrotondamenti. Il confronto misurato tra il motore compatto e quello denso equivalente non è quindi un confronto tra due modelli addestrati: impiega gli \emph{stessi parametri appresi}, organizzati in due rappresentazioni di esecuzione.
 
 \input{capitoli/04b-percorso-inferenza}
 

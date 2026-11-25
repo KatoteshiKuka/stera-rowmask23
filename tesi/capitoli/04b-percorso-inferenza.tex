@@ -18,7 +18,7 @@ Il modello riceve una sequenza di identificativi di token $(u_1,\dots,u_T)$, la 
 
 Gli strati ad attenzione globale considerano, nelle condizioni consentite dalla maschera causale, le precedenti posizioni del prefisso. Negli strati locali l'accesso è limitato alla finestra di 256 posizioni. Questo vincolo sull'attenzione è distinto dalla struttura delle matrici: le proiezioni $W_Q$, $W_K$, $W_V$, $W_O$ rimangono matrici matematiche della stessa forma indipendentemente dalla maschera temporale.
 
-Un motore con matrici dense residenti può eseguire molte proiezioni del prefill con operazioni dense altamente ottimizzate. Il motore compatto impiega la struttura XOR e le correzioni; se la realizzazione dei kernel non sfrutta adeguatamente il parallelismo sui token, può pagare un costo iniziale superiore. La tesi misura questa differenza e non deduce dal solo risparmio di byte che il prefill debba essere più rapido.
+Nel prefill molti token usano gli stessi pesi, e il costo è dominato dal calcolo più che dalla lettura dei pesi. Un motore con matrici dense residenti esegue le proiezioni di tutti i token con un unico prodotto matrice per matrice, l'operazione più ottimizzata della GPU, che riusa ogni peso per tutti i token. Il prodotto diretto sulle coordinate, pensato per pochi token alla volta, applica la trasformata e le correzioni token per token e paga quindi un costo iniziale superiore. Le due esigenze si conciliano combinando le strategie: nel prefill si ricostruisce la parte strutturata delle matrici di uno strato alla volta (espansione al bisogno), si eseguono i prodotti densi e si rilasciano le matrici; nel decode si usa il prodotto diretto sulle coordinate. Il termine a basso rango non viene espanso in nessuno dei due casi, ma applicato nella forma $U(V^\top x)$. Il Capitolo~\ref{cap:capitoli/07-sistemi} misura le tre soluzioni.
 
 \subsection{Il primo token e la distribuzione sul vocabolario}
 
@@ -40,7 +40,7 @@ Per un prodotto $y=Wx$, il motore compatto non deve necessariamente materializza
 
 \subsection{Formato dei pesi ed efficienza dell'implementazione}
 
-Nel benchmark con sei input appaiati, il motore denso produce il primo token più rapidamente, mentre quello compatto riduce il tempo mediano per passo di decode. La prova include l'identità dei token generati sui prompt misurati; non implica uguaglianza bit per bit di ogni intermedio numerico, né si generalizza automaticamente ad altri dispositivi e lunghezze di contesto.
+Nelle misure del Capitolo~\ref{cap:capitoli/07-sistemi} il motore denso produce il primo token più rapidamente, mentre quello compatto riduce il tempo per passo di decode, con un vantaggio che resta costante al variare della lunghezza del prefisso fra 32 e 384 token. Le prove includono l'identità dei token generati sui prompt misurati; non implicano uguaglianza bit per bit di ogni intermedio numerico, né si generalizzano automaticamente ad altri dispositivi.
 
 È importante distinguere l'\emph{efficienza del formato dei pesi}, ossia quanti byte devono essere memorizzati, dall'\emph{efficienza dell'implementazione}, ossia quanto rapidamente un kernel applica quei coefficienti. Il vantaggio strutturale sui byte è quantificabile dall'inventario delle coordinate; il vantaggio temporale è un risultato sperimentale che dipende da hardware, motore, kernel, cache e forma degli input.
 

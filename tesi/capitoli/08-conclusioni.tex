@@ -10,8 +10,8 @@ Questa tesi ha proposto e valutato RowMask23, una parametrizzazione strutturata 
 & Evidenza principale & Esito \\
 \midrule
 H1 & NLL TEST 1,174, inferiore a TinyStories-8M (1,515) e TinyStories-33M (1,324) & Confermata \\
-H2 & 121,385~MB in FP32 contro 330,885~MB dell'espansione densa ($-63{,}3\%$) e 274,056~MB di TinyStories-33M ($-55{,}7\%$) & Confermata \\
-H3 & Decode $-34{,}8\%$ rispetto al motore denso sugli stessi pesi, con token identici & Confermata \\
+H2 & $-80{,}6\%$ garantito dai blocchi RowMask23; 121,385~MB in FP32 contro 330,885~MB dell'espansione densa ($-63{,}3\%$) e 274,056~MB di TinyStories-33M ($-55{,}7\%$); 86,1~MB con il basso rango a 8 bit & Confermata \\
+H3 & Decode $-34{,}8\%$ rispetto al motore denso sugli stessi pesi, con token identici, costante fra 32 e 384 token in ingresso; il primo token resta più lento & Confermata per il decode \\
 H4 & 44,0\% di racconti corretti contro 21,7\% e 48,3\% & Confermata rispetto a TinyStories-8M; non conclusiva rispetto a TinyStories-33M \\
 \bottomrule
 \end{tabularx}
@@ -25,7 +25,13 @@ H4 & 44,0\% di racconti corretti contro 21,7\% e 48,3\% & Confermata rispetto a 
 
 \paragraph{Racconti fra i due riferimenti.} Nel giudizio cieco, STERA 30M scrive racconti corretti nel 44\% dei casi: il doppio di TinyStories-8M, con cui condivide l'ordine di grandezza dei parametri memorizzati, e 4 punti in meno di TinyStories-33M, che ne ha più del doppio, con una differenza non significativa.
 
-\paragraph{Un costo minore in memoria.} Il risparmio di byte è una conseguenza diretta del conteggio dei parametri ed è stato verificato sui pesi effettivamente salvati. Sullo stesso modello, il motore compatto riduce il tempo per token in decode, mentre il motore denso resta più rapido nell'elaborazione del prompt.
+\paragraph{Un costo minore in memoria, con un bilancio esplicito.} Il risparmio di byte segue da un conteggio esatto: i blocchi RowMask23 garantiscono l'$80{,}61\%$ sulla parte strutturata, e il risparmio di un modello STERA si scrive in forma chiusa in funzione del rango del termine aggiuntivo. Con il rango proporzionale alla dimensione il risparmio per strato è costante, $80{,}61\%-1{,}5\,\kappa$; con il rango fisso cresce con il modello verso l'$80{,}6\%$. Per STERA 30M vale il $63{,}3\%$, verificato sui pesi salvati.
+
+\paragraph{Componenti piccole ma indispensabili.} Scale e guadagni valgono meno dello $0{,}5\%$ dei parametri, ma il modello addestrato non funziona senza di essi. Il termine a basso rango è usato per intero: ridurne il rango a posteriori fa crollare la qualità già a rango 64.
+
+\paragraph{Struttura e quantizzazione si sommano.} Quantizzare a 8 bit il termine a basso rango non produce perdite misurabili, porta i pesi a 86,1~MB ($-74\%$ rispetto alla forma densa) e rende il decode più rapido del $17{,}8\%$. Scale, guadagni e basso rango insieme a 8 bit cambiano la NLL dello $0{,}2\%$.
+
+\paragraph{Esecuzione.} Sullo stesso modello il motore compatto riduce il tempo per token in decode, e con lo stesso motore STERA 30M genera più rapidamente di TinyStories-33M. Il motore denso resta più rapido nell'elaborazione del prompt; l'espansione al bisogno delle matrici nel prefill dimezza il divario.
 
 \section{Limiti}
 
@@ -37,7 +43,9 @@ H4 & 44,0\% di racconti corretti contro 21,7\% e 48,3\% & Confermata rispetto a 
 
 \paragraph{Valutazione automatica.} La qualità dei racconti è stata giudicata da un singolo modello linguistico, in modo cieco e con una rubrica fissata in anticipo. Una validazione con lettori umani renderebbe la stima più robusta.
 
-\paragraph{Misure di sistema.} Le misure di esecuzione sono state effettuate su un solo dispositivo, un Mac con chip M1 e 16~GiB di memoria unificata.
+\paragraph{Misure di sistema.} Le misure di esecuzione sono state effettuate su un solo dispositivo, un Mac con chip M1 e 16~GiB di memoria unificata, e con contesti fino a 484 posizioni, il limite di addestramento di STERA 30M.
+
+\paragraph{Studi a posteriori delle componenti.} L'importanza di scale, guadagni e termine a basso rango e la loro quantizzazione sono state misurate sul modello già addestrato. Queste prove dicono quanto il modello dipende da ciascuna componente, non quanto essa serva all'apprendimento: un modello addestrato fin dall'inizio con un rango minore potrebbe affidare più informazione alle coordinate. Il giudizio delle varianti è stato svolto in sessioni separate da quella dei tre modelli, con lo stesso giudice e la stessa rubrica.
 
 \section{Sviluppi futuri}
 
@@ -45,9 +53,11 @@ H4 & 44,0\% di racconti corretti contro 21,7\% e 48,3\% & Confermata rispetto a 
 
 \paragraph{Esecuzione fuori memoria.} Una misura completa di generazione con lo stesso modello eseguito in forma compatta residente e in forma densa trasferita dal disco quantificherebbe direttamente il vantaggio di RowMask23 nello scenario che motiva questo lavoro.
 
-\paragraph{Kernel più efficienti.} Memorizzare la trasformata della base, fondere in un unico kernel le proiezioni di uno strato e scrivere un kernel diretto anche per l'elaborazione del prompt sono ottimizzazioni immediate.
+\paragraph{Il rango come scelta di progetto.} La Proposizione~\ref{prop:risparmio-modello} rende il rango la leva che fissa il risparmio. Addestrare modelli con valori diversi di $\kappa=r/d$, a parità di dati e di budget, misurerebbe il compromesso fra risparmio e qualità e direbbe quanto rango serve all'apprendimento.
 
-\paragraph{Struttura e quantizzazione.} La struttura riduce il numero di valori, la quantizzazione il numero di bit per valore. Un addestramento consapevole della quantizzazione delle coordinate permetterebbe di combinare i due effetti.
+\paragraph{Kernel più efficienti e altro hardware.} Un kernel di prefill che elabori molti token insieme direttamente sulle coordinate, la fusione delle proiezioni di uno strato e una versione dei motori per GPU di altre architetture permetterebbero di verificare i risultati su più dispositivi.
+
+\paragraph{Struttura e quantizzazione.} La struttura riduce il numero di valori, la quantizzazione il numero di bit per valore, e la tesi mostra che i due effetti si sommano sulle componenti non strutturate. Un addestramento consapevole della quantizzazione, esteso alle coordinate RowMask23, permetterebbe di portare a pochi bit anche la parte principale dei pesi.
 
 \paragraph{Altre famiglie della stessa specie.} Il numero di correzioni per riga e la regola che ne fissa le posizioni sono scelte di progetto. Famiglie con più o meno correzioni offrirebbero un continuo di compromessi fra compressione e capacità, da esplorare con la stessa metodologia.
 

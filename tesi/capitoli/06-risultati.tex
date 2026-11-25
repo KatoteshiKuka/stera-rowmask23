@@ -51,9 +51,11 @@ Modello & Corretti & IC 95\% & Grammatica & Coerenza & Trama \\
 TinyStories-8M & 65/300 (21,7\%) & [17,4; 26,7] & 7,43 & 4,74 & 4,96 \\
 \textbf{STERA 30M} & \textbf{132/300 (44,0\%)} & [38,5; 49,7] & 7,67 & 5,26 & 5,37 \\
 TinyStories-33M & 145/300 (48,3\%) & [42,7; 54,0] & 7,91 & 5,54 & 5,49 \\
+\midrule
+STERA 30M, basso rango a 8 bit$^{*}$ & 124/300 (41,3\%) & [35,9; 47,0] & 7,88 & 5,41 & 5,42 \\
 \bottomrule
 \end{tabular}
-\caption{Racconti corretti con intervallo di Wilson e voti medi (scala 1--10) assegnati dal giudice per grammatica, coerenza e trama.}
+\caption{Racconti corretti con intervallo di Wilson e voti medi (scala 1--10) assegnati dal giudice per grammatica, coerenza e trama. $^{*}$Variante di STERA 30M con i soli fattori $U$ e $V$ quantizzati a 8 bit (Sezione~\ref{sec:basso-rango}), valutata in una sessione separata con lo stesso giudice e la stessa rubrica.}
 \label{tab:narrativa-3modelli}
 \end{table}
 
@@ -88,6 +90,8 @@ TinyStories-33M $-$ TinyStories-8M & $+26{,}7$ & $[+19{,}7;\,+33{,}7]$ & 109 / 2
 
 STERA 30M produce racconti corretti molto più spesso di TinyStories-8M: la differenza è di 22 punti percentuali e il test la rende inequivocabile. Rispetto a TinyStories-33M la differenza osservata è di $-4{,}3$ punti e non è statisticamente significativa: sui 145 incipit in cui i due modelli si comportano diversamente, 66 favoriscono STERA 30M e 79 il riferimento. L'intervallo di confidenza, che va da $-12$ a $+4$ punti, non consente tuttavia di affermare che i due modelli siano equivalenti: è compatibile sia con una parità sostanziale sia con uno svantaggio moderato di STERA 30M.
 
+Nella variante con il termine a basso rango quantizzato a 8 bit i racconti corretti sono 124 contro 132; sugli stessi incipit la differenza appaiata è di $-2{,}7$ punti, con intervallo al 95\% $[-9{,}7;\,+4{,}7]$ e $p=0{,}52$ nel test di McNemar: la quantizzazione non produce una perdita significativa di qualità. La stessa procedura, applicata al modello con il basso rango ridotto a posteriori, mostra invece un crollo già a rango 64 (Tabella~\ref{tab:rango-ridotto}).
+
 \subsection{Errori ricorrenti}
 
 Le motivazioni del giudice permettono di descrivere gli errori tipici. I racconti classificati P o N dei tre modelli condividono gli stessi difetti, con frequenze diverse: personaggi che cambiano nome o ruolo a metà racconto, oggetti che appartengono prima a un personaggio e poi a un altro, azioni annunciate e mai compiute, morali finali scollegate dagli eventi. Gli errori grammaticali sono rari in tutti e tre i modelli: la difficoltà principale dei modelli di questa scala non è scrivere frasi corrette, ma mantenere stabile lo stato della storia lungo tutto il racconto.
@@ -97,6 +101,7 @@ Le motivazioni del giudice permettono di descrivere gli errori tipici. I raccont
 \begin{itemize}
 \item \textbf{H1 è confermata.} La NLL su DEV scende durante tutto l'addestramento e la NLL sui racconti TEST è la più bassa fra i tre modelli confrontati.
 \item \textbf{H4 è confermata nei confronti di TinyStories-8M} e \textbf{non è né confermata né smentita nei confronti di TinyStories-33M}. STERA 30M scrive racconti corretti nel 44\% dei casi, il doppio di TinyStories-8M, e con una differenza non significativa rispetto a TinyStories-33M, che ha più del doppio dei parametri memorizzati.
+\item \textbf{La quantizzazione del basso rango non riduce la qualità in modo misurabile}: NLL $+0{,}007\%$ e racconti corretti $41{,}3\%$ contro $44{,}0\%$, differenza non significativa.
 \end{itemize}
 
 Il capitolo successivo verifica le ipotesi H2 e H3, relative al costo di rappresentazione ed esecuzione dei pesi.

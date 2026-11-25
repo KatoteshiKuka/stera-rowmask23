@@ -163,6 +163,7 @@ cioè una riduzione dell'$80{,}6\%$ dei gradi di libertà, equivalente a un fatt
 Il rapporto vale per qualunque precisione numerica, purché coordinate e matrice densa usino la stessa. In FP16 un blocco denso occupa $32.768$ byte e un blocco RowMask23 $6.352$ byte; in FP32 i valori raddoppiano. Si noti che le correzioni sono la parte di gran lunga più numerosa: il $92\%$ delle coordinate. La base XOR, da sola, occupa meno del $4\%$ del blocco ma tocca tutti i $16.256$ elementi fuori diagonale.
 
 \section{Linearità e iniettività}
+\label{sec:linearita-iniettivita}
 
 \begin{proposizione}
 La mappa $\Phi:\mathbb{R}^{3176}\to\mathbb{R}^{128\times128}$ è lineare e iniettiva. Di conseguenza la sua immagine, che chiamiamo \emph{famiglia RowMask23}, è un sottospazio lineare di dimensione $3.176$ dello spazio delle matrici $128\times128$.

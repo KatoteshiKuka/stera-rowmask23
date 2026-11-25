@@ -24,7 +24,7 @@ Una linea di lavoro recente è particolarmente vicina al nostro. QuIP\# \cite{ts
 
 L'addestramento consapevole della quantizzazione (\emph{quantization-aware training}) simula l'arrotondamento durante il passo in avanti. Poiché la funzione di arrotondamento ha derivata nulla quasi ovunque, nel passo all'indietro la si sostituisce con l'identità, secondo lo \emph{straight-through estimator} \cite{bengio2013estimating}. BitNet \cite{wang2023bitnet} spinge questa idea all'estremo, addestrando da zero Transformer con pesi a un solo bit. Questi metodi mostrano che addestrare una rete dentro un insieme ristretto di pesi è possibile, se l'ottimizzazione tiene conto del vincolo fin dall'inizio.
 
-La quantizzazione e la struttura non sono alternative. La prima riduce i bit per valore, la seconda il numero di valori; i due rapporti si moltiplicano. Nel nostro lavoro teniamo separati i due aspetti e misuriamo il secondo a parità del primo.
+La quantizzazione e la struttura non sono alternative. La prima riduce i bit per valore, la seconda il numero di valori; i due rapporti si moltiplicano. Nel nostro lavoro teniamo separati i due aspetti: le valutazioni principali misurano il secondo a parità del primo, tutto in FP32, e una prova dedicata verifica che le due riduzioni si possano sommare quantizzando a 8 bit le componenti non strutturate delle proiezioni.
 
 \section{Fattorizzazioni a basso rango}
 
@@ -92,4 +92,4 @@ Butterfly, Monarch & durante & no & sì & sì \\
 
 RowMask23 condivide con le matrici circolanti l'idea di una componente costante lungo ``diagonali generalizzate'', sostituendo lo spostamento ciclico con lo XOR degli indici; con HashedNets condivide la condivisione dei valori e l'addestramento diretto dei parametri condivisi; con ACDC e con QuIP\# condivide l'uso della trasformata di Walsh--Hadamard. Se ne distingue per due aspetti. Il primo è l'aggiunta di correzioni libere per ogni riga, in numero fisso e in posizioni deterministiche, che danno alla matrice una flessibilità che la parte XOR da sola non avrebbe. Il secondo è che la stessa rappresentazione serve a tutte le fasi: il modello viene addestrato da zero direttamente sulle coordinate, i pesi vengono memorizzati come coordinate e, in inferenza, la matrice può essere applicata senza essere ricostruita.
 
-Nel prossimo capitolo definiamo la famiglia in modo formale.
+Nel prossimo capitolo definiamo in modo formale la famiglia RowMask23 e le altre componenti delle proiezioni STERA.
