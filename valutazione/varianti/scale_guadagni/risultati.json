@@ -1,0 +1,34 @@
+{
+ "riferimento_fp32_cpu": 1.173975,
+ "prove": {
+  "scale1": 4.416434,
+  "guadagni1": 11.383944,
+  "scale8": 1.174196,
+  "guadagni8": 1.175968,
+  "piccole8": 1.176491
+ },
+ "statistiche_valori_appresi": {
+  "scale": {
+   "n": 4950,
+   "media": 1.1581,
+   "dev": 0.3484,
+   "min": -0.0003,
+   "max": 3.4987
+  },
+  "guadagni_uscita": {
+   "n": 91776,
+   "media": 0.8,
+   "dev": 0.3469,
+   "min": -0.0851,
+   "max": 4.4155
+  },
+  "guadagni_ingresso": {
+   "n": 42240,
+   "media": 1.0697,
+   "dev": 0.1847,
+   "min": 0.0001,
+   "max": 5.3073
+  }
+ },
+ "nota": "NLL sui 300 racconti TEST, CPU; scale1/guadagni1 = componente riportata a 1; *8 = quantizzazione simmetrica a 8 bit con una scala per matrice; piccole8 = scale, guadagni e basso rango a 8 bit (basso rango: una scala per colonna)"
+}

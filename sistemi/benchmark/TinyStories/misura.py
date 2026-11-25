@@ -55,7 +55,12 @@ def stera(ids, rango8=False):
         model = CompressedCompiled(512)
     mx.synchronize()
     batch = int(os.getenv("STERA_PREFILL_BLOCK", "0"))
-    if batch:
+    espansione = os.getenv("STERA_PREFILL_MODO") == "espansione"
+    if espansione:
+        # prefill con espansione al volo strato per strato (motori/prefill_espansione.py): un solo passaggio sull'input
+        import prefill_espansione as PE
+        prefill = PE.PrefillEspansione(model, 512); batch = len(ids)
+    elif batch:
         from prefill_f1 import BatchedPrefill
         prefill = (R8.PrefillRango8(capacity=512, BLOCK=batch, shared_base=model) if rango8
                    else BatchedPrefill(capacity=512, BLOCK=batch, shared_base=model))
@@ -85,7 +90,7 @@ def stera(ids, rango8=False):
             times.append(time.perf_counter() - t)
             outputs.append(nxt)
         decode = time.perf_counter() - start
-        return load, ttft, decode, times, {"framework": "MLX/Metal v63" + (" basso rango 8 bit" if rango8 else ""),
+        return load, ttft, decode, times, {"framework": "MLX/Metal v63" + (" basso rango 8 bit" if rango8 else "") + (" prefill con espansione" if espansione else ""),
             "byte_basso_rango": getattr(model, "byte_rango", None), "prefill": f"block{batch}" if batch else "sequential", "outputs": [int(v) for v in outputs],
             "active_mib": mx.get_active_memory() / 2**20}
     with observe_request() as cold_memory:
@@ -201,11 +206,13 @@ def dense(ids, name):
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("model", choices=["STERA", "8M", "28M", "33M", "8M-MLX", "33M-MLX", "STERA-DENSO-MLX", "STERA-R8"])
+parser.add_argument("model", choices=["STERA", "8M", "28M", "33M", "8M-MLX", "33M-MLX", "STERA-DENSO-MLX", "STERA-R8", "STERA-ESP", "STERA-R8-ESP"])
 parser.add_argument("rep", type=int)
 args = parser.parse_args()
 ids = prompt_ids(args.model, int(os.getenv("PROMPT_OFFSET", "0")))
-load, ttft, decode, times, detail = (stera(ids) if args.model == "STERA" else stera(ids, True) if args.model == "STERA-R8" else mlx_denso(ids, args.model) if args.model.endswith("-MLX")
+if args.model.endswith("-ESP"):
+    os.environ["STERA_PREFILL_MODO"] = "espansione"
+load, ttft, decode, times, detail = (stera(ids) if args.model in ("STERA", "STERA-ESP") else stera(ids, True) if args.model in ("STERA-R8", "STERA-R8-ESP") else mlx_denso(ids, args.model) if args.model.endswith("-MLX")
                                      else dense(ids, args.model))
 print(json.dumps({"model": args.model, "rep": args.rep, "dtype": "float32", "batch": 1,
     "prompt_tokens": len(ids), "prompt_sha256": hashlib.sha256(json.dumps(ids).encode()).hexdigest(),

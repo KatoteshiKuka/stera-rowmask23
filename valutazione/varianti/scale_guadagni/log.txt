@@ -1,0 +1,16 @@
+== scale1
+{"ablazione": "scale1"}
+racconti 300  NLL 4.416434  perplessita 82.8005
+== guadagni1
+{"ablazione": "guadagni1"}
+racconti 300  NLL 11.383944  perplessita 87899.0371
+== scale8
+{"ablazione": "scale8"}
+racconti 300  NLL 1.174196  perplessita 3.2355
+== guadagni8
+{"ablazione": "guadagni8"}
+racconti 300  NLL 1.175968  perplessita 3.2413
+== piccole8
+{"rango_bit": 8, "valori_quantizzati": 12865536, "scale_fp32": 7104, "rmse_relativo_rango": 0.01020122448583976}
+{"ablazione": "piccole8"}
+racconti 300  NLL 1.176491  perplessita 3.2430
