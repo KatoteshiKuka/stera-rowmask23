@@ -35,6 +35,8 @@ Su 300 racconti TEST, con gli stessi incipit, lo stesso tokenizzatore e la stess
 - STERA 30M − TinyStories-33M: **−4,3 punti** (IC 95% [−12,0; +3,7], p = 0,32, non significativa).
 - Pesi compatti FP32: **121,385 MB**, contro 330,885 MB dell'espansione densa (−63,3%) e 274,056 MB di TinyStories-33M (−55,7%); 74,241 MB con le coordinate in INT8.
 - Decode sullo stesso modello: **−34,8%** di tempo mediano per token del motore compatto rispetto al motore denso (Mac M1, MLX/Metal, 30 misure appaiate in cinque campagne), con token identici.
+- Basso rango quantizzato a 8 bit: pesi a **86,1 MB** (−74% rispetto alla forma densa), NLL invariata (+0,007%), decode più rapido del 17,8%.
+- I blocchi RowMask23 garantiscono −80,6% sulla parte strutturata; il risparmio di un modello STERA in funzione del rango è ricavato in forma chiusa nel Capitolo 4.
 
 Dettagli e numeri completi: [`docs/RISULTATI.md`](docs/RISULTATI.md).
 

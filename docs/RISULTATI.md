@@ -40,14 +40,31 @@
 
 | Rappresentazione | Byte dei pesi |
 |---|---:|
-| STERA 30M, coordinate INT8 (altri tensori FP32) | 74.240.928 |
 | TinyStories-8M FP32 | 78.810.112 |
-| STERA 30M, archivio senza perdita | 102.352.624 |
+| STERA 30M, basso rango U, V a 8 bit (formato MLX), resto FP32 | 86.096.664 |
 | STERA 30M FP32 | 121.384.728 |
 | TinyStories-33M FP32 | 274.056.192 |
 | STERA 30M, espansione densa FP32 | 330.885.120 |
 
 Fonti: conteggio dei parametri (`addestramento/ts68_v3.py`) e file in `sistemi/modelli/`.
+
+Bilancio (Capitolo 4, Sezione 4.14): i blocchi RowMask23 garantiscono −80,61% sulla parte strutturata; per uno strato con rango $r=\kappa d$ il risparmio è $80{,}61\% - 1{,}5\kappa - 1{,}5/d$; STERA 30M ($\kappa = 1/8$) risparmia il 63,32% (30.346.182 valori contro 82.721.280). Componenti: coordinate 15.721.200, scale 4.950, guadagni 134.016, basso rango 12.865.536, posizioni/normalizzazioni/bias 1.620.480.
+
+## Componenti delle proiezioni (Capitoli 4 e 7)
+
+NLL sui 300 racconti TEST del modello finale con una componente modificata a posteriori (`valutazione/varianti/`):
+
+| Variante | NLL | Racconti corretti |
+|---|---:|---:|
+| Modello della tesi (FP32) | 1,174 | 44,0% |
+| Basso rango a 8 bit (gruppi da 32, formato del motore) | 1,174056 (+0,007%) | — |
+| Basso rango a 8 bit (una scala per colonna) | 1,174302 (+0,03%) | 41,3% (−2,7 punti, p = 0,52) |
+| Scale a 8 bit / guadagni a 8 bit | +0,02% / +0,17% | — |
+| Scale, guadagni e basso rango a 8 bit | +0,21% | — |
+| Scale riportate a 1 / guadagni riportati a 1 | 4,42 / 11,38 | — |
+| Basso rango ridotto a 64 / 48 / 32 / 16 / 8 / 0 | 1,474 / 1,981 / 2,893 / 4,236 / 4,980 / 5,813 | 20,0% / 0% / 0% / 0% / 0% / 0% |
+
+Errore relativo della matrice densa equivalente con U, V a 8 bit: 0,61% (una scala per colonna). Giudizi delle varianti: sessioni separate, stesso giudice e stessa rubrica.
 
 ## Tempi di esecuzione (Capitolo 8)
 
@@ -60,7 +77,18 @@ Mac con Apple M1, 16 GB, MLX/Metal, FP32, 256 token in ingresso, 100 passi di de
 
 Variazione mediana appaiata del tempo per token in decode: −34,8% (da −18,0% a −39,6% sulle 30 coppie; mediane per campagna da −33,7% a −36,0%). Il denso emette prima il primo token e il compatto termina prima la richiesta in tutte le 30 coppie. I due motori producono gli stessi 101 token su tutti gli input, identici in tutte le campagne.
 
-Tre modelli sullo stesso Mac (STERA 30M su MLX/Metal, TinyStories su PyTorch 2.15 MPS), 3 input × 5 campagne, mediane a caldo:
+Confronto alla pari sullo stesso motore MLX (TinyStories nel motore denso `sistemi/motori/gptneo_denso_mlx.py`, token identici all'implementazione di riferimento), 3 input × 5 campagne (`sistemi/risultati/campagne_20261124/confronto_mlx/`):
+
+| Modello | Primo token | Decode | Totale | Picco RAM |
+|---|---:|---:|---:|---:|
+| TinyStories-8M | 13,3 ms | 311,9 token/s | 0,334 s | 511 MiB |
+| STERA 30M compatto | 100,9 ms | 201,0 token/s | 0,599 s | 413 MiB |
+| TinyStories-33M | 20,8 ms | 158,0 token/s | 0,654 s | 879 MiB |
+| STERA 30M denso | 29,5 ms | 130,1 token/s | 0,800 s | 569 MiB |
+
+Lunghezza dell'ingresso da 32 a 384 token (`contesto_mlx/`): decode di STERA compatto 191–198 token/s, riduzione rispetto al denso costante fra −35,4% e −36,3%. Prefill (`prefill_mlx/`): con l'espansione al bisogno strato per strato il primo token su 256 token scende da 65,6 a 41,8 ms (denso 30,7). Basso rango a 8 bit (`rango8_mlx/`): decode da 198,9 a 241,9 token/s (−17,8% di tempo per token), primo token invariato; con espansione e basso rango a 8 bit la richiesta da 256 + 100 token dura 0,47 s.
+
+Tre modelli con il motore standard dei TinyStories (STERA 30M su MLX/Metal, TinyStories su Transformers/PyTorch 2.15 MPS), 3 input × 5 campagne, mediane a caldo:
 
 | Modello | Primo token | Decode | Totale | Picco RAM |
 |---|---:|---:|---:|---:|
