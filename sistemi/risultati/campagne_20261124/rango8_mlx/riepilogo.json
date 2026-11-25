@@ -1,0 +1,29 @@
+{
+ "descrizione": "STERA 30M compatto, basso rango FP32 contro 8 bit (formato MLX, gruppi da 32); 5 campagne a sistema scarico, 3 input da 256 token, 100 token, prefill a blocchi da 64",
+ "risultati": {
+  "STERA": {
+   "decode_tps": 198.86514304217053,
+   "ttft_ms": 63.36174998432398,
+   "totale_s": 0.5660759580787271,
+   "picco_richiesta_mib": 433.15863037109375,
+   "picco_processo_mib": 433.15863037109375,
+   "attiva_mlx_mib": 137.30308532714844,
+   "n": 15
+  },
+  "STERA-R8": {
+   "decode_tps": 241.89212843908686,
+   "ttft_ms": 65.4173749499023,
+   "totale_s": 0.47800745896529406,
+   "picco_richiesta_mib": 434.4710693359375,
+   "picco_processo_mib": 434.4710693359375,
+   "attiva_mlx_mib": 104.42417907714844,
+   "n": 15
+  },
+  "variazione_decode_pct": {
+   "mediana": -17.834287940782616,
+   "min": -24.523164029764246,
+   "max": -10.075097437017064,
+   "coppie": 15
+  }
+ }
+}

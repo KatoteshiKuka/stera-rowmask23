@@ -43,17 +43,22 @@ def optimized_attention(self, query, key, value, attention_mask=None):
     )
     return y, None
 
-def stera(ids):
+def stera(ids, rango8=False):
     import mlx.core as mx
     sys.path.insert(0, str(KERNELS))
     from stera_h80000_fp32_tuned_sdpa_v63 import CompressedCompiled
     start = time.perf_counter()
-    model = CompressedCompiled(512)
+    if rango8:
+        import stera_rango8_mlx as R8
+        model = R8.CompressedRango8(512)
+    else:
+        model = CompressedCompiled(512)
     mx.synchronize()
     batch = int(os.getenv("STERA_PREFILL_BLOCK", "0"))
     if batch:
         from prefill_f1 import BatchedPrefill
-        prefill = BatchedPrefill(capacity=512, BLOCK=batch, shared_base=model)
+        prefill = (R8.PrefillRango8(capacity=512, BLOCK=batch, shared_base=model) if rango8
+                   else BatchedPrefill(capacity=512, BLOCK=batch, shared_base=model))
     load = time.perf_counter() - start
     inputs = [mx.array(i, mx.int32) for i in ids]
     def next_token(inp, position):
@@ -80,7 +85,8 @@ def stera(ids):
             times.append(time.perf_counter() - t)
             outputs.append(nxt)
         decode = time.perf_counter() - start
-        return load, ttft, decode, times, {"framework": "MLX/Metal v63", "prefill": f"block{batch}" if batch else "sequential", "outputs": [int(v) for v in outputs],
+        return load, ttft, decode, times, {"framework": "MLX/Metal v63" + (" basso rango 8 bit" if rango8 else ""),
+            "byte_basso_rango": getattr(model, "byte_rango", None), "prefill": f"block{batch}" if batch else "sequential", "outputs": [int(v) for v in outputs],
             "active_mib": mx.get_active_memory() / 2**20}
     with observe_request() as cold_memory:
         cold = measure()
@@ -195,11 +201,11 @@ def dense(ids, name):
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("model", choices=["STERA", "8M", "28M", "33M", "8M-MLX", "33M-MLX", "STERA-DENSO-MLX"])
+parser.add_argument("model", choices=["STERA", "8M", "28M", "33M", "8M-MLX", "33M-MLX", "STERA-DENSO-MLX", "STERA-R8"])
 parser.add_argument("rep", type=int)
 args = parser.parse_args()
 ids = prompt_ids(args.model, int(os.getenv("PROMPT_OFFSET", "0")))
-load, ttft, decode, times, detail = (stera(ids) if args.model == "STERA" else mlx_denso(ids, args.model) if args.model.endswith("-MLX")
+load, ttft, decode, times, detail = (stera(ids) if args.model == "STERA" else stera(ids, True) if args.model == "STERA-R8" else mlx_denso(ids, args.model) if args.model.endswith("-MLX")
                                      else dense(ids, args.model))
 print(json.dumps({"model": args.model, "rep": args.rep, "dtype": "float32", "batch": 1,
     "prompt_tokens": len(ids), "prompt_sha256": hashlib.sha256(json.dumps(ids).encode()).hexdigest(),

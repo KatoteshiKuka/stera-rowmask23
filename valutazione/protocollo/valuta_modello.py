@@ -35,6 +35,23 @@ def sha256(p):
     return h.hexdigest()
 
 
+def quantizza_rango_mlx(model, matrici, bit, gruppo=32):
+    """Stesso formato del motore MLX a 8 bit (sistemi/motori/stera_rango8_mlx.py): U quantizzato a gruppi lungo il rango,
+    V^T a gruppi lungo le colonne (per l'embedding anche V a gruppi lungo il rango, usato per le righe di U)."""
+    import mlx.core as mx
+    import numpy as np
+    rt = lambda a: np.array(mx.dequantize(*mx.quantize(mx.array(a), group_size=gruppo, bits=bit), group_size=gruppo, bits=bit))
+    err2 = ref2 = 0.0
+    with torch.no_grad():
+        for n, _, _ in matrici:
+            U, V = model.weight[n + ".U"], model.weight[n + ".V"]
+            u, v = U.detach().cpu().numpy(), V.detach().cpu().numpy()
+            uq, vq = rt(u), rt(v.T).T
+            for t, q in ((U, uq), (V, vq)):
+                err2 += float(((torch.from_numpy(q) - t.cpu()) ** 2).sum()); ref2 += float((t ** 2).sum()); t.copy_(torch.from_numpy(q))
+    print(json.dumps({"rango_bit": bit, "schema": f"mlx gruppi da {gruppo}", "rmse_relativo_rango": math.sqrt(err2 / ref2)}), flush=True)
+
+
 def quantizza_rango(model, matrici, bit):
     """Quantizzazione simmetrica per colonna dei soli fattori U e V; i valori vengono riportati in FP32 per il calcolo."""
     q = 2 ** (bit - 1) - 1; err2 = ref2 = 0.0; valori = scale = 0
@@ -66,7 +83,7 @@ def riduci_rango(model, matrici, k):
     print(json.dumps({"rango_ridotto": k, "errore_relativo_matrici": math.sqrt(err2 / ref2)}), flush=True)
 
 
-def carica_stera30m(path, device, rango_bit=None, rango_ridotto=None):
+def carica_stera30m(path, device, rango_bit=None, rango_ridotto=None, schema="colonna"):
     import ts68_v3 as V
     import ts68_core as T
     sha = sha256(path)
@@ -82,7 +99,9 @@ def carica_stera30m(path, device, rango_bit=None, rango_ridotto=None):
     model = V.TS68X(st, torch.device(device), False, True, 96)
     if rango_ridotto is not None:
         riduci_rango(model, V.matrices(), rango_ridotto)
-    if rango_bit:
+    if rango_bit and schema == "mlx":
+        quantizza_rango_mlx(model, V.matrices(), rango_bit)
+    elif rango_bit:
         quantizza_rango(model, V.matrices(), rango_bit)
     with torch.inference_mode():
         w = {n: model.w(n, r, c).contiguous() for n, r, c in V.matrices()}
@@ -109,12 +128,13 @@ def main():
     a.add_argument("--rango-bit", type=int, default=None)
     a.add_argument("--rango-ridotto", type=int, default=None)
     a.add_argument("--solo-nll", action="store_true")
+    a.add_argument("--rango-schema", choices=["colonna", "mlx"], default="colonna")
     x = a.parse_args()
     torch.set_grad_enabled(False)
     tokp = x.tokenizer or (pathlib.Path(x.modello) / "tokenizer.json" if x.modello else None)
     assert tokp and sha256(tokp) == SHA_TOKENIZER, "serve il tokenizer GPT-Neo di TinyStories (--tokenizer)"
     tok = Tokenizer.from_file(str(tokp))
-    forward = carica_stera30m(x.checkpoint, x.device, x.rango_bit, x.rango_ridotto) if x.tipo == "stera30m" else carica_hf(x.modello, x.device)
+    forward = carica_stera30m(x.checkpoint, x.device, x.rango_bit, x.rango_ridotto, x.rango_schema) if x.tipo == "stera30m" else carica_hf(x.modello, x.device)
     righe = json.loads((QUI / "incipit_test300.json").read_text())[: x.n]
     tot_nll = tot_tok = 0.0
     with torch.inference_mode(), open(x.out, "w") as f:
