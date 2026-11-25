@@ -24,3 +24,5 @@ __pycache__/
 # copia della tesi per Overleaf (rigenerabile con tesi/esporta_overleaf.py)
 tesi_overleaf/
 tesi_overleaf.zip
+presentazione/node_modules/
+presentazione/package*.json
