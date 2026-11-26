@@ -5,13 +5,13 @@ Il capitolo precedente ha definito la parametrizzazione STERA e ha mostrato come
 
 STERA 30M mantiene la struttura di un Transformer decoder-only e cambia solo la rappresentazione delle sue matrici. Le dimensioni sono:
 \begin{itemize}
-\item sei layer, con dimensione nascosta $d=768$;
+\item sei layer, con hidden size $d=768$;
 \item attention a 16 head da 48 componenti; i layer si alternano fra attention causale sull'intero prefisso e attention causale con finestra locale di 256 posizioni, tre e tre;
-\item un feed-forward con dimensione interna $f=\num{3072}$ e attivazione GELU;
+\item un feed-forward con dimensione interna $f=\num{3072}$ e activation function GELU;
 \item un vocabolario di \num{50257} token, una tabella di \num{2048} posizioni assolute allenabili e finestre di training fino a 512 token.
 \end{itemize}
 
-Ogni layer segue lo schema con normalizzazione in ingresso: il vettore passa per una normalizzazione, per l'attention e viene sommato alla residual connection; poi passa per una seconda normalizzazione, per il feed-forward e viene di nuovo sommato alla residual connection. Dopo il sesto layer una normalizzazione finale produce la rappresentazione da cui si calcolano i logit del vocabolario. La \autoref{fig:stera30m-flusso}, subito sotto, mostra il percorso completo; in azzurro sono indicate le proiezioni STERA.
+Ogni layer segue lo schema con LayerNorm in ingresso (\emph{pre-norm}): il vettore passa per una LayerNorm, per l'attention e viene sommato alla residual connection; poi passa per una seconda LayerNorm, per il feed-forward e viene di nuovo sommato alla residual connection. Dopo il sesto layer una LayerNorm finale produce la rappresentazione da cui si calcolano i logit del vocabolario. La \autoref{fig:stera30m-flusso}, subito sotto, mostra il percorso completo; in azzurro sono indicate le proiezioni STERA.
 
 \begin{figure}[H]
 \centering
@@ -57,7 +57,7 @@ Totale & 37 & & \num{4950} & \num{15721200} & \num{81100800} \\
 \label{tab:atlante-matrici}
 \end{table}
 
-Alle coordinate si aggiungono le altre componenti delle 37 proiezioni, una scala per ognuno dei \num{4950} blocchi, \num{134016} guadagni e \num{12865536} valori dei fattori $U$ e $V$, e i parametri che restano densi: \num{1572864} posizioni, \num{19968} parametri di normalizzazione e \num{27648} bias, presenti in $W_O$, $W_1$ e $W_2$. Il totale è di \num{30346182} parametri allenabili, tutti memorizzati in FP32, contro \num{82721280} valori della forma densa equivalente; la composizione per componente e il risparmio del $63{,}32\%$ sono nella \autoref{tab:componenti-stera30m}.
+Alle coordinate si aggiungono le altre componenti delle 37 proiezioni, una scala per ognuno dei \num{4950} blocchi, \num{134016} guadagni e \num{12865536} valori dei fattori $U$ e $V$, e i parametri che restano densi: \num{1572864} posizioni, \num{19968} parametri delle LayerNorm e \num{27648} bias, presenti in $W_O$, $W_1$ e $W_2$. Il totale è di \num{30346182} parametri allenabili, tutti memorizzati in FP32, contro \num{82721280} valori della forma densa equivalente; la composizione per componente e il risparmio del $63{,}32\%$ sono nella \autoref{tab:componenti-stera30m}.
 
 \section{Dal token alla distribuzione sul token successivo}
 \label{sec:percorso-token}
@@ -66,7 +66,7 @@ Il forward del modello applica le proiezioni STERA nell'ordine dell'architettura
 \begin{enumerate}
 \item \textbf{Ingresso.} Si prende la riga $E_{u_t,:}$ della matrice condivisa e le si somma il vettore di posizione $P_{t,:}$, ottenendo un vettore di 768 componenti.
 \item \textbf{Layer.} Il vettore attraversa i sei layer. In ciascuno, le proiezioni $W_Q$, $W_K$, $W_V$ producono query, key e value, $W_O$ riporta il risultato dell'attention nello spazio del modello, $W_1$ e $W_2$ formano il feed-forward. Ogni proiezione è applicata con i quattro passi della \autoref{sec:forward-stera}.
-\item \textbf{Uscita.} Dopo la normalizzazione finale, la rappresentazione $h_t$ è confrontata con tutte le righe valide di $E$: il logit del token $v$ è $z_{t,v}=E_{v,:}\,h_t$, e la softmax sui \num{50257} logit dà la probabilità del token successivo,
+\item \textbf{Uscita.} Dopo la LayerNorm finale, la rappresentazione $h_t$ è confrontata con tutte le righe valide di $E$: il logit del token $v$ è $z_{t,v}=E_{v,:}\,h_t$, e la softmax sui \num{50257} logit dà la probabilità del token successivo,
 \[
 p_{t,v}=\frac{\exp(z_{t,v})}{\sum_{j=0}^{50256}\exp(z_{t,j})}.
 \]
@@ -78,9 +78,9 @@ La stessa matrice $E$ fornisce quindi sia il vettore d'ingresso di un token sia 
 
 \paragraph{Loss.} In ogni posizione con token target $y_t$ la loss è $\mathcal L_t=-\log p_{t,y_t}$, mediata sui token target del batch ed escluso il padding.
 
-\paragraph{Backpropagation nel modello.} Il gradiente parte dai logit: rispetto al logit del token $v$ vale $\partial\mathcal L_t/\partial z_{t,v}=p_{t,v}-\mathbf 1\{v=y_t\}$, cioè la probabilità assegnata meno uno per il token corretto. Da qui risale nell'ordine inverso del forward: attraversa la output head, la normalizzazione finale e i sei layer, dall'ultimo al primo. Ogni proiezione STERA che incontra riceve il gradiente della propria uscita, $\delta=\partial\mathcal L/\partial y$, e con i passi B1--B4 della \autoref{sec:backward-passi} produce i gradienti delle proprie coordinate, scale, guadagni e fattori $U$ e $V$, e il gradiente del proprio ingresso, che prosegue verso il layer precedente. La matrice condivisa $E$ riceve due contributi, che si sommano: quello della output head, $\sum_t(p_t-\mathbf 1_{y_t})\,h_t^\top$ sulle righe valide, e quello delle righe usate come ingresso, che arriva in fondo al percorso.
+\paragraph{Backpropagation nel modello.} Il gradiente parte dai logit: rispetto al logit del token $v$ vale $\partial\mathcal L_t/\partial z_{t,v}=p_{t,v}-\mathbf 1\{v=y_t\}$, cioè la probabilità assegnata meno uno per il token corretto. Da qui risale nell'ordine inverso del forward: attraversa la output head, la LayerNorm finale e i sei layer, dall'ultimo al primo. Ogni proiezione STERA che incontra riceve il gradiente della propria uscita, $\delta=\partial\mathcal L/\partial y$, e con i passi B1--B4 della \autoref{sec:backward-passi} produce i gradienti delle proprie coordinate, scale, guadagni e fattori $U$ e $V$, e il gradiente del proprio ingresso, che prosegue verso il layer precedente. La matrice condivisa $E$ riceve due contributi, che si sommano: quello della output head, $\sum_t(p_t-\mathbf 1_{y_t})\,h_t^\top$ sulle righe valide, e quello delle righe usate come ingresso, che arriva in fondo al percorso.
 
-\paragraph{Implementazione e optimizer.} Il training usa PyTorch su due GPU NVIDIA P100. A ogni passo il programma ricostruisce le matrici a partire dalle loro componenti e lascia all'autograd il calcolo dei gradienti, che coincidono con quelli della \autoref{sec:backward-stera} (\autoref{prop:backward-esatto}). AdamW aggiorna tutti i parametri allenabili; il weight decay si applica a coordinate, fattori $U$ e $V$ e posizioni, non a scale, guadagni, normalizzazioni e bias. Dati, iperparametri e andamento del training sono descritti nel \autoref{cap:capitoli/05-metodologia}.
+\paragraph{Implementazione e optimizer.} Il training usa PyTorch su due GPU NVIDIA P100. A ogni passo il programma ricostruisce le matrici a partire dalle loro componenti e lascia all'autograd il calcolo dei gradienti, che coincidono con quelli della \autoref{sec:backward-stera} (\autoref{prop:backward-esatto}). AdamW aggiorna tutti i parametri allenabili; il weight decay si applica a coordinate, fattori $U$ e $V$ e posizioni, non a scale, guadagni, LayerNorm e bias. Dati, iperparametri e andamento del training sono descritti nel \autoref{cap:capitoli/05-metodologia}.
 
 \section{Dall'training alla generazione}
 \label{sec:guida-inferenza-stera}

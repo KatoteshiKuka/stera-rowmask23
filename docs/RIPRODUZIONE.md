@@ -7,7 +7,7 @@ I file pesanti vanno in una cartella `esterni/` (ignorata da git) nella radice d
 
 | Parte | Hardware usato nella tesi | Software |
 |---|---|---|
-| Preparazione dati, addestramento, valutazione | server con 2 × NVIDIA P100 16 GB, Slurm | Python 3.12, PyTorch, tokenizers 0.20, transformers 4.46 (`requisiti_addestramento.txt`) |
+| Preparazione dati, training, valutazione | server con 2 × NVIDIA P100 16 GB, Slurm | Python 3.12, PyTorch, tokenizers 0.20, transformers 4.46 (`requisiti_addestramento.txt`) |
 | Valutazione di TinyStories-8M, statistiche, figure | Mac con Apple M1, 16 GB | Python 3.9+, PyTorch 2.8 su CPU |
 | Misure di sistema | Mac con Apple M1, 16 GB | Python 3.11, MLX 0.32.4, PyTorch 2.15 MPS, Transformers 5 (`requisiti_sistemi.txt`) |
 | Figure e tesi | qualunque | matplotlib 3.9.4 (figure identiche al pixel), [Tectonic](https://tectonic-typesetting.github.io) |
@@ -51,14 +51,14 @@ python addestramento/sigilla_dati.py
 
 **Verifica:** `esterni/corpus_tokenizzato/MANIFEST.json` deve coincidere con `addestramento/dati/MANIFEST_DATI.json` nei campi `pack_sha256` (`5ae58177…`), `index_sha256` (`bbadffc0…`), `split_stories` (2.660.865 / 29.279 / 27.351) e `split_target_tokens`. Il file `CONTRACT` deve coincidere con `addestramento/dati/CONTRACT` (lo script lo controlla e stampa `coincide con la tesi: True`).
 
-## 2. Addestramento di STERA 30M
+## 2. Training di STERA 30M
 
 ```bash
 export STERA_RUN=esterni/checkpoint
 sbatch addestramento/addestra_stera30m.sh        # oppure: bash addestramento/addestra_stera30m.sh
 ```
 
-Configurazione: 6 strati, guadagni per riga e colonna, termine a basso rango 96; lotti da 64 sequenze di al più 512 token, AdamW ($\beta_1=0{,}9$, $\beta_2=0{,}95$, decadimento 0,1), tasso di apprendimento con warmup di 300 passi fino a $6\cdot10^{-4}$, costante fino al passo 64.000, discesa lineare fino a $6\cdot10^{-5}$ al passo 80.000 e poi costante. Un checkpoint completo (pesi, momenti di Adam, cursore dei dati) è salvato ogni 2.000 passi; lo script riprende dall'ultimo se viene rilanciato.
+Configurazione: 6 layer, guadagni per riga e colonna, termine low-rank 96; batch da 64 sequenze di al più 512 token, AdamW ($\beta_1=0{,}9$, $\beta_2=0{,}95$, decadimento 0,1), learning rate con warmup di 300 passi fino a $6\cdot10^{-4}$, costante fino al passo 64.000, discesa lineare fino a $6\cdot10^{-5}$ al passo 80.000 e poi costante. Un checkpoint completo (pesi, momenti di Adam, cursore dei dati) è salvato ogni 2.000 passi; lo script riprende dall'ultimo se viene rilanciato.
 
 Tempo indicativo: circa 12.000 token/s su due P100, cioè circa 35 ore per 122.000 aggiornamenti. La corsa della tesi è stata eseguita in tre job consecutivi dello stesso script.
 
@@ -82,7 +82,7 @@ Il risultato atteso è `VAL step=122000 nll=1.152155`. Allo stesso modo, 20 pass
 
 **Verifica:** le righe `VAL` del log devono seguire `addestramento/log_addestramento_0_122k.txt` (NLL DEV 10,928 al passo 0, 1,172 a 80.000, 1,152 a 122.000). Il checkpoint finale della tesi ha impronta `418becfb…6ed0887`.
 
-## 3. Incipit di prova
+## 3. Prompt di prova
 
 Il file `valutazione/protocollo/incipit_test300.json` è già nel repository (SHA-256 `95bcffdb…032ec`). Per rigenerarlo:
 
@@ -102,9 +102,9 @@ python valuta_modello.py hf --modello ../../esterni/TinyStories-33M --device cud
 python valuta_modello.py hf --modello ../../esterni/TinyStories-8M  --device cpu  --out tinystories8m.jsonl
 ```
 
-Lo stesso script calcola la NLL dei 300 racconti di riferimento (57.841 token bersaglio) e genera una continuazione per incipit con top-$k$ 40, temperatura 0,75, al più 180 nuovi token. Il generatore casuale è su CPU con il seme dell'incipit, quindi le continuazioni non dipendono dal dispositivo.
+Lo stesso script calcola la NLL dei 300 racconti di riferimento (57.841 token target) e genera una continuazione per prompt con top-$k$ 40, temperatura 0,75, al più 180 nuovi token. Il generatore casuale è su CPU con il seme dell'prompt, quindi le continuazioni non dipendono dal dispositivo.
 
-**Verifica:** le continuazioni coincidono token per token con quelle in `valutazione/generazioni/`; rieseguendo i tre modelli su P100 coincidono tutte le 900 continuazioni; su CPU coincidono 899 su 900 (l'incipit F156 di TinyStories-33M diverge dal token 84 per l'arrotondamento). Le NLL medie differiscono al più di qualche centomillesimo di nat.
+**Verifica:** le continuazioni coincidono token per token con quelle in `valutazione/generazioni/`; rieseguendo i tre modelli su P100 coincidono tutte le 900 continuazioni; su CPU coincidono 899 su 900 (il prompt F156 di TinyStories-33M diverge dal token 84 per l'arrotondamento). Le NLL medie differiscono al più di qualche centomillesimo di nat.
 
 ## 5. Giudizio cieco
 
@@ -151,8 +151,8 @@ I risultati della tesi, con i report che li descrivono, sono in `sistemi/risulta
 
 - `campagne_20261124/protocollo/`: le cinque campagne sul checkpoint finale usate nella tesi e `riepilogo.json` (decode appaiato −34,8%, tempi e picchi dei tre modelli); `protocollo_H122000_sotto_carico/` contiene cinque campagne sugli stessi pesi eseguite con il sistema carico, `protocollo_H80000/` e `preliminari/` campagne precedenti sui pesi a 80.000 aggiornamenti;
 - `01_motore_compatto_vs_denso/`: misure appaiate precedenti e attribuzione del tempo per operatore;
-- `02_tre_modelli_mac/`: primo token, decode e picco di memoria dei tre modelli;
-- `03_f10_ssd_qwen/`: prototipo F10 (motore `sistemi/motori/stera_independent_fp32_transposed_jit_v28.py`, lettura dal disco `evidenze_f10/ssd_validato/bench_ssd_f10.py`) (pesi compatti 4,003 GB contro 18,597 GB densi), lettura validata dall'SSD, Qwen3.5-9B con caricamento degli strati dal disco, eseguito con [SWLP](https://github.com/Rishav-Upadhaya/SWLP) al commit `3941963812850f9ad6821f3bec78754d695143ac` (script `prepara_swlp.py`, `misura_swlp.py`, `riepiloga_swlp.py`); modello `Qwen/Qwen3.5-9B` scaricato da Hugging Face (revisione registrata nei metadati di download: `c202236235762e1c871ad0ccb60c8ee5ba337b9a`).
+- `02_tre_modelli_mac/`: TTFT, decode e picco di memoria dei tre modelli;
+- `03_f10_ssd_qwen/`: prototipo F10 (motore `sistemi/motori/stera_independent_fp32_transposed_jit_v28.py`, lettura dal disco `evidenze_f10/ssd_validato/bench_ssd_f10.py`) (pesi compatti 4,003 GB contro 18,597 GB densi), lettura validata dall'SSD, Qwen3.5-9B con caricamento dei layer dal disco, eseguito con [SWLP](https://github.com/Rishav-Upadhaya/SWLP) al commit `3941963812850f9ad6821f3bec78754d695143ac` (script `prepara_swlp.py`, `misura_swlp.py`, `riepiloga_swlp.py`); modello `Qwen/Qwen3.5-9B` scaricato da Hugging Face (revisione registrata nei metadati di download: `c202236235762e1c871ad0ccb60c8ee5ba337b9a`).
 
 L'archivio senza perdita dei pesi FP32 del checkpoint finale (102.352.624 byte, non usato nella tesi) si ottiene con `sistemi/benchmark/archivio_senza_perdita/steraf32_byteplane.py` e si ripristina bit per bit con `restore_lossless_archive.py`.
 
@@ -171,9 +171,9 @@ Per lavorare sul testo con anteprima automatica: `python tesi/anteprima/server.p
 ```bash
 cd valutazione/protocollo
 python valuta_modello.py stera30m --checkpoint ../../pesi/stera30m_step122000.ckpt.gz --tokenizer ../../esterni/tokenizer.json \
-       --rango-bit 8 --rango-schema mlx --solo-nll --out /tmp/rango8.jsonl      # basso rango a 8 bit
+       --rango-bit 8 --rango-schema mlx --solo-nll --out /tmp/rango8.jsonl      # low-rank a 8 bit
 #   --rango-ridotto K (K = 64 ... 0), --ablazione scale1|guadagni1|scale8|guadagni8|piccole8
 ```
 
 Giudizi ciechi delle varianti: `valutazione/varianti/` (insiemi anonimizzati, abbinamenti, `aggrega*.py`).
-Tempi: `sistemi/benchmark/campagne_mlx.sh` (confronto alla pari), `campagne_contesto.sh` (lunghezza dell'ingresso), `campagne_prefill.sh` (prefill con espansione), `campagne_rango8.sh` (basso rango a 8 bit); motori `sistemi/motori/gptneo_denso_mlx.py`, `prefill_espansione.py`, `stera_rango8_mlx.py`.
+Tempi: `sistemi/benchmark/campagne_mlx.sh` (confronto alla pari), `campagne_contesto.sh` (lunghezza dell'ingresso), `campagne_prefill.sh` (prefill con espansione), `campagne_rango8.sh` (low-rank a 8 bit); motori `sistemi/motori/gptneo_denso_mlx.py`, `prefill_espansione.py`, `stera_rango8_mlx.py`.

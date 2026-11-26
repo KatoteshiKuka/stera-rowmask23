@@ -61,14 +61,14 @@ serie_a = [("STERA, prefill compatto", pre, "STERA", C["stera"], "-"), ("STERA, 
            ("TinyStories-8M", ctx, "8M-MLX", C["ts8"], "-")]
 for nome, d, k, col, ls in serie_a:
     a.plot(Ls, [1000 * d[f"{k}|{L}"]["ttft_s"] for L in Ls], color=col, ls=ls, marker="o", ms=3, lw=1.4, label=nome)
-a.set_xlabel("Token in ingresso"); a.set_ylabel("Primo token (ms)"); a.set_title("(a) Elaborazione del prefisso", fontsize=9.5)
+a.set_xlabel("Token in ingresso"); a.set_ylabel("TTFT (ms)"); a.set_title("(a) Prefill", fontsize=9.5)
 a.set_xticks(Ls); a.yaxis.set_major_formatter(FuncFormatter(lambda v, _: it(v)))
 serie_b = [("STERA, low-rank a 8 bit", pre, "STERA-R8-ESP", C["chiaro"], "--"), ("STERA", pre, "STERA", C["stera"], "-"),
            ("STERA denso", pre, "STERA-DENSO-MLX", C["neutro"], "-"), ("TinyStories-33M", ctx, "33M-MLX", C["ts33"], "-"),
            ("TinyStories-8M", ctx, "8M-MLX", C["ts8"], "-")]
 for nome, d, k, col, ls in serie_b:
     b.plot(Ls, [d[f"{k}|{L}"]["decode_tps"] for L in Ls], color=col, ls=ls, marker="o", ms=3, lw=1.4, label=nome)
-b.set_xlabel("Token in ingresso"); b.set_ylabel("Decode (token/s)"); b.set_title("(b) Generazione", fontsize=9.5)
+b.set_xlabel("Token in ingresso"); b.set_ylabel("Decode (token/s)"); b.set_title("(b) Decode", fontsize=9.5)
 b.set_xticks(Ls); b.set_ylim(0, 340); b.yaxis.set_major_formatter(FuncFormatter(lambda v, _: it(v)))
 h1, l1 = a.get_legend_handles_labels(); h2, l2 = b.get_legend_handles_labels()
 fig.legend(h1 + h2[:1], l1 + l2[:1], loc="lower center", ncol=3, fontsize=7.5, frameon=False, bbox_to_anchor=(.5, -.2))

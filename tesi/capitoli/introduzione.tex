@@ -4,7 +4,7 @@ Questa tesi propone \textbf{STERA}, acronimo di \emph{Structured Training, Execu
 
 L'elemento centrale di STERA sono i blocchi \emph{RowMask23}. A differenza della compressione applicata a un modello già addestrato, il vincolo strutturale è imposto fin dall'inizio: l'optimizer aggiorna direttamente le coordinate dei blocchi e non esiste una matrice densa da approssimare. Il risparmio sulla parte strutturata delle matrici è quindi garantito per costruzione, mentre le componenti che completano i blocchi (scale, guadagni e termine low-rank) determinano il bilancio complessivo, che la tesi ricava in forma esplicita per qualunque dimensione del modello.
 
-Il modello linguistico addestrato e valutato è \textbf{STERA 30M}: un Transformer a sei layer, con dimensione nascosta 768, 16 attention head e feed-forward di dimensione \num{3072}, le cui proiezioni sono parametrizzate con STERA. Il modello conta \num{30346182} parametri allenabili, che determinano \num{82721280} valori nella rappresentazione densa equivalente. È stato addestrato da zero sul corpus TinyStories per \num{122000} aggiornamenti, pari a \num{1529514422} token target.
+Il modello linguistico addestrato e valutato è \textbf{STERA 30M}: un Transformer a sei layer, con hidden size 768, 16 attention head e feed-forward di dimensione \num{3072}, le cui proiezioni sono parametrizzate con STERA. Il modello conta \num{30346182} parametri allenabili, che determinano \num{82721280} valori nella rappresentazione densa equivalente. È stato addestrato da zero sul corpus TinyStories per \num{122000} aggiornamenti, pari a \num{1529514422} token target.
 
 \section*{Ipotesi}
 

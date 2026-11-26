@@ -11,7 +11,7 @@ Questa tesi ha proposto e valutato STERA, una parametrizzazione strutturata dei 
 \midrule
 H1 & NLL TEST 1,174, inferiore a TinyStories-8M (1,515) e TinyStories-33M (1,324) & Confermata \\
 H2 & $-80{,}6\%$ garantito dai blocchi RowMask23; 121,385~MB in FP32 contro 330,885~MB dell'espansione densa ($-63{,}3\%$) e 274,056~MB di TinyStories-33M ($-55{,}7\%$); 86,1~MB con il low-rank a 8 bit & Confermata \\
-H3 & Decode $-34{,}8\%$ rispetto al motore denso sugli stessi pesi, con token identici, costante fra 32 e 384 token in ingresso; il primo token resta più lento & Confermata per il decode \\
+H3 & Decode $-34{,}8\%$ rispetto al motore denso sugli stessi pesi, con token identici, costante fra 32 e 384 token in ingresso; il TTFT resta più lento & Confermata per il decode \\
 H4 & 44,0\% di racconti corretti contro 21,7\% e 48,3\% & Confermata rispetto a TinyStories-8M; non conclusiva rispetto a TinyStories-33M \\
 \bottomrule
 \end{tabularx}
@@ -21,7 +21,7 @@ H4 & 44,0\% di racconti corretti contro 21,7\% e 48,3\% & Confermata rispetto a 
 
 \paragraph{Una famiglia di matrici con buone proprietà.} Un blocco RowMask23 da $128\times128$ usa \num{3176} coordinate anziché \num{16384} coefficienti indipendenti. La mappa dalle coordinate alla matrice è lineare e iniettiva, il gradiente rispetto alle coordinate ha una forma chiusa e il prodotto matrice--vettore si calcola con la trasformata di Walsh--Hadamard senza materializzare la matrice.
 
-\paragraph{Un modello che apprende.} STERA 30M, addestrato da zero con tutte le proiezioni parametrizzate con STERA, raggiunge una NLL di 1,152 sul campione DEV e di 1,174 sui racconti TEST. La curva di training non mostra segni di sovradattamento.
+\paragraph{Un modello che apprende.} STERA 30M, addestrato da zero con tutte le proiezioni parametrizzate con STERA, raggiunge una NLL di 1,152 sul campione DEV e di 1,174 sui racconti TEST. La curva di training non mostra segni di overfitting.
 
 \paragraph{Racconti fra i due riferimenti.} Nel giudizio cieco, STERA 30M scrive racconti corretti nel 44\% dei casi: il doppio di TinyStories-8M, con cui condivide l'ordine di grandezza dei parametri memorizzati, e 4 punti in meno di TinyStories-33M, che ne ha più del doppio, con una differenza non significativa.
 

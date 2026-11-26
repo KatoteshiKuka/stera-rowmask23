@@ -666,7 +666,7 @@ Si consideri un Transformer decoder-only con $L$ layer, dimensione $d$, feed-for
 \begin{aligned}
 M &= V d + L\,(4d^2 + 2fd) &&\text{(valori delle proiezioni nella forma densa)},\\
 R &= (V+d) + L\,\big(8d + 2(f+d)\big) &&\text{(somma di righe e colonne delle proiezioni)},\\
-A &= T d + 2d\,(2L+1) + L\,(2d+f) &&\text{(posizioni, normalizzazioni e bias, non compressi)}.
+A &= T d + 2d\,(2L+1) + L\,(2d+f) &&\text{(posizioni, LayerNorm e bias, non compressi)}.
 \end{aligned}
 \]
 La forma densa equivalente conta $D = M + A$ valori, il modello STERA ne memorizza
@@ -702,7 +702,7 @@ Coordinate RowMask23 (\num{4950} blocchi) & \num{15721200} & $51{,}8\%$ \\
 Scale dei blocchi & \num{4950} & $0{,}02\%$ \\
 Guadagni per riga e colonna & \num{134016} & $0{,}4\%$ \\
 Termine low-rank ($r=96$) & \num{12865536} & $42{,}4\%$ \\
-Posizioni, normalizzazioni, bias & \num{1620480} & $5{,}3\%$ \\
+Posizioni, LayerNorm, bias & \num{1620480} & $5{,}3\%$ \\
 \midrule
 Totale & \num{30346182} & \\
 Forma densa equivalente & \num{82721280} & \\

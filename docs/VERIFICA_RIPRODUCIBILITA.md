@@ -5,14 +5,14 @@ Ogni passo della tesi è stato rieseguito partendo solo dal repository e da font
 | Voce | Dove è stata eseguita | Esito |
 |---|---|---|
 | Download di corpus, tokenizer, TinyStories-8M e 33M | Mac | SHA-256 identiche a quelle attese (`6418d412…`, `f6ed3d30…`, `22c355bf…`, `41316d3b…`) |
-| Tokenizzazione e split (`prepara_dati.py`) | Mac CPU e server con P100 | `MANIFEST.json` identico in tutti i campi (pack `5ae58177…`, indice `bbadffc0…`, conteggi per split, token bersaglio) tranne percorso e durata |
+| Tokenizzazione e split (`prepara_dati.py`) | Mac CPU e server con P100 | `MANIFEST.json` identico in tutti i campi (pack `5ae58177…`, indice `bbadffc0…`, conteggi per split, token target) tranne percorso e durata |
 | Contratto dei dati (`sigilla_dati.py`) | Mac, CPU | `CONTRACT` identico (`b8a68cad…`); il checkpoint finale lo accetta |
 | NLL DEV del checkpoint finale (`ts68_v3.py --steps 0`) | Mac CPU e P100 | 1,152155 su entrambi, identica al log |
-| Motore di addestramento: 20 passi da zero | Mac, CPU | NLL DEV al passo 0 (10,927510), perdita al passo 20 (9,34693), norma del gradiente (5,7446), tasso di apprendimento e numero di etichette identici al log; log in `addestramento/verifica_20261124/` |
-| Motore di addestramento: 200 passi da zero con `sbatch addestra_stera30m.sh` | server Slurm, 2 × P100 | NLL DEV al passo 0 e righe del log identiche fino al passo 120, con le stesse etichette a ogni passo; dal passo 140 differenze dell'ordine di 10⁻⁵ sulla perdita (3,71362 contro 3,71367 al passo 200), dovute all'ordine non deterministico delle somme su GPU. Log in `addestramento/verifica_20261124/` |
+| Motore di training: 20 passi da zero | Mac, CPU | NLL DEV al passo 0 (10,927510), perdita al passo 20 (9,34693), norma del gradiente (5,7446), learning rate e numero di etichette identici al log; log in `addestramento/verifica_20261124/` |
+| Motore di training: 200 passi da zero con `sbatch addestra_stera30m.sh` | server Slurm, 2 × P100 | NLL DEV al passo 0 e righe del log identiche fino al passo 120, con le stesse etichette a ogni passo; dal passo 140 differenze dell'ordine di 10⁻⁵ sulla perdita (3,71362 contro 3,71367 al passo 200), dovute all'ordine non deterministico delle somme su GPU. Log in `addestramento/verifica_20261124/` |
 | Valutazione TEST300, TinyStories-8M | Mac CPU e server con P100 | 300/300 continuazioni identiche su CPU e su GPU; NLL 1,515349 (CPU) e 1,515352 (GPU), tesi 1,515349 |
 | Valutazione TEST300, STERA 30M | Mac CPU e server con P100 | 300/300 continuazioni identiche su CPU e su GPU; NLL 1,173975 (CPU) e 1,173986 (GPU), tesi 1,173997 |
-| Valutazione TEST300, TinyStories-33M | Mac CPU e server con P100 | su GPU 300/300 continuazioni identiche, NLL 1,324452 (tesi 1,324456); su CPU 299/300, con l'incipit F156 che diverge dal token 84 per l'arrotondamento della CPU |
+| Valutazione TEST300, TinyStories-33M | Mac CPU e server con P100 | su GPU 300/300 continuazioni identiche, NLL 1,324452 (tesi 1,324456); su CPU 299/300, con il prompt F156 che diverge dal token 84 per l'arrotondamento della CPU |
 | Aggregazione del giudizio cieco (`aggrega_e_decodifica.py`) | Mac | `risultati_3modelli.json` identico |
 | Esportazione dei pesi FP32 | Mac | payload di 121.384.728 byte, come nella tesi |
 | Archivio senza perdita | Mac | rifatto sul checkpoint finale, 102.352.624 byte; ripristino bit per bit su tutti i 267 tensori. Un file `.npz` ricostruito da `restore_lossless_archive.py` contiene gli stessi tensori ma può avere un'impronta diversa, perché il contenitore zip registra metadati propri |
@@ -32,5 +32,5 @@ Le campagne precedenti sui pesi a 80.000 aggiornamenti restano in `campagne_2026
 
 ## Voci non rieseguite
 
-- **Addestramento completo.** Non è stato ripetuto (circa 35 ore su due P100). Il motore di addestramento è verificato con 20 passi da zero su CPU, con 200 passi avviati con `sbatch` sulle due P100 e con la NLL DEV del checkpoint finale.
+- **Training completo.** Non è stato ripetuto (circa 35 ore su due P100). Il motore di training è verificato con 20 passi da zero su CPU, con 200 passi avviati con `sbatch` sulle due P100 e con la NLL DEV del checkpoint finale.
 - **Qwen3.5-9B** (`03_f10_ssd_qwen/`): non rieseguito (richiede il download di circa 18 GB); non dipende da STERA.

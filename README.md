@@ -19,11 +19,11 @@ Il PDF della tesi è in [`tesi/tesi_STERA_Nardoni.pdf`](tesi/tesi_STERA_Nardoni.
 
 La mappa coordinate → matrice è lineare e iniettiva, il gradiente rispetto alle coordinate ha forma chiusa e il prodotto con un vettore si calcola con la trasformata di Walsh–Hadamard, senza ricostruire la matrice.
 
-**STERA 30M** è un Transformer decoder-only a 6 strati (dimensione 768, 16 teste, feed-forward 3.072, vocabolario GPT-Neo da 50.257 token) in cui tutte le proiezioni, compresa la matrice di embedding condivisa con la testa di uscita, sono mosaici di blocchi RowMask23, con guadagni per riga e colonna e un termine a basso rango (rango 96). Conta **30.346.182 parametri allenabili** (82.721.280 valori nella forma densa equivalente) ed è addestrato da zero su TinyStoriesV2-GPT4 per **122.000 aggiornamenti** (1.529.514.422 token bersaglio) su due GPU NVIDIA P100.
+**STERA 30M** è un Transformer decoder-only a 6 layer (dimensione 768, 16 head, feed-forward 3.072, vocabolario GPT-Neo da 50.257 token) in cui tutte le proiezioni, compresa la matrice di embedding condivisa con la testa di uscita, sono mosaici di blocchi RowMask23, con guadagni per riga e colonna e un termine low-rank (rango 96). Conta **30.346.182 parametri allenabili** (82.721.280 valori nella forma densa equivalente) ed è addestrato da zero su TinyStoriesV2-GPT4 per **122.000 aggiornamenti** (1.529.514.422 token target) su due GPU NVIDIA P100.
 
 ## Risultati principali
 
-Su 300 racconti TEST, con gli stessi incipit, lo stesso tokenizzatore e la stessa procedura di generazione per i tre modelli:
+Su 300 racconti TEST, con gli stessi prompt, lo stesso tokenizer e la stessa procedura di generazione per i tre modelli:
 
 | Modello | Parametri | NLL TEST | Racconti corretti (giudizio cieco) |
 |---|---:|---:|---:|
@@ -33,9 +33,9 @@ Su 300 racconti TEST, con gli stessi incipit, lo stesso tokenizzatore e la stess
 
 - STERA 30M − TinyStories-8M: **+22,3 punti** (IC 95% [+15,3; +29,3], McNemar con Holm p < 10⁻⁸).
 - STERA 30M − TinyStories-33M: **−4,3 punti** (IC 95% [−12,0; +3,7], p = 0,32, non significativa).
-- Pesi compatti FP32: **121,385 MB**, contro 330,885 MB dell'espansione densa (−63,3%) e 274,056 MB di TinyStories-33M (−55,7%); 86,097 MB con il termine a basso rango a 8 bit (−74,0%).
+- Pesi compatti FP32: **121,385 MB**, contro 330,885 MB dell'espansione densa (−63,3%) e 274,056 MB di TinyStories-33M (−55,7%); 86,097 MB con il termine low-rank a 8 bit (−74,0%).
 - Decode sullo stesso modello: **−34,8%** di tempo mediano per token del motore compatto rispetto al motore denso (Mac M1, MLX/Metal, 30 misure appaiate in cinque campagne), con token identici.
-- Basso rango quantizzato a 8 bit: pesi a **86,1 MB** (−74% rispetto alla forma densa), NLL invariata (+0,007%), decode più rapido del 17,8%.
+- Low-rank quantizzato a 8 bit: pesi a **86,1 MB** (−74% rispetto alla forma densa), NLL invariata (+0,007%), decode più rapido del 17,8%.
 - I blocchi RowMask23 garantiscono −80,6% sulla parte strutturata; il risparmio di un modello STERA in funzione del rango è ricavato in forma chiusa nel Capitolo 4.
 
 Dettagli e numeri completi: [`docs/RISULTATI.md`](docs/RISULTATI.md).
@@ -54,17 +54,17 @@ STERA-RowMask23/
 │   ├── prepara_dati.py           tokenizzazione del corpus e split TRAIN/DEV/TEST per hash
 │   ├── sigilla_dati.py           contratto dei dati registrato nei checkpoint
 │   ├── ts68_core.py              blocchi RowMask23, modello, lettura e scrittura dei checkpoint
-│   ├── ts68_v3.py                trainer distribuito (PyTorch, 2 GPU) con guadagni e basso rango
-│   ├── addestra_stera30m.sh      comando di addestramento 0 → 122.000 aggiornamenti
-│   ├── log_addestramento_0_122k.txt   perdita TRAIN ogni 20 passi e NLL DEV ogni 2.000
+│   ├── ts68_v3.py                trainer distribuito (PyTorch, 2 GPU) con guadagni e low-rank
+│   ├── addestra_stera30m.sh      comando di training 0 → 122.000 aggiornamenti
+│   ├── log_addestramento_0_122k.txt   loss TRAIN ogni 20 passi e NLL DEV ogni 2.000
 │   └── dati/                     manifesto dello split, contratto dei dati, racconti riservati a DEV
 ├── valutazione/
 │   ├── protocollo/
 │   │   ├── protocollo_test300.json    descrizione completa del protocollo
-│   │   ├── incipit_test300.json       i 300 incipit con racconti di riferimento e semi
-│   │   ├── seleziona_incipit.py       selezione deterministica degli incipit
+│   │   ├── incipit_test300.json       i 300 prompt con racconti di riferimento e semi
+│   │   ├── seleziona_incipit.py       selezione deterministica dei prompt
 │   │   ├── valuta_modello.py          NLL + generazione, stesso codice per i tre modelli
-│   │   └── esclusioni/                incipit usati durante lo sviluppo, esclusi dal TEST
+│   │   └── esclusioni/                prompt usati durante lo sviluppo, esclusi dal TEST
 │   ├── generazioni/              continuazioni dei tre modelli (300 ciascuno), con NLL per racconto
 │   ├── giudizio_cieco/
 │   │   ├── rubrica.txt                istruzioni e rubrica del giudice
@@ -72,7 +72,7 @@ STERA-RowMask23/
 │   │   ├── racconti_anonimi_900.json  i testi giudicati (T000–T899)
 │   │   ├── giudizi_blocchi/           giudizi grezzi, 30 blocchi da 30 testi
 │   │   ├── giudizi_900.json           tutti i giudizi
-│   │   ├── abbinamento_modelli.json   corrispondenza T### → modello e incipit
+│   │   ├── abbinamento_modelli.json   corrispondenza T### → modello e prompt
 │   │   └── aggrega_e_decodifica.py    statistiche: Wilson, bootstrap, McNemar, Holm, NLL
 │   └── risultati_3modelli.json   risultato finale del confronto
 ├── sistemi/
@@ -112,7 +112,7 @@ export STERA_TOKENIZER=esterni/tokenizer.json
 export STERA_DATI=esterni/corpus_tokenizzato
 python addestramento/prepara_dati.py && python addestramento/sigilla_dati.py
 
-# 2. addestramento (2 GPU)
+# 2. training (2 GPU)
 export STERA_RUN=esterni/checkpoint
 bash addestramento/addestra_stera30m.sh
 cp $STERA_RUN/TS68V2_STEP122000.ckpt.gz pesi/stera30m_step122000.ckpt.gz

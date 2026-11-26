@@ -1,4 +1,4 @@
-In questo capitolo richiamiamo gli strumenti teorici usati nel resto della tesi. Non pretendiamo di essere esaustivi: per una trattazione completa si rimanda a \cite{goodfellow2016deep}. L'obiettivo è fissare la notazione e mettere in evidenza i punti che diventeranno importanti quando sostituiremo le matrici dense con matrici strutturate. Il più importante tra questi è il fatto che, in un Transformer, quasi tutti i parametri e quasi tutto il tempo di esecuzione si concentrano nei prodotti tra una matrice di pesi e un vettore di attivazioni.
+In questo capitolo richiamiamo gli strumenti teorici usati nel resto della tesi. Non pretendiamo di essere esaustivi: per una trattazione completa si rimanda a \cite{goodfellow2016deep}. L'obiettivo è fissare la notazione e mettere in evidenza i punti che diventeranno importanti quando sostituiremo le matrici dense con matrici strutturate. Il più importante tra questi è il fatto che, in un Transformer, quasi tutti i parametri e quasi tutto il tempo di esecuzione si concentrano nei prodotti tra una matrice di pesi e un vettore di activation.
 
 \section{Modelli linguistici autoregressivi}
 
@@ -25,7 +25,7 @@ Due grandezze derivate sono di uso comune. La \emph{perplexity} è l'esponenzial
 
 I modelli moderni non lavorano né su caratteri né su parole intere, ma su frammenti di parola ottenuti con l'algoritmo \emph{Byte Pair Encoding} (BPE) \cite{sennrich2016neural}. Si parte dall'alfabeto dei byte e si fondono ripetutamente le coppie di simboli adiacenti più frequenti nel corpus, fino a raggiungere la dimensione di vocabolario desiderata. Le parole comuni finiscono per avere un token proprio, quelle rare vengono spezzate in più parti, e nessuna stringa resta impossibile da rappresentare.
 
-La dimensione del vocabolario ha un effetto diretto sul numero di parametri. La matrice di \emph{embedding}, che associa a ogni token un vettore, ha $|\mathcal{V}|\times d$ elementi, dove $d$ è la dimensione nascosta del modello. In un modello piccolo questa matrice può rappresentare una frazione rilevante del totale. I modelli confrontati in questa tesi usano tutti lo stesso tokenizer BPE, con \num{50257} token: la matrice di embedding di STERA 30M è quindi la più grande del modello, ed è anch'essa rappresentata con blocchi strutturati.
+La dimensione del vocabolario ha un effetto diretto sul numero di parametri. La matrice di \emph{embedding}, che associa a ogni token un vettore, ha $|\mathcal{V}|\times d$ elementi, dove $d$ è la hidden size del modello. In un modello piccolo questa matrice può rappresentare una frazione rilevante del totale. I modelli confrontati in questa tesi usano tutti lo stesso tokenizer BPE, con \num{50257} token: la matrice di embedding di STERA 30M è quindi la più grande del modello, ed è anch'essa rappresentata con blocchi strutturati.
 
 \section{L'architettura Transformer}
 
@@ -38,9 +38,9 @@ Il Transformer è stato introdotto da Vaswani e collaboratori in \emph{Attention
 \label{fig:transformer-originale-vaswani}
 \end{figure}
 
-L'encoder originale è una pila di moduli di \emph{self-attention} e reti feed-forward, intervallati da normalizzazioni e residual connection. Il decoder utilizza un'attention causale (nel diagramma, \emph{Masked Multi-Head Attention}) e un ulteriore blocco di \emph{cross-attention} sui risultati dell'encoder. I simboli $N\times$ indicano la ripetizione dei blocchi. Lo schema riguarda il Transformer storico, non una rappresentazione delle dimensioni o dei pesi di STERA.
+L'encoder originale è una pila di moduli di \emph{self-attention} e reti feed-forward, intervallati da LayerNorm e residual connection. Il decoder utilizza un'attention causale (nel diagramma, \emph{Masked Multi-Head Attention}) e un ulteriore blocco di \emph{cross-attention} sui risultati dell'encoder. I simboli $N\times$ indicano la ripetizione dei blocchi. Lo schema riguarda il Transformer storico, non una rappresentazione delle dimensioni o dei pesi di STERA.
 
-I modelli linguistici autoregressivi della famiglia GPT utilizzano prevalentemente una variante \emph{decoder-only} \cite{radford2019language}: conservano i blocchi di attention causale e il feed-forward, ma non hanno un encoder separato e non necessitano del layer di cross-attention encoder--decoder mostrato in \autoref{fig:transformer-originale-vaswani}. Questa è anche l'impostazione generale di \textbf{STERA 30M}, che impiega normalizzazione pre-LN (\emph{pre-norm}) e posizioni apprese. La sua architettura specifica, con sei layer, sedici head e proiezioni STERA, è documentata nel diagramma dedicato della \autoref{fig:stera30m-flusso}; non va confusa con il diagramma del paper del 2017. Descriviamo i suoi componenti nell'ordine in cui vengono attraversati.
+I modelli linguistici autoregressivi della famiglia GPT utilizzano prevalentemente una variante \emph{decoder-only} \cite{radford2019language}: conservano i blocchi di attention causale e il feed-forward, ma non hanno un encoder separato e non necessitano del layer di cross-attention encoder--decoder mostrato in \autoref{fig:transformer-originale-vaswani}. Questa è anche l'impostazione generale di \textbf{STERA 30M}, che impiega LayerNorm in ingresso (\emph{pre-norm}) e posizioni apprese. La sua architettura specifica, con sei layer, sedici head e proiezioni STERA, è documentata nel diagramma dedicato della \autoref{fig:stera30m-flusso}; non va confusa con il diagramma del paper del 2017. Descriviamo i suoi componenti nell'ordine in cui vengono attraversati.
 
 \subsection{Embedding e posizione}
 
@@ -56,7 +56,7 @@ con $W_Q,W_K,W_V\in\mathbb{R}^{d\times d}$. Le righe di $Q$ e $K$ vengono confro
 \begin{equation}
 \mathrm{Attn}(Q,K,V) = \mathrm{softmax}\!\left(\frac{QK^\top}{\sqrt{d_h}} + M\right) V .
 \end{equation}
-La matrice $M$ è la \emph{maschera causale}: vale $0$ se $j\le t$ e $-\infty$ altrimenti, così che la posizione $t$ non possa vedere i token futuri. Senza questa maschera il modello imparerebbe a copiare la risposta invece di prevederla.
+La matrice $M$ è la \emph{causal mask}: vale $0$ se $j\le t$ e $-\infty$ altrimenti, così che la posizione $t$ non possa vedere i token futuri. Senza questa maschera il modello imparerebbe a copiare la risposta invece di prevederla.
 
 Nella versione a più head il vettore di dimensione $d$ viene diviso in $h$ blocchi di dimensione $d_h=d/h$, ognuno dei quali esegue un'attention indipendente. I risultati vengono concatenati e passati per una quarta proiezione $W_O\in\mathbb{R}^{d\times d}$. Le head permettono al modello di seguire contemporaneamente relazioni diverse, per esempio il soggetto di una frase e il personaggio introdotto qualche riga prima.
 
@@ -66,11 +66,11 @@ Dopo l'attention, ogni posizione attraversa indipendentemente una piccola rete a
 \begin{equation}
 \mathrm{FFN}(h) = W_2\,\phi(W_1 h + b_1) + b_2,
 \end{equation}
-con $W_1\in\mathbb{R}^{f\times d}$, $W_2\in\mathbb{R}^{d\times f}$ e tipicamente $f=4d$. La funzione di attivazione $\phi$ è di solito la GELU \cite{hendrycks2016gelu}, una versione smussata della ReLU. Il blocco feed-forward contiene circa due terzi dei parametri di ogni layer.
+con $W_1\in\mathbb{R}^{f\times d}$, $W_2\in\mathbb{R}^{d\times f}$ e tipicamente $f=4d$. L'activation function $\phi$ è di solito la GELU \cite{hendrycks2016gelu}, una versione smussata della ReLU. Il blocco feed-forward contiene circa due terzi dei parametri di ogni layer.
 
-\subsection{Normalizzazione e residual connection}
+\subsection{LayerNorm e residual connection}
 
-Ogni sotto-blocco è preceduto da una normalizzazione e racchiuso in una residual connection:
+Ogni sotto-blocco è preceduto da una LayerNorm e racchiuso in una residual connection:
 \begin{align}
 h' &= h + \mathrm{Attn}(\mathrm{LN}(h)),\\
 h'' &= h' + \mathrm{FFN}(\mathrm{LN}(h')).
@@ -79,13 +79,13 @@ La \emph{Layer Normalization} \cite{ba2016layer} riporta ogni vettore a media nu
 
 \subsection{Output head}
 
-Dopo l'ultimo blocco, una normalizzazione finale e una proiezione lineare producono un vettore di \emph{logit}, uno per ogni token del vocabolario. Spesso la matrice di questa proiezione coincide con la matrice di embedding trasposta (\emph{weight tying}) \cite{press2017using}: si risparmiano parametri e si ottiene di solito un modello migliore. La funzione softmax trasforma infine i logit in una distribuzione di probabilità sul token successivo.
+Dopo l'ultimo blocco, una LayerNorm finale e una proiezione lineare producono un vettore di \emph{logit}, uno per ogni token del vocabolario. Spesso la matrice di questa proiezione coincide con la matrice di embedding trasposta (\emph{weight tying}) \cite{press2017using}: si risparmiano parametri e si ottiene di solito un modello migliore. La funzione softmax trasforma infine i logit in una distribuzione di probabilità sul token successivo.
 
 \subsection{Dove stanno i parametri}
 
-Conviene fare il conto dei parametri di un layer. Le quattro proiezioni dell'attention contribuiscono con $4d^2$ valori, il blocco feed-forward con $2df=8d^2$. Le normalizzazioni e i bias aggiungono un numero di valori proporzionale a $d$, trascurabile. In totale ogni layer contiene circa $12d^2$ parametri, e \emph{tutti} quelli significativi stanno in sei matrici dense. Lo stesso vale per il tempo di calcolo durante la generazione: a ogni token ciascuna di quelle matrici viene moltiplicata per un vettore.
+Conviene fare il conto dei parametri di un layer. Le quattro proiezioni dell'attention contribuiscono con $4d^2$ valori, il blocco feed-forward con $2df=8d^2$. Le LayerNorm e i bias aggiungono un numero di valori proporzionale a $d$, trascurabile. In totale ogni layer contiene circa $12d^2$ parametri, e \emph{tutti} quelli significativi stanno in sei matrici dense. Lo stesso vale per il tempo di calcolo durante la generazione: a ogni token ciascuna di quelle matrici viene moltiplicata per un vettore.
 
-Questa osservazione è il punto di partenza della tesi. Se si vuole cambiare in modo sostanziale l'ingombro e la velocità di un Transformer, bisogna intervenire sulle sue matrici lineari. Il resto dell'architettura (attention, normalizzazioni, funzioni di attivazione) può restare invariato.
+Questa osservazione è il punto di partenza della tesi. Se si vuole cambiare in modo sostanziale l'ingombro e la velocità di un Transformer, bisogna intervenire sulle sue matrici lineari. Il resto dell'architettura (attention, LayerNorm, activation function) può restare invariato.
 
 \section{Training}
 
@@ -119,11 +119,11 @@ Il learning rate $\eta_t$ non è costante. Nei primi passi cresce linearmente da
 
 \section{Generazione del testo}
 
-Un modello addestrato fornisce, dato un prefisso, una distribuzione sul token successivo. Per generare un testo si sceglie un token, lo si aggiunge al prefisso e si ripete. Il modo in cui si sceglie il token è detto \emph{strategia di decodifica} e ha un effetto rilevante sulla qualità.
+Un modello addestrato fornisce, dato un prefisso, una distribuzione sul token successivo. Per generare un testo si sceglie un token, lo si aggiunge al prefisso e si ripete. Il modo in cui si sceglie il token è detto \emph{strategia di decoding} e ha un effetto rilevante sulla qualità.
 
-La scelta più semplice è prendere sempre il token più probabile (\emph{greedy}). Il testo che ne risulta è spesso ripetitivo, perché il modello tende a ricadere nelle stesse frasi. Il campionamento introduce varietà. La \emph{temperatura} $\tau$ divide i logit prima della softmax: valori minori di uno concentrano la probabilità sui token migliori, valori maggiori la distribuiscono. Il campionamento \emph{top-$k$} \cite{fan2018hierarchical} limita la scelta ai $k$ token più probabili; il campionamento \emph{nucleus} o \emph{top-$p$} \cite{holtzman2020curious} sceglie il più piccolo insieme di token la cui probabilità cumulata supera $p$. A queste regole si possono aggiungere penalità per le ripetizioni.
+La scelta più semplice è prendere sempre il token più probabile (\emph{greedy}). Il testo che ne risulta è spesso ripetitivo, perché il modello tende a ricadere nelle stesse frasi. Il sampling introduce varietà. La \emph{temperature} $\tau$ divide i logit prima della softmax: valori minori di uno concentrano la probabilità sui token migliori, valori maggiori la distribuiscono. Il sampling \emph{top-$k$} \cite{fan2018hierarchical} limita la scelta ai $k$ token più probabili; il sampling \emph{nucleus} o \emph{top-$p$} \cite{holtzman2020curious} sceglie il più piccolo insieme di token la cui probabilità cumulata supera $p$. A queste regole si possono aggiungere penalità per le ripetizioni.
 
-Nelle valutazioni di questa tesi tutti i modelli generano con campionamento top-$k$, $k=40$, e temperatura $0{,}75$.
+Nelle valutazioni di questa tesi tutti i modelli generano con sampling top-$k$, $k=40$, e temperature $0{,}75$.
 
 \subsection{KV cache}
 
@@ -142,7 +142,7 @@ Durante la generazione, ogni token richiede di applicare tutte le matrici del mo
   liv/.style={draw=steraGrigio, rounded corners=2pt, minimum height=9mm, align=center, font=\small},
   freccia/.style={-{Latex[length=2mm]}, thick, steraGrigio}]
 \node[liv, minimum width=34mm, fill=steraBlu!12] (gpu) {Unità di calcolo\\{\footnotesize registri e cache}};
-\node[liv, minimum width=62mm, fill=steraBlu!6, below=9mm of gpu] (ram) {Memoria principale (16 GiB)\\{\footnotesize pesi residenti, cache KV, attivazioni}};
+\node[liv, minimum width=62mm, fill=steraBlu!6, below=9mm of gpu] (ram) {Memoria principale (16 GiB)\\{\footnotesize pesi residenti, cache KV, activation}};
 \node[liv, minimum width=90mm, fill=white, below=11mm of ram] (ssd) {Disco SSD (centinaia di GB)\\{\footnotesize copia persistente di tutti i pesi}};
 \draw[freccia] ([xshift=-6mm]ram.north) -- node[left, font=\footnotesize]{$\approx 68$ GB/s} ([xshift=-6mm]gpu.south);
 \draw[freccia] ([xshift=-6mm]ssd.north) -- node[left, font=\footnotesize]{$\approx 2{,}4$ GB/s} ([xshift=-6mm]ram.south);

@@ -123,9 +123,9 @@ testo(s, [
 // ---------- 4. soluzioni esistenti ----------
 pres.addSection({ title: "Stato dell'arte" });
 s = nuova("Stato dell'arte", "Le strade già percorse",
-  "Quattro famiglie principali. La potatura elimina i pesi meno importanti, la quantizzazione usa meno bit per peso, le fattorizzazioni a basso rango scrivono la matrice come prodotto di due matrici sottili, le matrici strutturate impongono una forma con un prodotto veloce, come circolanti, Butterfly e Monarch.");
+  "Quattro famiglie principali. La potatura elimina i pesi meno importanti, la quantizzazione usa meno bit per peso, le fattorizzazioni low-rank scrivono la matrice come prodotto di due matrici sottili, le matrici strutturate impongono una forma con un prodotto veloce, come circolanti, Butterfly e Monarch.");
 [["Potatura", "elimina i pesi meno importanti"], ["Quantizzazione", "usa meno bit per ogni peso"],
- ["Basso rango", "scrive la matrice come prodotto U · Vᵀ"], ["Matrici strutturate", "circolanti, Butterfly, Monarch"]].forEach(([h, d], i) => {
+ ["Low-rank", "scrive la matrice come prodotto U · Vᵀ"], ["Matrici strutturate", "circolanti, Butterfly, Monarch"]].forEach(([h, d], i) => {
   const x = M + (i % 2) * 6.25, y = 1.65 + Math.floor(i / 2) * 2.45;
   riquadro(s, x, y, 5.85, 2.1);
   s.addShape(pres.shapes.OVAL, { x: x + 0.35, y: y + 0.35, w: 0.65, h: 0.65, fill: { color: C.accent1 }, line: { type: "none" }, objectName: nome("numero") });
@@ -136,18 +136,18 @@ s = nuova("Stato dell'arte", "Le strade già percorse",
 
 // ---------- 5. limiti ----------
 s = nuova("Stato dell'arte", "Ognuna ha un prezzo",
-  "La potatura lascia una sparsità irregolare, difficile da trasformare in velocità. La quantizzazione arrotonda i valori. Il basso rango limita il rango della matrice. Le matrici strutturate classiche sono rigide: non hanno gradi di libertà locali. Cerchiamo una struttura fissa, a rango pieno, con prodotto veloce e addestrata da zero.");
+  "La potatura lascia una sparsità irregolare, difficile da trasformare in velocità. La quantizzazione arrotonda i valori. Il low-rank limita il rango della matrice. Le matrici strutturate classiche sono rigide: non hanno gradi di libertà locali. Cerchiamo una struttura fissa, a rango pieno, con prodotto veloce e addestrata da zero.");
 const intest = (t) => ({ text: t, options: { bold: true, color: HEX.bianco, fill: { color: HEX.navy }, fontSize: B } });
 const riga = (a, b, c, i) => [a, b, c].map((t, j) => ({ text: t, options: { fontSize: B, color: HEX.testo, bold: j === 0, fill: { color: i % 2 ? HEX.bianco : HEX.tenue } } }));
 s.addTable([
   [intest("Famiglia"), intest("Quando interviene"), intest("Limite principale")],
-  riga("Potatura", "dopo l'addestramento", "sparsità irregolare, difficile da accelerare", 0),
+  riga("Potatura", "dopo il training", "sparsità irregolare, difficile da accelerare", 0),
   riga("Quantizzazione", "dopo o durante", "riduce la precisione di ogni valore", 1),
-  riga("Basso rango", "durante", "limita il rango della matrice", 2),
+  riga("Low-rank", "durante", "limita il rango della matrice", 2),
   riga("Matrici strutturate", "durante", "struttura rigida, senza libertà locale", 3),
 ], { x: M, y: 1.6, w: W - 2 * M, colW: [3.0, 3.1, 6.033], rowH: 0.72, fontFace: "Calibri", valign: "middle", margin: [0, 0.15, 0, 0.15],
      border: { type: "solid", color: HEX.bordo, pt: 0.75 }, objectName: nome("tabella") });
-testo(s, "Serve una struttura fissa, a rango pieno, con un prodotto veloce, da usare già in addestramento",
+testo(s, "Serve una struttura fissa, a rango pieno, con un prodotto veloce, da usare già in training",
   { x: M, y: 5.6, w: W - 2 * M, h: 0.8, bold: true, color: C.accent2 });
 
 // ---------- 6. soluzione proposta ----------
@@ -166,7 +166,7 @@ passi.forEach((p, i) => {
   testo(s, String(i + 1), { x: 5.85, y: y + 0.16, w: 0.63, h: 0.63, align: "center", valign: "middle", bold: true, color: C.background1 });
   testo(s, p, { x: 6.75, y, w: 5.8, h: 0.95, valign: "middle", bold: true, color: C.text2 });
 });
-testo(s, "Una sola rappresentazione dall'addestramento all'inferenza", { x: 5.65, y: 5.6, w: 7.1, h: 0.6, color: C.accent4 });
+testo(s, "Una sola rappresentazione dal training all'inferenza", { x: 5.65, y: 5.6, w: 7.1, h: 0.6, color: C.accent4 });
 
 // ---------- 7. RowMask23: componenti ----------
 s = nuova("La proposta", "RowMask23: tre componenti per blocco",
@@ -190,7 +190,7 @@ testo(s, "Schema ridotto 8 × 8; nel modello i blocchi sono 128 × 128", { x: M,
 
 // ---------- 8. RowMask23: mosaico ----------
 s = nuova("La proposta", "Ogni matrice del Transformer è un mosaico di blocchi",
-  "STERA 30M ha 6 strati, dimensione 768 e 16 teste. Ogni proiezione, compreso l'embedding condiviso con la testa di uscita, è un mosaico di blocchi RowMask23, con guadagni per riga e colonna e un termine a basso rango di rango 96. Totale: 30.346.182 parametri addestrabili, contro 82.721.280 valori della forma densa equivalente.");
+  "STERA 30M ha 6 layer, dimensione 768 e 16 head. Ogni proiezione, compreso l'embedding condiviso con la testa di uscita, è un mosaico di blocchi RowMask23, con guadagni per riga e colonna e un termine low-rank di rango 96. Totale: 30.346.182 parametri addestrabili, contro 82.721.280 valori della forma densa equivalente.");
 const b6 = 0.5, xm = M + 0.2, ym = 1.65;
 for (let i = 0; i < 6; i++) for (let j = 0; j < 6; j++)
   s.addShape(pres.shapes.RECTANGLE, { x: xm + j * b6, y: ym + i * b6, w: b6 - 0.05, h: b6 - 0.05, fill: { color: HEX.stera, transparency: (i + j) % 2 ? 55 : 30 }, line: { type: "none" }, objectName: nome("blocco") });
@@ -200,15 +200,15 @@ testo(s, "parametri addestrabili", { x: 4.6, y: 2.3, w: 4.2, h: 0.5 });
 testo(s, "82.721.280", { x: 8.75, y: 1.6, w: 4.0, h: 0.7, fontSize: T, bold: true, color: C.accent4 });
 testo(s, "valori nella forma densa", { x: 8.75, y: 2.3, w: 4.0, h: 0.5 });
 testo(s, [
-  { text: "6 strati, dimensione 768, 16 teste", options: { bullet: true, breakLine: true, paraSpaceAfter: 10 } },
+  { text: "6 layer, dimensione 768, 16 head", options: { bullet: true, breakLine: true, paraSpaceAfter: 10 } },
   { text: "Anche l'embedding è un mosaico", options: { bullet: true, breakLine: true, paraSpaceAfter: 10 } },
-  { text: "Più guadagni per riga e colonna e un termine a basso rango", options: { bullet: true } },
+  { text: "Più guadagni per riga e colonna e un termine low-rank", options: { bullet: true } },
 ], { x: 4.6, y: 3.3, w: 8.1, h: 2.4 });
 
-// ---------- 9. addestramento ----------
-s = nuova("La proposta", "Addestramento: il gradiente arriva alle coordinate",
-  "Il passo in avanti ricostruisce le matrici dalle coordinate; il passo all'indietro calcola il gradiente rispetto a ogni matrice e lo porta alle coordinate in forma chiusa ed esatta: la diagonale prende la diagonale del gradiente, la base somma lungo le diagonali XOR, ogni correzione prende la sua posizione. L'ottimizzatore aggiorna solo le coordinate. STERA 30M: 122.000 aggiornamenti, 1,53 miliardi di token, due GPU P100.");
-const fl = [["Perdita sul token successivo", 0], ["Gradiente rispetto a ogni matrice", 1]];
+// ---------- 9. training ----------
+s = nuova("La proposta", "Training: il gradiente arriva alle coordinate",
+  "Il forward ricostruisce le matrici dalle coordinate; il passo all'indietro calcola il gradiente rispetto a ogni matrice e lo porta alle coordinate in forma chiusa ed esatta: la diagonale prende la diagonale del gradiente, la base somma lungo le diagonali XOR, ogni correzione prende la sua posizione. L'optimizer aggiorna solo le coordinate. STERA 30M: 122.000 aggiornamenti, 1,53 miliardi di token, due GPU P100.");
+const fl = [["Loss sul token successivo", 0], ["Gradiente rispetto a ogni matrice", 1]];
 fl.forEach(([t, i]) => { const y = 1.6 + i * 1.35; riquadro(s, M, y, 6.6, 0.85, { fill: C.background2 });
   testo(s, t, { x: M, y, w: 6.6, h: 0.85, align: "center", valign: "middle", bold: true, color: C.text2 }); });
 freccia(s, M + 3.3, 2.45, M + 3.3, 2.95); freccia(s, M + 3.3, 3.8, M + 3.3, 4.3);
@@ -216,7 +216,7 @@ freccia(s, M + 3.3, 2.45, M + 3.3, 2.95); freccia(s, M + 3.3, 3.8, M + 3.3, 4.3)
   riquadro(s, x, 4.3, 2.1, 0.85, { fill: C.background1, line: HEX.stera });
   testo(s, t, { x, y: 4.3, w: 2.1, h: 0.85, align: "center", valign: "middle", bold: true, color: C.accent1 }); });
 testo(s, "Gradiente in forma chiusa, esatto", { x: M, y: 5.3, w: 6.6, h: 0.45, fontSize: S, color: C.accent4, align: "center" });
-[["122.000", "aggiornamenti"], ["1,53 mld", "token di addestramento"], ["2 × P100", "GPU NVIDIA"]].forEach(([n, l], k) => {
+[["122.000", "aggiornamenti"], ["1,53 mld", "token di training"], ["2 × P100", "GPU NVIDIA"]].forEach(([n, l], k) => {
   const y = 1.6 + k * 1.4; riquadro(s, 7.95, y, 4.8, 1.15);
   testo(s, n, { x: 8.25, y, w: 2.6, h: 1.15, valign: "middle", fontSize: T, bold: true, color: C.accent1 });
   testo(s, l, { x: 10.85, y, w: 1.85, h: 1.15, valign: "middle" });
@@ -252,7 +252,7 @@ const VAL = require(path.join(__dirname, "dati_nll_dev.json"));
 const punti = VAL.filter(([p]) => p >= 2000);
 s.addChart(pres.charts.LINE, [{ name: "NLL su DEV", labels: punti.map(([p]) => p % 20000 === 0 ? (p / 1000) + "k" : ""), values: punti.map(([, v]) => v) }], {
   x: M, y: 1.5, w: 7.3, h: 4.7, chartColors: [HEX.stera], lineSize: 2.5, lineDataSymbol: "none", showLegend: false,
-  showTitle: true, title: "NLL su DEV durante l'addestramento", titleFontFace: "+mn-lt", titleFontSize: S, titleColor: HEX.testo,
+  showTitle: true, title: "NLL su DEV durante il training", titleFontFace: "+mn-lt", titleFontSize: S, titleColor: HEX.testo,
   valAxisMinVal: 1.1, valAxisMaxVal: 1.9, valAxisLabelFormatCode: "0.0", catAxisLabelFrequency: 1, catAxisOrientation: "minMax", ...assi });
 testo(s, "Parte da 10,93 (un modello che tira a indovinare) e arriva a 1,152", { x: M, y: 6.25, w: 7.3, h: 0.45, fontSize: S, color: C.accent4 });
 barreModelli(s, [1.515, 1.174, 1.324], { x: 8.3, y: 1.5, w: 4.45, h: 4.7, showTitle: true, title: "NLL su 300 racconti di test", titleFontFace: "+mn-lt",
@@ -261,9 +261,9 @@ testo(s, "Più bassa è meglio", { x: 8.3, y: 6.25, w: 4.45, h: 0.45, fontSize: 
 
 // ---------- 12. racconti ----------
 s = nuova("Verifica sperimentale", "Sa anche raccontare? Giudizio cieco su 900 testi",
-  "Non basta che la NLL scenda: il modello deve scrivere racconti coerenti. Ogni modello ha continuato gli stessi 300 incipit, con la stessa procedura di generazione. I 900 testi, mescolati e anonimi, sono stati valutati da un giudice automatico, Claude Opus 5.5, con una rubrica fissata in anticipo e senza sapere quale modello li avesse scritti. STERA 30M scrive un racconto corretto nel 44% dei casi: 22,3 punti più di TinyStories-8M, differenza significativa, e 4,3 punti meno di TinyStories-33M, che ha più del doppio dei parametri, differenza non significativa.");
+  "Non basta che la NLL scenda: il modello deve scrivere racconti coerenti. Ogni modello ha continuato gli stessi 300 prompt, con la stessa procedura di generazione. I 900 testi, mescolati e anonimi, sono stati valutati da un giudice automatico, Claude Opus 5.5, con una rubrica fissata in anticipo e senza sapere quale modello li avesse scritti. STERA 30M scrive un racconto corretto nel 44% dei casi: 22,3 punti più di TinyStories-8M, differenza significativa, e 4,3 punti meno di TinyStories-33M, che ha più del doppio dei parametri, differenza non significativa.");
 riquadro(s, M, 1.55, 6.3, 3.75);
-testo(s, "Un racconto di STERA 30M (in grigio l'incipit dato al modello)", { x: M + 0.3, y: 1.7, w: 5.7, h: 0.4, fontSize: S, bold: true, color: C.accent1 });
+testo(s, "Un racconto di STERA 30M (in grigio il prompt dato al modello)", { x: M + 0.3, y: 1.7, w: 5.7, h: 0.4, fontSize: S, bold: true, color: C.accent1 });
 testo(s, [
   { text: "Once upon a time, there was an adorable whale. The whale lived in the big, blue sea. ", options: { color: HEX.grigio, italic: true } },
   { text: "The whale had many friends, like fish and crabs. They played all day in the water. One day, the whale saw a big rock. The whale wanted to see what was behind the rock. The whale swam around the rock and got closer. The whale was very curious. As the whale swam to the rock, the rock moved! But it was not a rock. It was a big turtle! The turtle was nice and played with the whale. They became best friends and had lots of fun in the water. And the whale was very happy." },
@@ -278,12 +278,12 @@ testo(s, [
 // ---------- 13. memoria ----------
 pres.addSection({ title: "Costi di esecuzione" });
 s = nuova("Costi di esecuzione", "Memoria: più capace in meno byte",
-  "I blocchi RowMask23 garantiscono l'80,6% di valori in meno sulla parte strutturata; con scale, guadagni e basso rango STERA 30M occupa 121 MB in FP32, il 63% in meno della propria forma densa e il 56% in meno di TinyStories-33M. Il termine a basso rango si quantizza a 8 bit senza perdite misurabili (NLL +0,007%, giudizio non significativamente diverso): i pesi scendono a 86 MB, il 74% in meno della forma densa.");
+  "I blocchi RowMask23 garantiscono l'80,6% di valori in meno sulla parte strutturata; con scale, guadagni e low-rank STERA 30M occupa 121 MB in FP32, il 63% in meno della propria forma densa e il 56% in meno di TinyStories-33M. Il termine low-rank si quantizza a 8 bit senza perdita significativa (NLL +0,007%, giudizio non significativamente diverso): i pesi scendono a 86 MB, il 74% in meno della forma densa.");
 s.addChart(pres.charts.BAR, [{ name: "MB", labels: ["TinyStories-8M", "STERA 30M, rango 8 bit", "STERA 30M", "TinyStories-33M", "STERA 30M, forma densa"], values: [78.8, 86.1, 121.4, 274.1, 330.9] }], {
   x: M, y: 1.5, w: 7.4, h: 4.8, barDir: "bar", chartColors: [HEX.stera], barGapWidthPct: 45, showValue: true, dataLabelPosition: "outEnd",
   dataLabelFormatCode: "0.0", dataLabelColor: HEX.testo, showLegend: false, valAxisHidden: true, showTitle: true, title: "Pesi FP32 (MB)",
   titleFontFace: "+mn-lt", titleFontSize: S, titleColor: HEX.testo, catAxisOrientation: "maxMin", valAxisMaxVal: 400, ...assi, valGridLine: { style: "none" } });
-[["−63%", "byte rispetto alla stessa rete in forma densa; −80,6% garantito sui blocchi"], ["86 MB", "con il basso rango a 8 bit, senza perdite misurabili"]].forEach(([n, l], k) => {
+[["−63%", "byte rispetto alla stessa rete in forma densa; −80,6% garantito sui blocchi"], ["86 MB", "con il low-rank a 8 bit, senza perdita significativa"]].forEach(([n, l], k) => {
   const y = 1.6 + k * 2.4; riquadro(s, 8.4, y, 4.35, 2.1);
   testo(s, n, { x: 8.7, y: y + 0.25, w: 3.8, h: 0.7, fontSize: T, bold: true, color: C.accent1 });
   testo(s, l, { x: 8.7, y: y + 1.0, w: 3.8, h: 1.0 });
@@ -291,20 +291,20 @@ s.addChart(pres.charts.BAR, [{ name: "MB", labels: ["TinyStories-8M", "STERA 30M
 
 // ---------- 14. tempi, modelli piccoli ----------
 s = nuova("Costi di esecuzione", "Tempi: più veloce della propria forma densa",
-  "Stesso modello, stessi pesi, due motori sul Mac M1: il motore che lavora sulle coordinate riduce del 34,8% il tempo per token rispetto a quello con le matrici dense, con token identici in tutte le 30 coppie, e il vantaggio resta costante da 32 a 384 token di ingresso. Eseguendo i tre modelli con lo stesso motore, STERA 30M è più veloce di TinyStories-33M e più lento di TinyStories-8M, che fa circa un quarto dei calcoli. Con il basso rango a 8 bit arriva a 242 token al secondo. Il primo token resta più lento del denso; espandere le matrici solo durante il prefill dimezza il divario.");
+  "Stesso modello, stessi pesi, due motori sul Mac M1: il motore che lavora sulle coordinate riduce del 34,8% il tempo per token rispetto a quello con le matrici dense, con token identici in tutte le 30 coppie, e il vantaggio resta costante da 32 a 384 token di ingresso. Eseguendo i tre modelli con lo stesso motore, STERA 30M è più veloce di TinyStories-33M e più lento di TinyStories-8M, che fa circa un quarto dei calcoli. Con il low-rank a 8 bit arriva a 242 token al secondo. Il TTFT resta più lento del denso; espandere le matrici solo durante il prefill dimezza il divario.");
 riquadro(s, M, 1.6, 4.6, 4.6);
 testo(s, "−34,8%", { x: M + 0.35, y: 1.9, w: 3.9, h: 0.8, fontSize: T, bold: true, color: C.accent1 });
 testo(s, "tempo per token rispetto allo stesso modello con matrici dense", { x: M + 0.35, y: 2.8, w: 3.9, h: 1.3 });
 testo(s, "Token identici in 30 coppie su 30. Mac M1, MLX/Metal, 256 token in ingresso", { x: M + 0.35, y: 4.6, w: 3.9, h: 1.2, fontSize: S, color: C.accent4 });
 barreModelli(s, [311.9, 201.0, 158.0], { x: 5.6, y: 1.5, w: 7.15, h: 4.3, showTitle: true, title: "Token generati al secondo, stesso motore MLX", titleFontFace: "+mn-lt",
   titleFontSize: S, titleColor: HEX.testo, dataLabelFormatCode: "0.0", valAxisMinVal: 0, valAxisMaxVal: 380 });
-testo(s, "Con il basso rango a 8 bit: 242 token/s e richiesta completa in 0,47 s", { x: 5.6, y: 5.9, w: 7.15, h: 0.5, fontSize: S, color: C.text1 });
+testo(s, "Con il low-rank a 8 bit: 242 token/s e richiesta completa in 0,47 s", { x: 5.6, y: 5.9, w: 7.15, h: 0.5, fontSize: S, color: C.text1 });
 
 // ---------- 15. tempi, modelli grandi ----------
 s = nuova("Costi di esecuzione", "Quando il modello non entra in memoria",
-  "Su modelli grandi il vantaggio diventa decisivo. Il prototipo F10, una versione più grande di STERA non addestrata e usata solo per misurare i costi, occupa 4 GB in forma compatta e resta in memoria: genera circa 12 token al secondo. La sua forma densa occuperebbe 17,3 GiB, più dei 16 GiB del Mac: andrebbe letta dal disco, 7,8 secondi per passaggio. Qwen3.5-9B, un modello reale da 16,7 GiB, eseguito leggendo gli strati dal disco produce 0,15 token al secondo. Restare in memoria vale circa due ordini di grandezza.");
+  "Su modelli grandi il vantaggio diventa decisivo. Il prototipo F10, una versione più grande di STERA non addestrata e usata solo per misurare i costi, occupa 4 GB in forma compatta e resta in memoria: genera circa 12 token al secondo. La sua forma densa occuperebbe 17,3 GiB, più dei 16 GiB del Mac: andrebbe letta dal disco, 7,8 secondi per passaggio. Qwen3.5-9B, un modello reale da 16,7 GiB, eseguito leggendo i layer dal disco produce 0,15 token al secondo. Restare in memoria vale circa due ordini di grandezza.");
 const scala = 6.2 / 20, x0 = 3.55, righe = [["F10 compatto", 3.73, HEX.stera, "12,3 token/s", "in memoria"],
-  ["Qwen3.5-9B (BF16)", 16.68, HEX.ts33, "0,15 token/s", "strati letti dal disco"], ["F10 forma densa", 17.32, HEX.grigio, "≤ 0,13 token/s", "7,8 s per leggere i pesi"]];
+  ["Qwen3.5-9B (BF16)", 16.68, HEX.ts33, "0,15 token/s", "layer letti dal disco"], ["F10 forma densa", 17.32, HEX.grigio, "≤ 0,13 token/s", "7,8 s per leggere i pesi"]];
 testo(s, "Pesi (GiB)", { x: x0, y: 1.5, w: 3, h: 0.4, fontSize: S, color: C.accent4 });
 testo(s, "Generazione", { x: 10.25, y: 1.5, w: 2.5, h: 0.4, fontSize: S, color: C.accent4 });
 righe.forEach(([nm, v, col, tps, nota], k) => {
@@ -322,9 +322,9 @@ testo(s, "F10: prototipo più grande di STERA, non addestrato, usato solo per mi
 // ---------- 16. limiti e sviluppi ----------
 pres.addSection({ title: "Conclusioni" });
 s = nuova("Conclusioni", "Limiti e sviluppi futuri",
-  "Limiti: un solo addestramento con un solo seme; i modelli di riferimento hanno dati e budget diversi; il vantaggio è sui byte da memorizzare e trasferire, non sul numero di operazioni; l'elaborazione del prompt è più lenta del motore denso. Sviluppi: un confronto controllato con stessi dati e più semi, modelli più grandi e altri domini, un kernel diretto anche per il prompt, coordinate quantizzate già in addestramento.");
-[["Limiti", ["Un solo addestramento, un solo seme", "Riferimenti con dati e budget diversi", "Studi delle componenti a posteriori", "Misure su un solo dispositivo"], HEX.ts33],
- ["Sviluppi futuri", ["Confronto controllato: stessi dati, più semi", "Rango scelto prima dell'addestramento", "Prefill diretto sulle coordinate", "Coordinate quantizzate in addestramento"], HEX.stera]].forEach(([h, voci, col], k) => {
+  "Limiti: un solo training con un solo seme; i modelli di riferimento hanno dati e budget diversi; il vantaggio è sui byte da memorizzare e trasferire, non sul numero di operazioni; l'elaborazione del prompt è più lenta del motore denso. Sviluppi: un confronto controllato con stessi dati e più semi, modelli più grandi e altri domini, un kernel diretto anche per il prompt, coordinate quantizzate già in training.");
+[["Limiti", ["Un solo training, un solo seme", "Riferimenti con dati e budget diversi", "Studi delle componenti a posteriori", "Misure su un solo dispositivo"], HEX.ts33],
+ ["Sviluppi futuri", ["Confronto controllato: stessi dati, più semi", "Rango scelto prima del training", "Prefill diretto sulle coordinate", "Coordinate quantizzate in training"], HEX.stera]].forEach(([h, voci, col], k) => {
   const x = M + k * 6.25; riquadro(s, x, 1.6, 5.85, 4.75);
   testo(s, h, { x: x + 0.4, y: 1.85, w: 5.0, h: 0.6, bold: true, color: col });
   testo(s, voci.map((v, i) => ({ text: v, options: { bullet: true, breakLine: i < voci.length - 1, paraSpaceAfter: 14 } })), { x: x + 0.4, y: 2.65, w: 5.1, h: 3.5 });
