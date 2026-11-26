@@ -32,6 +32,7 @@
   #ed { flex:1; min-width:0; display:flex; }
   .CodeMirror { flex:1; height:100%; font:13px/1.55 ui-monospace,Menlo,monospace; }
   .cm-claude { background:#ffe8c7; }
+  .cm-sync { background:#cfe6f0; transition:background .3s; }
   #div { width:6px; cursor:col-resize; background:#d3d7dc; flex:none; }
   #pdf { flex:1; overflow:auto; min-width:0; }
   #log { white-space:pre-wrap; color:var(--err); font:12px ui-monospace,monospace; padding:0 14px; }
@@ -116,6 +117,16 @@ async function elenco() {
 $("ricarica").onclick = () => { $("avviso").style.display = "none"; salvato = ""; apri(sel, true); };
 $("tieni").onclick = () => { $("avviso").style.display = "none"; tempoFile = tempi[sel]; };
 
+let rigaSegnata = null;
+async function vaiAlCodice(pagina, x, y) {
+  const r = await (await fetch(`/sincro?pagina=${pagina}&x=${x}&y=${y}`, { cache: "no-store" })).json();
+  if (!r) return;
+  if (r.p !== sel) { if (sporco() && !confirm("Hai modifiche non salvate in " + sel + ". Cambiare file senza salvare?")) return; await apri(r.p); }
+  const n = r.riga - 1; cm.setCursor({ line: n, ch: 0 }); cm.scrollIntoView({ line: n, ch: 0 }, 200); cm.focus();
+  if (rigaSegnata !== null) cm.removeLineClass(rigaSegnata, "background", "cm-sync");
+  rigaSegnata = n; cm.addLineClass(n, "background", "cm-sync");
+  setTimeout(() => { if (rigaSegnata === n) { cm.removeLineClass(n, "background", "cm-sync"); rigaSegnata = null; } }, 2500);
+}
 async function vaiA(dest) {
   if (typeof dest === "string") dest = await doc.getDestination(dest);
   if (!dest) return;
@@ -129,6 +140,10 @@ async function disegnaPagina(w) {
   const c = w.firstChild, page = await doc.getPage(+w.dataset.n), vp = page.getViewport({ scale: scala * 1.5 });
   c.width = vp.width; c.height = vp.height;
   await page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
+  const base = page.getViewport({ scale: 1 });
+  c.onclick = e => { const r = c.getBoundingClientRect();
+    vaiAlCodice(+w.dataset.n, (e.clientX - r.left) / r.width * base.width, (e.clientY - r.top) / r.height * base.height); };
+  c.style.cursor = "text";
   for (const a of await page.getAnnotations()) {
     if (a.subtype !== "Link" || (!a.dest && !a.url)) continue;
     const r = vp.convertToViewportRectangle(a.rect), l = document.createElement("a");
