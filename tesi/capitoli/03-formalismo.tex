@@ -1,9 +1,43 @@
-In questo capitolo definiamo la parametrizzazione STERA delle proiezioni di un Transformer e ne ricaviamo le proprietà. Una proiezione STERA ha quattro componenti: le coordinate dei blocchi RowMask23, una scala per blocco, i guadagni per riga e per colonna e un termine a basso rango. Il capitolo le presenta prima insieme (Sezione~\ref{sec:proiezione-stera}), poi una alla volta, e si chiude con il bilancio complessivo dei parametri.
-
-Le coordinate sono il contributo principale e occupano le Sezioni da~\ref{sec:notazione} a~\ref{sec:rettangolari}: lo XOR fra indici e le matrici che ne derivano, il blocco RowMask23, le sue proprietà, il gradiente, il prodotto veloce e il passaggio dal blocco alla proiezione. Le Sezioni~\ref{sec:scale}, \ref{sec:guadagni} e~\ref{sec:basso-rango} trattano le altre tre componenti con lo stesso schema: che cosa sono e a che cosa servono, gradiente, inizializzazione e costo, valori appresi in STERA 30M, quanto contano nel modello addestrato e se si possono quantizzare. La Sezione~\ref{sec:bilancio-parametri} conta tutti i valori memorizzati e ricava il risparmio di un modello STERA rispetto alla sua forma densa e il suo andamento al crescere del modello.
+In questo capitolo definiamo la parametrizzazione STERA delle proiezioni di un Transformer e ne ricaviamo le proprietà. La Sezione~\ref{sec:proiezione-stera} costruisce una proiezione STERA passo dopo passo, partendo da un singolo blocco $128\times128$, e ne individua le quattro componenti: le coordinate dei blocchi RowMask23, una scala per blocco, i guadagni per riga e per colonna e un termine a basso rango. Ogni componente è poi trattata in una sezione propria; il capitolo si chiude con il bilancio complessivo dei parametri.
 
 \section{La proiezione STERA}
 \label{sec:proiezione-stera}
+
+Prima di dare le definizioni formali, costruiamo una proiezione STERA dal basso: un blocco, poi il mosaico di blocchi, infine le componenti che agiscono sull'intera matrice.
+
+\subsection{Un blocco RowMask23}
+
+La Figura~\ref{fig:struttura} mostra un blocco RowMask23 di $128\times128$ elementi. Il blocco si costruisce in tre passi, ciascuno dei quali occupa posizioni diverse della matrice.
+\begin{enumerate}
+\item \textbf{La diagonale} (in blu a sinistra). I 128 elementi $(i,i)$ sono liberi: ciascuno ha un proprio valore $d_i$.
+\item \textbf{La base XOR} (in grigio a sinistra). Ogni elemento fuori diagonale $(i,j)$ prende il valore $b_{i\oplus j}$, dove $\oplus$ è lo XOR bit a bit degli indici. Tutte le posizioni con lo stesso valore di $i\oplus j$ formano una \emph{diagonale generalizzata} e condividono lo stesso valore: il pannello di destra colora ogni posizione secondo $i\oplus j$. Bastano così 127 valori $b_1,\dots,b_{127}$ per riempire i \num{16256} elementi fuori diagonale.
+\item \textbf{Le correzioni} (in rosso a sinistra). In 23 posizioni fisse di ogni riga, dalla riga 1 alla 127, al valore della base si somma una correzione propria $e_{i,k}$, che rende quella posizione diversa dalle altre della sua diagonale generalizzata: \num{2921} valori in tutto.
+\end{enumerate}
+Le $128+127+\num{2921}=\num{3176}$ \emph{coordinate} $c=(d,b,e)$ determinano l'intero blocco, che indichiamo con $\Phi(c)$, al posto dei \num{16384} valori di una matrice densa. Infine il blocco è moltiplicato per una \emph{scala} $\alpha$, un solo numero che ne fissa l'ampiezza.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{figure/formalismo/struttura_blocco.pdf}
+\caption{Struttura di un blocco RowMask23 $128\times128$. A sinistra: diagonale (blu), posizioni con una correzione propria (rosso, 23 per riga dalla riga 1 in poi) e posizioni determinate solo dalla base XOR (grigio). A destra: il valore di $i\oplus j$, cioè l'indice della coordinata di base usata in ciascuna posizione.}
+\label{fig:struttura}
+\end{figure}
+
+\subsection{Dal blocco alla proiezione}
+
+Una proiezione di un Transformer è una matrice $m\times n$ molto più grande di un blocco. Se $m$ e $n$ sono multipli di 128, la matrice si divide in $P\times Q$ blocchi, con $P=m/128$ e $Q=n/128$, e ogni blocco $(p,q)$ è un blocco RowMask23 con coordinate $c^{(p,q)}$ e scala $\alpha^{(p,q)}$ proprie: si ottiene il mosaico $\widetilde W$ della Figura~\ref{fig:proiezione-stera}. Sul mosaico agiscono due componenti che attraversano i confini dei blocchi:
+\begin{itemize}
+\item i \emph{guadagni}: un vettore $g_{\mathrm{out}}$ moltiplica ogni riga dell'intera matrice e un vettore $g_{\mathrm{in}}$ ogni colonna;
+\item il \emph{termine a basso rango} $UV^\top$, una matrice $m\times n$ di rango al più $r$ che si somma all'intera proiezione.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\resizebox{\linewidth}{!}{\input{figure/tikz/proiezione}}
+\caption{Costruzione di una proiezione STERA. Ogni blocco $128\times128$ (diagonale in blu, correzioni in rosso, base XOR in grigio) è moltiplicato per la sua scala; i blocchi formano il mosaico $\widetilde W$; i guadagni $g_{\mathrm{out}}$ e $g_{\mathrm{in}}$ (in verde) moltiplicano righe e colonne dell'intera matrice, a cui si somma il termine a basso rango $UV^\top$.}
+\label{fig:proiezione-stera}
+\end{figure}
+
+\subsection{Definizione}
 
 \begin{definizione}[Proiezione STERA]
 \label{def:proiezione-stera}
@@ -13,27 +47,31 @@ W \;=\; \operatorname{diag}(g_{\mathrm{out}})\;\widetilde W\;\operatorname{diag}
 \qquad
 \widetilde W \;=\; \Big[\,\alpha^{(p,q)}\,\Phi\big(c^{(p,q)}\big)\Big]_{p=1,\dots,P;\;q=1,\dots,Q},
 \]
-dove $\widetilde W$ è la matrice a mosaico di $P\times Q$ blocchi $128\times128$ e $\Phi:\mathbb{R}^{3176}\to\mathbb{R}^{128\times128}$ è la mappa che costruisce un blocco RowMask23 dalle sue coordinate (Sezione~\ref{sec:blocco-rowmask}).
+dove $\Phi:\mathbb{R}^{3176}\to\mathbb{R}^{128\times128}$ è la mappa che costruisce un blocco RowMask23 dalle sue coordinate.
 \end{definizione}
 
-La Tabella~\ref{tab:componenti-proiezione} elenca le quattro componenti, il loro ruolo e il numero di valori che ciascuna memorizza.
+La Tabella~\ref{tab:componenti-proiezione} riassume le quattro componenti, il numero di valori che ciascuna memorizza e la sezione che la tratta.
 
 \begin{table}[htbp]
 \centering
 \small
-\begin{tabularx}{\linewidth}{llXr}
+\begin{tabular}{llrl}
 \toprule
-Componente & Simbolo & Ruolo & Valori \\
+Componente & Simbolo & Valori & Trattata nelle Sezioni \\
 \midrule
-Coordinate & $c^{(p,q)}\in\mathbb{R}^{3176}$ & contenuto di ogni blocco: diagonale, base XOR e 23 correzioni per riga & $3176\,PQ$ \\
-Scale & $\alpha^{(p,q)}\in\mathbb{R}$ & ampiezza di ogni blocco & $PQ$ \\
-Guadagni & $g_{\mathrm{out}}\in\mathbb{R}^{m}$, $g_{\mathrm{in}}\in\mathbb{R}^{n}$ & ampiezza di ogni riga e colonna, attraverso i confini dei blocchi & $m+n$ \\
-Basso rango & $U\in\mathbb{R}^{m\times r}$, $V\in\mathbb{R}^{n\times r}$ & accoppiamento fra i blocchi e direzioni che la struttura XOR non rappresenta & $r(m+n)$ \\
+Coordinate & $c^{(p,q)}\in\mathbb{R}^{3176}$ & $3176\,PQ$ & da~\ref{sec:notazione} a~\ref{sec:rettangolari} \\
+Scale & $\alpha^{(p,q)}\in\mathbb{R}$ & $PQ$ & \ref{sec:scale} \\
+Guadagni & $g_{\mathrm{out}}\in\mathbb{R}^{m}$, $g_{\mathrm{in}}\in\mathbb{R}^{n}$ & $m+n$ & \ref{sec:guadagni} \\
+Basso rango & $U\in\mathbb{R}^{m\times r}$, $V\in\mathbb{R}^{n\times r}$ & $r(m+n)$ & \ref{sec:basso-rango} \\
+\midrule
+Bilancio complessivo & & & \ref{sec:bilancio-parametri} \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \caption{Le quattro componenti di una proiezione STERA $m\times n$ con termine a basso rango di rango $r$; $PQ=mn/16384$ è il numero di blocchi.}
 \label{tab:componenti-proiezione}
 \end{table}
+
+Le coordinate, contributo principale della tesi, occupano la parte più ampia del capitolo: lo XOR fra indici, la definizione formale del blocco, le sue proprietà, il gradiente, il prodotto veloce e il passaggio dal blocco alla proiezione. Scale, guadagni e basso rango sono trattati con lo stesso schema: che cosa sono e a che cosa servono, gradiente, inizializzazione e costo, valori appresi in STERA 30M, quanto contano nel modello addestrato e se si possono quantizzare.
 
 % ---------------------------------------------------------------- COORDINATE
 
@@ -109,14 +147,7 @@ W = D + B + R,
 \end{equation}
 dove $D=\mathrm{diag}(d)$, $B$ è la matrice XOR-circolante generata da $(0,b_1,\dots,b_{127})$ e $R$ è una matrice sparsa con \num{2921} elementi non nulli, $R_{i,\,i\oplus\sigma(i,k)}=e_{i,k}$.
 
-La Figura~\ref{fig:struttura} mostra la struttura di un blocco: a sinistra la posizione della diagonale, delle correzioni e degli elementi che dipendono solo dalla base; a destra l'indice $i\oplus j$ che decide quale coordinata della base si trova in ogni posizione.
-
-\begin{figure}[ht]
-\centering
-\includegraphics[width=\textwidth]{figure/formalismo/struttura_blocco.pdf}
-\caption{Struttura di un blocco RowMask23 $128\times128$. A sinistra: diagonale (blu), posizioni con una correzione propria (rosso, 23 per riga dalla riga 1 in poi) e posizioni determinate solo dalla base XOR (grigio). A destra: il valore di $i\oplus j$, cioè l'indice della coordinata di base usata in ciascuna posizione.}
-\label{fig:struttura}
-\end{figure}
+La Figura~\ref{fig:struttura}, nella Sezione~\ref{sec:proiezione-stera}, mostra dove si trovano le tre parti nel blocco.
 
 \subsection{Un esempio}
 \label{sec:guida-visiva-rowmask}
