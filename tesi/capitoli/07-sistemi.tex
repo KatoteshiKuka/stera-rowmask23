@@ -7,7 +7,7 @@ Le misure richiedono due operazioni che non esistono nelle librerie standard. Le
 
 \subsection{Espansione delle coordinate}
 
-Il primo kernel espande le coordinate di una matrice nella matrice densa corrispondente. Ogni thread della GPU calcola un elemento: dalla sua posizione $(r,c)$ ricava il blocco a cui appartiene, la posizione $(i,j)$ dentro il blocco e l'indice $s=i\oplus j$; legge quindi la diagonale, la base ed eventualmente la correzione dal vettore delle coordinate del blocco e scrive il risultato moltiplicato per la scala. Per sapere se una posizione ha una correzione, e quale, il kernel usa una piccola tabella precalcolata di $128\times128$ elementi, la stessa per tutti i blocchi. Il risultato è identico, bit per bit, a quello della ricostruzione di riferimento usata durante l'addestramento; il controllo è eseguito automaticamente su ogni matrice prima delle misure.
+Il primo kernel espande le coordinate di una matrice nella matrice densa corrispondente. Ogni thread della GPU calcola un elemento: dalla sua posizione $(r,c)$ ricava il blocco a cui appartiene, la posizione $(i,j)$ dentro il blocco e l'indice $s=i\oplus j$; legge quindi la diagonale, la base ed eventualmente la correzione dal vettore delle coordinate del blocco e scrive il risultato moltiplicato per la scala. Per sapere se una posizione ha una correzione, e quale, il kernel usa una piccola tabella precalcolata di $128\times128$ elementi, la stessa per tutti i blocchi. Il risultato è identico, bit per bit, a quello della ricostruzione di riferimento usata durante il training; il controllo è eseguito automaticamente su ogni matrice prima delle misure.
 
 \subsection{Prodotto diretto sulle coordinate}
 
@@ -58,11 +58,11 @@ Pesi densi equivalenti F10 & 18,597 & 7,821 & 2,378 \\
 
 Una politica che dovesse rileggere integralmente 18,597~GB per ciascun token avrebbe quindi un termine di sola lettura dell'ordine di $7{,}82$~s a quella banda; il reciproco, circa $0{,}128$ token/s, è un tetto imposto dal solo I/O \emph{per quella politica}. Il calcolo, la latenza, lo staging e l'eventuale residenza parziale possono modificarne il risultato reale. La pipeline a doppio buffer può sovrapporre trasferimento e calcolo, ma non eliminare il tempo necessario ai byte effettivamente letti.
 
-Questo termine di lettura è un limite inferiore al costo di una generazione che debba trasferire i pesi dal disco a ogni token; l'esempio completo di generazione con caricamento progressivo degli strati è discusso nella \autoref{sec:qwen-f10-ssd}.
+Questo termine di lettura è un limite inferiore al costo di una generazione che debba trasferire i pesi dal disco a ogni token; l'esempio completo di generazione con caricamento progressivo dei layer è discusso nella \autoref{sec:qwen-f10-ssd}.
 
 \section{Quanto modello entra in un dispositivo}
 
-Un limite analitico aiuta a distinguere la capacità di memorizzazione dal throughput. Un budget ipotetico di 12~GB per i soli valori FP16 contiene 6 miliardi di scalari densi. Se ogni blocco $128\times128$ fosse rappresentato esclusivamente dalle sue \,\num{3176} coordinate RowMask23, il rapporto ideale fra elementi sarebbe $16384/3176\approx5{,}16$. Tale rapporto non può essere esteso automaticamente a un Transformer completo: embedding, guadagni, fattori a basso rango, cache KV, workspace e granularità dei blocchi consumano spazio. Il prototipo STERA di scala maggiore effettivamente contabilizzato, discussa nella \autoref{sec:qwen-f10-ssd}, fornisce un confronto a scala maggiore con un perimetro esplicito.
+Un limite analitico aiuta a distinguere la capacità di memorizzazione dal throughput. Un budget ipotetico di 12~GB per i soli valori FP16 contiene 6 miliardi di scalari densi. Se ogni blocco $128\times128$ fosse rappresentato esclusivamente dalle sue \,\num{3176} coordinate RowMask23, il rapporto ideale fra elementi sarebbe $16384/3176\approx5{,}16$. Tale rapporto non può essere esteso automaticamente a un Transformer completo: embedding, guadagni, fattori low-rank, cache KV, workspace e granularità dei blocchi consumano spazio. Il prototipo STERA di scala maggiore effettivamente contabilizzato, discussa nella \autoref{sec:qwen-f10-ssd}, fornisce un confronto a scala maggiore con un perimetro esplicito.
 
 \section{Peso di STERA 30M}
 \label{sec:stera30m-quantizzazione}
@@ -78,11 +78,11 @@ Confronto & STERA (MB) & Riferimento (MB) & Riduzione \\
 \midrule
 Compatto FP32 vs TinyStories-33M FP32 & 121,385 & 274,056 & 55,71\% \\
 Compatto FP32 vs propria espansione FP32 & 121,385 & 330,885 & 63,32\% \\
-Basso rango a 8 bit vs TinyStories-33M FP32 & 86,097 & 274,056 & 68,58\% \\
-Basso rango a 8 bit vs propria espansione FP32 & 86,097 & 330,885 & 73,98\% \\
+Low-rank a 8 bit vs TinyStories-33M FP32 & 86,097 & 274,056 & 68,58\% \\
+Low-rank a 8 bit vs propria espansione FP32 & 86,097 & 330,885 & 73,98\% \\
 \bottomrule
 \end{tabularx}
-\caption{Confronti di peso per STERA 30M. Nella variante con basso rango a 8 bit solo i fattori $U$ e $V$ sono quantizzati, nel formato usato dal motore (gruppi di 32 valori con scala e offset FP32); tutte le altre componenti restano FP32.}
+\caption{Confronti di peso per STERA 30M. Nella variante con low-rank a 8 bit solo i fattori $U$ e $V$ sono quantizzati, nel formato usato dal motore (gruppi di 32 valori con scala e offset FP32); tutte le altre componenti restano FP32.}
 \label{tab:stera30m-byte}
 \end{table}
 
@@ -93,15 +93,15 @@ Basso rango a 8 bit vs propria espansione FP32 & 86,097 & 330,885 & 73,98\% \\
 \label{fig:byte-pesi}
 \end{figure}
 
-La \autoref{fig:byte-pesi} ordina le rappresentazioni dalla più grande alla più piccola. In alto, tratteggiata, c'è l'espansione densa di STERA 30M: sono gli stessi pesi scritti come matrici piene, \num{330,9}~MB. La forma compatta degli stessi pesi occupa $121{,}4$~MB, meno della metà di TinyStories-33M ($274{,}1$~MB), e con il basso rango a 8 bit scende a $86{,}1$~MB, vicino a TinyStories-8M ($78{,}8$~MB), che però ha una quota di racconti corretti molto inferiore.
+La \autoref{fig:byte-pesi} ordina le rappresentazioni dalla più grande alla più piccola. In alto, tratteggiata, c'è l'espansione densa di STERA 30M: sono gli stessi pesi scritti come matrici piene, \num{330,9}~MB. La forma compatta degli stessi pesi occupa $121{,}4$~MB, meno della metà di TinyStories-33M ($274{,}1$~MB), e con il low-rank a 8 bit scende a $86{,}1$~MB, vicino a TinyStories-8M ($78{,}8$~MB), che però ha una quota di racconti corretti molto inferiore.
 
-Il $63{,}32\%$ rispetto alla propria espansione densa è il risultato della \autoref{prop:risparmio-modello}: i blocchi RowMask23 garantiscono l'$80{,}61\%$ sulla parte strutturata e il termine a basso rango di rango 96 ne consuma la parte restante. Il $55{,}71\%$ rispetto a TinyStories-33M confronta invece due modelli diversi e va letto insieme alla qualità dei racconti (\autoref{sec:risultati-stera30m-tinystories}): STERA 30M occupa meno della metà dei byte con una quota di racconti corretti non significativamente diversa.
+Il $63{,}32\%$ rispetto alla propria espansione densa è il risultato della \autoref{prop:risparmio-modello}: i blocchi RowMask23 garantiscono l'$80{,}61\%$ sulla parte strutturata e il termine low-rank di rango 96 ne consuma la parte restante. Il $55{,}71\%$ rispetto a TinyStories-33M confronta invece due modelli diversi e va letto insieme alla qualità dei racconti (\autoref{sec:risultati-stera30m-tinystories}): STERA 30M occupa meno della metà dei byte con una quota di racconti corretti non significativamente diversa.
 
-Quantizzando a 8 bit i soli fattori $U$ e $V$, il termine a basso rango passa da $51{,}5$ a $16{,}2$~MB e il modello da $121{,}385$ a $86{,}097$~MB, il $73{,}98\%$ in meno della propria espansione densa. La matrice densa equivalente cambia dello $0{,}48\%$ in norma e la NLL del $+0{,}007\%$ (\autoref{sec:basso-rango}). Il modello valutato nei confronti di qualità e nei benchmark principali è il compatto FP32; la variante a 8 bit è misurata a parte nella \autoref{sec:rango8-tempi}.
+Quantizzando a 8 bit i soli fattori $U$ e $V$, il termine low-rank passa da $51{,}5$ a $16{,}2$~MB e il modello da $121{,}385$ a $86{,}097$~MB, il $73{,}98\%$ in meno della propria espansione densa. La matrice densa equivalente cambia dello $0{,}48\%$ in norma e la NLL del $+0{,}007\%$ (\autoref{sec:basso-rango}). Il modello valutato nei confronti di qualità e nei benchmark principali è il compatto FP32; la variante a 8 bit è misurata a parte nella \autoref{sec:rango8-tempi}.
 
-\section{Memoria durante l'addestramento}
+\section{Memoria durante il training}
 
-Durante l'addestramento di STERA 30M le matrici vengono espanse temporaneamente per i prodotti con le attivazioni. I due momenti di Adam sono associati ai parametri allenabili della rappresentazione compatta. In FP32, assumendo quattro copie per peso, gradiente e momenti, il conto teorico è di circa 486 MB per STERA 30M. L'analogo conto per gli stessi valori espansi trattati come parametri indipendenti darebbe circa 1.324 MB. Attivazioni, matrici temporanee e workspace incidono separatamente sul picco di training.
+Durante il training di STERA 30M le matrici vengono espanse temporaneamente per i prodotti con le attivazioni. I due momenti di Adam sono associati ai parametri allenabili della rappresentazione compatta. In FP32, assumendo quattro copie per peso, gradiente e momenti, il conto teorico è di circa 486 MB per STERA 30M. L'analogo conto per gli stessi valori espansi trattati come parametri indipendenti darebbe circa 1.324 MB. Attivazioni, matrici temporanee e workspace incidono separatamente sul picco di training.
 
 \section{Confronto dei due motori dello stesso STERA 30M}
 \label{sec:replica-stera-dense}
@@ -159,9 +159,9 @@ TinyStories-33M & 274,056 & 31,7 & 90,6 & 1,136 & \num{1493} \\
 \label{tab:tre-checkpoint-ram}
 \end{table}
 
-Con lo stesso motore, STERA 30M genera più rapidamente di TinyStories-33M, pur avendo sei strati contro quattro e la stessa dimensione, e più lentamente di TinyStories-8M, che esegue circa un quarto delle operazioni per token. Completa la richiesta prima del 33M e della propria forma densa ed è il modello con il picco di memoria più basso. Con il motore standard, i due TinyStories sono più lenti di un fattore fra 1,7 e 2: la differenza fra le due righe dello stesso modello misura il peso del framework, non del modello.
+Con lo stesso motore, STERA 30M genera più rapidamente di TinyStories-33M, pur avendo sei layer contro quattro e la stessa dimensione, e più lentamente di TinyStories-8M, che esegue circa un quarto delle operazioni per token. Completa la richiesta prima del 33M e della propria forma densa ed è il modello con il picco di memoria più basso. Con il motore standard, i due TinyStories sono più lenti di un fattore fra 1,7 e 2: la differenza fra le due righe dello stesso modello misura il peso del framework, non del modello.
 
-\paragraph{Budget di addestramento.} STERA 30M è addestrato su \num{1529514422} token target, escluso il padding. L'autore di TinyStories-33M \href{https://huggingface.co/roneneldan/TinyStories-33M/discussions/8}{dichiara circa 20 epoche}. Sedici campioni del file ufficiale, tokenizzati con il BPE pubblico, danno una stima di circa 475 milioni di token per passaggio e circa 9,5 miliardi su 20 passaggi. È un ordine di grandezza basato sul tokenizzatore disponibile; per TinyStories-8M il totale non è documentato. I riferimenti hanno quindi visto un numero di token sensibilmente maggiore di STERA 30M.
+\paragraph{Budget di training.} STERA 30M è addestrato su \num{1529514422} token target, escluso il padding. L'autore di TinyStories-33M \href{https://huggingface.co/roneneldan/TinyStories-33M/discussions/8}{dichiara circa 20 epoche}. Sedici campioni del file ufficiale, tokenizzati con il BPE pubblico, danno una stima di circa 475 milioni di token per passaggio e circa 9,5 miliardi su 20 passaggi. È un ordine di grandezza basato sul tokenizer disponibile; per TinyStories-8M il totale non è documentato. I riferimenti hanno quindi visto un numero di token sensibilmente maggiore di STERA 30M.
 
 \section{Lunghezza dell'ingresso}
 \label{sec:contesto-misure}
@@ -175,7 +175,7 @@ Le misure precedenti usano 256 token in ingresso. Per verificare se il risultato
 \label{fig:contesto-prefill}
 \end{figure}
 
-Nella \autoref{fig:contesto-prefill} l'asse orizzontale è il numero di token in ingresso. Il pannello (b) mostra la velocità di generazione: le linee sono quasi orizzontali, cioè il decode non dipende dalla lunghezza dell'ingresso in questo intervallo, e l'ordine dei modelli non cambia mai. TinyStories-8M è il più rapido, seguito da STERA con basso rango a 8 bit, da STERA compatto, da TinyStories-33M e infine dalla forma densa di STERA: per STERA 30M resta fra 191 e 198 token/s e la riduzione del tempo per token rispetto alla forma densa resta fra il $35{,}4\%$ e il $36{,}3\%$. Fino a 484 posizioni il costo dell'attenzione è piccolo rispetto alla lettura dei pesi, che è la grandezza su cui agisce il formato compatto. Il pannello (a) mostra invece il tempo del primo token, che cresce con la lunghezza dell'ingresso per tutti i modelli. La linea continua di STERA con il prefill compatto è la più ripida: a 384 token impiega $94$~ms contro i $42$~ms della forma densa. La linea tratteggiata, STERA con l'espansione al volo descritta nella \autoref{sec:prefill-misure}, ha una pendenza molto minore e a 384 token scende a $55$~ms.
+Nella \autoref{fig:contesto-prefill} l'asse orizzontale è il numero di token in ingresso. Il pannello (b) mostra la velocità di generazione: le linee sono quasi orizzontali, cioè il decode non dipende dalla lunghezza dell'ingresso in questo intervallo, e l'ordine dei modelli non cambia mai. TinyStories-8M è il più rapido, seguito da STERA con low-rank a 8 bit, da STERA compatto, da TinyStories-33M e infine dalla forma densa di STERA: per STERA 30M resta fra 191 e 198 token/s e la riduzione del tempo per token rispetto alla forma densa resta fra il $35{,}4\%$ e il $36{,}3\%$. Fino a 484 posizioni il costo dell'attention è piccolo rispetto alla lettura dei pesi, che è la grandezza su cui agisce il formato compatto. Il pannello (a) mostra invece il tempo del primo token, che cresce con la lunghezza dell'ingresso per tutti i modelli. La linea continua di STERA con il prefill compatto è la più ripida: a 384 token impiega $94$~ms contro i $42$~ms della forma densa. La linea tratteggiata, STERA con l'espansione al volo descritta nella \autoref{sec:prefill-misure}, ha una pendenza molto minore e a 384 token scende a $55$~ms.
 
 \section{Elaborazione del prefisso}
 \label{sec:prefill-misure}
@@ -183,7 +183,7 @@ Nella \autoref{fig:contesto-prefill} l'asse orizzontale è il numero di token in
 Nel prefill tutti i token dell'ingresso usano gli stessi pesi e il costo è dominato dal calcolo. Su 256 token, le sole proiezioni richiedono 56~ms con il prodotto diretto sulle coordinate e 19~ms con il prodotto matrice per matrice denso: il kernel compatto, pensato per pochi token alla volta, rilegge coordinate e correzioni per ogni gruppo di token e non sfrutta le unità di calcolo matriciale. Due interventi riducono la differenza:
 \begin{itemize}
 \item \textbf{dimensione del blocco di token}: con blocchi di 64 token invece di 16, il primo token su 256 token scende da circa 101 a 66~ms, con gli stessi token generati;
-\item \textbf{espansione al bisogno}: per ogni strato si ricostruisce con un kernel dedicato la parte strutturata delle sei proiezioni, esattamente uguale bit per bit a quella dell'addestramento, si eseguono i prodotti densi su tutti i token e si rilasciano le matrici prima dello strato successivo; il termine a basso rango resta fattorizzato. Il decode resta sul prodotto diretto.
+\item \textbf{espansione al bisogno}: per ogni layer si ricostruisce con un kernel dedicato la parte strutturata delle sei proiezioni, esattamente uguale bit per bit a quella del training, si eseguono i prodotti densi su tutti i token e si rilasciano le matrici prima del layer successivo; il termine low-rank resta fattorizzato. Il decode resta sul prodotto diretto.
 \end{itemize}
 
 \begin{table}[htbp]
@@ -204,14 +204,14 @@ Token in ingresso & Prodotto diretto & Espansione al bisogno & Espansione, rango
 \label{tab:prefill-strategie}
 \end{table}
 
-L'espansione al bisogno riduce il primo token di circa il $40\%$ per gli ingressi da 256 token in su, con gli stessi token generati e senza aumentare il picco di memoria, perché le matrici espanse di uno strato occupano circa 54~MB e vengono rilasciate subito. Per ingressi molto brevi il costo fisso dell'espansione non è compensato e conviene il prodotto diretto: la soglia fra le due strategie è intorno ai 64 token. Il motore denso resta più rapido nel primo token, ma il divario si dimezza.
+L'espansione al bisogno riduce il primo token di circa il $40\%$ per gli ingressi da 256 token in su, con gli stessi token generati e senza aumentare il picco di memoria, perché le matrici espanse di un layer occupano circa 54~MB e vengono rilasciate subito. Per ingressi molto brevi il costo fisso dell'espansione non è compensato e conviene il prodotto diretto: la soglia fra le due strategie è intorno ai 64 token. Il motore denso resta più rapido nel primo token, ma il divario si dimezza.
 
-\section{Basso rango a 8 bit}
+\section{Low-rank a 8 bit}
 \label{sec:rango8-tempi}
 
-Il termine a basso rango quantizzato a 8 bit può restare in quel formato anche durante l'esecuzione: il motore moltiplica direttamente i fattori a 8 bit, senza riconvertirli in FP32. Misurato con lo stesso protocollo, su 256 token in ingresso, il decode passa da $198{,}9$ a $241{,}9$ token/s, con una riduzione del tempo per token del $17{,}8\%$ (da $-10{,}1\%$ a $-24{,}5\%$ sulle 15 coppie), mentre il primo token non cambia ($63{,}4$ e $65{,}4$~ms). Su due input su tre i token generati coincidono con quelli del modello FP32 per tutti i 101 passi, sul terzo si separano al passo 37, coerentemente con una NLL praticamente invariata. La memoria attiva della GPU scende da 137 a 104~MiB; il picco dell'intero processo resta invece di circa 433~MiB, dominato dal runtime e dai buffer.
+Il termine low-rank quantizzato a 8 bit può restare in quel formato anche durante l'esecuzione: il motore moltiplica direttamente i fattori a 8 bit, senza riconvertirli in FP32. Misurato con lo stesso protocollo, su 256 token in ingresso, il decode passa da $198{,}9$ a $241{,}9$ token/s, con una riduzione del tempo per token del $17{,}8\%$ (da $-10{,}1\%$ a $-24{,}5\%$ sulle 15 coppie), mentre il primo token non cambia ($63{,}4$ e $65{,}4$~ms). Su due input su tre i token generati coincidono con quelli del modello FP32 per tutti i 101 passi, sul terzo si separano al passo 37, coerentemente con una NLL praticamente invariata. La memoria attiva della GPU scende da 137 a 104~MiB; il picco dell'intero processo resta invece di circa 433~MiB, dominato dal runtime e dai buffer.
 
-Combinando espansione al bisogno nel prefill e basso rango a 8 bit, STERA 30M completa una richiesta con 256 token in ingresso e 100 generati in $0{,}47$~s, contro $0{,}82$~s della propria forma densa con lo stesso motore.
+Combinando espansione al bisogno nel prefill e low-rank a 8 bit, STERA 30M completa una richiesta con 256 token in ingresso e 100 generati in $0{,}47$~s, contro $0{,}82$~s della propria forma densa con lo stesso motore.
 
 \section{Confronto finale di sistema: prototipo STERA non addestrato e Qwen3.5-9B}
 \label{sec:qwen-f10-ssd}
@@ -231,7 +231,7 @@ Nel pannello (a) della \autoref{fig:soglia-ram-f10} la linea tratteggiata vertic
 
 \paragraph{Decode con pesi residenti.} In due prove del motore MLX/Metal, il prototipo STERA non addestrato produce 12,29 e 12,33 token/s con un prompt breve di tre token e cache predisposta per 128 posizioni. Non sono prove di generazione linguistica valutabile. Il corrispondente prototipo denso fuori RAM non è stato eseguito in un test end-to-end appaiato.
 
-\paragraph{Qwen3.5-9B come esempio indipendente.} Per verificare una strategia reale di offload da SSD è stato eseguito il decoder di Qwen3.5-9B, con pesi BF16, runtime SWLP su PyTorch/MPS, batch uno e lettura degli strati da SSD. Embedding e testa restano in RAM, mentre i blocchi attraversano una finestra di caricamento e prefetch. Il modello pubblico è addestrato, ma il suo ruolo qui riguarda esclusivamente i costi di esecuzione su memoria limitata: non è una baseline della qualità narrativa di STERA 30M.
+\paragraph{Qwen3.5-9B come esempio indipendente.} Per verificare una strategia reale di offload da SSD è stato eseguito il decoder di Qwen3.5-9B, con pesi BF16, runtime SWLP su PyTorch/MPS, batch uno e lettura dei layer da SSD. Embedding e output head restano in RAM, mentre i blocchi attraversano una finestra di caricamento e prefetch. Il modello pubblico è addestrato, ma il suo ruolo qui riguarda esclusivamente i costi di esecuzione su memoria limitata: non è una baseline della qualità narrativa di STERA 30M.
 
 \begin{table}[htbp]
 \centering
@@ -252,8 +252,8 @@ Con 256 token di input, una prova separata disattiva il prefetch e riporta 0,126
 
 \paragraph{Termine di I/O e contesto lungo.} La lettura sequenziale validata di 18,597~GB dallo stesso SSD richiede una mediana di 7,821~s: è il costo della sola lettura fisica a quella banda. Una politica che rilegga tutto il volume a ogni token avrebbe quindi un limite imposto dall'I/O dell'ordine di 0,128 token/s, ma caching, residenza parziale e sovrapposizione del calcolo cambiano il risultato del sistema reale. Una simulazione analitica a 32.768 token stima l'effetto della cache KV e della residenza parziale; non è un test linguistico a contesto lungo del prototipo non addestrato. La prova di decode su cache sintetica piena non verifica la coerenza del testo oltre il contesto di training di STERA 30M.
 
-\paragraph{Lettura dei risultati.} I due casi illustrano regimi di memoria diversi: pesi compatti interamente residenti da un lato, trasferimento continuo degli strati dal disco dall'altro. Poiché modelli, precisioni e runtime differiscono, il rapporto fra i rispettivi token/s descrive i due regimi e non va letto come un confronto di velocità a parità di modello.
+\paragraph{Lettura dei risultati.} I due casi illustrano regimi di memoria diversi: pesi compatti interamente residenti da un lato, trasferimento continuo dei layer dal disco dall'altro. Poiché modelli, precisioni e runtime differiscono, il rapporto fra i rispettivi token/s descrive i due regimi e non va letto come un confronto di velocità a parità di modello.
 
 \section{Sintesi}
 
-Sullo stesso STERA 30M, il motore che applica le proiezioni direttamente alle coordinate riduce del $34{,}8\%$ il tempo mediano per token in decode rispetto al motore con matrici dense equivalenti, producendo gli stessi token, e il vantaggio resta costante fra 32 e 384 token in ingresso. Il motore denso resta più rapido nel primo token; l'espansione al bisogno delle matrici nel prefill dimezza il divario. Con lo stesso motore, STERA 30M genera più rapidamente di TinyStories-33M e con il picco di memoria più basso dei modelli misurati. I pesi compatti occupano 121,385~MB in FP32, il $63{,}32\%$ in meno della propria espansione densa; quantizzando a 8 bit il termine a basso rango scendono a 86,097~MB ($-73{,}98\%$) e il decode diventa più rapido del $17{,}8\%$. A scala maggiore, la rappresentazione compatta del prototipo F10 resta interamente in memoria su un dispositivo da 16~GiB, mentre la sua espansione densa la supererebbe e richiederebbe il trasferimento dei pesi dal disco, con un costo di lettura misurato di circa 7,8~s per passaggio completo.
+Sullo stesso STERA 30M, il motore che applica le proiezioni direttamente alle coordinate riduce del $34{,}8\%$ il tempo mediano per token in decode rispetto al motore con matrici dense equivalenti, producendo gli stessi token, e il vantaggio resta costante fra 32 e 384 token in ingresso. Il motore denso resta più rapido nel primo token; l'espansione al bisogno delle matrici nel prefill dimezza il divario. Con lo stesso motore, STERA 30M genera più rapidamente di TinyStories-33M e con il picco di memoria più basso dei modelli misurati. I pesi compatti occupano 121,385~MB in FP32, il $63{,}32\%$ in meno della propria espansione densa; quantizzando a 8 bit il termine low-rank scendono a 86,097~MB ($-73{,}98\%$) e il decode diventa più rapido del $17{,}8\%$. A scala maggiore, la rappresentazione compatta del prototipo F10 resta interamente in memoria su un dispositivo da 16~GiB, mentre la sua espansione densa la supererebbe e richiederebbe il trasferimento dei pesi dal disco, con un costo di lettura misurato di circa 7,8~s per passaggio completo.

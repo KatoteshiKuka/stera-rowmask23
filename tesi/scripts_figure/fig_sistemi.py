@@ -4,7 +4,7 @@ from matplotlib.ticker import FuncFormatter
 R = pathlib.Path(__file__).resolve().parent.parent
 out = R/"figure/risultati"
 # 1) byte dei pesi
-rows = [("TinyStories-8M, FP32", 78.810, C["ts8"]), ("STERA 30M, basso rango a 8 bit", 86.097, C["chiaro"]),
+rows = [("TinyStories-8M, FP32", 78.810, C["ts8"]), ("STERA 30M, low-rank a 8 bit", 86.097, C["chiaro"]),
         ("STERA 30M, FP32", 121.385, C["stera"]), ("TinyStories-33M, FP32", 274.056, C["ts33"]),
         ("STERA 30M, espansione densa FP32", 330.885, C["neutro"])]
 fig, ax = plt.subplots(figsize=(6.0, 2.3))
@@ -63,7 +63,7 @@ for nome, d, k, col, ls in serie_a:
     a.plot(Ls, [1000 * d[f"{k}|{L}"]["ttft_s"] for L in Ls], color=col, ls=ls, marker="o", ms=3, lw=1.4, label=nome)
 a.set_xlabel("Token in ingresso"); a.set_ylabel("Primo token (ms)"); a.set_title("(a) Elaborazione del prefisso", fontsize=9.5)
 a.set_xticks(Ls); a.yaxis.set_major_formatter(FuncFormatter(lambda v, _: it(v)))
-serie_b = [("STERA, basso rango a 8 bit", pre, "STERA-R8-ESP", C["chiaro"], "--"), ("STERA", pre, "STERA", C["stera"], "-"),
+serie_b = [("STERA, low-rank a 8 bit", pre, "STERA-R8-ESP", C["chiaro"], "--"), ("STERA", pre, "STERA", C["stera"], "-"),
            ("STERA denso", pre, "STERA-DENSO-MLX", C["neutro"], "-"), ("TinyStories-33M", ctx, "33M-MLX", C["ts33"], "-"),
            ("TinyStories-8M", ctx, "8M-MLX", C["ts8"], "-")]
 for nome, d, k, col, ls in serie_b:

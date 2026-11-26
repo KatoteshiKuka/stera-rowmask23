@@ -1,4 +1,4 @@
-Questo capitolo descrive il disegno sperimentale con cui la tesi verifica le proprie ipotesi: i dati e l'addestramento di STERA 30M, i modelli di riferimento, il protocollo di valutazione predittiva e narrativa, l'analisi statistica e le misure di memoria e tempo.
+Questo capitolo descrive il disegno sperimentale con cui la tesi verifica le proprie ipotesi: i dati e il training di STERA 30M, i modelli di riferimento, il protocollo di valutazione predittiva e narrativa, l'analisi statistica e le misure di memoria e tempo.
 
 \section{Ipotesi di lavoro}
 \label{sec:ipotesi}
@@ -12,10 +12,10 @@ Le domande di ricerca dell'Introduzione si traducono in quattro ipotesi verifica
 \toprule
 & Ipotesi & Misura e confronto \\
 \midrule
-H1 & STERA 30M apprende regolarità linguistiche che generalizzano a racconti esclusi dall'addestramento. & NLL su DEV durante il training; NLL sui racconti TEST, confrontata con i due riferimenti. \\
+H1 & STERA 30M apprende regolarità linguistiche che generalizzano a racconti esclusi dal training. & NLL su DEV durante il training; NLL sui racconti TEST, confrontata con i due riferimenti. \\
 H2 & La parametrizzazione STERA riduce i byte necessari per rappresentare i pesi. & Payload dei parametri compatti rispetto alla propria espansione densa e ai checkpoint di riferimento. \\
 H3 & Applicando le proiezioni direttamente alle coordinate, la generazione è più rapida che con le matrici dense equivalenti, a parità di pesi. & Tempo per token in decode dei due motori sullo stesso modello, con verifica dell'identità dei token generati. \\
-H4 & STERA 30M genera racconti di qualità confrontabile con quella dei riferimenti TinyStories. & Quota di racconti corretti in una valutazione cieca sugli stessi incipit, con confronti appaiati. \\
+H4 & STERA 30M genera racconti di qualità confrontabile con quella dei riferimenti TinyStories. & Quota di racconti corretti in una valutazione cieca sugli stessi prompt, con confronti appaiati. \\
 \bottomrule
 \end{tabularx}
 \caption{Ipotesi della tesi e misure con cui sono verificate.}
@@ -27,14 +27,14 @@ H4 & STERA 30M genera racconti di qualità confrontabile con quella dei riferime
 \section{Modelli di riferimento}
 \label{sec:metodo-modelli-tre}
 
-Il confronto linguistico impiega STERA 30M e due checkpoint pubblici della famiglia TinyStories \cite{eldan2023tinystories}, addestrati sullo stesso dominio e con lo stesso tokenizzatore (\autoref{tab:modelli-principali}). Il numero nel nome pubblico dei checkpoint TinyStories non coincide con il conteggio dei loro parametri: per tutti i modelli riportiamo il numero effettivo di valori memorizzati, contando una sola volta le matrici condivise.
+Il confronto linguistico impiega STERA 30M e due checkpoint pubblici della famiglia TinyStories \cite{eldan2023tinystories}, addestrati sullo stesso dominio e con lo stesso tokenizer (\autoref{tab:modelli-principali}). Il numero nel nome pubblico dei checkpoint TinyStories non coincide con il conteggio dei loro parametri: per tutti i modelli riportiamo il numero effettivo di valori memorizzati, contando una sola volta le matrici condivise.
 
 \begin{table}[htbp]
 \centering
 \small
 \begin{tabularx}{\linewidth}{Xrrr}
 \toprule
-Modello & Parametri & Pesi FP32 (MB) & Strati \\
+Modello & Parametri & Pesi FP32 (MB) & Layer \\
 \midrule
 TinyStories-8M & \num{19702528} & 78,810 & 8 \\
 \textbf{STERA 30M} & \textbf{\num{30346182}} & \textbf{121,385} & 6 \\
@@ -55,21 +55,21 @@ La \autoref{fig:protocollo} riassume il flusso completo, dai dati al confronto s
 \begin{figure}[htbp]
 \centering
 \resizebox{\linewidth}{!}{\input{figure/tikz/protocollo}}
-\caption{Protocollo di validazione. In alto la preparazione del modello e degli incipit, in basso la valutazione: la NLL sui racconti di riferimento e il giudizio cieco sulle continuazioni generate.}
+\caption{Protocollo di validazione. In alto la preparazione del modello e dei prompt, in basso la valutazione: la NLL sui racconti di riferimento e il giudizio cieco sulle continuazioni generate.}
 \label{fig:protocollo}
 \end{figure}
 
-\subsection{Incipit di prova}
+\subsection{Prompt di prova}
 
-Dalla partizione TEST sono estratti, con un seme fissato, 300 racconti. Di ciascuno si conservano come incipit le prime due frasi complete, purché contengano fra 12 e 64 token e lascino almeno 20 token di continuazione. La selezione usa solo il testo di riferimento e non dipende da alcun modello. Gli stessi 300 incipit sono usati per tutte le misure di questo capitolo.
+Dalla partizione TEST sono estratti, con un seme fissato, 300 racconti. Di ciascuno si conservano come prompt le prime due frasi complete, purché contengano fra 12 e 64 token e lascino almeno 20 token di continuazione. La selezione usa solo il testo di riferimento e non dipende da alcun modello. Gli stessi 300 prompt sono usati per tutte le misure di questo capitolo.
 
-\subsection{Verosimiglianza dei racconti di riferimento}
+\subsection{Likelihood dei racconti di riferimento}
 
-Per ogni modello si calcola la NLL dei 300 racconti TEST completi in \emph{teacher forcing}: a ogni posizione il modello riceve il prefisso reale e si misura la probabilità assegnata al token successivo corretto. I racconti contano complessivamente \num{57841} token target, con un massimo di 512 per racconto. La NLL è la media ponderata per token e la perplessità il suo esponenziale. I tre modelli condividono lo stesso tokenizzatore, quindi le NLL sono direttamente confrontabili.
+Per ogni modello si calcola la NLL dei 300 racconti TEST completi in \emph{teacher forcing}: a ogni posizione il modello riceve il prefisso reale e si misura la probabilità assegnata al token successivo corretto. I racconti contano complessivamente \num{57841} token target, con un massimo di 512 per racconto. La NLL è la media ponderata per token e la perplexity il suo esponenziale. I tre modelli condividono lo stesso tokenizer, quindi le NLL sono direttamente confrontabili.
 
 \subsection{Generazione delle continuazioni}
 
-Ogni modello continua ciascun incipit una sola volta, con la stessa procedura: campionamento top-$k$ con $k=40$ e temperatura $0{,}75$, al più 180 nuovi token, arresto al token di fine racconto, pesi in FP32 e seme del generatore dipendente dall'indice dell'incipit (\autoref{tab:stera30m-seed}). Poiché il campionamento usa un generatore su CPU con lo stesso seme per tutti i modelli, le differenze fra le continuazioni dipendono solo dalle distribuzioni prodotte dai modelli.
+Ogni modello continua ciascun prompt una sola volta, con la stessa procedura: campionamento top-$k$ con $k=40$ e temperatura $0{,}75$, al più 180 nuovi token, arresto al token di fine racconto, pesi in FP32 e seme del generatore dipendente dall'indice del prompt (\autoref{tab:stera30m-seed}). Poiché il campionamento usa un generatore su CPU con lo stesso seme per tutti i modelli, le differenze fra le continuazioni dipendono solo dalle distribuzioni prodotte dai modelli.
 
 \subsection{Giudizio cieco}
 \label{sec:metodo-giudizio}
@@ -77,7 +77,7 @@ Ogni modello continua ciascun incipit una sola volta, con la stessa procedura: c
 Le 900 continuazioni dei tre modelli sono rese anonime, mescolate in ordine casuale e divise in blocchi da 30. Ogni testo riceve un identificativo che non contiene informazioni sulla provenienza; la corrispondenza fra identificativi e modelli è conservata separatamente e usata solo dopo la conclusione del giudizio. I testi sono valutati da un modello linguistico, Claude Opus 5.5 \cite{anthropic2026claude}, uno alla volta, con la rubrica riportata in Appendice e ispirata a quella di Eldan e Li \cite{eldan2023tinystories}. Per ogni testo il giudice assegna tre voti interi da 1 a 10:
 \begin{itemize}
 \item \textbf{grammatica}: correttezza e scorrevolezza della lingua;
-\item \textbf{coerenza}: stabilità di identità, attributi, oggetti e fatti, anche rispetto all'incipit;
+\item \textbf{coerenza}: stabilità di identità, attributi, oggetti e fatti, anche rispetto al prompt;
 \item \textbf{trama}: presenza di eventi collegati da una causalità comprensibile;
 \end{itemize}
 e una categoria: S (coerente), P (nucleo riconoscibile ma almeno una criticità sostanziale, con almeno un voto non superiore a 5) o N (perdita grave di coerenza, con almeno un voto non superiore a 3). Ogni giudizio è accompagnato da una motivazione specifica. Un racconto è \emph{corretto} se è classificato S, cioè se tutti e tre i voti sono almeno 6:
@@ -92,7 +92,7 @@ Fantasia, animali parlanti, finali negativi e assenza di una morale non sono pen
 
 \begin{itemize}
 \item \textbf{Proporzioni.} La quota di racconti corretti di ciascun modello è accompagnata dall'intervallo di Wilson al 95\%.
-\item \textbf{Differenze appaiate.} Per ogni coppia di modelli la differenza di correttezza è stimata sugli stessi 300 incipit; l'intervallo al 95\% è ottenuto con un bootstrap che ricampiona gli incipit tenendo unite le valutazioni dei modelli, con \num{25000} repliche.
+\item \textbf{Differenze appaiate.} Per ogni coppia di modelli la differenza di correttezza è stimata sugli stessi 300 prompt; l'intervallo al 95\% è ottenuto con un bootstrap che ricampiona i prompt tenendo unite le valutazioni dei modelli, con \num{25000} repliche.
 \item \textbf{Significatività.} La differenza è verificata con il test esatto di McNemar sulle coppie discordanti; i tre confronti a coppie sono corretti con il metodo di Holm.
 \item \textbf{NLL.} La differenza di NLL fra due modelli è accompagnata da un intervallo bootstrap al 95\% che ricampiona i racconti, con \num{10000} repliche.
 \end{itemize}
@@ -106,15 +106,15 @@ Le misure distinguono il payload dei parametri, la memoria fisica occupata dal p
 
 \paragraph{Confronto alla pari con i riferimenti.} I checkpoint TinyStories sono eseguiti in due modi. Il primo è il motore standard con cui sono distribuiti, Transformers su PyTorch con backend MPS. Il secondo è un motore denso MLX con le stesse ottimizzazioni del motore denso di STERA 30M, che carica i pesi pubblici e produce gli stessi token dell'implementazione di riferimento. Solo il secondo confronto attribuisce le differenze di tempo ai modelli anziché ai framework.
 
-\paragraph{Variazioni dell'ingresso e del prefill.} Oltre ai 256 token di ingresso delle misure principali, si misurano prefissi di 32, 64, 128 e 384 token, sempre con 100 token generati. Per il motore compatto si misurano due modi di elaborare il prefisso: il prodotto diretto a blocchi di token e l'espansione al bisogno delle matrici strato per strato.
+\paragraph{Variazioni dell'ingresso e del prefill.} Oltre ai 256 token di ingresso delle misure principali, si misurano prefissi di 32, 64, 128 e 384 token, sempre con 100 token generati. Per il motore compatto si misurano due modi di elaborare il prefisso: il prodotto diretto a blocchi di token e l'espansione al bisogno delle matrici layer per layer.
 
 \section{Analisi delle componenti delle proiezioni}
 \label{sec:metodo-componenti}
 
-Per misurare quanto il modello addestrato dipenda da scale, guadagni e termine a basso rango, e se queste componenti si possano rappresentare con meno bit, si applicano a posteriori, sul checkpoint finale, le seguenti modifiche:
+Per misurare quanto il modello addestrato dipenda da scale, guadagni e termine low-rank, e se queste componenti si possano rappresentare con meno bit, si applicano a posteriori, sul checkpoint finale, le seguenti modifiche:
 \begin{itemize}
 \item \textbf{eliminazione} di scale o guadagni, riportati a 1;
 \item \textbf{riduzione del rango} del termine $UV^\top$ alla migliore approssimazione di rango $k\in\{64,48,32,16,8,0\}$, ottenuta con la decomposizione ai valori singolari;
 \item \textbf{quantizzazione a 8 bit} di scale, guadagni o fattori $U$ e $V$, simmetrica con una scala per matrice per scale e guadagni e per gruppi di valori per $U$ e $V$; per i fattori si misura anche l'errore relativo della matrice densa equivalente.
 \end{itemize}
-Per ogni variante si calcola la NLL sui 300 racconti TEST. Per le varianti del basso rango si generano anche le continuazioni dei 300 incipit, con la stessa procedura e gli stessi semi, e si ripete il giudizio cieco: i testi di tutte le varianti sono mescolati e anonimizzati e valutati dallo stesso giudice con la stessa rubrica, in sessioni separate da quella dei tre modelli. Queste prove misurano la dipendenza del modello già addestrato dalle singole componenti, non l'effetto di addestrare il modello senza di esse.
+Per ogni variante si calcola la NLL sui 300 racconti TEST. Per le varianti del low-rank si generano anche le continuazioni dei 300 prompt, con la stessa procedura e gli stessi semi, e si ripete il giudizio cieco: i testi di tutte le varianti sono mescolati e anonimizzati e valutati dallo stesso giudice con la stessa rubrica, in sessioni separate da quella dei tre modelli. Queste prove misurano la dipendenza del modello già addestrato dalle singole componenti, non l'effetto di addestrare il modello senza di esse.

@@ -29,11 +29,11 @@ for ax, v, nome, col in [(axs[0], go, r"$g_{\mathrm{out}}$ (righe)", C["stera"])
 axs[0].set_ylabel("numero (scala log.)")
 fig.savefig(R / "figure/formalismo/guadagni_appresi.pdf"); plt.close(fig)
 
-# 3. spettro del basso rango: valori singolari di U V^T normalizzati
+# 3. spettro del low-rank: valori singolari di U V^T normalizzati
 def spettro(p):
     _, ru = np.linalg.qr(z[p + ".U"].astype(np.float64)); _, rv = np.linalg.qr(z[p + ".V"].astype(np.float64))
     sv = np.linalg.svd(ru @ rv.T, compute_uv=False); return sv / sv[0]
-gruppi = {"attenzione ($W_Q,W_K,W_V,W_O$)": [p for p in proj if p.split(".")[-1] in "qkvo"],
+gruppi = {"attention ($W_Q,W_K,W_V,W_O$)": [p for p in proj if p.split(".")[-1] in "qkvo"],
           "feed-forward ($W_1,W_2$)": [p for p in proj if p.split(".")[-1] in ("fc", "proj")],
           "embedding": ["embedding"]}
 fig, ax = plt.subplots(figsize=(6.0, 2.6))

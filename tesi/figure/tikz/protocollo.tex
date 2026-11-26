@@ -2,9 +2,9 @@
   st/.style={draw=steraGrigio, rounded corners=2pt, fill=white, minimum width=30mm, minimum height=12mm, align=center, text width=28mm},
   hi/.style={st, draw=steraBlu, fill=steraBlu!10}]
 \node[st] (a) {Corpus TinyStories,\\split per hash};
-\node[st, right=6mm of a] (b) {Addestramento su TRAIN, controllo su DEV};
+\node[st, right=6mm of a] (b) {Training su TRAIN, controllo su DEV};
 \node[st, right=6mm of b] (c) {Pesi congelati};
-\node[st, right=6mm of c] (d) {300 incipit da TEST, seme fisso};
+\node[st, right=6mm of c] (d) {300 prompt da TEST, seme fisso};
 \node[hi, below=10mm of d] (e) {Generazione dei 3 modelli, stesso campionamento};
 \node[hi, left=6mm of e] (f) {900 testi anonimi, ordine casuale};
 \node[hi, left=6mm of f] (g) {Giudizio cieco con rubrica};

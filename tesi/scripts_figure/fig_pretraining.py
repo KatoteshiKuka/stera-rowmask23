@@ -16,7 +16,7 @@ w = 50
 med = [(tr[i][0], statistics.median(x for _, x in tr[max(0, i-w+1):i+1])) for i in range(len(tr))]
 fig, (a, b) = plt.subplots(2, 1, figsize=(6.0, 4.6), sharex=True, gridspec_kw={"height_ratios": [3, 1], "hspace": .12})
 k = lambda s: s/1000
-a.plot([k(s) for s, _ in tr], [x for _, x in tr], color=C["chiaro"], lw=.4, label="Perdita del batch (TRAIN)")
+a.plot([k(s) for s, _ in tr], [x for _, x in tr], color=C["chiaro"], lw=.4, label="Loss del batch (TRAIN)")
 a.plot([k(s) for s, _ in med], [x for _, x in med], color=C["stera"], lw=1.2, label="Mediana mobile, 50 misure")
 a.plot([k(s) for s, _ in dv], [x for _, x in dv], "o-", color=C["ts33"], ms=2.6, lw=1, label="NLL su DEV (512 racconti)")
 a.set_ylim(1.0, 2.2); a.set_ylabel("nat per token")

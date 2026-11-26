@@ -8,16 +8,16 @@ p_\theta(x) = \prod_{t=1}^{T} p_\theta(x_t \mid x_{<t}),
 \end{equation}
 dove $\theta$ indica l'insieme dei parametri. La scomposizione è esatta per qualunque distribuzione; ciò che la rende utile è la scelta di una funzione parametrica, la rete neurale, che calcola ogni fattore a partire dal prefisso.
 
-\subsection{Log-verosimiglianza negativa e perplessità}
+\subsection{Negative log-likelihood e perplexity}
 
-Il modello si addestra massimizzando la probabilità dei testi di addestramento, o, in modo equivalente, minimizzando la log-verosimiglianza negativa media per token:
+Il modello si addestra massimizzando la probabilità dei testi di training, o, in modo equivalente, minimizzando la negative log-likelihood media per token:
 \begin{equation}
 \mathcal{L}(\theta) = -\frac{1}{|\mathcal{I}|}\sum_{t\in\mathcal{I}} \log p_\theta(x_{t}\mid x_{<t}),
 \label{eq:nll}
 \end{equation}
-dove $\mathcal{I}$ è l'insieme delle posizioni su cui si calcola la perdita. Nel seguito indicheremo questa quantità con l'acronimo NLL (\emph{negative log-likelihood}) e la misureremo in \emph{nat}, cioè con il logaritmo naturale. La NLL coincide con l'entropia incrociata tra la distribuzione empirica del testo e quella del modello.
+dove $\mathcal{I}$ è l'insieme delle posizioni su cui si calcola la loss. Nel seguito indicheremo questa quantità con l'acronimo NLL (\emph{negative log-likelihood}) e la misureremo in \emph{nat}, cioè con il logaritmo naturale. La NLL coincide con l'entropia incrociata tra la distribuzione empirica del testo e quella del modello.
 
-Due grandezze derivate sono di uso comune. La \emph{perplessità} è l'esponenziale della NLL, $\mathrm{PPL}=e^{\mathcal{L}}$, e si può leggere come il numero di scelte equiprobabili tra cui il modello è in media incerto a ogni passo. I \emph{bit per byte} (BPC o BPB) dividono la perdita totale, espressa in bit, per il numero di byte del testo; hanno il pregio di non dipendere dal tokenizzatore e permettono di confrontare modelli con vocabolari diversi.
+Due grandezze derivate sono di uso comune. La \emph{perplexity} è l'esponenziale della NLL, $\mathrm{PPL}=e^{\mathcal{L}}$, e si può leggere come il numero di scelte equiprobabili tra cui il modello è in media incerto a ogni passo. I \emph{bit per byte} (BPC o BPB) dividono la loss totale, espressa in bit, per il numero di byte del testo; hanno il pregio di non dipendere dal tokenizer e permettono di confrontare modelli con vocabolari diversi.
 
 È bene ricordare fin d'ora che una NLL bassa non garantisce testi di qualità. La NLL misura quanto il modello sia sorpreso dal testo reale quando legge il prefisso corretto (\emph{teacher forcing}); la generazione, invece, procede con i token che il modello stesso ha scelto, e un piccolo errore può propagarsi. Per questo nella tesi misureremo separatamente la capacità predittiva e la qualità dei testi generati.
 
@@ -25,7 +25,7 @@ Due grandezze derivate sono di uso comune. La \emph{perplessità} è l'esponenzi
 
 I modelli moderni non lavorano né su caratteri né su parole intere, ma su frammenti di parola ottenuti con l'algoritmo \emph{Byte Pair Encoding} (BPE) \cite{sennrich2016neural}. Si parte dall'alfabeto dei byte e si fondono ripetutamente le coppie di simboli adiacenti più frequenti nel corpus, fino a raggiungere la dimensione di vocabolario desiderata. Le parole comuni finiscono per avere un token proprio, quelle rare vengono spezzate in più parti, e nessuna stringa resta impossibile da rappresentare.
 
-La dimensione del vocabolario ha un effetto diretto sul numero di parametri. La matrice di \emph{embedding}, che associa a ogni token un vettore, ha $|\mathcal{V}|\times d$ elementi, dove $d$ è la dimensione nascosta del modello. In un modello piccolo questa matrice può rappresentare una frazione rilevante del totale. I modelli confrontati in questa tesi usano tutti lo stesso tokenizzatore BPE, con \num{50257} token: la matrice di embedding di STERA 30M è quindi la più grande del modello, ed è anch'essa rappresentata con blocchi strutturati.
+La dimensione del vocabolario ha un effetto diretto sul numero di parametri. La matrice di \emph{embedding}, che associa a ogni token un vettore, ha $|\mathcal{V}|\times d$ elementi, dove $d$ è la dimensione nascosta del modello. In un modello piccolo questa matrice può rappresentare una frazione rilevante del totale. I modelli confrontati in questa tesi usano tutti lo stesso tokenizer BPE, con \num{50257} token: la matrice di embedding di STERA 30M è quindi la più grande del modello, ed è anch'essa rappresentata con blocchi strutturati.
 
 \section{L'architettura Transformer}
 
@@ -38,17 +38,17 @@ Il Transformer è stato introdotto da Vaswani e collaboratori in \emph{Attention
 \label{fig:transformer-originale-vaswani}
 \end{figure}
 
-L'encoder originale è una pila di moduli di \emph{self-attention} e reti feed-forward, intervallati da normalizzazioni e connessioni residue. Il decoder utilizza un'attenzione causale (nel diagramma, \emph{Masked Multi-Head Attention}) e un ulteriore blocco di \emph{cross-attention} sui risultati dell'encoder. I simboli $N\times$ indicano la ripetizione dei blocchi. Lo schema riguarda il Transformer storico, non una rappresentazione delle dimensioni o dei pesi di STERA.
+L'encoder originale è una pila di moduli di \emph{self-attention} e reti feed-forward, intervallati da normalizzazioni e residual connection. Il decoder utilizza un'attention causale (nel diagramma, \emph{Masked Multi-Head Attention}) e un ulteriore blocco di \emph{cross-attention} sui risultati dell'encoder. I simboli $N\times$ indicano la ripetizione dei blocchi. Lo schema riguarda il Transformer storico, non una rappresentazione delle dimensioni o dei pesi di STERA.
 
-I modelli linguistici autoregressivi della famiglia GPT utilizzano prevalentemente una variante \emph{decoder-only} \cite{radford2019language}: conservano i blocchi di attenzione causale e il feed-forward, ma non hanno un encoder separato e non necessitano dello strato di cross-attention encoder--decoder mostrato in \autoref{fig:transformer-originale-vaswani}. Questa è anche l'impostazione generale di \textbf{STERA 30M}, che impiega normalizzazione pre-residuale e posizioni apprese. La sua architettura specifica, con sei strati, sedici teste e proiezioni STERA, è documentata nel diagramma dedicato della \autoref{fig:stera30m-flusso}; non va confusa con il diagramma del paper del 2017. Descriviamo i suoi componenti nell'ordine in cui vengono attraversati.
+I modelli linguistici autoregressivi della famiglia GPT utilizzano prevalentemente una variante \emph{decoder-only} \cite{radford2019language}: conservano i blocchi di attention causale e il feed-forward, ma non hanno un encoder separato e non necessitano del layer di cross-attention encoder--decoder mostrato in \autoref{fig:transformer-originale-vaswani}. Questa è anche l'impostazione generale di \textbf{STERA 30M}, che impiega normalizzazione pre-LN (\emph{pre-norm}) e posizioni apprese. La sua architettura specifica, con sei layer, sedici head e proiezioni STERA, è documentata nel diagramma dedicato della \autoref{fig:stera30m-flusso}; non va confusa con il diagramma del paper del 2017. Descriviamo i suoi componenti nell'ordine in cui vengono attraversati.
 
 \subsection{Embedding e posizione}
 
-Ogni token $x_t$ viene sostituito dalla riga corrispondente della matrice di embedding $E\in\mathbb{R}^{|\mathcal{V}|\times d}$. Poiché l'attenzione, da sola, non distingue l'ordine degli elementi, serve un'informazione di posizione. Le varianti più semplici sommano all'embedding un secondo vettore appreso che dipende dalla posizione $t$. Una soluzione più recente, le \emph{Rotary Position Embeddings} (RoPE) \cite{su2024roformer}, ruota le componenti delle query e delle key di un angolo proporzionale alla posizione, in modo che il prodotto scalare tra due posizioni dipenda solo dalla loro distanza relativa. STERA 30M adotta la soluzione più semplice, con vettori di posizione appresi, come i modelli TinyStories con cui è confrontato.
+Ogni token $x_t$ viene sostituito dalla riga corrispondente della matrice di embedding $E\in\mathbb{R}^{|\mathcal{V}|\times d}$. Poiché l'attention, da sola, non distingue l'ordine degli elementi, serve un'informazione di posizione. Le varianti più semplici sommano all'embedding un secondo vettore appreso che dipende dalla posizione $t$. Una soluzione più recente, le \emph{Rotary Position Embeddings} (RoPE) \cite{su2024roformer}, ruota le componenti delle query e delle key di un angolo proporzionale alla posizione, in modo che il prodotto scalare tra due posizioni dipenda solo dalla loro distanza relativa. STERA 30M adotta la soluzione più semplice, con vettori di posizione appresi, come i modelli TinyStories con cui è confrontato.
 
-\subsection{Attenzione causale a più teste}
+\subsection{Attention causale multi-head}
 
-Sia $H\in\mathbb{R}^{T\times d}$ la matrice degli stati in ingresso a un blocco. L'attenzione calcola tre proiezioni lineari,
+Sia $H\in\mathbb{R}^{T\times d}$ la matrice degli stati in ingresso a un blocco. L'attention calcola tre proiezioni lineari,
 \begin{equation}
 Q = H W_Q^\top,\qquad K = H W_K^\top,\qquad V = H W_V^\top,
 \end{equation}
@@ -58,52 +58,52 @@ con $W_Q,W_K,W_V\in\mathbb{R}^{d\times d}$. Le righe di $Q$ e $K$ vengono confro
 \end{equation}
 La matrice $M$ è la \emph{maschera causale}: vale $0$ se $j\le t$ e $-\infty$ altrimenti, così che la posizione $t$ non possa vedere i token futuri. Senza questa maschera il modello imparerebbe a copiare la risposta invece di prevederla.
 
-Nella versione a più teste il vettore di dimensione $d$ viene diviso in $h$ blocchi di dimensione $d_h=d/h$, ognuno dei quali esegue un'attenzione indipendente. I risultati vengono concatenati e passati per una quarta proiezione $W_O\in\mathbb{R}^{d\times d}$. Le teste permettono al modello di seguire contemporaneamente relazioni diverse, per esempio il soggetto di una frase e il personaggio introdotto qualche riga prima.
+Nella versione a più head il vettore di dimensione $d$ viene diviso in $h$ blocchi di dimensione $d_h=d/h$, ognuno dei quali esegue un'attention indipendente. I risultati vengono concatenati e passati per una quarta proiezione $W_O\in\mathbb{R}^{d\times d}$. Le head permettono al modello di seguire contemporaneamente relazioni diverse, per esempio il soggetto di una frase e il personaggio introdotto qualche riga prima.
 
 \subsection{Blocco feed-forward}
 
-Dopo l'attenzione, ogni posizione attraversa indipendentemente una piccola rete a due strati:
+Dopo l'attention, ogni posizione attraversa indipendentemente una piccola rete a due layer:
 \begin{equation}
 \mathrm{FFN}(h) = W_2\,\phi(W_1 h + b_1) + b_2,
 \end{equation}
-con $W_1\in\mathbb{R}^{f\times d}$, $W_2\in\mathbb{R}^{d\times f}$ e tipicamente $f=4d$. La funzione di attivazione $\phi$ è di solito la GELU \cite{hendrycks2016gelu}, una versione smussata della ReLU. Il blocco feed-forward contiene circa due terzi dei parametri di ogni strato.
+con $W_1\in\mathbb{R}^{f\times d}$, $W_2\in\mathbb{R}^{d\times f}$ e tipicamente $f=4d$. La funzione di attivazione $\phi$ è di solito la GELU \cite{hendrycks2016gelu}, una versione smussata della ReLU. Il blocco feed-forward contiene circa due terzi dei parametri di ogni layer.
 
-\subsection{Normalizzazione e connessioni residue}
+\subsection{Normalizzazione e residual connection}
 
-Ogni sotto-blocco è preceduto da una normalizzazione e racchiuso in una connessione residua:
+Ogni sotto-blocco è preceduto da una normalizzazione e racchiuso in una residual connection:
 \begin{align}
 h' &= h + \mathrm{Attn}(\mathrm{LN}(h)),\\
 h'' &= h' + \mathrm{FFN}(\mathrm{LN}(h')).
 \end{align}
-La \emph{Layer Normalization} \cite{ba2016layer} riporta ogni vettore a media nulla e varianza unitaria e poi applica un guadagno e uno spostamento appresi. Le connessioni residue fanno sì che il gradiente possa attraversare molti strati senza svanire, e rendono stabile l'addestramento di reti profonde.
+La \emph{Layer Normalization} \cite{ba2016layer} riporta ogni vettore a media nulla e varianza unitaria e poi applica un guadagno e uno spostamento appresi. Le residual connection fanno sì che il gradiente possa attraversare molti layer senza svanire, e rendono stabile il training di reti profonde.
 
-\subsection{Testa di uscita}
+\subsection{Output head}
 
 Dopo l'ultimo blocco, una normalizzazione finale e una proiezione lineare producono un vettore di \emph{logit}, uno per ogni token del vocabolario. Spesso la matrice di questa proiezione coincide con la matrice di embedding trasposta (\emph{weight tying}) \cite{press2017using}: si risparmiano parametri e si ottiene di solito un modello migliore. La funzione softmax trasforma infine i logit in una distribuzione di probabilità sul token successivo.
 
 \subsection{Dove stanno i parametri}
 
-Conviene fare il conto dei parametri di uno strato. Le quattro proiezioni dell'attenzione contribuiscono con $4d^2$ valori, il blocco feed-forward con $2df=8d^2$. Le normalizzazioni e i bias aggiungono un numero di valori proporzionale a $d$, trascurabile. In totale ogni strato contiene circa $12d^2$ parametri, e \emph{tutti} quelli significativi stanno in sei matrici dense. Lo stesso vale per il tempo di calcolo durante la generazione: a ogni token ciascuna di quelle matrici viene moltiplicata per un vettore.
+Conviene fare il conto dei parametri di un layer. Le quattro proiezioni dell'attention contribuiscono con $4d^2$ valori, il blocco feed-forward con $2df=8d^2$. Le normalizzazioni e i bias aggiungono un numero di valori proporzionale a $d$, trascurabile. In totale ogni layer contiene circa $12d^2$ parametri, e \emph{tutti} quelli significativi stanno in sei matrici dense. Lo stesso vale per il tempo di calcolo durante la generazione: a ogni token ciascuna di quelle matrici viene moltiplicata per un vettore.
 
-Questa osservazione è il punto di partenza della tesi. Se si vuole cambiare in modo sostanziale l'ingombro e la velocità di un Transformer, bisogna intervenire sulle sue matrici lineari. Il resto dell'architettura (attenzione, normalizzazioni, funzioni di attivazione) può restare invariato.
+Questa osservazione è il punto di partenza della tesi. Se si vuole cambiare in modo sostanziale l'ingombro e la velocità di un Transformer, bisogna intervenire sulle sue matrici lineari. Il resto dell'architettura (attention, normalizzazioni, funzioni di attivazione) può restare invariato.
 
-\section{Addestramento}
+\section{Training}
 
-\subsection{Backpropagation in uno strato lineare}
+\subsection{Backpropagation in un layer lineare}
 
-L'addestramento usa la discesa del gradiente: si calcola la derivata della perdita rispetto a ogni parametro e si sposta il parametro nella direzione opposta. Il gradiente si ottiene con la backpropagation, cioè applicando la regola della catena all'indietro attraverso la rete.
+Il training usa il gradient descent: si calcola la derivata della loss rispetto a ogni parametro e si sposta il parametro nella direzione opposta. Il gradiente si ottiene con la backpropagation, cioè applicando la regola della catena all'indietro attraverso la rete.
 
-Per uno strato lineare $Y=XW^\top$, con $X\in\mathbb{R}^{B\times n}$ ingressi, $W\in\mathbb{R}^{m\times n}$ pesi e $Y\in\mathbb{R}^{B\times m}$ uscite, se $G_Y=\partial\mathcal{L}/\partial Y$ è il gradiente che arriva dall'alto, valgono
+Per un layer lineare $Y=XW^\top$, con $X\in\mathbb{R}^{B\times n}$ ingressi, $W\in\mathbb{R}^{m\times n}$ pesi e $Y\in\mathbb{R}^{B\times m}$ uscite, se $G_Y=\partial\mathcal{L}/\partial Y$ è il gradiente che arriva dall'alto, valgono
 \begin{equation}
 \frac{\partial\mathcal{L}}{\partial W} = G_Y^\top X,\qquad
 \frac{\partial\mathcal{L}}{\partial X} = G_Y W.
 \label{eq:linear-grad}
 \end{equation}
-La prima formula fornisce il gradiente dei pesi, la seconda il gradiente da passare allo strato precedente. Nel \autoref{cap:capitoli/03-formalismo} useremo la prima per ricavare il gradiente rispetto alle coordinate compresse: basterà comporla con la derivata della mappa che costruisce $W$ dalle coordinate.
+La prima formula fornisce il gradiente dei pesi, la seconda il gradiente da passare al layer precedente. Nel \autoref{cap:capitoli/03-formalismo} useremo la prima per ricavare il gradiente rispetto alle coordinate compresse: basterà comporla con la derivata della mappa che costruisce $W$ dalle coordinate.
 
 \subsection{Adam e AdamW}
 
-La discesa del gradiente semplice usa un unico passo per tutti i parametri. Adam \cite{kingma2015adam} adatta invece il passo a ciascun parametro, mantenendo una media esponenziale del gradiente e del suo quadrato:
+La gradient descent semplice usa un unico passo per tutti i parametri. Adam \cite{kingma2015adam} adatta invece il passo a ciascun parametro, mantenendo una media esponenziale del gradiente e del suo quadrato:
 \begin{align}
 m_t &= \beta_1 m_{t-1} + (1-\beta_1) g_t,\\
 v_t &= \beta_2 v_{t-1} + (1-\beta_2) g_t^2,\\
@@ -111,7 +111,7 @@ v_t &= \beta_2 v_{t-1} + (1-\beta_2) g_t^2,\\
 \end{align}
 dove $\hat m_t=m_t/(1-\beta_1^t)$ e $\hat v_t=v_t/(1-\beta_2^t)$ correggono la distorsione iniziale dovuta all'inizializzazione a zero. AdamW \cite{loshchilov2019decoupled} aggiunge un termine di weight decay separato dal gradiente, $-\eta_t\lambda\theta_t$, che agisce come regolarizzazione. Per STERA 30M usiamo $\beta_1=0{,}9$, $\beta_2=0{,}95$ e $\lambda=0{,}1$ (\autoref{sec:stera30m-config-training}).
 
-Ogni parametro allenabile richiede quindi due valori aggiuntivi nello stato dell'ottimizzatore. È per questo che ridurre il numero di parametri allenabili riduce in proporzione anche la memoria dell'addestramento.
+Ogni parametro allenabile richiede quindi due valori aggiuntivi nello stato dell'optimizer. È per questo che ridurre il numero di parametri allenabili riduce in proporzione anche la memoria del training.
 
 \subsection{Learning rate e stabilità}
 
@@ -127,7 +127,7 @@ Nelle valutazioni di questa tesi tutti i modelli generano con campionamento top-
 
 \subsection{KV cache}
 
-Durante la generazione, il prefisso cresce di un token alla volta. Ricalcolare ogni volta l'attenzione sull'intero prefisso sarebbe uno spreco: le key e i value delle posizioni passate non cambiano. Si conservano quindi in una \emph{KV cache} e, a ogni nuovo token, si calcolano solo la query, la key e il value della nuova posizione. Il costo per token diventa dominato, ancora una volta, dai prodotti matrice--vettore delle proiezioni lineari.
+Durante la generazione, il prefisso cresce di un token alla volta. Ricalcolare ogni volta l'attention sull'intero prefisso sarebbe uno spreco: le key e i value delle posizioni passate non cambiano. Si conservano quindi in una \emph{KV cache} e, a ogni nuovo token, si calcolano solo la query, la key e il value della nuova posizione. Il costo per token diventa dominato, ancora una volta, dai prodotti matrice--vettore delle proiezioni lineari.
 
 \section{Memoria e trasferimento dei pesi}
 \label{sec:memoria-trasferimento}
@@ -155,7 +155,7 @@ Durante la generazione, ogni token richiede di applicare tutte le matrici del mo
 
 \subsection{Pesi residenti e pesi trasferiti}
 
-Se l'intero modello entra nella memoria principale, i pesi vengono caricati una volta e restano \emph{residenti}: ogni token paga solo il calcolo e la lettura dalla memoria principale. Se il modello è più grande della memoria disponibile, occorre una politica di \emph{swap}. Nella forma più semplice, il sistema operativo gestisce i pesi tramite memoria virtuale: il file dei pesi viene mappato in memoria e le pagine vengono lette dal disco quando servono e scartate quando la memoria si esaurisce. Le politiche specifiche per i modelli linguistici sfruttano invece la struttura della rete: poiché gli strati sono applicati in ordine, è possibile caricare uno strato (\emph{swap-in}) poco prima di usarlo e liberarne la memoria (\emph{swap-out}) subito dopo, mantenendo residenti solo le parti usate più spesso, come l'embedding e la testa di uscita.
+Se l'intero modello entra nella memoria principale, i pesi vengono caricati una volta e restano \emph{residenti}: ogni token paga solo il calcolo e la lettura dalla memoria principale. Se il modello è più grande della memoria disponibile, occorre una politica di \emph{swap}. Nella forma più semplice, il sistema operativo gestisce i pesi tramite memoria virtuale: il file dei pesi viene mappato in memoria e le pagine vengono lette dal disco quando servono e scartate quando la memoria si esaurisce. Le politiche specifiche per i modelli linguistici sfruttano invece la struttura della rete: poiché i layer sono applicati in ordine, è possibile caricare un layer (\emph{swap-in}) poco prima di usarlo e liberarne la memoria (\emph{swap-out}) subito dopo, mantenendo residenti solo le parti usate più spesso, come l'embedding e la output head.
 
 \subsection{Costo di un token con pesi trasferiti}
 
@@ -164,7 +164,7 @@ Sia $B$ il numero di byte di pesi che devono essere letti dal disco per generare
 T_{\mathrm{seq}} = \frac{B}{\beta} + T_c .
 \label{eq:tempo-sequenziale}
 \end{equation}
-Con il \emph{prefetch}, lo strato $\ell+1$ viene caricato mentre si calcola lo strato $\ell$, usando due aree di memoria alternate (\emph{doppio buffer}). Trasferimento e calcolo si sovrappongono e, a regime,
+Con il \emph{prefetch}, il layer $\ell+1$ viene caricato mentre si calcola il layer $\ell$, usando due aree di memoria alternate (\emph{doppio buffer}). Trasferimento e calcolo si sovrappongono e, a regime,
 \begin{equation}
 T_{\mathrm{pref}} \approx \max\!\left(\frac{B}{\beta},\,T_c\right).
 \label{eq:tempo-prefetch}
@@ -193,7 +193,7 @@ La \autoref{fig:prefetch} confronta le due politiche. Nei modelli linguistici su
 \draw[decorate, decoration={brace, amplitude=3pt, mirror}, steraGrigio] (0,1.75) -- (9,1.75) node[midway, below=2pt]{$3\,(B_\ell/\beta + T_{c,\ell})$};
 \draw[decorate, decoration={brace, amplitude=3pt, mirror}, steraGrigio] (0,-1.95) -- (7,-1.95) node[midway, below=2pt]{$3\,B_\ell/\beta + T_{c,\ell}$};
 \end{tikzpicture}
-\caption{Trasferimento degli strati dal disco per un token, con tre strati $L_1,L_2,L_3$. In alto ogni strato viene prima caricato e poi calcolato. In basso, con il prefetch, il caricamento dello strato successivo procede durante il calcolo di quello corrente: quando la lettura è più lenta del calcolo, il tempo è dominato dai byte da trasferire.}
+\caption{Trasferimento dei layer dal disco per un token, con tre layer $L_1,L_2,L_3$. In alto ogni layer viene prima caricato e poi calcolato. In basso, con il prefetch, il caricamento del layer successivo procede durante il calcolo di quello corrente: quando la lettura è più lenta del calcolo, il tempo è dominato dai byte da trasferire.}
 \label{fig:prefetch}
 \end{figure}
 \newpage
@@ -205,10 +205,10 @@ Questa sezione richiama i fondamenti degli strumenti statistici usati nella tesi
 
 \paragraph{Intervallo di Wilson: incertezza di una proporzione.} Per una proporzione, come la frazione di racconti giudicati corretti, l'intervallo di Wilson \cite{wilson1927probable} è più affidabile di quello basato sull'approssimazione normale quando la proporzione è vicina a zero o a uno o il campione è piccolo. Nella tesi accompagna la quota di racconti corretti di ciascun modello.
 
-\paragraph{Test di McNemar: significatività di un confronto appaiato.} Quando due modelli sono valutati sugli stessi incipit con un esito binario (racconto corretto o no), le coppie in cui entrambi riescono o entrambi falliscono non dicono nulla sulla differenza fra i modelli. Il test esatto di McNemar \cite{mcnemar1947note} considera solo le coppie discordanti: indicato con $b$ il numero di incipit in cui riesce solo il primo modello e con $c$ quello in cui riesce solo il secondo, sotto l'ipotesi nulla di uguale prestazione $b$ segue una distribuzione binomiale con $n=b+c$ prove e probabilità $1/2$. Il valore $p$ bilaterale è il doppio della coda binomiale più piccola. Nella tesi stabilisce se la quota di racconti corretti di STERA 30M differisce in modo significativo da quella dei modelli di riferimento e da quella della sua variante con il termine a basso rango a 8 bit.
+\paragraph{Test di McNemar: significatività di un confronto appaiato.} Quando due modelli sono valutati sugli stessi prompt con un esito binario (racconto corretto o no), le coppie in cui entrambi riescono o entrambi falliscono non dicono nulla sulla differenza fra i modelli. Il test esatto di McNemar \cite{mcnemar1947note} considera solo le coppie discordanti: indicato con $b$ il numero di prompt in cui riesce solo il primo modello e con $c$ quello in cui riesce solo il secondo, sotto l'ipotesi nulla di uguale prestazione $b$ segue una distribuzione binomiale con $n=b+c$ prove e probabilità $1/2$. Il valore $p$ bilaterale è il doppio della coda binomiale più piccola. Nella tesi stabilisce se la quota di racconti corretti di STERA 30M differisce in modo significativo da quella dei modelli di riferimento e da quella della sua variante con il termine low-rank a 8 bit.
 
 \paragraph{Correzione di Holm: più confronti insieme.} Quando si eseguono più confronti, la probabilità che almeno uno risulti significativo per caso cresce con il loro numero. Il metodo di Holm \cite{holm1979simple} corregge i valori $p$ in modo da controllare la probabilità di commettere almeno un errore del primo tipo. Nella tesi è applicato ai tre confronti a coppie fra STERA 30M, TinyStories-8M e TinyStories-33M.
 
 \section{Sintesi}
 
-Il quadro che emerge è semplice. Un Transformer è una successione di prodotti matrice--vettore intervallati da operazioni leggere. Le matrici contengono quasi tutti i parametri, determinano quasi tutta la memoria dell'addestramento (pesi, momenti, gradienti) e, in generazione, quasi tutto il traffico verso la memoria. Il prossimo capitolo esamina le tecniche che la letteratura ha sviluppato per rendere queste matrici più leggere.
+Il quadro che emerge è semplice. Un Transformer è una successione di prodotti matrice--vettore intervallati da operazioni leggere. Le matrici contengono quasi tutti i parametri, determinano quasi tutta la memoria del training (pesi, momenti, gradienti) e, in generazione, quasi tutto il traffico verso la memoria. Il prossimo capitolo esamina le tecniche che la letteratura ha sviluppato per rendere queste matrici più leggere.

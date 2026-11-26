@@ -2,7 +2,7 @@ Questo capitolo verifica le ipotesi H1 e H4 della \autoref{sec:ipotesi}: la capa
 
 \input{capitoli/06b-curva-pretraining}
 
-\section{Verosimiglianza sui racconti di prova}
+\section{Likelihood sui racconti di prova}
 \label{sec:risultati-nll}
 
 La \autoref{tab:nll-3modelli} riporta la NLL dei tre modelli sui 300 racconti TEST, misurata sugli stessi \num{57841} token target.
@@ -12,20 +12,20 @@ La \autoref{tab:nll-3modelli} riporta la NLL dei tre modelli sui 300 racconti TE
 \small
 \begin{tabular}{lrrr}
 \toprule
-Modello & Parametri & NLL & Perplessità \\
+Modello & Parametri & NLL & Perplexity \\
 \midrule
 TinyStories-8M & \num{19702528} & 1,515 & 4,55 \\
 \textbf{STERA 30M} & \textbf{\num{30346182}} & \textbf{1,174} & \textbf{3,23} \\
 TinyStories-33M & \num{68514048} & 1,324 & 3,76 \\
 \bottomrule
 \end{tabular}
-\caption{NLL media per token sui 300 racconti TEST (\num{57841} token target) e relativa perplessità.}
+\caption{NLL media per token sui 300 racconti TEST (\num{57841} token target) e relativa perplexity.}
 \label{tab:nll-3modelli}
 \end{table}
 
 STERA 30M ottiene la NLL più bassa. La differenza rispetto a TinyStories-33M è di $-0{,}150$ nat per token, con intervallo bootstrap al 95\% $[-0{,}186;\,-0{,}115]$; rispetto a TinyStories-8M è di $-0{,}341$ nat, con intervallo $[-0{,}365;\,-0{,}319]$. Entrambi gli intervalli escludono lo zero.
 
-Il risultato conferma H1: STERA 30M ha appreso una distribuzione che generalizza a racconti mai visti durante l'addestramento. Il confronto con i riferimenti va però letto con cautela: STERA 30M è stato addestrato sulla stessa versione del corpus da cui provengono i racconti di prova, mentre i dati di addestramento dei checkpoint pubblici non sono documentati con la stessa precisione. Una parte del vantaggio può quindi dipendere dalla corrispondenza fra distribuzione di addestramento e distribuzione di prova, e non solo dal modello.
+Il risultato conferma H1: STERA 30M ha appreso una distribuzione che generalizza a racconti mai visti durante il training. Il confronto con i riferimenti va però letto con cautela: STERA 30M è stato addestrato sulla stessa versione del corpus da cui provengono i racconti di prova, mentre i dati di training dei checkpoint pubblici non sono documentati con la stessa precisione. Una parte del vantaggio può quindi dipendere dalla corrispondenza fra distribuzione di training e distribuzione di prova, e non solo dal modello.
 
 \section{Qualità dei racconti generati}
 \label{sec:risultati-stera30m-tinystories}
@@ -37,7 +37,7 @@ La \autoref{fig:narrativa-3modelli} e la \autoref{tab:narrativa-3modelli} riport
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=\linewidth]{figure/risultati/narrativa_nll_3modelli.pdf}
-\caption{(a) Quota di racconti corretti nel giudizio cieco sui 300 incipit, con intervallo di Wilson al 95\%. (b) NLL sui 300 racconti di riferimento.}
+\caption{(a) Quota di racconti corretti nel giudizio cieco sui 300 prompt, con intervallo di Wilson al 95\%. (b) NLL sui 300 racconti di riferimento.}
 \label{fig:narrativa-3modelli}
 \end{figure}
 
@@ -54,7 +54,7 @@ TinyStories-8M & 65/300 (21,7\%) & [17,4; 26,7] & 7,43 & 4,74 & 4,96 \\
 \textbf{STERA 30M} & \textbf{132/300 (44,0\%)} & [38,5; 49,7] & 7,67 & 5,26 & 5,37 \\
 TinyStories-33M & 145/300 (48,3\%) & [42,7; 54,0] & 7,91 & 5,54 & 5,49 \\
 \midrule
-STERA 30M, basso rango a 8 bit$^{*}$ & 124/300 (41,3\%) & [35,9; 47,0] & 7,88 & 5,41 & 5,42 \\
+STERA 30M, low-rank a 8 bit$^{*}$ & 124/300 (41,3\%) & [35,9; 47,0] & 7,88 & 5,41 & 5,42 \\
 \bottomrule
 \end{tabular}
 \caption{Racconti corretti con intervallo di Wilson e voti medi (scala 1--10) assegnati dal giudice per grammatica, coerenza e trama. $^{*}$Variante di STERA 30M con i soli fattori $U$ e $V$ quantizzati a 8 bit (\autoref{sec:basso-rango}), valutata in una sessione separata con lo stesso giudice e la stessa rubrica.}
@@ -75,7 +75,7 @@ Nella \autoref{fig:categorie-spn} ogni barra divide i 300 racconti di un modello
 \subsection{Confronti appaiati}
 \label{sec:confronti-appaiati-rango8}
 
-Poiché i tre modelli continuano gli stessi incipit, il confronto più informativo è quello appaiato, incipit per incipit (\autoref{tab:appaiati-3modelli}).
+Poiché i tre modelli continuano gli stessi prompt, il confronto più informativo è quello appaiato, prompt per prompt (\autoref{tab:appaiati-3modelli}).
 
 \begin{table}[htbp]
 \centering
@@ -89,13 +89,13 @@ STERA 30M $-$ TinyStories-33M & $-4{,}3$ & $[-12{,}0;\,+3{,}7]$ & 66 / 79 & 0,32
 TinyStories-33M $-$ TinyStories-8M & $+26{,}7$ & $[+19{,}7;\,+33{,}7]$ & 109 / 29 & $<10^{-10}$ \\
 \bottomrule
 \end{tabularx}
-\caption{Differenze appaiate nella quota di racconti corretti, in punti percentuali. ``Solo A / solo B'' conta gli incipit in cui è corretto solo il primo o solo il secondo modello; il valore $p$ è quello del test esatto di McNemar con correzione di Holm sui tre confronti.}
+\caption{Differenze appaiate nella quota di racconti corretti, in punti percentuali. ``Solo A / solo B'' conta i prompt in cui è corretto solo il primo o solo il secondo modello; il valore $p$ è quello del test esatto di McNemar con correzione di Holm sui tre confronti.}
 \label{tab:appaiati-3modelli}
 \end{table}
 
-STERA 30M produce racconti corretti molto più spesso di TinyStories-8M: la differenza è di 22 punti percentuali e il test la rende inequivocabile. Rispetto a TinyStories-33M la differenza osservata è di $-4{,}3$ punti e non è statisticamente significativa: sui 145 incipit in cui i due modelli si comportano diversamente, 66 favoriscono STERA 30M e 79 il riferimento. L'intervallo di confidenza, che va da $-12$ a $+4$ punti, non consente tuttavia di affermare che i due modelli siano equivalenti: è compatibile sia con una parità sostanziale sia con uno svantaggio moderato di STERA 30M.
+STERA 30M produce racconti corretti molto più spesso di TinyStories-8M: la differenza è di 22 punti percentuali e il test la rende inequivocabile. Rispetto a TinyStories-33M la differenza osservata è di $-4{,}3$ punti e non è statisticamente significativa: sui 145 prompt in cui i due modelli si comportano diversamente, 66 favoriscono STERA 30M e 79 il riferimento. L'intervallo di confidenza, che va da $-12$ a $+4$ punti, non consente tuttavia di affermare che i due modelli siano equivalenti: è compatibile sia con una parità sostanziale sia con uno svantaggio moderato di STERA 30M.
 
-Nella variante con il termine a basso rango quantizzato a 8 bit i racconti corretti sono 124 contro 132; sugli stessi incipit la differenza appaiata è di $-2{,}7$ punti, con intervallo al 95\% $[-9{,}7;\,+4{,}7]$ e $p=0{,}52$ nel test di McNemar: la quantizzazione non produce una perdita significativa di qualità. La stessa procedura, applicata al modello con il basso rango ridotto a posteriori, mostra invece un crollo già a rango 64 (\autoref{sec:risultati-componenti}).
+Nella variante con il termine low-rank quantizzato a 8 bit i racconti corretti sono 124 contro 132; sugli stessi prompt la differenza appaiata è di $-2{,}7$ punti, con intervallo al 95\% $[-9{,}7;\,+4{,}7]$ e $p=0{,}52$ nel test di McNemar: la quantizzazione non produce una perdita significativa di qualità. La stessa procedura, applicata al modello con il low-rank ridotto a posteriori, mostra invece un crollo già a rango 64 (\autoref{sec:risultati-componenti}).
 
 \subsection{Errori ricorrenti}
 
@@ -120,14 +120,14 @@ Modello addestrato & $1{,}1740$ & -- \\
 \rowcolor{steraArancio!12} Guadagni riportati a 1 & $11{,}3839$ & $+870\%$ \\
 Scale a 8 bit & $1{,}1742$ & $+0{,}02\%$ \\
 Guadagni a 8 bit & $1{,}1760$ & $+0{,}17\%$ \\
-Scale, guadagni e basso rango a 8 bit & $1{,}1765$ & $+0{,}21\%$ \\
+Scale, guadagni e low-rank a 8 bit & $1{,}1765$ & $+0{,}21\%$ \\
 \bottomrule
 \end{tabular}
-\caption{NLL di STERA 30M sui 300 racconti di prova modificando una componente alla volta, calcolata su CPU. Nelle prove a 8 bit scale e guadagni hanno una scala di quantizzazione per matrice, il basso rango una per colonna.}
+\caption{NLL di STERA 30M sui 300 racconti di prova modificando una componente alla volta, calcolata su CPU. Nelle prove a 8 bit scale e guadagni hanno una scala di quantizzazione per matrice, il low-rank una per colonna.}
 \label{tab:ablazioni-scale-guadagni}
 \end{table}
 
-\paragraph{Rango ridotto.} La \autoref{tab:rango-ridotto} e la \autoref{fig:rango-ridotto}, subito sotto, riportano NLL e racconti corretti al variare del rango. Nel grafico l'asse orizzontale è il rango usato, da 0 (basso rango tolto) a 96 (modello addestrato); il pannello di sinistra mostra la NLL, quello di destra la quota di racconti corretti con il suo intervallo di confidenza. Come mostra la figura, le due curve si muovono insieme: appena il rango scende sotto 96 la NLL sale e la quota di racconti corretti crolla, senza un tratto iniziale in cui il modello resti stabile. Il modello addestrato usa tutto il rango disponibile: a rango 64 la quota di racconti corretti scende dal $44{,}0\%$ al $20{,}0\%$, con una differenza appaiata di $-24$ punti, intervallo al 95\% $[-31;\,-17]$ e $p=1{,}6\cdot10^{-10}$ dopo la correzione di Holm; da rango 48 in giù nessun racconto è corretto ($p<10^{-38}$). Lo stesso andamento compare nella NLL, che cresce con regolarità al diminuire del rango.
+\paragraph{Rango ridotto.} La \autoref{tab:rango-ridotto} e la \autoref{fig:rango-ridotto}, subito sotto, riportano NLL e racconti corretti al variare del rango. Nel grafico l'asse orizzontale è il rango usato, da 0 (low-rank tolto) a 96 (modello addestrato); il pannello di sinistra mostra la NLL, quello di destra la quota di racconti corretti con il suo intervallo di confidenza. Come mostra la figura, le due curve si muovono insieme: appena il rango scende sotto 96 la NLL sale e la quota di racconti corretti crolla, senza un tratto iniziale in cui il modello resti stabile. Il modello addestrato usa tutto il rango disponibile: a rango 64 la quota di racconti corretti scende dal $44{,}0\%$ al $20{,}0\%$, con una differenza appaiata di $-24$ punti, intervallo al 95\% $[-31;\,-17]$ e $p=1{,}6\cdot10^{-10}$ dopo la correzione di Holm; da rango 48 in giù nessun racconto è corretto ($p<10^{-38}$). Lo stesso andamento compare nella NLL, che cresce con regolarità al diminuire del rango.
 
 \begin{table}[H]
 \centering
@@ -145,25 +145,25 @@ Rango usato & NLL TEST & Racconti corretti & Risparmio vs forma densa \\
 0 & $5{,}813$ & $0\%$ & $78{,}9\%$ \\
 \bottomrule
 \end{tabular}
-\caption{STERA 30M con il termine a basso rango ridotto a posteriori. Il rango 96 è il modello addestrato; per gli altri ranghi i 300 racconti sono stati generati con la stessa procedura e giudicati alla cieca con la stessa rubrica, mescolati fra loro.}
+\caption{STERA 30M con il termine low-rank ridotto a posteriori. Il rango 96 è il modello addestrato; per gli altri ranghi i 300 racconti sono stati generati con la stessa procedura e giudicati alla cieca con la stessa rubrica, mescolati fra loro.}
 \label{tab:rango-ridotto}
 \end{table}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=.9\linewidth]{figure/risultati/rango_ridotto.pdf}
-\caption{NLL sui racconti di prova (a sinistra) e quota di racconti corretti con intervallo di Wilson al 95\% (a destra) di STERA 30M al variare del rango del termine a basso rango.}
+\caption{NLL sui racconti di prova (a sinistra) e quota di racconti corretti con intervallo di Wilson al 95\% (a destra) di STERA 30M al variare del rango del termine low-rank.}
 \label{fig:rango-ridotto}
 \end{figure}
 
-\paragraph{Basso rango a 8 bit.} Quantizzando a 8 bit i soli fattori $U$ e $V$, nel formato del motore la NLL varia del $+0{,}007\%$. Nel giudizio cieco la variante ottiene il $41{,}3\%$ di racconti corretti contro il $44{,}0\%$, una differenza non significativa ($p=0{,}52$, \autoref{sec:confronti-appaiati-rango8}). Ridurre il rango e ridurre i bit hanno quindi effetti opposti sul modello addestrato: il primo lo rompe già a rango 64, il secondo porta i pesi da $121{,}4$ a $86{,}1$~MB senza una perdita significativa.
+\paragraph{Low-rank a 8 bit.} Quantizzando a 8 bit i soli fattori $U$ e $V$, nel formato del motore la NLL varia del $+0{,}007\%$. Nel giudizio cieco la variante ottiene il $41{,}3\%$ di racconti corretti contro il $44{,}0\%$, una differenza non significativa ($p=0{,}52$, \autoref{sec:confronti-appaiati-rango8}). Ridurre il rango e ridurre i bit hanno quindi effetti opposti sul modello addestrato: il primo lo rompe già a rango 64, il secondo porta i pesi da $121{,}4$ a $86{,}1$~MB senza una perdita significativa.
 
 \section{Sintesi}
 
 \begin{itemize}
-\item \textbf{H1 è confermata.} La NLL su DEV scende durante tutto l'addestramento e la NLL sui racconti TEST è la più bassa fra i tre modelli confrontati.
+\item \textbf{H1 è confermata.} La NLL su DEV scende durante tutto il training e la NLL sui racconti TEST è la più bassa fra i tre modelli confrontati.
 \item \textbf{H4 è confermata nei confronti di TinyStories-8M} e \textbf{non è né confermata né smentita nei confronti di TinyStories-33M}. STERA 30M scrive racconti corretti nel 44\% dei casi, il doppio di TinyStories-8M, e con una differenza non significativa rispetto a TinyStories-33M, che ha più del doppio dei parametri memorizzati.
-\item \textbf{La quantizzazione del basso rango non riduce la qualità in modo misurabile}: NLL $+0{,}007\%$ e racconti corretti $41{,}3\%$ contro $44{,}0\%$, differenza non significativa.
+\item \textbf{La quantizzazione del low-rank non riduce la qualità in modo misurabile}: NLL $+0{,}007\%$ e racconti corretti $41{,}3\%$ contro $44{,}0\%$, differenza non significativa.
 \end{itemize}
 
 Il capitolo successivo verifica le ipotesi H2 e H3, relative al costo di rappresentazione ed esecuzione dei pesi.

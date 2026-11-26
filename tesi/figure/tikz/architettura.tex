@@ -7,7 +7,7 @@
 \node[box] (in) {Token $u_t$ e posizione $t$};
 \node[rm, above=5mm of in] (emb) {Embedding: $x_t = E_{u_t,:} + P_{t,:}$};
 \node[box, above=8mm of emb] (ln1) {LayerNorm};
-\node[rm, above=3mm of ln1] (att) {Attenzione causale, 16 teste\\[-1pt]{\footnotesize $W_Q, W_K, W_V, W_O$ RowMask23}};
+\node[rm, above=3mm of ln1] (att) {Attention causale, 16 head\\[-1pt]{\footnotesize $W_Q, W_K, W_V, W_O$ RowMask23}};
 \node[op, above=3mm of att] (s1) {$+$};
 \node[box, above=3mm of s1] (ln2) {LayerNorm};
 \node[rm, above=3mm of ln2] (ff) {Feed-forward con GELU, $768\to3072\to768$\\[-1pt]{\footnotesize $W_1, W_2$ RowMask23}};
@@ -25,7 +25,7 @@
 \begin{scope}[on background layer]
 \node[draw=steraGrigio, dashed, rounded corners=4pt, fit=(ln1)(att)(s1)(ln2)(ff)(s2), inner xsep=10mm, inner ysep=3mm] (blk) {};
 \end{scope}
-\node[lab, anchor=north west] at ([xshift=2mm,yshift=-2mm]blk.north east) {$\times 6$ strati};
-\node[lab, anchor=north west, text width=27mm] at ([xshift=2mm,yshift=-8mm]blk.north east) {strati 1, 3, 5: attenzione su tutto il prefisso\\ strati 2, 4, 6: finestra locale di 256 posizioni};
+\node[lab, anchor=north west] at ([xshift=2mm,yshift=-2mm]blk.north east) {$\times 6$ layer};
+\node[lab, anchor=north west, text width=27mm] at ([xshift=2mm,yshift=-8mm]blk.north east) {layer 1, 3, 5: attention su tutto il prefisso\\ layer 2, 4, 6: finestra locale di 256 posizioni};
 \draw[->, steraBlu, dashed] (emb.west) -- ++(-20mm,0) |- node[pos=.25, left, font=\footnotesize, text=steraBlu]{stessa $E$} (out.west);
 \end{tikzpicture}

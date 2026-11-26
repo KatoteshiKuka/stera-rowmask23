@@ -14,7 +14,7 @@ for i, (k, lab, col) in enumerate(M):
 a.set_xticks(range(3)); a.set_xticklabels([l for _, l, _ in M], fontsize=8.5)
 a.set_ylabel("Racconti corretti (%)"); a.set_ylim(0, 62)
 a.yaxis.set_major_formatter(FuncFormatter(lambda v, _: it(v)))
-a.set_title("(a) Giudizio cieco, 300 incipit", fontsize=9.5)
+a.set_title("(a) Giudizio cieco, 300 prompt", fontsize=9.5)
 a.grid(axis="x", visible=False)
 # (b) NLL
 for i, (k, lab, col) in enumerate(M):

@@ -1,6 +1,6 @@
 """Figura del bilancio dei parametri (Capitolo 4): risparmio di un modello STERA rispetto alla forma densa
 al variare della dimensione d, per rango fisso e per rango proporzionale alla dimensione.
-Modello di riferimento: 6 strati, feed-forward 4d, vocabolario 50.304, 2.048 posizioni (come STERA 30M)."""
+Modello di riferimento: 6 layer, feed-forward 4d, vocabolario 50.304, 2.048 posizioni (come STERA 30M)."""
 import pathlib
 from fractions import Fraction
 from stile import plt, C, it
@@ -23,7 +23,7 @@ ds = [128 * round(x / 128) for x in ds]
 fig, ax = plt.subplots(figsize=(6.0, 3.0))
 ax.axhline(100 * float(1 - K), color="#333", ls=":", lw=1)
 ax.text(ds[0], 100 * float(1 - K) + 1.2, "tetto del formato RowMask23: 80,6%", fontsize=8.5, color="#333")
-serie = [("senza basso rango", lambda d: 0, C["ts8"], "-"), ("$r=32$", lambda d: 32, C["chiaro"], "-"),
+serie = [("senza low-rank", lambda d: 0, C["ts8"], "-"), ("$r=32$", lambda d: 32, C["chiaro"], "-"),
          ("$r=96$", lambda d: 96, C["stera"], "-"), ("$r=d/8$", lambda d: d // 8, C["ts33"], "--")]
 for nome, rf, col, ls in serie:
     ax.plot(ds, [risparmio(d, rf(d)) for d in ds], color=col, ls=ls, lw=1.8, label=nome)
