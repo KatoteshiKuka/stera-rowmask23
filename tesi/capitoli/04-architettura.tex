@@ -1,4 +1,4 @@
-Il capitolo precedente ha definito la parametrizzazione STERA e ha mostrato come una singola proiezione esegue il forward e la backpropagation. Questo capitolo descrive la struttura del modello addestrato e valutato nella tesi, \textbf{STERA 30M}: un Transformer decoder-only in cui tutte le matrici principali sono proiezioni STERA. Il nome indica la classe dimensionale dei \num{30346182} parametri allenabili effettivamente memorizzati, non il numero di elementi delle matrici espanse né una nuova famiglia di architetture. Descriviamo nell'ordine l'architettura, le matrici del modello, il percorso di un token dall'ingresso alla distribuzione sul token successivo, il training e l'esecuzione.
+I capitoli precedenti hanno definito la parametrizzazione STERA, il suo forward e la sua backpropagation e il motore che li esegue. Questo capitolo descrive il modello addestrato e valutato nella tesi, \textbf{STERA 30M}: la sua struttura, i dati e la configurazione con cui è stato addestrato, i valori appresi dalle componenti delle sue proiezioni e lo studio della loro importanza, e infine come ogni risultato si riconduce a file e procedure verificabili. STERA 30M è un Transformer decoder-only in cui tutte le matrici principali sono proiezioni STERA; il nome indica la classe dimensionale dei \num{30346182} parametri allenabili effettivamente memorizzati, non il numero di elementi delle matrici espanse né una nuova famiglia di architetture.
 
 \section{Architettura}
 \label{sec:architettura-stera30m}
@@ -80,68 +80,139 @@ La stessa matrice $E$ fornisce quindi sia il vettore d'ingresso di un token sia 
 
 \paragraph{Backpropagation nel modello.} Il gradiente parte dai logit: rispetto al logit del token $v$ vale $\partial\mathcal L_t/\partial z_{t,v}=p_{t,v}-\mathbf 1\{v=y_t\}$, cioè la probabilità assegnata meno uno per il token corretto. Da qui risale nell'ordine inverso del forward: attraversa la output head, la LayerNorm finale e i sei layer, dall'ultimo al primo. Ogni proiezione STERA che incontra riceve il gradiente della propria uscita, $\delta=\partial\mathcal L/\partial y$, e con i passi B1--B4 della \autoref{sec:backward-passi} produce i gradienti delle proprie coordinate, scale, guadagni e fattori $U$ e $V$, e il gradiente del proprio ingresso, che prosegue verso il layer precedente. La matrice condivisa $E$ riceve due contributi, che si sommano: quello della output head, $\sum_t(p_t-\mathbf 1_{y_t})\,h_t^\top$ sulle righe valide, e quello delle righe usate come ingresso, che arriva in fondo al percorso.
 
-\subsection{Un passo di training: che cosa viene aggiornato}
-\label{sec:passo-training}
+\paragraph{Implementazione.} Il training usa il motore descritto nel \autoref{cap:capitoli/04d-motore}; a ogni passo si aggiornano le coordinate, non le matrici dense, come spiega la \autoref{sec:passo-training}. Il weight decay si applica a coordinate, fattori $U$ e $V$ e posizioni, non a scale, guadagni, LayerNorm e bias.
 
-Durante il training la matrice densa $W$ compare, ma solo come strumento di calcolo: i parametri che il modello impara e che vengono salvati sono le coordinate compresse, insieme a scale, guadagni e fattori $U$ e $V$. Un passo di training si svolge in cinque fasi, mostrate nella \autoref{fig:passo-training}, subito sotto.
+\subsection{Corpus e separazione di TRAIN, DEV e TEST}\label{sec:stera30m-dati}
 
-\begin{figure}[H]
-\centering
-\resizebox{\linewidth}{!}{\input{figure/tikz/passo_training}}
-\caption{Un passo di training di STERA 30M. In blu il forward, in arancione il backward. Le caselle tratteggiate sono temporanee: la matrice densa $W$ e il suo gradiente $G$ vengono ricalcolati a ogni passo e non sono mai salvati né aggiornati.}
-\label{fig:passo-training}
-\end{figure}
-
-\begin{enumerate}
-\item \textbf{Ricostruzione.} Dalle coordinate, dalle scale, dai guadagni e dai fattori $U$ e $V$ si costruisce la matrice densa $W$ di ogni proiezione, secondo la \autoref{def:proiezione-stera}. In un blocco, la coordinata di base $b_8$ viene copiata nelle 128 caselle con $i\oplus j=8$.
-\item \textbf{Forward.} Il modello usa le matrici $W$ così costruite per calcolare le probabilità dei token e la loss $\mathcal L$. La loss è quindi calcolata con la forma densa equivalente, che però è determinata interamente dalle coordinate.
-\item \textbf{Backward.} L'autograd calcola il gradiente della loss rispetto a ogni casella di $W$: è la matrice $G=\partial\mathcal L/\partial W$, con un valore per ciascuna delle \num{16384} caselle di un blocco. Le 128 caselle di $b_8$ ricevono in generale 128 gradienti diversi.
-\item \textbf{Raccolta dei gradienti.} Il gradiente di ogni coordinata è la somma dei gradienti delle caselle in cui la coordinata compare (\autoref{sec:gradiente-coordinate}), ciascuno moltiplicato per i fattori che nel forward moltiplicavano la coordinata in quella casella: la scala del blocco e i guadagni della riga e della colonna. Per $b_8$ è la somma dei 128 contributi delle sue caselle; per una correzione o un elemento della diagonale è il gradiente della sua unica casella. Si ottiene un solo gradiente per coordinata, \num{3176} per blocco invece di \num{16384}. Allo stesso modo scale, guadagni, $U$ e $V$ ricavano il proprio gradiente da $G$, con i passi della \autoref{sec:backward-passi}.
-\item \textbf{Aggiornamento.} AdamW aggiorna le coordinate, le scale, i guadagni, $U$, $V$ e i parametri densi del modello (posizioni, LayerNorm e bias). La matrice $W$ e il gradiente $G$ vengono scartati, e al passo successivo $W$ si ricostruisce dalle coordinate aggiornate: le 128 caselle di $b_8$ ricevono di nuovo tutte lo stesso valore, quello nuovo.
-\end{enumerate}
-
-La \autoref{tab:raccolta-gradienti}, subito sotto, riassume da quali caselle di un blocco ogni tipo di coordinata raccoglie il proprio gradiente. Una casella che contiene base e correzione, $b_{i\oplus j}+e_{i,k}$, contribuisce con lo stesso valore di $G$ a entrambe le coordinate.
+Il corpus di STERA 30M deriva dal file \texttt{TinyStoriesV2-GPT4-train} \cite{eldan2023tinystories}. I tre insiemi della \autoref{tab:stera30m-split} sono partizioni interne di quel file. Le storie sono tokenizzate con un vocabolario BPE di \num{50257} voci. L'identificativo 50.256 delimita l'inizio e la fine di ciascun racconto.
 
 \begin{table}[H]
 \centering
 \small
-\renewcommand{\arraystretch}{1.25}
-\begin{tabular}{lll}
+\begin{tabularx}{\linewidth}{lrrX}
 \toprule
-Coordinate & Caselle da cui raccoglie il gradiente & Gradiente \\
+Insieme & Racconti & Token target & Uso \\
 \midrule
-\rowcolor{steraBlu!12} diagonale $d_i$ & una: $(i,i)$ & $G_{ii}$ \\
-\rowcolor{steraGrigio!12} base $b_s$ & 128: tutte le $(i,\,i\oplus s)$ & $\sum_i G_{i,\,i\oplus s}$ \\
-\rowcolor{steraArancio!15} correzione $e_{i,k}$ & una: $(i,\,i\oplus\sigma(i,k))$ & $G_{i,\,i\oplus\sigma(i,k)}$ \\
+TRAIN & \num{2660865} & \num{530189191} & Aggiornamento dei parametri \\
+DEV & \num{29279} & \num{5838521} & Controllo durante il training e valutazione su un campione distinto \\
+TEST & \num{27351} & \num{5441693} & Prove predittive e narrative dopo il congelamento di STERA 30M \\
 \bottomrule
-\end{tabular}
-\caption{Raccolta dei gradienti in un blocco RowMask23: per ogni tipo di coordinata, le caselle della matrice ricostruita i cui gradienti si sommano. $G$ è qui il gradiente rispetto al blocco, che include già scala e guadagni (\autoref{sec:backward-passi}).}
-\label{tab:raccolta-gradienti}
+\end{tabularx}
+\caption{Partizioni del corpus di STERA 30M. I token target contano le posizioni predicibili di ogni racconto, compreso il token di fine.}
+\label{tab:stera30m-split}
 \end{table}
 
-\paragraph{Perché si aggiornano le coordinate e non la matrice densa.} Si sommano i gradienti delle caselle e poi si aggiorna una sola volta la coordinata; non si aggiornano le caselle una per una. La differenza è sostanziale. Se l'optimizer aggiornasse direttamente le \num{16384} caselle, ciascuna con il proprio gradiente, le 128 caselle di $b_8$ prenderebbero valori diversi fra loro: la matrice uscirebbe dalla famiglia RowMask23 e non si potrebbe più rappresentare in modo esatto con le coordinate. Aggiornando le coordinate, invece, ogni matrice resta per costruzione una proiezione STERA a ogni passo. Inoltre AdamW non è lineare, perché divide ogni aggiornamento per una stima della varianza del gradiente: sommare i gradienti e poi aggiornare la coordinata non equivale a sommare gli aggiornamenti delle singole caselle.
+La separazione avviene per racconto. Il programma uniforma gli spazi bianchi e converte in minuscolo i byte ASCII prima di calcolare SHA-256. Interpreta i primi otto byte dell'impronta come intero in ordine \emph{little-endian} e ne prende il resto modulo \num{10000}. I valori da 0 a 99 vanno in TEST, quelli da 100 a 199 in DEV e gli altri in TRAIN. I \num{2000} gruppi di contenuto già riservati a una valutazione separata sono assegnati a DEV. Storie identiche dopo la normalizzazione ricevono la stessa assegnazione. L'audit ha verificato tutte le righe dell'indice. Testi simili ma con impronte diverse possono trovarsi in partizioni diverse.
 
-\paragraph{Implementazione e optimizer.} Il training usa PyTorch su due GPU NVIDIA P100. Le fasi 3 e 4 non sono implementate a mano: la ricostruzione della fase 1 è scritta con operazioni di indicizzazione, e l'autograd, risalendo quelle operazioni, somma automaticamente i gradienti delle caselle che condividono una coordinata. Il risultato coincide con quello della \autoref{sec:backward-stera} (\autoref{prop:backward-esatto}). Il weight decay si applica a coordinate, fattori $U$ e $V$ e posizioni, non a scale, guadagni, LayerNorm e bias. Dati, iperparametri e andamento del training sono descritti nel \autoref{cap:capitoli/05-metodologia}.
+\subsection{Configurazione del pretraining}
+\label{sec:stera30m-config-training}
 
-\section{Dall'training alla generazione}
-\label{sec:guida-inferenza-stera}
+Il modello parte da zero ed esegue \num{122000} aggiornamenti, per un totale di \num{1529514422} token target: circa $2{,}9$ passaggi sull'insieme TRAIN. Ogni aggiornamento usa un batch di 64 sequenze, suddiviso fra due GPU NVIDIA P100, con accumulo dei gradienti su gruppi di otto sequenze per GPU. Le finestre arrivano a 512 token target e restano entro lo stesso racconto; il padding è escluso dalla loss. L'ordine di visita di TRAIN è deterministico: il primo indice è \num{194723} e il passo è \num{104729} modulo il numero di racconti di TRAIN.
 
-Al termine del training i parametri sono fissati, e le stesse proiezioni si possono eseguire in tre modi, mostrati nella \autoref{fig:percorso-inferenza-stera}, subito sotto:
-\begin{enumerate}
-\item \textbf{espansione residente}: si ricostruiscono una volta tutte le matrici e si tengono in memoria; i prodotti sono quelli densi, ma la memoria occupata è quella della forma densa;
-\item \textbf{espansione al bisogno}: si ricostruiscono le matrici di un layer prima di usarle e si rilasciano subito dopo; la memoria resta bassa, ma la ricostruzione si ripete;
-\item \textbf{prodotto diretto sulle coordinate}: si applicano i quattro passi della \autoref{sec:forward-stera} senza costruire nessuna matrice.
-\end{enumerate}
+AdamW usa $\beta_1=0{,}9$, $\beta_2=0{,}95$ e limita la norma del gradiente a 1. Il weight decay è $0{,}1$ per coordinate RowMask23, fattori low-rank e vettori di posizione. Il learning rate segue un profilo a tre fasi (\autoref{fig:stera30m-pretraining}): sale linearmente fino a $6\cdot10^{-4}$ nei primi 300 passi, resta costante fino al passo \num{64000}, scende linearmente fino a $6\cdot10^{-5}$ al passo \num{80000} e rimane a questo valore fino al termine. La NLL su DEV è misurata prima del training e ogni \num{2000} aggiornamenti, sempre sui primi 512 racconti DEV nell'ordine dell'indice (\num{102820} token target, al massimo 512 per racconto). Il modello valutato nei capitoli successivi è il checkpoint finale.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabularx}{\linewidth}{Xl}
+\toprule
+Operazione & Seme \\
+\midrule
+Seme globale PyTorch & \texttt{20261117} \\
+Inizializzazione delle coordinate e dei vettori di posizione & \texttt{20261121} \\
+Inizializzazione del fattore low-rank $V$ & \texttt{7} \\
+Selezione dei 300 prompt TEST & \texttt{202611240901} \\
+Sampling della continuazione $i$, con $i$ da 0 a 299 & $202611240902+1009\,i$ \\
+\bottomrule
+\end{tabularx}
+\caption{Semi del pretraining e della valutazione. Il fattore $U$ parte da zero. Lo split è determinato dalla regola di hash della \autoref{sec:stera30m-dati}.}
+\label{tab:stera30m-seed}
+\end{table}
+
+
+
+\section{Le componenti apprese e la loro importanza}
+\label{sec:componenti-apprese}
+
+Il \autoref{cap:capitoli/03-formalismo} ha definito scale, guadagni e termine low-rank e il criterio con cui sono applicati. Questa sezione mostra che cosa ne ha fatto il training di STERA 30M e descrive lo studio con cui misuriamo quanto il modello addestrato dipenda da ciascuna componente. Il metodo dello studio è descritto nella \autoref{sec:metodo-componenti}; i risultati completi, con le tabelle della variazione della NLL e della qualità dei racconti al variare delle componenti, sono nella \autoref{sec:risultati-componenti}.
+
+\subsection{Le scale}
+
+\subsubsection{Valori appresi}
+Tutte le scale partono dallo stesso valore, $1$. Se il training non le usasse, al termine sarebbero ancora tutte vicine a $1$; se le usa, si allontanano da questo valore in modo diverso da blocco a blocco. La \autoref{fig:scale-apprese}, subito sotto, mostra quante delle \num{4950} scale di STERA 30M cadono in ciascun intervallo di valori al termine del training.
 
 \begin{figure}[H]
 \centering
-\input{figure/tikz/strategie_inferenza}
-\caption{Tre modi di eseguire le stesse proiezioni STERA in inferenza. Da sinistra a destra diminuisce la memoria occupata dai pesi e cresce il lavoro di calcolo per ricostruire o applicare la matrice.}
-\label{fig:percorso-inferenza-stera}
+\includegraphics[width=.9\linewidth]{figure/formalismo/scale_apprese.pdf}
+\caption{Distribuzione delle \num{4950} scale dei blocchi di STERA 30M al termine del training. La linea tratteggiata è il valore iniziale.}
+\label{fig:scale-apprese}
 \end{figure}
 
-La scelta dipende dalla fase della generazione. Nel \emph{prefill} il modello elabora tutti i token del prompt insieme e costruisce la KV cache: molti token usano gli stessi pesi, il costo è dominato dal calcolo e conviene l'espansione al bisogno, che permette prodotti densi fra matrici. Nel \emph{decode} il modello genera un token alla volta: ogni token rilegge tutti i pesi, il costo è dominato dai byte letti e conviene il prodotto diretto sulle coordinate. Le strategie si possono quindi combinare. In tutti i casi si esegue la stessa funzione con gli stessi parametri appresi: il confronto fra il motore compatto e quello denso del \autoref{cap:capitoli/07-sistemi} non confronta due modelli, ma due modi di eseguire lo stesso modello.
+Come mostra la \autoref{fig:scale-apprese}, le scale non sono rimaste ferme al valore iniziale. La distribuzione ha il picco poco sopra $1$ (media $1{,}16$) ma è larga, con deviazione standard $0{,}35$: la maggior parte dei blocchi ha una scala fra $0{,}5$ e $2$, e alcuni arrivano fino a $3{,}5$, cioè hanno un'ampiezza più di tre volte quella iniziale. All'estremo opposto, pochi blocchi hanno una scala vicina a $0$, cioè sono stati quasi spenti. Il training usa quindi le scale per dare ampiezze diverse ai blocchi della stessa proiezione, che è proprio lo scopo per cui sono state introdotte.
+
+\subsubsection{Studio dell'importanza}
+\label{sec:studio-scale}
+Per misurare quanto il modello addestrato dipenda dalle scale partiamo dal checkpoint finale, modifichiamo solo le scale lasciando invariato tutto il resto e misuriamo la NLL sui 300 racconti di prova. Le prove sono due: una di \emph{rimozione}, in cui tutte le scale sono riportate al valore iniziale $1$, e una di \emph{quantizzazione}, in cui le scale sono rappresentate con 8 bit e una scala di quantizzazione per matrice. Senza scale la NLL passa da $1{,}174$ a $4{,}42$ e il modello non genera più testo; a 8 bit varia del $+0{,}02\%$. Una componente che vale lo $0{,}02\%$ dei parametri è quindi indispensabile, ma non richiede precisione elevata. I risultati completi sono nella \autoref{sec:risultati-componenti}.
+
+
+\subsection{I guadagni}
+
+\subsubsection{Valori appresi}
+Come le scale, anche i guadagni partono tutti da $1$. La \autoref{fig:guadagni-appresi}, subito sotto, mostra la distribuzione dei \num{91776} guadagni di riga ($g_{\mathrm{out}}$, a sinistra) e dei \num{42240} guadagni di colonna ($g_{\mathrm{in}}$, a destra) di STERA 30M al termine del training. L'asse verticale è in scala logaritmica: ogni tacca vale dieci volte la precedente, così da rendere visibili anche i pochi guadagni con valori lontani dalla media.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.9\linewidth]{figure/formalismo/guadagni_appresi.pdf}
+\caption{Distribuzione dei guadagni di riga ($g_{\mathrm{out}}$) e di colonna ($g_{\mathrm{in}}$) di STERA 30M al termine del training, in scala logaritmica. La linea tratteggiata è il valore iniziale.}
+\label{fig:guadagni-appresi}
+\end{figure}
+
+Dalla \autoref{fig:guadagni-appresi} si osservano due comportamenti diversi. I guadagni di riga si sono spostati sotto il valore iniziale, con media $0{,}80$ e deviazione standard $0{,}35$: il training ha ridotto l'ampiezza di molte uscite. I guadagni di colonna sono rimasti più vicini a $1$, con media $1{,}07$ e deviazione standard $0{,}18$. In entrambi i casi la distribuzione ha una lunga coda a destra: pochi guadagni, qualche decina su decine di migliaia, raggiungono valori fra $3$ e $5{,}3$, cioè amplificano molto una singola riga o colonna. Questi pochi valori grandi spiegano perché i guadagni sono più sensibili delle scale alla quantizzazione (\autoref{sec:studio-guadagni}).
+
+\subsubsection{Studio dell'importanza}
+\label{sec:studio-guadagni}
+Lo studio segue lo stesso schema delle scale: dal checkpoint finale modifichiamo solo i guadagni e misuriamo la NLL sui 300 racconti di prova. Riportando tutti i guadagni a $1$ la NLL sale a $11{,}38$, oltre il valore di una distribuzione uniforme sul vocabolario ($10{,}82$): il modello addestrato non funziona senza guadagni, che pure valgono lo $0{,}4\%$ dei parametri. Rappresentandoli con 8 bit e una scala di quantizzazione per matrice la NLL varia del $+0{,}17\%$; la variazione, piccola, è maggiore di quella delle scale perché pochi guadagni molto grandi (\autoref{fig:guadagni-appresi}) riducono la risoluzione di una sola scala per matrice, e scale di quantizzazione per gruppi di valori la ridurrebbero ulteriormente. I risultati completi sono nella \autoref{sec:risultati-componenti}.
+
+
+\subsection{Il termine low-rank}
+
+\subsubsection{Valori appresi}
+La domanda è se il modello addestrato usi davvero tutto il rango $r=96$ che gli abbiamo messo a disposizione, oppure se gliene basterebbe meno.
+
+\paragraph{Quanto pesa il termine.} Una prima misura è la sua grandezza rispetto all'intera proiezione. Al termine del training la norma di Frobenius di $UV^\top$, cioè la radice della somma dei quadrati dei suoi elementi, vale fra il $37\%$ e il $47\%$ di quella della proiezione $W$. Il low-rank non è quindi un piccolo ritocco ai blocchi RowMask23, ma una parte consistente della matrice.
+
+\paragraph{Quante direzioni usa.} Una matrice di rango 96 si può scrivere come somma di 96 matrici di rango uno, cioè di 96 \emph{direzioni} indipendenti, ciascuna con un proprio peso: il suo \emph{valore singolare} $\sigma_k$. Ordiniamo i valori singolari dal più grande, $\sigma_1$, al più piccolo, $\sigma_{96}$, e li dividiamo per $\sigma_1$, così che la curva parta sempre da 1. Se il modello usasse poche direzioni, la curva crollerebbe vicino a zero dopo i primi valori, e le direzioni successive non conterebbero nulla: parte del rango sarebbe sprecata. Se invece le usa tutte, la curva scende lentamente e anche gli ultimi valori restano lontani da zero.
+
+La Figura~\ref{fig:spettro-basso-rango}, subito sotto, mostra il secondo caso. Per ciascun tipo di proiezione la linea è la mediana sui sei layer e la banda colorata va dalla proiezione con i valori più bassi a quella con i valori più alti. Nell'attention e nel feed-forward la curva scende in modo graduale: la 96ª direzione pesa ancora, in mediana, il $13\%$ della prima nell'attention e il $32\%$ nel feed-forward. Nell'embedding la prima direzione è molto più forte delle altre e la curva scende subito a circa $0{,}4$; poi resta quasi piatta fra $0{,}2$ e $0{,}1$, e l'ultima direzione vale ancora l'$11\%$ della prima. In nessun tipo di proiezione esistono direzioni trascurabili: il modello addestrato usa tutto il rango che gli è stato dato. Lo studio dell'importanza, nella sottosezione seguente, lo conferma direttamente, misurando che cosa accade togliendo le direzioni più deboli.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.9\linewidth]{figure/formalismo/spettro_basso_rango.pdf}
+\caption{Valori singolari del termine $UV^\top$ di STERA 30M, divisi per il più grande: ogni punto è il peso di una delle 96 direzioni del termine. Le linee sono le mediane sulle proiezioni dello stesso tipo nei sei layer, le bande vanno dalla proiezione con i valori più bassi a quella con i valori più alti. Una curva che resta lontana da zero indica che tutte le direzioni sono usate.}
+\label{fig:spettro-basso-rango}
+\end{figure}
+
+\subsubsection{Studio dell'importanza}
+\label{sec:studio-basso-rango}
+Il low-rank vale il $42\%$ dei parametri di STERA 30M, e per questo lo studio misura, oltre alla NLL, anche la qualità dei racconti. Come per scale e guadagni partiamo dal checkpoint finale e modifichiamo solo questa componente, con due prove.
+\begin{itemize}
+\item \textbf{Rimozione: rango ridotto.} In tutte le proiezioni sostituiamo $UV^\top$ con la sua migliore approssimazione di rango $k<96$, ottenuta dalla decomposizione ai valori singolari, con $k$ pari a 64, 48, 32, 16, 8 e 0. Per ogni $k$ misuriamo la NLL e ripetiamo la generazione e il giudizio cieco del \autoref{cap:capitoli/05-metodologia}, con i racconti di tutti i ranghi mescolati fra loro.
+\item \textbf{Quantizzazione a 8 bit.} Lasciamo il rango a 96 e rappresentiamo $U$ e $V$ con 8 bit. Nel formato del motore, con una scala ogni 32 valori, la matrice densa equivalente cambia in norma dello $0{,}48\%$; il giudizio cieco usa uno schema con una scala per colonna, leggermente meno preciso ($0{,}61\%$), ed è svolto in una sessione separata con lo stesso giudice e la stessa rubrica.
+\end{itemize}
+Il modello addestrato non tollera la riduzione del rango: già a $k=64$ la quota di racconti corretti scende dal $44{,}0\%$ al $20{,}0\%$, e da $k=48$ in giù nessun racconto è corretto. Tollera invece la riduzione dei bit: a 8 bit la NLL varia del $+0{,}007\%$, la quota di racconti corretti non cambia in modo significativo ($41{,}3\%$ contro $44{,}0\%$, $p=0{,}52$) e i pesi scendono da $121{,}4$ a $86{,}1$~MB. Struttura e quantizzazione agiscono su grandezze diverse, il numero di valori e i bit per valore, e si sommano. Lo studio misura la dipendenza del modello \emph{già addestrato} dal termine low-rank; non dice quanto rango servirebbe a un modello addestrato fin dall'inizio con un rango minore, che potrebbe affidare più informazione alle coordinate. I risultati completi sono nella \autoref{sec:risultati-componenti}, i tempi della variante a 8 bit nella \autoref{sec:rango8-tempi}.
+
+\section{Tracciabilità e riproducibilità}
+\label{sec:riproducibilita-stera30m}
+
+Ogni numero della tesi riferito a STERA 30M si riconduce al checkpoint finale, dopo \num{122000} aggiornamenti, e a file e procedure verificabili:
+\begin{itemize}
+\item \textbf{dati}: il corpus e il tokenizer sono scaricati a revisioni fissate; il corpus tokenizzato e la sua suddivisione in TRAIN, DEV e TEST sono registrati in un contratto dei dati, con le impronte SHA-256, che il motore di training salva in ogni checkpoint e verifica alla ripresa;
+\item \textbf{training}: la configurazione, i semi della \autoref{tab:stera30m-seed} e il log completo dei \num{122000} aggiornamenti sono nel repository; un training breve rieseguito da zero riproduce esattamente le prime righe del log;
+\item \textbf{checkpoint}: il checkpoint finale è identificato dalla sua impronta SHA-256 ed è pubblicato come allegato del repository, così che tutte le valutazioni si possano ripetere senza ripetere il training;
+\item \textbf{valutazione e misure}: i prompt di prova, le continuazioni generate, i giudizi e i risultati delle misure sono salvati con le rispettive impronte, e ogni tabella e figura è prodotta da uno script a partire da questi file.
+\end{itemize}
+La procedura completa, passo per passo, è nel repository del progetto; le impronte dei principali artefatti sono riportate nella \autoref{tab:artefatti}. La riesecuzione su GPU P100 ha riprodotto la NLL su DEV del checkpoint finale, $1{,}152155$, e tutte le 900 continuazioni del confronto fra i tre modelli.
 
 \section{Sintesi}
 
-STERA 30M è un Transformer decoder-only a sei layer con 37 matrici principali, tutte proiezioni STERA, per \num{4950} blocchi RowMask23 e \num{30346182} parametri allenabili. Il forward e la backpropagation del modello attraversano ogni proiezione con i passi della \autoref{sec:backward-stera}; in training le matrici sono ricostruite e i gradienti calcolati con l'autograd, in inferenza le stesse proiezioni si eseguono sulle matrici espanse o direttamente sulle coordinate. Il capitolo successivo descrive i dati, il training e il protocollo con cui il modello è valutato.
+STERA 30M è un Transformer decoder-only a sei layer con 37 matrici principali, tutte proiezioni STERA, per \num{4950} blocchi RowMask23 e \num{30346182} parametri allenabili. È stato addestrato da zero su TinyStories per \num{1529514422} token target, con dati, semi e configurazione registrati. Le scale e i guadagni appresi si sono differenziati dal valore iniziale e il termine low-rank usa tutto il rango disponibile; lo studio dell'importanza, i cui risultati sono nel \autoref{cap:capitoli/06-risultati}, misura quanto il modello addestrato dipenda da ciascuna componente. Ogni risultato si riconduce al checkpoint finale e a file verificabili.

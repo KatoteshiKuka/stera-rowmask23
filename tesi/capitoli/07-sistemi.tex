@@ -1,27 +1,4 @@
-Questo capitolo verifica le ipotesi H2 e H3 e studia il comportamento di STERA quando i pesi si avvicinano al limite della memoria disponibile. Descriviamo prima i kernel che operano sulle coordinate, poi la banda di lettura del disco, il peso dei modelli, il confronto fra i due motori dello stesso STERA 30M, l'inferenza dei tre modelli del confronto linguistico e infine l'esecuzione con pesi che superano la memoria. Per leggere i risultati distinguiamo il time to first token (TTFT), che include l'elaborazione del prompt, il decode, cioè la produzione dei token successivi, e il tempo totale della richiesta.
-
-\section{Due kernel per RowMask23}
-\label{sec:kernel-rowmask}
-
-Le misure richiedono due operazioni che non esistono nelle librerie standard. Le abbiamo scritte come kernel Metal, eseguiti sulla GPU del chip M1 attraverso l'interfaccia C++ di MLX.
-
-\subsection{Espansione delle coordinate}
-
-Il primo kernel espande le coordinate di una matrice nella matrice densa corrispondente. Ogni thread della GPU calcola un elemento: dalla sua posizione $(r,c)$ ricava il blocco a cui appartiene, la posizione $(i,j)$ dentro il blocco e l'indice $s=i\oplus j$; legge quindi la diagonale, la base ed eventualmente la correzione dal vettore delle coordinate del blocco e scrive il risultato moltiplicato per la scala. Per sapere se una posizione ha una correzione, e quale, il kernel usa una piccola tabella precalcolata di $128\times128$ elementi, la stessa per tutti i blocchi. Il risultato è identico, bit per bit, a quello della ricostruzione di riferimento usata durante il training; il controllo è eseguito automaticamente su ogni matrice prima delle misure.
-
-\subsection{Prodotto diretto sulle coordinate}
-
-Il secondo kernel calcola $y=Wx$ senza mai costruire $W$, applicando la formula \eqref{eq:gemv} con la trasformata di Walsh--Hadamard. La GPU lancia un gruppo di $128$ thread per ogni blocco della matrice. Ogni gruppo esegue questi passi:
-\begin{enumerate}
-\item carica in memoria condivisa le $3.176$ coordinate del blocco e i $128$ elementi del segmento di ingresso;
-\item esegue in parallelo le trasformate di Walsh--Hadamard della base e del segmento di ingresso, in sette stadi separati da barriere di sincronizzazione;
-\item moltiplica le due trasformate elemento per elemento e applica la trasformata inversa;
-\item aggiunge per ogni riga il contributo della diagonale e delle $23$ correzioni, leggendo gli elementi dell'ingresso agli indici $i\oplus\sigma(i,k)$;
-\item scrive il risultato parziale del blocco.
-\end{enumerate}
-I risultati parziali dei blocchi che stanno sulla stessa riga della matrice vengono infine sommati. Nel nostro kernel la trasformata della base è ricalcolata a ogni chiamata invece di essere memorizzata: in questo modo in memoria restano soltanto le coordinate, senza alcuna tabella ausiliaria per blocco.
-
-La correttezza del prodotto diretto è verificata confrontandolo con il prodotto ottenuto espandendo la matrice; sui prompt usati nelle misure, i motori compatto e denso producono la stessa sequenza di token.
+Questo capitolo verifica le ipotesi H2 e H3 e studia il comportamento di STERA quando i pesi si avvicinano al limite della memoria disponibile. I kernel che operano sulle coordinate sono descritti nel \autoref{cap:capitoli/04d-motore}. Descriviamo prima l'impostazione dei benchmark, poi la banda di lettura del disco, il peso dei modelli, il confronto fra i due motori dello stesso STERA 30M, l'inferenza dei tre modelli del confronto linguistico e infine l'esecuzione con pesi che superano la memoria. Per leggere i risultati distinguiamo il time to first token (TTFT), che include l'elaborazione del prompt, il decode, cioè la produzione dei token successivi, e il tempo totale della richiesta.
 
 \section{Impostazione dei benchmark sul modello addestrato}
 \label{sec:sistemi-impostazione}
@@ -97,7 +74,7 @@ La \autoref{fig:byte-pesi} ordina le rappresentazioni dalla più grande alla pi�
 
 Il $63{,}32\%$ rispetto alla propria espansione densa è il risultato della \autoref{prop:risparmio-modello}: i blocchi RowMask23 garantiscono l'$80{,}61\%$ sulla parte strutturata e il termine low-rank di rango 96 ne consuma la parte restante. Il $55{,}71\%$ rispetto a TinyStories-33M confronta invece due modelli diversi e va letto insieme alla qualità dei racconti (\autoref{sec:risultati-stera30m-tinystories}): STERA 30M occupa meno della metà dei byte con una quota di racconti corretti non significativamente diversa.
 
-Quantizzando a 8 bit i soli fattori $U$ e $V$, il termine low-rank passa da $51{,}5$ a $16{,}2$~MB e il modello da $121{,}385$ a $86{,}097$~MB, il $73{,}98\%$ in meno della propria espansione densa. La matrice densa equivalente cambia dello $0{,}48\%$ in norma e la NLL del $+0{,}007\%$ (\autoref{sec:basso-rango}). Il modello valutato nei confronti di qualità e nei benchmark principali è il compatto FP32; la variante a 8 bit è misurata a parte nella \autoref{sec:rango8-tempi}.
+Quantizzando a 8 bit i soli fattori $U$ e $V$, il termine low-rank passa da $51{,}5$ a $16{,}2$~MB e il modello da $121{,}385$ a $86{,}097$~MB, il $73{,}98\%$ in meno della propria espansione densa. La matrice densa equivalente cambia dello $0{,}48\%$ in norma e la NLL del $+0{,}007\%$ (\autoref{sec:studio-basso-rango}). Il modello valutato nei confronti di qualità e nei benchmark principali è il compatto FP32; la variante a 8 bit è misurata a parte nella \autoref{sec:rango8-tempi}.
 
 \section{Memoria durante il training}
 

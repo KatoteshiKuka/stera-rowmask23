@@ -57,7 +57,7 @@ TinyStories-33M & 145/300 (48,3\%) & [42,7; 54,0] & 7,91 & 5,54 & 5,49 \\
 STERA 30M, low-rank a 8 bit$^{*}$ & 124/300 (41,3\%) & [35,9; 47,0] & 7,88 & 5,41 & 5,42 \\
 \bottomrule
 \end{tabular}
-\caption{Racconti corretti con intervallo di Wilson e voti medi (scala 1--10) assegnati dal giudice per grammatica, coerenza e trama. $^{*}$Variante di STERA 30M con i soli fattori $U$ e $V$ quantizzati a 8 bit (\autoref{sec:basso-rango}), valutata in una sessione separata con lo stesso giudice e la stessa rubrica.}
+\caption{Racconti corretti con intervallo di Wilson e voti medi (scala 1--10) assegnati dal giudice per grammatica, coerenza e trama. $^{*}$Variante di STERA 30M con i soli fattori $U$ e $V$ quantizzati a 8 bit (\autoref{sec:studio-basso-rango}), valutata in una sessione separata con lo stesso giudice e la stessa rubrica.}
 \label{tab:narrativa-3modelli}
 \end{table}
 
@@ -104,7 +104,7 @@ Le motivazioni del giudice permettono di descrivere gli errori tipici. I raccont
 \section{Contributo delle componenti delle proiezioni}
 \label{sec:risultati-componenti}
 
-Questa sezione riporta i risultati dello studio delle componenti descritto nelle Sezioni~\ref{sec:scale}, \ref{sec:guadagni} e~\ref{sec:basso-rango}. Tutte le prove modificano una sola componente del checkpoint finale di STERA 30M e lasciano invariato il resto.
+Questa sezione riporta i risultati dello studio delle componenti descritto nella \autoref{sec:componenti-apprese}, con il metodo della \autoref{sec:metodo-componenti}. Tutte le prove modificano una sola componente del checkpoint finale di STERA 30M e lasciano invariato il resto.
 
 \paragraph{Scale e guadagni.} La \autoref{tab:ablazioni-scale-guadagni}, subito sotto, riporta la NLL sui 300 racconti di prova. Riportare le scale a $1$ porta la NLL da $1{,}174$ a $4{,}42$; riportare i guadagni a $1$ la porta a $11{,}38$, oltre il valore di una distribuzione uniforme sul vocabolario ($10{,}82$). Scale e guadagni valgono insieme meno dello $0{,}5\%$ dei parametri, ma il modello addestrato non funziona senza di essi. Rappresentati con 8 bit cambiano invece la NLL di pochi centesimi di punto percentuale; la variazione dei guadagni è maggiore perché pochi valori molto grandi (\autoref{fig:guadagni-appresi}) riducono la risoluzione di una sola scala di quantizzazione per matrice.
 

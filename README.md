@@ -96,11 +96,13 @@ STERA-RowMask23/
 
 | Capitolo della tesi | Dove si trova nel repository |
 |---|---|
-| 4 – La parametrizzazione RowMask23 | `addestramento/ts68_core.py` (ricostruzione, gradiente), `sistemi/motori/stera4b_wht_*` (prodotto con Walsh–Hadamard) |
-| 5 – STERA 30M | `addestramento/ts68_v3.py`, `addestramento/addestra_stera30m.sh` |
-| 6 – Metodologia di validazione | `addestramento/prepara_dati.py`, `valutazione/protocollo/` |
-| 7 – Apprendimento e qualità dei racconti | `addestramento/log_addestramento_0_122k.txt`, `valutazione/` |
-| 8 – Memoria e tempi di esecuzione | `sistemi/` |
+| 4 – La parametrizzazione STERA | `tesi/scripts_figure/fig_bilancio.py` (bilancio dei parametri) |
+| 5 – Forward e backpropagation | `valutazione/verifiche/verifica_backward_stera.py` (verifica numerica), `addestramento/ts68_core.py` (ricostruzione) |
+| 6 – Il motore di training e di inferenza | `addestramento/ts68_v3.py`, `sistemi/motori/stera4b_wht_*`, `sistemi/motori/prefill_espansione.py`, `sistemi/motori/stera_rango8_mlx.py` |
+| 7 – STERA 30M: il modello addestrato | `addestramento/prepara_dati.py`, `addestramento/addestra_stera30m.sh`, `tesi/scripts_figure/fig_componenti.py` |
+| 8 – Metodologia di validazione | `valutazione/protocollo/` |
+| 9 – Apprendimento e qualità dei racconti | `addestramento/log_addestramento_0_122k.txt`, `valutazione/` |
+| 10 – Memoria e tempi di esecuzione | `sistemi/` |
 | Figure | `tesi/scripts_figure/` (grafici), `tesi/figure/tikz/` (schemi) |
 
 ## Riproduzione rapida
