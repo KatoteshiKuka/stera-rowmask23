@@ -69,6 +69,7 @@ La gerarchia è netta per la grammatica, che resta alta per tutti i modelli, ed 
 \end{figure}
 
 \subsection{Confronti appaiati}
+\label{sec:confronti-appaiati-rango8}
 
 Poiché i tre modelli continuano gli stessi incipit, il confronto più informativo è quello appaiato, incipit per incipit (Tabella~\ref{tab:appaiati-3modelli}).
 
@@ -90,11 +91,68 @@ TinyStories-33M $-$ TinyStories-8M & $+26{,}7$ & $[+19{,}7;\,+33{,}7]$ & 109 / 2
 
 STERA 30M produce racconti corretti molto più spesso di TinyStories-8M: la differenza è di 22 punti percentuali e il test la rende inequivocabile. Rispetto a TinyStories-33M la differenza osservata è di $-4{,}3$ punti e non è statisticamente significativa: sui 145 incipit in cui i due modelli si comportano diversamente, 66 favoriscono STERA 30M e 79 il riferimento. L'intervallo di confidenza, che va da $-12$ a $+4$ punti, non consente tuttavia di affermare che i due modelli siano equivalenti: è compatibile sia con una parità sostanziale sia con uno svantaggio moderato di STERA 30M.
 
-Nella variante con il termine a basso rango quantizzato a 8 bit i racconti corretti sono 124 contro 132; sugli stessi incipit la differenza appaiata è di $-2{,}7$ punti, con intervallo al 95\% $[-9{,}7;\,+4{,}7]$ e $p=0{,}52$ nel test di McNemar: la quantizzazione non produce una perdita significativa di qualità. La stessa procedura, applicata al modello con il basso rango ridotto a posteriori, mostra invece un crollo già a rango 64 (Tabella~\ref{tab:rango-ridotto}).
+Nella variante con il termine a basso rango quantizzato a 8 bit i racconti corretti sono 124 contro 132; sugli stessi incipit la differenza appaiata è di $-2{,}7$ punti, con intervallo al 95\% $[-9{,}7;\,+4{,}7]$ e $p=0{,}52$ nel test di McNemar: la quantizzazione non produce una perdita significativa di qualità. La stessa procedura, applicata al modello con il basso rango ridotto a posteriori, mostra invece un crollo già a rango 64 (Sezione~\ref{sec:risultati-componenti}).
 
 \subsection{Errori ricorrenti}
 
 Le motivazioni del giudice permettono di descrivere gli errori tipici. I racconti classificati P o N dei tre modelli condividono gli stessi difetti, con frequenze diverse: personaggi che cambiano nome o ruolo a metà racconto, oggetti che appartengono prima a un personaggio e poi a un altro, azioni annunciate e mai compiute, morali finali scollegate dagli eventi. Gli errori grammaticali sono rari in tutti e tre i modelli: la difficoltà principale dei modelli di questa scala non è scrivere frasi corrette, ma mantenere stabile lo stato della storia lungo tutto il racconto.
+
+\section{Contributo delle componenti delle proiezioni}
+\label{sec:risultati-componenti}
+
+Questa sezione riporta i risultati dello studio delle componenti descritto nelle Sezioni~\ref{sec:scale}, \ref{sec:guadagni} e~\ref{sec:basso-rango}. Tutte le prove modificano una sola componente del checkpoint finale di STERA 30M e lasciano invariato il resto.
+
+\paragraph{Scale e guadagni.} La Tabella~\ref{tab:ablazioni-scale-guadagni}, subito sotto, riporta la NLL sui 300 racconti di prova. Riportare le scale a $1$ porta la NLL da $1{,}174$ a $4{,}42$; riportare i guadagni a $1$ la porta a $11{,}38$, oltre il valore di una distribuzione uniforme sul vocabolario ($10{,}82$). Scale e guadagni valgono insieme meno dello $0{,}5\%$ dei parametri, ma il modello addestrato non funziona senza di essi. Rappresentati con 8 bit cambiano invece la NLL di pochi centesimi di punto percentuale; la variazione dei guadagni è maggiore perché pochi valori molto grandi (Figura~\ref{fig:guadagni-appresi}) riducono la risoluzione di una sola scala di quantizzazione per matrice.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lrr}
+\toprule
+Prova & NLL TEST & Variazione \\
+\midrule
+Modello addestrato & $1{,}1740$ & -- \\
+\rowcolor{steraArancio!12} Scale riportate a 1 & $4{,}4164$ & $+276\%$ \\
+\rowcolor{steraArancio!12} Guadagni riportati a 1 & $11{,}3839$ & $+870\%$ \\
+Scale a 8 bit & $1{,}1742$ & $+0{,}02\%$ \\
+Guadagni a 8 bit & $1{,}1760$ & $+0{,}17\%$ \\
+Scale, guadagni e basso rango a 8 bit & $1{,}1765$ & $+0{,}21\%$ \\
+\bottomrule
+\end{tabular}
+\caption{NLL di STERA 30M sui 300 racconti di prova modificando una componente alla volta, calcolata su CPU. Nelle prove a 8 bit scale e guadagni hanno una scala di quantizzazione per matrice, il basso rango una per colonna.}
+\label{tab:ablazioni-scale-guadagni}
+\end{table}
+
+\paragraph{Rango ridotto.} La Tabella~\ref{tab:rango-ridotto} e la Figura~\ref{fig:rango-ridotto}, subito sotto, riportano NLL e racconti corretti al variare del rango. Il modello addestrato usa tutto il rango disponibile: a rango 64 la quota di racconti corretti scende dal $44{,}0\%$ al $20{,}0\%$, con una differenza appaiata di $-24$ punti, intervallo al 95\% $[-31;\,-17]$ e $p=1{,}6\cdot10^{-10}$ dopo la correzione di Holm; da rango 48 in giù nessun racconto è corretto ($p<10^{-38}$). Lo stesso andamento compare nella NLL, che cresce con regolarità al diminuire del rango.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{rrrr}
+\toprule
+Rango usato & NLL TEST & Racconti corretti & Risparmio vs forma densa \\
+\midrule
+96 & $1{,}174$ & $44{,}0\%$ & $63{,}3\%$ \\
+64 & $1{,}474$ & $20{,}0\%$ & $68{,}5\%$ \\
+48 & $1{,}981$ & $0\%$ & $71{,}1\%$ \\
+32 & $2{,}893$ & $0\%$ & $73{,}7\%$ \\
+16 & $4{,}236$ & $0\%$ & $76{,}3\%$ \\
+8 & $4{,}980$ & $0\%$ & $77{,}6\%$ \\
+0 & $5{,}813$ & $0\%$ & $78{,}9\%$ \\
+\bottomrule
+\end{tabular}
+\caption{STERA 30M con il termine a basso rango ridotto a posteriori. Il rango 96 è il modello addestrato; per gli altri ranghi i 300 racconti sono stati generati con la stessa procedura e giudicati alla cieca con la stessa rubrica, mescolati fra loro.}
+\label{tab:rango-ridotto}
+\end{table}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=.9\linewidth]{figure/risultati/rango_ridotto.pdf}
+\caption{NLL sui racconti di prova (a sinistra) e quota di racconti corretti con intervallo di Wilson al 95\% (a destra) di STERA 30M al variare del rango del termine a basso rango.}
+\label{fig:rango-ridotto}
+\end{figure}
+
+\paragraph{Basso rango a 8 bit.} Quantizzando a 8 bit i soli fattori $U$ e $V$, nel formato del motore la NLL varia del $+0{,}007\%$. Nel giudizio cieco la variante ottiene il $41{,}3\%$ di racconti corretti contro il $44{,}0\%$, una differenza non significativa ($p=0{,}52$, Sezione~\ref{sec:confronti-appaiati-rango8}). Ridurre il rango e ridurre i bit hanno quindi effetti opposti sul modello addestrato: il primo lo rompe già a rango 64, il secondo porta i pesi da $121{,}4$ a $86{,}1$~MB senza una perdita significativa.
 
 \section{Sintesi}
 
