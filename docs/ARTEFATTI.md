@@ -9,7 +9,6 @@
 | Corpus tokenizzato: pacchetto / indice | `5ae58177e37ddc66f22bc5ac26c73b82d9b7b2702a1871a5cbfd517c1ae39066` / `bbadffc0b26a2dcf13c396691880e9655a8646212356317c95a96e8d70c69774` |
 | STERA 30M, checkpoint finale (122.000 aggiornamenti) | `418becfbcaddcefd56f828f295138bbc865f9405a9060930c060ff7e6ced0887` |
 | Pesi FP32 del checkpoint finale per le misure di sistema (`H122000_fp32_weights.npz`) | `864d03dc63b5d5a8977eba0c7c8bec60530a33a1ef52762ab5b96aeb2201018c` |
-| Coordinate INT8 del checkpoint finale (`H122000_int8_weights.npz`) | `19e9850e763f9ba210b016bca8400dc752ae46ff149bfe12f5ae83783af1075b` |
 | Matrici dense equivalenti del checkpoint finale (`H122000_DENSE_FP32.safetensors`) | `ce96ce4b54a7a094279d9c7f6447a0563edb8142d89634e8de4da1e624e52f7f` |
 | TinyStories-33M, pytorch_model.bin | `41316d3bad3cf7766cbc36443a71c5ef05321a1c4fa14855df537998c6dad302` |
 | TinyStories-8M, pytorch_model.bin | `22c355bfabebc1f6c861b3f5d7a801e96c7f6da4af4bb0f7780096ab82ea6716` |

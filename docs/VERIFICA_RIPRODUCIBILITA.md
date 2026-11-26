@@ -14,7 +14,7 @@ Ogni passo della tesi è stato rieseguito partendo solo dal repository e da font
 | Valutazione TEST300, STERA 30M | Mac CPU e server con P100 | 300/300 continuazioni identiche su CPU e su GPU; NLL 1,173975 (CPU) e 1,173986 (GPU), tesi 1,173997 |
 | Valutazione TEST300, TinyStories-33M | Mac CPU e server con P100 | su GPU 300/300 continuazioni identiche, NLL 1,324452 (tesi 1,324456); su CPU 299/300, con l'incipit F156 che diverge dal token 84 per l'arrotondamento della CPU |
 | Aggregazione del giudizio cieco (`aggrega_e_decodifica.py`) | Mac | `risultati_3modelli.json` identico |
-| Esportazione dei pesi (FP32 e INT8) | Mac | payload di 121.384.728 e 74.240.928 byte, come nella tesi; errore relativo INT8 0,01461 |
+| Esportazione dei pesi FP32 | Mac | payload di 121.384.728 byte, come nella tesi |
 | Archivio senza perdita | Mac | rifatto sul checkpoint finale, 102.352.624 byte; ripristino bit per bit su tutti i 267 tensori. Un file `.npz` ricostruito da `restore_lossless_archive.py` contiene gli stessi tensori ma può avere un'impronta diversa, perché il contenitore zip registra metadati propri |
 | Figure | Mac, matplotlib 3.9.4 | identiche al pixel; con matplotlib 3.11 differiscono di 1–2 pixel per il rendering del testo |
 | Tempi e memoria (Capitolo 8) | Mac M1 | rieseguiti sul checkpoint finale, vedi sotto |

@@ -62,6 +62,13 @@ Configurazione: 6 strati, guadagni per riga e colonna, termine a basso rango 96;
 
 Tempo indicativo: circa 12.000 token/s su due P100, cioè circa 35 ore per 122.000 aggiornamenti. La corsa della tesi è stata eseguita in tre job consecutivi dello stesso script.
 
+Al termine, il checkpoint finale `esterni/checkpoint/TS68V2_STEP122000.ckpt.gz` va copiato nel percorso usato da tutti i passi successivi (chi non riaddestra lo scarica invece dalla Release del repository, vedi `pesi/LEGGIMI.md`):
+
+```bash
+cp esterni/checkpoint/TS68V2_STEP122000.ckpt.gz pesi/stera30m_step122000.ckpt.gz
+shasum -a 256 pesi/stera30m_step122000.ckpt.gz   # 418becfb…6ed0887
+```
+
 **Verifica rapida senza GPU.** La NLL DEV del checkpoint finale si ottiene senza addestrare: il trainer valuta prima del primo passo, quindi con `--steps 0` stampa solo `VAL`. Su una macchina senza `torchrun` funzionante basta impostare a mano le variabili del processo unico:
 
 ```bash
@@ -89,7 +96,7 @@ Scaricare i due riferimenti in `esterni/` alle revisioni indicate in `sistemi/mo
 
 ```bash
 cd valutazione/protocollo
-python valuta_modello.py stera30m --checkpoint ../../esterni/checkpoint/TS68V2_STEP122000.ckpt.gz \
+python valuta_modello.py stera30m --checkpoint ../../pesi/stera30m_step122000.ckpt.gz \
        --tokenizer ../../esterni/tokenizer.json --device cuda --out stera30m.jsonl
 python valuta_modello.py hf --modello ../../esterni/TinyStories-33M --device cuda --out tinystories33m.jsonl
 python valuta_modello.py hf --modello ../../esterni/TinyStories-8M  --device cpu  --out tinystories8m.jsonl
@@ -120,7 +127,6 @@ I motori in `sistemi/motori/` leggono i pesi da `sistemi/modelli/`:
 | File | Contenuto | Come si ottiene |
 |---|---|---|
 | `H122000_fp32_weights.npz` | coordinate e tensori FP32 del checkpoint finale | `python sistemi/benchmark/esporta_pesi.py pesi/stera30m_step122000.ckpt.gz 418becfb…6ed0887 H122000` |
-| `H122000_int8_weights.npz` | coordinate INT8 per blocco (non usato nella tesi) | prodotto dallo stesso comando |
 | `H122000_DENSE_FP32.safetensors` | matrici dense equivalenti | `python sistemi/benchmark/esporta_denso.py` |
 
 Tutte le misure della tesi usano il checkpoint finale. I motori leggono i pesi indicati dalla variabile `STERA_PESI` (predefinito `H122000`).

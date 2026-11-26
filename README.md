@@ -33,7 +33,7 @@ Su 300 racconti TEST, con gli stessi incipit, lo stesso tokenizzatore e la stess
 
 - STERA 30M − TinyStories-8M: **+22,3 punti** (IC 95% [+15,3; +29,3], McNemar con Holm p < 10⁻⁸).
 - STERA 30M − TinyStories-33M: **−4,3 punti** (IC 95% [−12,0; +3,7], p = 0,32, non significativa).
-- Pesi compatti FP32: **121,385 MB**, contro 330,885 MB dell'espansione densa (−63,3%) e 274,056 MB di TinyStories-33M (−55,7%); 74,241 MB con le coordinate in INT8.
+- Pesi compatti FP32: **121,385 MB**, contro 330,885 MB dell'espansione densa (−63,3%) e 274,056 MB di TinyStories-33M (−55,7%); 86,097 MB con il termine a basso rango a 8 bit (−74,0%).
 - Decode sullo stesso modello: **−34,8%** di tempo mediano per token del motore compatto rispetto al motore denso (Mac M1, MLX/Metal, 30 misure appaiate in cinque campagne), con token identici.
 - Basso rango quantizzato a 8 bit: pesi a **86,1 MB** (−74% rispetto alla forma densa), NLL invariata (+0,007%), decode più rapido del 17,8%.
 - I blocchi RowMask23 garantiscono −80,6% sulla parte strutturata; il risparmio di un modello STERA in funzione del rango è ricavato in forma chiusa nel Capitolo 4.
@@ -115,9 +115,11 @@ python addestramento/prepara_dati.py && python addestramento/sigilla_dati.py
 # 2. addestramento (2 GPU)
 export STERA_RUN=esterni/checkpoint
 bash addestramento/addestra_stera30m.sh
+cp $STERA_RUN/TS68V2_STEP122000.ckpt.gz pesi/stera30m_step122000.ckpt.gz
+# (in alternativa al passo 2: scaricare il checkpoint dalla Release v1.0, vedi pesi/LEGGIMI.md)
 
 # 3. valutazione dei tre modelli
-python valutazione/protocollo/valuta_modello.py stera30m --checkpoint esterni/checkpoint/TS68V2_STEP122000.ckpt.gz \
+python valutazione/protocollo/valuta_modello.py stera30m --checkpoint pesi/stera30m_step122000.ckpt.gz \
        --tokenizer $STERA_TOKENIZER --device cuda --out valutazione/generazioni/stera30m.jsonl
 python valutazione/protocollo/valuta_modello.py hf --modello esterni/TinyStories-33M --out valutazione/generazioni/tinystories33m.jsonl
 
