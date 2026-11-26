@@ -24,18 +24,32 @@ Le $128+127+\num{2921}=\num{3176}$ \emph{coordinate} $c=(d,b,e)$ determinano l'i
 
 \subsection{Dal blocco alla proiezione}
 
-Una proiezione di un Transformer è una matrice $m\times n$ molto più grande di un blocco. Se $m$ e $n$ sono multipli di 128, la matrice si divide in $P\times Q$ blocchi, con $P=m/128$ e $Q=n/128$, e ogni blocco $(p,q)$ è un blocco RowMask23 con coordinate $c^{(p,q)}$ e scala $\alpha^{(p,q)}$ proprie: si ottiene il mosaico $\widetilde W$ della Figura~\ref{fig:proiezione-stera}. Sul mosaico agiscono due componenti che attraversano i confini dei blocchi:
+Una proiezione di un Transformer è una matrice $m\times n$ molto più grande di un blocco. Se $m$ e $n$ sono multipli di 128, la matrice si divide in $P\times Q$ blocchi, con $P=m/128$ e $Q=n/128$, e ogni blocco $(p,q)$ è un blocco RowMask23 con coordinate $c^{(p,q)}$ e scala $\alpha^{(p,q)}$ proprie: si ottiene il mosaico $\widetilde W$. La Tabella~\ref{tab:costruzione-proiezione} riassume la costruzione passo per passo. Sul mosaico agiscono due componenti che attraversano i confini dei blocchi:
 \begin{itemize}
 \item i \emph{guadagni}: un vettore $g_{\mathrm{out}}$ moltiplica ogni riga dell'intera matrice e un vettore $g_{\mathrm{in}}$ ogni colonna;
 \item il \emph{termine a basso rango} $UV^\top$, una matrice $m\times n$ di rango al più $r$ che si somma all'intera proiezione.
 \end{itemize}
 
-\begin{figure}[H]
+\begin{table}[H]
 \centering
-\resizebox{\linewidth}{!}{\input{figure/tikz/proiezione}}
-\caption{Costruzione di una proiezione STERA. Ogni blocco $128\times128$ (diagonale in blu, correzioni in rosso, base XOR in grigio) è moltiplicato per la sua scala; i blocchi formano il mosaico $\widetilde W$; i guadagni $g_{\mathrm{out}}$ e $g_{\mathrm{in}}$ (in verde) moltiplicano righe e colonne dell'intera matrice, a cui si somma il termine a basso rango $UV^\top$.}
-\label{fig:proiezione-stera}
-\end{figure}
+\small
+\begin{tabular}{clll}
+\toprule
+Passo & Componente & Dove agisce & Valori \\
+\midrule
+1 & diagonale $d$ & elementi $(i,i)$ di ogni blocco & $128$ per blocco \\
+2 & base XOR $b$ & elementi fuori diagonale, per diagonale generalizzata & $127$ per blocco \\
+3 & correzioni $e$ & 23 elementi per riga, righe da 1 a 127 & \num{2921} per blocco \\
+4 & scala $\alpha$ & tutto il blocco & $1$ per blocco \\
+\midrule
+5 & mosaico $\widetilde W$ & $P\times Q$ blocchi affiancati & $3177\,PQ$ \\
+6 & guadagni $g_{\mathrm{out}},g_{\mathrm{in}}$ & righe e colonne dell'intera matrice & $m+n$ \\
+7 & basso rango $UV^\top$ & tutta la matrice, sommato & $r(m+n)$ \\
+\bottomrule
+\end{tabular}
+\caption{Costruzione di una proiezione STERA $m\times n$, dal singolo blocco $128\times128$ (passi 1--4) all'intera matrice (passi 5--7).}
+\label{tab:costruzione-proiezione}
+\end{table}
 
 \subsection{Definizione}
 
