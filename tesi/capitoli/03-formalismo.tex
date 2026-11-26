@@ -387,7 +387,7 @@ dove $\langle\cdot,\cdot\rangle_F$ è il prodotto scalare di Frobenius, e il gra
 Le scale partono da $1$ e non sono soggette al decadimento dei pesi: una penalità che le spingesse verso zero ridurrebbe proprio l'ampiezza che devono controllare. Costano $mn/16384$ valori per proiezione e una moltiplicazione per blocco nel prodotto.
 
 \subsection{Valori appresi}
-La \autoref{fig:scale-apprese}, subito sotto, mostra la distribuzione delle \num{4950} scale di STERA 30M al termine dell'addestramento: hanno media $1{,}16$ e deviazione standard $0{,}35$, con valori fra $0$ e $3{,}5$. Partite tutte da $1$, si sono differenziate: l'addestramento le usa per dare ampiezze diverse ai blocchi.
+Tutte le scale partono dallo stesso valore, $1$. Se l'addestramento non le usasse, al termine sarebbero ancora tutte vicine a $1$; se le usa, si allontanano da questo valore in modo diverso da blocco a blocco. La \autoref{fig:scale-apprese}, subito sotto, mostra quante delle \num{4950} scale di STERA 30M cadono in ciascun intervallo di valori al termine dell'addestramento.
 
 \begin{figure}[H]
 \centering
@@ -395,6 +395,8 @@ La \autoref{fig:scale-apprese}, subito sotto, mostra la distribuzione delle \num
 \caption{Distribuzione delle \num{4950} scale dei blocchi di STERA 30M al termine dell'addestramento. La linea tratteggiata è il valore iniziale.}
 \label{fig:scale-apprese}
 \end{figure}
+
+Come mostra la \autoref{fig:scale-apprese}, le scale non sono rimaste ferme al valore iniziale. La distribuzione ha il picco poco sopra $1$ (media $1{,}16$) ma è larga, con deviazione standard $0{,}35$: la maggior parte dei blocchi ha una scala fra $0{,}5$ e $2$, e alcuni arrivano fino a $3{,}5$, cioè hanno un'ampiezza più di tre volte quella iniziale. All'estremo opposto, pochi blocchi hanno una scala vicina a $0$, cioè sono stati quasi spenti. L'addestramento usa quindi le scale per dare ampiezze diverse ai blocchi della stessa proiezione, che è proprio lo scopo per cui sono state introdotte.
 
 \subsection{Studio dell'importanza}
 \label{sec:studio-scale}
@@ -417,7 +419,7 @@ I guadagni sono due vettori, $g_{\mathrm{out}}\in\mathbb{R}^m$ e $g_{\mathrm{in}
 I guadagni partono da $1$ e, come le scale, non sono soggetti al decadimento dei pesi. Costano $m+n$ valori per proiezione; nel prodotto con un vettore equivalgono a moltiplicare l'ingresso per $g_{\mathrm{in}}$ e l'uscita per $g_{\mathrm{out}}$, con $m+n$ moltiplicazioni.
 
 \subsection{Valori appresi}
-La \autoref{fig:guadagni-appresi}, subito sotto, mostra la distribuzione dei guadagni di STERA 30M. I \num{91776} guadagni di riga hanno media $0{,}80$ e deviazione standard $0{,}35$, con valori fra $-0{,}09$ e $4{,}4$; i \num{42240} guadagni di colonna hanno media $1{,}07$ e deviazione standard $0{,}18$, con valori fra $0$ e $5{,}3$. Pochi guadagni assumono valori molto più grandi della media.
+Come le scale, anche i guadagni partono tutti da $1$. La \autoref{fig:guadagni-appresi}, subito sotto, mostra la distribuzione dei \num{91776} guadagni di riga ($g_{\mathrm{out}}$, a sinistra) e dei \num{42240} guadagni di colonna ($g_{\mathrm{in}}$, a destra) di STERA 30M al termine dell'addestramento. L'asse verticale è in scala logaritmica: ogni tacca vale dieci volte la precedente, così da rendere visibili anche i pochi guadagni con valori lontani dalla media.
 
 \begin{figure}[H]
 \centering
@@ -425,6 +427,8 @@ La \autoref{fig:guadagni-appresi}, subito sotto, mostra la distribuzione dei gua
 \caption{Distribuzione dei guadagni di riga ($g_{\mathrm{out}}$) e di colonna ($g_{\mathrm{in}}$) di STERA 30M al termine dell'addestramento, in scala logaritmica. La linea tratteggiata è il valore iniziale.}
 \label{fig:guadagni-appresi}
 \end{figure}
+
+Dalla \autoref{fig:guadagni-appresi} si osservano due comportamenti diversi. I guadagni di riga si sono spostati sotto il valore iniziale, con media $0{,}80$ e deviazione standard $0{,}35$: l'addestramento ha ridotto l'ampiezza di molte uscite. I guadagni di colonna sono rimasti più vicini a $1$, con media $1{,}07$ e deviazione standard $0{,}18$. In entrambi i casi la distribuzione ha una lunga coda a destra: pochi guadagni, qualche decina su decine di migliaia, raggiungono valori fra $3$ e $5{,}3$, cioè amplificano molto una singola riga o colonna. Questi pochi valori grandi spiegano perché i guadagni sono più sensibili delle scale alla quantizzazione (\autoref{sec:studio-guadagni}).
 
 \subsection{Studio dell'importanza}
 \label{sec:studio-guadagni}

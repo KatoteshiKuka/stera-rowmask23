@@ -41,6 +41,8 @@ La \autoref{fig:narrativa-3modelli} e la \autoref{tab:narrativa-3modelli} riport
 \label{fig:narrativa-3modelli}
 \end{figure}
 
+Nel pannello (a) della \autoref{fig:narrativa-3modelli} ogni barra è la quota di racconti giudicati corretti e il segmento verticale è il suo intervallo di confidenza al 95\%. Si osserva che l'intervallo di STERA 30M è del tutto separato da quello di TinyStories-8M, mentre si sovrappone ampiamente a quello di TinyStories-33M: la differenza con il modello piccolo è netta, quella con il modello grande è compatibile con la variabilità del campione, come confermano i test appaiati della \autoref{sec:confronti-appaiati-rango8}. Il pannello (b) mostra la NLL sugli stessi 300 racconti, dove un valore più basso indica un modello che assegna più probabilità al testo di riferimento: STERA 30M ha il valore più basso dei tre.
+
 \begin{table}[htbp]
 \centering
 \small
@@ -67,6 +69,8 @@ La gerarchia è netta per la grammatica, che resta alta per tutti i modelli, ed 
 \caption{Distribuzione delle categorie assegnate dal giudice ai 300 racconti di ciascun modello.}
 \label{fig:categorie-spn}
 \end{figure}
+
+Nella \autoref{fig:categorie-spn} ogni barra divide i 300 racconti di un modello nelle tre categorie del giudice: S (corretto), P (problemi parziali) e N (gravemente incoerente). Si osserva che la differenza fra i modelli sta soprattutto nel passaggio da P a S: TinyStories-8M ha la maggior parte dei racconti in P, mentre STERA 30M e TinyStories-33M ne spostano una quota simile in S.
 
 \subsection{Confronti appaiati}
 \label{sec:confronti-appaiati-rango8}
@@ -123,7 +127,7 @@ Scale, guadagni e basso rango a 8 bit & $1{,}1765$ & $+0{,}21\%$ \\
 \label{tab:ablazioni-scale-guadagni}
 \end{table}
 
-\paragraph{Rango ridotto.} La \autoref{tab:rango-ridotto} e la \autoref{fig:rango-ridotto}, subito sotto, riportano NLL e racconti corretti al variare del rango. Il modello addestrato usa tutto il rango disponibile: a rango 64 la quota di racconti corretti scende dal $44{,}0\%$ al $20{,}0\%$, con una differenza appaiata di $-24$ punti, intervallo al 95\% $[-31;\,-17]$ e $p=1{,}6\cdot10^{-10}$ dopo la correzione di Holm; da rango 48 in giù nessun racconto è corretto ($p<10^{-38}$). Lo stesso andamento compare nella NLL, che cresce con regolarità al diminuire del rango.
+\paragraph{Rango ridotto.} La \autoref{tab:rango-ridotto} e la \autoref{fig:rango-ridotto}, subito sotto, riportano NLL e racconti corretti al variare del rango. Nel grafico l'asse orizzontale è il rango usato, da 0 (basso rango tolto) a 96 (modello addestrato); il pannello di sinistra mostra la NLL, quello di destra la quota di racconti corretti con il suo intervallo di confidenza. Come mostra la figura, le due curve si muovono insieme: appena il rango scende sotto 96 la NLL sale e la quota di racconti corretti crolla, senza un tratto iniziale in cui il modello resti stabile. Il modello addestrato usa tutto il rango disponibile: a rango 64 la quota di racconti corretti scende dal $44{,}0\%$ al $20{,}0\%$, con una differenza appaiata di $-24$ punti, intervallo al 95\% $[-31;\,-17]$ e $p=1{,}6\cdot10^{-10}$ dopo la correzione di Holm; da rango 48 in giù nessun racconto è corretto ($p<10^{-38}$). Lo stesso andamento compare nella NLL, che cresce con regolarità al diminuire del rango.
 
 \begin{table}[H]
 \centering
