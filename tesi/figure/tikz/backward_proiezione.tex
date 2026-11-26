@@ -1,0 +1,29 @@
+\begin{tikzpicture}[x=8.6mm, y=8mm, font=\small, >={Latex[length=2mm]},
+  op/.style={draw=steraBlu, fill=steraBlu!10, rounded corners=2pt, minimum height=8mm, align=center, inner sep=3pt},
+  va/.style={inner sep=1pt}, gr/.style={font=\footnotesize, text=steraArancio!80!black, align=center},
+  bk/.style={<-, draw=steraArancio, thick}]
+\node[va] (x) at (0,0) {$\dfrac{\partial\mathcal L}{\partial x}$};
+\node[op] (gin) at (2,0) {$\odot\,g_{\mathrm{in}}$};
+\node[va] (xt) at (3.7,0) {$\dfrac{\partial\mathcal L}{\partial\tilde x}$};
+\node[op] (blk) at (6,0) {blocchi\\trasposti};
+\node[va] (z) at (8.3,0) {$\tilde\delta$};
+\node[op] (gout) at (10,0) {$\odot\,g_{\mathrm{out}}$};
+\node[va] (u) at (11.6,0) {$\delta$};
+\node[circle, fill=steraArancio, inner sep=1.6pt] (piu) at (12.9,0) {};
+\node[va] (y) at (14.2,0) {$\delta=\dfrac{\partial\mathcal L}{\partial y}$};
+\node[op, fill=steraArancio!12, draw=steraArancio] (vt) at (3.7,-2) {$V$};
+\node[va] (a) at (6,-2) {$U^{\top}\delta$};
+\node[op, fill=steraArancio!12, draw=steraArancio] (uu) at (8.3,-2) {$U^{\top}$};
+\draw[bk] (x) -- (gin); \draw[bk] (gin) -- (xt); \draw[bk] (xt) -- (blk); \draw[bk] (blk) -- (z);
+\draw[bk] (z) -- (gout); \draw[bk] (gout) -- (u); \draw[bk] (u) -- (piu); \draw[bk] (piu) -- (y);
+\draw[bk] (x) |- (vt); \draw[bk] (vt) -- (a); \draw[bk] (a) -- (uu); \draw[bk] (uu) -| (piu);
+\node[gr] at (2,1.2) {$\dfrac{\partial\mathcal L}{\partial g_{\mathrm{in}}}=x\odot\dfrac{\partial\mathcal L}{\partial\tilde x}$};
+\node[gr] at (6,1.45) {$\dfrac{\partial\mathcal L}{\partial\alpha},\ \dfrac{\partial\mathcal L}{\partial c}$\\da $\tilde\delta$ e $\tilde x$};
+\node[gr] at (10,1.2) {$\dfrac{\partial\mathcal L}{\partial g_{\mathrm{out}}}=\delta\odot z$};
+\node[gr] at (8.3,-3.05) {$\dfrac{\partial\mathcal L}{\partial U}=\delta\,a^{\top}$};
+\node[gr] at (3.7,-3.05) {$\dfrac{\partial\mathcal L}{\partial V}=x\,(U^{\top}\delta)^{\top}$};
+\node[font=\footnotesize, text=steraGrigio] at (12.9,.7) {B1};
+\node[font=\footnotesize, text=steraGrigio] at (10,-.75) {B2};
+\node[font=\footnotesize, text=steraGrigio] at (6,-.95) {B3};
+\node[font=\footnotesize, text=steraGrigio] at (2,-.75) {B4};
+\end{tikzpicture}

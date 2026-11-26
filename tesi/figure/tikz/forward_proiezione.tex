@@ -1,0 +1,21 @@
+\begin{tikzpicture}[x=8.6mm, y=8mm, font=\small, >={Latex[length=2mm]},
+  op/.style={draw=steraBlu, fill=steraBlu!10, rounded corners=2pt, minimum height=8mm, align=center, inner sep=3pt},
+  va/.style={inner sep=1pt}]
+\node[va] (x) at (0,0) {$x$};
+\node[op] (gin) at (2,0) {$\odot\,g_{\mathrm{in}}$};
+\node[va] (xt) at (3.7,0) {$\tilde x$};
+\node[op] (blk) at (6,0) {blocchi\\$\alpha^{(p,q)}\Phi(c^{(p,q)})$};
+\node[va] (z) at (8.3,0) {$z$};
+\node[op] (gout) at (10,0) {$\odot\,g_{\mathrm{out}}$};
+\node[va] (u) at (11.6,0) {$u$};
+\node[draw, circle, inner sep=1pt] (piu) at (12.9,0) {$+$};
+\node[va] (y) at (14.2,0) {$y$};
+\node[op, fill=steraArancio!12, draw=steraArancio] (vt) at (3.7,-2) {$V^{\top}$};
+\node[va] (a) at (6,-2) {$a$};
+\node[op, fill=steraArancio!12, draw=steraArancio] (uu) at (8.3,-2) {$U$};
+\draw[->] (x) -- (gin); \draw[->] (gin) -- (xt); \draw[->] (xt) -- (blk); \draw[->] (blk) -- (z);
+\draw[->] (z) -- (gout); \draw[->] (gout) -- (u); \draw[->] (u) -- (piu); \draw[->] (piu) -- (y);
+\draw[->] (x) |- (vt); \draw[->] (vt) -- (a); \draw[->] (a) -- (uu); \draw[->] (uu) -| (piu);
+\node[font=\footnotesize, text=steraGrigio] at (2,.85) {passo 1}; \node[font=\footnotesize, text=steraGrigio] at (6,1.05) {passo 2};
+\node[font=\footnotesize, text=steraGrigio] at (10,.85) {passo 3}; \node[font=\footnotesize, text=steraGrigio] at (6,-2.75) {passo 4};
+\end{tikzpicture}
