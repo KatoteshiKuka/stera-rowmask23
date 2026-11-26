@@ -56,6 +56,21 @@ class H(http.server.SimpleHTTPRequestHandler):
             self.end_headers()
             self.wfile.write(b)
             return
+        if self.path.startswith("/elenco"):
+            fl = sorted([p for p in ROOT.rglob("*") if p.suffix in (".tex", ".bib", ".cls", ".py")
+                         and "anteprima" not in p.parts and not any(x.startswith(".") for x in p.parts)],
+                        key=lambda p: str(p))
+            b = json.dumps([{"p": str(p.relative_to(ROOT)), "t": p.stat().st_mtime} for p in fl]).encode()
+            self.send_response(200); self.send_header("Content-Type", "application/json"); self.end_headers()
+            self.wfile.write(b); return
+        if self.path.startswith("/sorgente?p="):
+            from urllib.parse import unquote
+            p = (ROOT / unquote(self.path.split("=", 1)[1])).resolve()
+            if ROOT not in p.parents or not p.is_file():
+                self.send_error(404); return
+            b = p.read_bytes()
+            self.send_response(200); self.send_header("Content-Type", "text/plain; charset=utf-8"); self.end_headers()
+            self.wfile.write(b); return
         if self.path in ("/", "/index.html"):
             self.path = "/anteprima/anteprima.html"
         return super().do_GET()

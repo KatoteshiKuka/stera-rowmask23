@@ -3,70 +3,111 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Anteprima tesi</title>
+<title>Tesi STERA</title>
 <style>
-  :root { --bg:#e9ebee; --bar:#ffffff; --fg:#1d2733; --muted:#5b6673; --ok:#2e7d4f; --err:#b3261e; }
-  body { margin:0; background:var(--bg); font:14px -apple-system,system-ui,sans-serif; color:var(--fg); }
-  #bar { position:sticky; top:0; z-index:2; background:var(--bar); border-bottom:1px solid #d3d7dc;
-         display:flex; gap:12px; align-items:center; padding:8px 16px; }
-  #stato { font-weight:600; }
-  #stato.ok { color:var(--ok); } #stato.errore { color:var(--err); }
-  #info { color:var(--muted); }
-  #zoom { margin-left:auto; display:flex; gap:6px; align-items:center; }
-  button { border:1px solid #c4c9cf; background:#fff; border-radius:6px; padding:3px 9px; cursor:pointer; }
-  #log { white-space:pre-wrap; color:var(--err); font:12px ui-monospace,monospace; padding:0 16px; }
-  #pagine { display:flex; flex-direction:column; align-items:center; gap:14px; padding:16px; }
-  canvas { background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.18); max-width:100%; height:auto; }
+  :root { --bg:#e9ebee; --bar:#fff; --fg:#1d2733; --muted:#5b6673; --ok:#2e7d4f; --err:#b3261e; --acc:#1f6f8b; --code:#fbfbfc; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#1b1e22; --bar:#24282d; --fg:#e4e7eb; --muted:#9aa3ad; --code:#202327; } }
+  :root[data-theme="dark"] { --bg:#1b1e22; --bar:#24282d; --fg:#e4e7eb; --muted:#9aa3ad; --code:#202327; }
+  * { box-sizing:border-box; }
+  body { margin:0; height:100vh; display:flex; flex-direction:column; background:var(--bg); color:var(--fg);
+         font:14px -apple-system,system-ui,sans-serif; }
+  #bar { display:flex; gap:12px; align-items:center; padding:8px 14px; background:var(--bar); border-bottom:1px solid #8883; }
+  #bar b { font-size:15px; } #stato { font-weight:600; } #stato.ok { color:var(--ok); } #stato.errore { color:var(--err); }
+  #info { color:var(--muted); } #zoom { margin-left:auto; display:flex; gap:6px; align-items:center; }
+  button { border:1px solid #8886; background:var(--bar); color:var(--fg); border-radius:6px; padding:3px 9px; cursor:pointer; }
+  #main { flex:1; display:flex; min-height:0; }
+  #files { width:230px; overflow:auto; background:var(--bar); border-right:1px solid #8883; padding:6px 0; }
+  #files div { padding:4px 12px; cursor:pointer; font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #files div:hover { background:#8882; } #files div.sel { background:var(--acc); color:#fff; }
+  #files .nuovo::after { content:" ●"; color:#e08a3c; }
+  #codice { flex:1; overflow:auto; background:var(--code); font:12.5px/1.55 ui-monospace,Menlo,monospace; min-width:0; }
+  #codice table { border-collapse:collapse; width:100%; }
+  #codice td.n { color:var(--muted); text-align:right; padding:0 10px; user-select:none; width:1%; vertical-align:top; }
+  #codice td.l { white-space:pre-wrap; word-break:break-word; padding-right:14px; }
+  .cmd { color:#1f6f8b; } .cm { color:#7a8b3a; font-style:italic; } .mt { color:#c2672b; }
+  #pdf { flex:1; overflow:auto; min-width:0; }
+  #log { white-space:pre-wrap; color:var(--err); font:12px ui-monospace,monospace; padding:0 14px; }
+  #pagine { display:flex; flex-direction:column; align-items:center; gap:12px; padding:14px; }
+  canvas { background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.25); max-width:100%; height:auto; }
+  #div { width:5px; cursor:col-resize; background:#8883; }
+  @media (max-width:800px) { #files { display:none; } #main { flex-direction:column; } }
 </style>
 </head>
 <body>
-<div id="bar">
-  <span id="stato">avvio…</span><span id="info"></span>
-  <span id="zoom"><button id="meno">−</button><span id="z">100%</span><button id="piu">+</button></span>
+<div id="bar"><b>Tesi STERA</b><span id="stato">avvio…</span><span id="info"></span>
+  <span id="zoom"><button id="meno">−</button><span id="z">100%</span><button id="piu">+</button></span></div>
+<div id="main">
+  <div id="files"></div>
+  <div id="codice"></div>
+  <div id="div"></div>
+  <div id="pdf"><div id="log"></div><div id="pagine"></div></div>
 </div>
-<div id="log"></div>
-<div id="pagine"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
-let versione = -1, scala = 1.0, rendering = false;
-const box = document.getElementById("pagine");
+pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+let versione = -1, scala = 1.0, rendering = false, sel = null, tempi = {}, segui = true;
+const box = document.getElementById("pagine"), fl = document.getElementById("files"), cod = document.getElementById("codice");
+try { const s = localStorage.getItem("sel"); if (s) { sel = s; segui = false; } } catch (e) {}
 
+function esc(s) { return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function colora(l) {
+  let c = "", i = l.search(/(?<!\\)%/); if (i >= 0) { c = '<span class="cm">' + esc(l.slice(i)) + "</span>"; l = l.slice(0, i); }
+  return esc(l).replace(/\$[^$]*\$/g, m => '<span class="mt">' + m + "</span>")
+               .replace(/\\[a-zA-Z]+/g, m => '<span class="cmd">' + m + "</span>") + c;
+}
+async function apri(p, prima) {
+  sel = p; try { localStorage.setItem("sel", p); } catch (e) {}
+  const y = cod.scrollTop, t = await (await fetch("/sorgente?p=" + encodeURIComponent(p), {cache:"no-store"})).text();
+  cod.innerHTML = "<table>" + t.split("\n").map((l, i) => `<tr><td class="n">${i+1}</td><td class="l">${colora(l)}</td></tr>`).join("") + "</table>";
+  if (!prima) cod.scrollTop = y;
+  [...fl.children].forEach(d => d.classList.toggle("sel", d.dataset.p === p));
+}
+async function elenco() {
+  const e = await (await fetch("/elenco", {cache:"no-store"})).json(), ora = Date.now() / 1000;
+  let cambiato = null;
+  fl.replaceChildren(...e.map(f => { const d = document.createElement("div"); d.textContent = f.p; d.dataset.p = f.p; d.title = f.p;
+    if (ora - f.t < 600) d.classList.add("nuovo");
+    if (tempi[f.p] && tempi[f.p] !== f.t) cambiato = f.p; tempi[f.p] = f.t;
+    d.onclick = () => { segui = false; apri(f.p, true); }; if (f.p === sel) d.classList.add("sel"); return d; }));
+  if (cambiato && (segui || cambiato === sel)) await apri(cambiato, cambiato !== sel);
+  else if (sel && !cod.innerHTML) apri(sel, true);
+  else if (!sel) { const recente = e.slice().sort((a, b) => b.t - a.t)[0]; if (recente) apri(recente.p, true); }
+}
+let doc = null, oss = null;
+async function disegnaPagina(c) {
+  if (c.dataset.fatto) return; c.dataset.fatto = 1;
+  const page = await doc.getPage(+c.dataset.n), vp = page.getViewport({ scale: scala * 1.5 });
+  c.width = vp.width; c.height = vp.height;
+  await page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
+}
 async function disegna(v) {
-  rendering = true;
-  const y = window.scrollY, h = document.body.scrollHeight || 1;
-  const pdf = await pdfjsLib.getDocument({ url: "/main.pdf?v=" + v }).promise;
+  rendering = true; const pd = document.getElementById("pdf"), y = pd.scrollTop, h = pd.scrollHeight || 1;
+  doc = await pdfjsLib.getDocument({ url: "/main.pdf?v=" + v }).promise;
+  const p1 = (await doc.getPage(1)).getViewport({ scale: scala * 1.5 });
+  if (oss) oss.disconnect();
+  oss = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) disegnaPagina(e.target); }), { root: pd, rootMargin: "800px" });
   const frag = document.createDocumentFragment();
-  for (let i = 1; i <= pdf.numPages; i++) {
-    const page = await pdf.getPage(i);
-    const vp = page.getViewport({ scale: scala * 1.5 });
-    const c = document.createElement("canvas");
-    c.width = vp.width; c.height = vp.height;
-    c.style.width = (vp.width / 1.5) + "px";
-    await page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
-    frag.appendChild(c);
+  for (let i = 1; i <= doc.numPages; i++) {
+    const c = document.createElement("canvas"); c.dataset.n = i; c.width = p1.width; c.height = p1.height;
+    c.style.width = (p1.width / 1.5) + "px"; frag.appendChild(c); oss.observe(c);
   }
-  box.replaceChildren(frag);
-  window.scrollTo(0, y / h * document.body.scrollHeight);
-  document.getElementById("info").textContent =
-    pdf.numPages + " pagine · aggiornato " + new Date().toLocaleTimeString("it-IT");
+  box.replaceChildren(frag); pd.scrollTop = y / h * pd.scrollHeight;
+  document.getElementById("info").textContent = doc.numPages + " pagine · aggiornato " + new Date().toLocaleTimeString("it-IT");
   rendering = false;
 }
-
 async function controlla() {
   try {
-    const s = await (await fetch("/stato", { cache: "no-store" })).json();
-    const el = document.getElementById("stato");
+    const s = await (await fetch("/stato", { cache: "no-store" })).json(), el = document.getElementById("stato");
     el.textContent = s.status; el.className = s.status;
     document.getElementById("log").textContent = s.status === "errore" ? s.log : "";
-    if (s.version && s.version !== versione && !rendering) { versione = s.version; await disegna(versione); }
+    if (s.version && s.version !== versione && !rendering) { versione = s.version; disegna(versione); }
+    await elenco();
   } catch (e) { document.getElementById("stato").textContent = "server non raggiungibile"; }
 }
-function zoom(d) { scala = Math.max(.5, Math.min(2.5, scala + d));
-  document.getElementById("z").textContent = Math.round(scala * 100) + "%"; if (versione > 0) disegna(versione); }
-document.getElementById("piu").onclick = () => zoom(.1);
-document.getElementById("meno").onclick = () => zoom(-.1);
+function zoom(d) { scala = Math.max(.5, Math.min(2.5, scala + d)); document.getElementById("z").textContent = Math.round(scala * 100) + "%"; if (versione > 0) disegna(versione); }
+document.getElementById("piu").onclick = () => zoom(.1); document.getElementById("meno").onclick = () => zoom(-.1);
+const dv = document.getElementById("div"); dv.onmousedown = e => { const m = ev => { cod.style.flex = "0 0 " + (ev.clientX - fl.offsetWidth) + "px"; };
+  document.addEventListener("mousemove", m); document.addEventListener("mouseup", () => document.removeEventListener("mousemove", m), {once:true}); };
 setInterval(controlla, 1500); controlla();
 </script>
 </body>
