@@ -75,6 +75,23 @@ class H(http.server.SimpleHTTPRequestHandler):
             self.path = "/anteprima/anteprima.html"
         return super().do_GET()
 
+
+    def do_POST(self):
+        from urllib.parse import unquote
+        n = int(self.headers.get("Content-Length", 0)); body = self.rfile.read(n)
+        if self.path.startswith("/salva?p="):
+            p = (ROOT / unquote(self.path.split("=", 1)[1])).resolve()
+            if ROOT not in p.parents or p.suffix not in (".tex", ".bib") or not p.is_file():
+                self.send_error(403); return
+            p.write_bytes(body)
+            b = json.dumps({"t": p.stat().st_mtime}).encode()
+        elif self.path.startswith("/compila"):
+            threading.Thread(target=build, daemon=True).start(); b = b"{}"
+        else:
+            self.send_error(404); return
+        self.send_response(200); self.send_header("Content-Type", "application/json"); self.end_headers()
+        self.wfile.write(b)
+
     def end_headers(self):
         self.send_header("Cache-Control", "no-store")
         super().end_headers()
