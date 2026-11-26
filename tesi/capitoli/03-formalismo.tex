@@ -1,4 +1,4 @@
-In questo capitolo definiamo la parametrizzazione STERA delle proiezioni di un Transformer e ne ricaviamo le proprietà. La Sezione~\ref{sec:proiezione-stera} dà la formula di una proiezione STERA, che combina quattro componenti: le coordinate dei blocchi RowMask23, una scala per blocco, i guadagni per riga e per colonna e un termine a basso rango. La Sezione~\ref{sec:esempio-128} mostra come le quattro componenti costruiscono una proiezione $128\times128$. Le sezioni successive analizzano una componente alla volta: le coordinate e le proprietà del blocco RowMask23 (Sezione~\ref{sec:coordinate}), le scale (Sezione~\ref{sec:scale}), i guadagni (Sezione~\ref{sec:guadagni}) e il termine a basso rango (Sezione~\ref{sec:basso-rango}). Per scale, guadagni e basso rango riportiamo con quale criterio sono applicati e i valori appresi da STERA 30M; la Sezione~\ref{sec:studio-componenti} descrive lo studio, comune alle tre componenti, con cui ne misuriamo l'importanza, i cui risultati sono nel Capitolo~\ref{cap:capitoli/06-risultati}. Il capitolo si chiude con il bilancio complessivo dei parametri.
+In questo capitolo definiamo la parametrizzazione STERA delle proiezioni di un Transformer e ne ricaviamo le proprietà. La Sezione~\ref{sec:proiezione-stera} dà la formula di una proiezione STERA, che combina quattro componenti: le coordinate dei blocchi RowMask23, una scala per blocco, i guadagni per riga e per colonna e un termine a basso rango. La Sezione~\ref{sec:esempio-128} mostra come le quattro componenti costruiscono una proiezione $128\times128$. Le sezioni successive analizzano una componente alla volta: le coordinate e le proprietà del blocco RowMask23 (Sezione~\ref{sec:coordinate}), le scale (Sezione~\ref{sec:scale}), i guadagni (Sezione~\ref{sec:guadagni}) e il termine a basso rango (Sezione~\ref{sec:basso-rango}). Per scale, guadagni e basso rango riportiamo con quale criterio sono applicati e i valori appresi da STERA 30M; ciascuna sezione si chiude con lo studio con cui ne misuriamo l'importanza, i cui risultati completi sono nel Capitolo~\ref{cap:capitoli/06-risultati}. Il capitolo si chiude con il bilancio complessivo dei parametri.
 
 \section{La proiezione STERA}
 \label{sec:proiezione-stera}
@@ -28,7 +28,6 @@ Scale & $\alpha^{(p,q)}\in\mathbb{R}$ & $PQ$ & \ref{sec:scale} \\
 Guadagni & $g_{\mathrm{out}}\in\mathbb{R}^{m}$, $g_{\mathrm{in}}\in\mathbb{R}^{n}$ & $m+n$ & \ref{sec:guadagni} \\
 Basso rango & $U\in\mathbb{R}^{m\times r}$, $V\in\mathbb{R}^{n\times r}$ & $r(m+n)$ & \ref{sec:basso-rango} \\
 \midrule
-Studio dell'importanza & & & \ref{sec:studio-componenti} \\
 Bilancio complessivo & & & \ref{sec:bilancio-parametri} \\
 \bottomrule
 \end{tabular}
@@ -397,6 +396,10 @@ La Figura~\ref{fig:scale-apprese}, subito sotto, mostra la distribuzione delle \
 \label{fig:scale-apprese}
 \end{figure}
 
+\subsection{Studio dell'importanza}
+\label{sec:studio-scale}
+Per misurare quanto il modello addestrato dipenda dalle scale partiamo dal checkpoint finale, modifichiamo solo le scale lasciando invariato tutto il resto e misuriamo la NLL sui 300 racconti di prova. Le prove sono due: una di \emph{rimozione}, in cui tutte le scale sono riportate al valore iniziale $1$, e una di \emph{quantizzazione}, in cui le scale sono rappresentate con 8 bit e una scala di quantizzazione per matrice. Senza scale la NLL passa da $1{,}174$ a $4{,}42$ e il modello non genera più testo; a 8 bit varia del $+0{,}02\%$. Una componente che vale lo $0{,}02\%$ dei parametri è quindi indispensabile, ma non richiede precisione elevata. I risultati completi sono nella Sezione~\ref{sec:risultati-componenti}.
+
 \section{I guadagni per riga e per colonna}
 \label{sec:guadagni}
 
@@ -423,6 +426,10 @@ La Figura~\ref{fig:guadagni-appresi}, subito sotto, mostra la distribuzione dei 
 \label{fig:guadagni-appresi}
 \end{figure}
 
+\subsection{Studio dell'importanza}
+\label{sec:studio-guadagni}
+Lo studio segue lo stesso schema delle scale: dal checkpoint finale modifichiamo solo i guadagni e misuriamo la NLL sui 300 racconti di prova. Riportando tutti i guadagni a $1$ la NLL sale a $11{,}38$, oltre il valore di una distribuzione uniforme sul vocabolario ($10{,}82$): il modello addestrato non funziona senza guadagni, che pure valgono lo $0{,}4\%$ dei parametri. Rappresentandoli con 8 bit e una scala di quantizzazione per matrice la NLL varia del $+0{,}17\%$; la variazione, piccola, è maggiore di quella delle scale perché pochi guadagni molto grandi (Figura~\ref{fig:guadagni-appresi}) riducono la risoluzione di una sola scala per matrice, e scale di quantizzazione per gruppi di valori la ridurrebbero ulteriormente. I risultati completi sono nella Sezione~\ref{sec:risultati-componenti}.
+
 \section{Il termine a basso rango}
 \label{sec:basso-rango}
 
@@ -447,34 +454,14 @@ Al termine dell'addestramento il termine a basso rango vale fra il $37\%$ e il $
 \label{fig:spettro-basso-rango}
 \end{figure}
 
-\section{Studio dell'importanza delle componenti aggiuntive}
-\label{sec:studio-componenti}
-
-Scale, guadagni e basso rango sono componenti aggiuntive rispetto alle coordinate: le loro grandezze sono scelte di progetto, e per questo misuriamo quanto il modello addestrato dipenda da ciascuna. Lo studio segue lo stesso schema per le tre componenti: si parte dal checkpoint finale di STERA 30M, si modifica una sola componente lasciando invariato tutto il resto, e si misura la NLL sui 300 racconti di prova. Per ogni componente facciamo due prove, riassunte nella Tabella~\ref{tab:studio-componenti}, subito sotto:
+\subsection{Studio dell'importanza}
+\label{sec:studio-basso-rango}
+Il basso rango vale il $42\%$ dei parametri di STERA 30M, e per questo lo studio misura, oltre alla NLL, anche la qualità dei racconti. Come per scale e guadagni partiamo dal checkpoint finale e modifichiamo solo questa componente, con due prove.
 \begin{itemize}
-\item una prova di \emph{rimozione}, che toglie l'informazione appresa dalla componente: scale e guadagni riportati al valore iniziale $1$, basso rango sostituito dalla sua migliore approssimazione di rango $k<96$, ottenuta dalla decomposizione ai valori singolari, con $k$ pari a 64, 48, 32, 16, 8 e 0;
-\item una prova di \emph{quantizzazione}, che mantiene la componente ma ne rappresenta i valori con 8 bit.
+\item \textbf{Rimozione: rango ridotto.} In tutte le proiezioni sostituiamo $UV^\top$ con la sua migliore approssimazione di rango $k<96$, ottenuta dalla decomposizione ai valori singolari, con $k$ pari a 64, 48, 32, 16, 8 e 0. Per ogni $k$ misuriamo la NLL e ripetiamo la generazione e il giudizio cieco del Capitolo~\ref{cap:capitoli/05-metodologia}, con i racconti di tutti i ranghi mescolati fra loro.
+\item \textbf{Quantizzazione a 8 bit.} Lasciamo il rango a 96 e rappresentiamo $U$ e $V$ con 8 bit. Nel formato del motore, con una scala ogni 32 valori, la matrice densa equivalente cambia in norma dello $0{,}48\%$; il giudizio cieco usa uno schema con una scala per colonna, leggermente meno preciso ($0{,}61\%$), ed è svolto in una sessione separata con lo stesso giudice e la stessa rubrica.
 \end{itemize}
-Per il basso rango, che vale il $42\%$ dei parametri, alla NLL si aggiunge la qualità dei racconti: per ogni rango ridotto e per la variante a 8 bit ripetiamo la generazione e il giudizio cieco del Capitolo~\ref{cap:capitoli/05-metodologia}. I racconti dei ranghi ridotti sono giudicati mescolati fra loro; la variante a 8 bit è giudicata in una sessione separata, con lo stesso giudice e la stessa rubrica.
-
-\begin{table}[H]
-\centering
-\small
-\renewcommand{\arraystretch}{1.25}
-\begin{tabular}{>{\raggedright\arraybackslash}p{22mm}>{\raggedright\arraybackslash}p{40mm}>{\raggedright\arraybackslash}p{42mm}>{\raggedright\arraybackslash}p{24mm}}
-\toprule
-Componente & Rimozione & Quantizzazione a 8 bit & Misure \\
-\midrule
-\rowcolor{steraGrigio!12} Scale & tutte le scale a $1$ & una scala di quantizzazione per matrice & NLL \\
-\rowcolor{steraVerde!15} Guadagni & tutti i guadagni a $1$ & una scala di quantizzazione per matrice & NLL \\
-\rowcolor{steraArancio!15} Basso rango & rango ridotto a $k=64,\dots,0$ con la SVD & formato del motore: una scala ogni 32 valori (errore $0{,}48\%$); per il giudizio una scala per colonna (errore $0{,}61\%$) & NLL, giudizio cieco \\
-\bottomrule
-\end{tabular}
-\caption{Prove dello studio dell'importanza delle componenti aggiuntive. L'errore è la variazione in norma della matrice densa equivalente.}
-\label{tab:studio-componenti}
-\end{table}
-
-I risultati sono nella Sezione~\ref{sec:risultati-componenti}, i tempi della variante a 8 bit nella Sezione~\ref{sec:rango8-tempi}. In sintesi, il modello addestrato non funziona senza nessuna delle tre componenti: senza scale o senza guadagni non genera più testo, e già a rango 64 la quota di racconti corretti si dimezza. Tollera invece la riduzione dei bit: a 8 bit la NLL cambia al più di qualche decimo di punto percentuale, e con il basso rango a 8 bit i pesi scendono da $121{,}4$ a $86{,}1$~MB. Struttura e quantizzazione agiscono su grandezze diverse, il numero di valori e i bit per valore, e si sommano. Lo studio misura la dipendenza del modello \emph{già addestrato} dalle componenti; non dice quanto rango servirebbe a un modello addestrato fin dall'inizio con un rango minore, che potrebbe affidare più informazione alle coordinate.
+Il modello addestrato non tollera la riduzione del rango: già a $k=64$ la quota di racconti corretti scende dal $44{,}0\%$ al $20{,}0\%$, e da $k=48$ in giù nessun racconto è corretto. Tollera invece la riduzione dei bit: a 8 bit la NLL varia del $+0{,}007\%$, la quota di racconti corretti non cambia in modo significativo ($41{,}3\%$ contro $44{,}0\%$, $p=0{,}52$) e i pesi scendono da $121{,}4$ a $86{,}1$~MB. Struttura e quantizzazione agiscono su grandezze diverse, il numero di valori e i bit per valore, e si sommano. Lo studio misura la dipendenza del modello \emph{già addestrato} dal termine a basso rango; non dice quanto rango servirebbe a un modello addestrato fin dall'inizio con un rango minore, che potrebbe affidare più informazione alle coordinate. I risultati completi sono nella Sezione~\ref{sec:risultati-componenti}, i tempi della variante a 8 bit nella Sezione~\ref{sec:rango8-tempi}.
 
 % ---------------------------------------------------------------- BILANCIO
 
