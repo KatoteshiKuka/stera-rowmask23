@@ -7,20 +7,41 @@ Prima di dare le definizioni formali, costruiamo una proiezione STERA dal basso:
 
 \subsection{Un blocco RowMask23}
 
-La Figura~\ref{fig:struttura} mostra un blocco RowMask23 di $128\times128$ elementi. Il blocco si costruisce in tre passi, ciascuno dei quali occupa posizioni diverse della matrice.
+Un blocco RowMask23 è una matrice di $128\times128$ elementi. Si costruisce in tre passi, ciascuno dei quali occupa posizioni diverse della matrice; la Tabella~\ref{tab:struttura-blocco}, subito sotto, mostra le prime otto righe e colonne con un colore per ogni passo.
 \begin{enumerate}
-\item \textbf{La diagonale} (in blu a sinistra). I 128 elementi $(i,i)$ sono liberi: ciascuno ha un proprio valore $d_i$.
-\item \textbf{La base XOR} (in grigio a sinistra). Ogni elemento fuori diagonale $(i,j)$ prende il valore $b_{i\oplus j}$, dove $\oplus$ è lo XOR bit a bit degli indici. Tutte le posizioni con lo stesso valore di $i\oplus j$ formano una \emph{diagonale generalizzata} e condividono lo stesso valore: il pannello di destra colora ogni posizione secondo $i\oplus j$. Bastano così 127 valori $b_1,\dots,b_{127}$ per riempire i \num{16256} elementi fuori diagonale.
-\item \textbf{Le correzioni} (in rosso a sinistra). In 23 posizioni fisse di ogni riga, dalla riga 1 alla 127, al valore della base si somma una correzione propria $e_{i,k}$, che rende quella posizione diversa dalle altre della sua diagonale generalizzata: \num{2921} valori in tutto.
+\item \textbf{La diagonale} (in blu). I 128 elementi $(i,i)$ sono liberi: ciascuno ha un proprio valore $d_i$.
+\item \textbf{La base XOR} (in grigio). Ogni elemento fuori diagonale $(i,j)$ prende il valore $b_{i\oplus j}$, dove $\oplus$ è lo XOR bit a bit degli indici. Tutte le posizioni con lo stesso valore di $i\oplus j$ formano una \emph{diagonale generalizzata} e condividono lo stesso valore: nella tabella sono le caselle con lo stesso indice, per esempio tutte quelle con $b_1$. Bastano così 127 valori $b_1,\dots,b_{127}$ per riempire i \num{16256} elementi fuori diagonale.
+\item \textbf{Le correzioni} (in arancione). In 23 posizioni fisse di ogni riga, dalla riga 1 alla 127, al valore della base si somma una correzione propria $e_{i,k}$, che rende quella posizione diversa dalle altre della sua diagonale generalizzata: \num{2921} valori in tutto.
 \end{enumerate}
 Le $128+127+\num{2921}=\num{3176}$ \emph{coordinate} $c=(d,b,e)$ determinano l'intero blocco, che indichiamo con $\Phi(c)$, al posto dei \num{16384} valori di una matrice densa. Infine il blocco è moltiplicato per una \emph{scala} $\alpha$, un solo numero che ne fissa l'ampiezza.
 
-\begin{figure}[H]
+\begin{table}[H]
 \centering
-\includegraphics[width=\textwidth]{figure/formalismo/struttura_blocco.pdf}
-\caption{Struttura di un blocco RowMask23 $128\times128$. A sinistra: diagonale (blu), posizioni con una correzione propria (rosso, 23 per riga dalla riga 1 in poi) e posizioni determinate solo dalla base XOR (grigio). A destra: il valore di $i\oplus j$, cioè l'indice della coordinata di base usata in ciascuna posizione.}
-\label{fig:struttura}
-\end{figure}
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{c|*{8}{>{\centering\arraybackslash}p{9.5mm}}}
+$i\backslash j$ & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} & \textbf{7} \\
+\hline
+\textbf{0} & \cellcolor{steraBlu!30}$d_{0}$ & \cellcolor{steraGrigio!12}$b_{1}$ & \cellcolor{steraGrigio!12}$b_{2}$ & \cellcolor{steraGrigio!12}$b_{3}$ & \cellcolor{steraGrigio!12}$b_{4}$ & \cellcolor{steraGrigio!12}$b_{5}$ & \cellcolor{steraGrigio!12}$b_{6}$ & \cellcolor{steraGrigio!12}$b_{7}$ \\
+\textbf{1} & \cellcolor{steraArancio!40}$b_{1}{+}e$ & \cellcolor{steraBlu!30}$d_{1}$ & \cellcolor{steraGrigio!12}$b_{3}$ & \cellcolor{steraGrigio!12}$b_{2}$ & \cellcolor{steraGrigio!12}$b_{5}$ & \cellcolor{steraGrigio!12}$b_{4}$ & \cellcolor{steraGrigio!12}$b_{7}$ & \cellcolor{steraGrigio!12}$b_{6}$ \\
+\textbf{2} & \cellcolor{steraGrigio!12}$b_{2}$ & \cellcolor{steraGrigio!12}$b_{3}$ & \cellcolor{steraBlu!30}$d_{2}$ & \cellcolor{steraGrigio!12}$b_{1}$ & \cellcolor{steraGrigio!12}$b_{6}$ & \cellcolor{steraGrigio!12}$b_{7}$ & \cellcolor{steraGrigio!12}$b_{4}$ & \cellcolor{steraArancio!40}$b_{5}{+}e$ \\
+\textbf{3} & \cellcolor{steraGrigio!12}$b_{3}$ & \cellcolor{steraArancio!40}$b_{2}{+}e$ & \cellcolor{steraGrigio!12}$b_{1}$ & \cellcolor{steraBlu!30}$d_{3}$ & \cellcolor{steraGrigio!12}$b_{7}$ & \cellcolor{steraGrigio!12}$b_{6}$ & \cellcolor{steraGrigio!12}$b_{5}$ & \cellcolor{steraGrigio!12}$b_{4}$ \\
+\textbf{4} & \cellcolor{steraGrigio!12}$b_{4}$ & \cellcolor{steraGrigio!12}$b_{5}$ & \cellcolor{steraArancio!40}$b_{6}{+}e$ & \cellcolor{steraGrigio!12}$b_{7}$ & \cellcolor{steraBlu!30}$d_{4}$ & \cellcolor{steraGrigio!12}$b_{1}$ & \cellcolor{steraGrigio!12}$b_{2}$ & \cellcolor{steraGrigio!12}$b_{3}$ \\
+\textbf{5} & \cellcolor{steraGrigio!12}$b_{5}$ & \cellcolor{steraGrigio!12}$b_{4}$ & \cellcolor{steraGrigio!12}$b_{7}$ & \cellcolor{steraGrigio!12}$b_{6}$ & \cellcolor{steraGrigio!12}$b_{1}$ & \cellcolor{steraBlu!30}$d_{5}$ & \cellcolor{steraArancio!40}$b_{3}{+}e$ & \cellcolor{steraGrigio!12}$b_{2}$ \\
+\textbf{6} & \cellcolor{steraGrigio!12}$b_{6}$ & \cellcolor{steraArancio!40}$b_{7}{+}e$ & \cellcolor{steraGrigio!12}$b_{4}$ & \cellcolor{steraGrigio!12}$b_{5}$ & \cellcolor{steraGrigio!12}$b_{2}$ & \cellcolor{steraGrigio!12}$b_{3}$ & \cellcolor{steraBlu!30}$d_{6}$ & \cellcolor{steraGrigio!12}$b_{1}$ \\
+\textbf{7} & \cellcolor{steraGrigio!12}$b_{7}$ & \cellcolor{steraGrigio!12}$b_{6}$ & \cellcolor{steraGrigio!12}$b_{5}$ & \cellcolor{steraArancio!40}$b_{4}{+}e$ & \cellcolor{steraGrigio!12}$b_{3}$ & \cellcolor{steraGrigio!12}$b_{2}$ & \cellcolor{steraArancio!40}$b_{1}{+}e$ & \cellcolor{steraBlu!30}$d_{7}$ \\
+\end{tabular}
+
+\medskip
+\begin{tabular}{lll}
+\cellcolor{steraBlu!30}\phantom{xx} diagonale $d_i$ &
+\cellcolor{steraGrigio!12}\phantom{xx} base XOR $b_{i\oplus j}$ &
+\cellcolor{steraArancio!40}\phantom{xx} base più correzione $b_{i\oplus j}+e_{i,k}$
+\end{tabular}
+\caption{Le prime 8 righe e 8 colonne di un blocco RowMask23 $128\times128$. Ogni casella indica da quali coordinate dipende: la diagonale è libera, le altre caselle prendono la coordinata di base di indice $i\oplus j$ e, nelle posizioni scelte dalla maschera, anche una correzione propria. Caselle con lo stesso indice, per esempio tutte quelle con $b_1$, appartengono alla stessa diagonale generalizzata e condividono il valore della base. La riga 0 non ha correzioni.}
+\label{tab:struttura-blocco}
+\end{table}
 
 \subsection{Dal blocco alla proiezione}
 
@@ -66,7 +87,7 @@ dove $\Phi:\mathbb{R}^{3176}\to\mathbb{R}^{128\times128}$ è la mappa che costru
 
 La Tabella~\ref{tab:componenti-proiezione} riassume le quattro componenti, il numero di valori che ciascuna memorizza e la sezione che la tratta.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \small
 \begin{tabular}{llrl}
@@ -161,24 +182,17 @@ W = D + B + R,
 \end{equation}
 dove $D=\mathrm{diag}(d)$, $B$ è la matrice XOR-circolante generata da $(0,b_1,\dots,b_{127})$ e $R$ è una matrice sparsa con \num{2921} elementi non nulli, $R_{i,\,i\oplus\sigma(i,k)}=e_{i,k}$.
 
-La Figura~\ref{fig:struttura}, nella Sezione~\ref{sec:proiezione-stera}, mostra dove si trovano le tre parti nel blocco.
+La Tabella~\ref{tab:struttura-blocco}, nella Sezione~\ref{sec:proiezione-stera}, mostra dove si trovano le tre parti nel blocco.
 
 \subsection{Un esempio}
 \label{sec:guida-visiva-rowmask}
 \label{sec:esempio-numerico-rowmask}
 
-La Figura~\ref{fig:tre-componenti-rowmask} mostra le tre componenti della scomposizione \eqref{eq:scomposizione} su un ritaglio con le righe e le colonne $0,1,8,9$ dello stesso blocco $128\times128$. Il ritaglio serve a vedere gli indici, non è un blocco autonomo.
-
-\begin{figure}[htbp]
-\centering
-\input{figure/tikz/scomposizione}
-\caption{Le tre componenti della stessa matrice RowMask23: diagonale $D$, base XOR $B$ e correzioni sparse $R$. I quattro indici mostrati sono un sottoinsieme del blocco reale $128\times128$. La parte evidenziata nella matrice centrale riutilizza la stessa coordinata $b_8$.}
-\label{fig:tre-componenti-rowmask}
-\end{figure}
+Seguiamo una sola coordinata di base, $b_8$, in due righe diverse del blocco.
 
 Si osservi la coordinata $b_8$. Nella posizione $(0,8)$ vale $0\oplus8=8$, quindi l'elemento riceve $b_8$; anche nella posizione $(1,9)$ vale $1\oplus9=8$. La riga $1$, però, per $k=0$ ha offset $\sigma(1,0)=1+(7\bmod127)=8$, quindi $(1,9)$ è una posizione con correzione, mentre la riga $0$ non ne ha. Assegnando a scopo illustrativo i valori $d_1=0{,}60$, $b_8=0{,}25$ ed $e_{1,0}=-0{,}10$, che non sono pesi del modello addestrato, si ottiene la Tabella~\ref{fig:lettura-casella-rowmask}.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \small
 \begin{tabular}{cccl}
@@ -295,14 +309,24 @@ con la convenzione $b_0=0$. Il primo e il terzo termine costano $128$ e \num{292
 H_1 = \begin{pmatrix}1\end{pmatrix},\qquad
 H_{2m} = \begin{pmatrix} H_m & H_m \\ H_m & -H_m \end{pmatrix}.
 \]
-In forma esplicita $(H_N)_{uv} = (-1)^{\langle u,v\rangle}$, dove $\langle u,v\rangle=\sum_\ell u_\ell v_\ell$ è il prodotto scalare dei vettori di bit; la matrice è simmetrica e $H_N^2 = N\,I$. La trasformata di un vettore è il prodotto $Hx$ e, per la struttura ricorsiva, si calcola in $n$ stadi di somme e differenze a coppie, con $N\log_2 N$ operazioni e nessuna moltiplicazione \cite{fino1976unified,beauchamp1984applications}: per $N=128$ sono $7$ stadi e $896$ addizioni (Figura~\ref{fig:wht}).
+In forma esplicita $(H_N)_{uv} = (-1)^{\langle u,v\rangle}$, dove $\langle u,v\rangle=\sum_\ell u_\ell v_\ell$ è il prodotto scalare dei vettori di bit; la matrice è simmetrica e $H_N^2 = N\,I$. La trasformata di un vettore è il prodotto $Hx$ e, per la struttura ricorsiva, si calcola in $n$ stadi di somme e differenze a coppie, con $N\log_2 N$ operazioni e nessuna moltiplicazione \cite{fino1976unified,beauchamp1984applications}: per $N=128$ sono $7$ stadi e $896$ addizioni. La Tabella~\ref{tab:wht} mostra gli stadi per $N=8$.
 
-\begin{figure}[htbp]
+\begin{table}[H]
 \centering
-\input{figure/tikz/wht}
-\caption{Trasformata di Walsh--Hadamard veloce per $N=8$. Ogni stadio combina le componenti distanti $h$ con una somma e una differenza.}
-\label{fig:wht}
-\end{figure}
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{cccc}
+\toprule
+Stadio & Distanza $h$ & Coppie combinate & Operazione su ogni coppia $(a,b)$ \\
+\midrule
+\rowcolor{steraBlu!10} 1 & 1 & $(0,1),(2,3),(4,5),(6,7)$ & $(a,b)\mapsto(a+b,\;a-b)$ \\
+2 & 2 & $(0,2),(1,3),(4,6),(5,7)$ & $(a,b)\mapsto(a+b,\;a-b)$ \\
+\rowcolor{steraBlu!10} 3 & 4 & $(0,4),(1,5),(2,6),(3,7)$ & $(a,b)\mapsto(a+b,\;a-b)$ \\
+\bottomrule
+\end{tabular}
+\caption{Trasformata di Walsh--Hadamard veloce per $N=8$: tre stadi, ciascuno con quattro somme e quattro differenze fra componenti a distanza $h$, per $N\log_2N=24$ operazioni e nessuna moltiplicazione. Per $N=128$ gli stadi sono 7.}
+\label{tab:wht}
+\end{table}
 
 \begin{proposizione}[Diagonalizzazione delle matrici XOR-circolanti]
 Sia $B$ la matrice XOR-circolante generata da $b$. Allora $H B H = N\,\mathrm{diag}(Hb)$ e, per ogni vettore $x$,
@@ -398,7 +422,7 @@ dove $\langle\cdot,\cdot\rangle_F$ è il prodotto scalare di Frobenius, e il gra
 
 \paragraph{Quanto conta.} Per misurare quanto il modello addestrato ne dipenda, abbiamo sostituito in tutte le proiezioni $UV^\top$ con la sua migliore approssimazione di rango $k<96$, ottenuta dalla decomposizione ai valori singolari, e ripetuto sui 300 racconti di prova la NLL e il giudizio cieco del Capitolo~\ref{cap:capitoli/05-metodologia} (Tabella~\ref{tab:rango-ridotto}).
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \small
 \begin{tabular}{rrrr}
@@ -502,7 +526,7 @@ P = \num{15726150} + \num{134016} + \num{12865536} + \num{1620480} = \num{303461
 \]
 La Tabella~\ref{tab:componenti-stera30m} mostra lo stesso conto per componente: coordinate e basso rango insieme fanno oltre il $94\%$ dei valori memorizzati.
 
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \small
 \begin{tabular}{lrr}
@@ -524,16 +548,9 @@ Risparmio & $63{,}32\%$ & \\
 \label{tab:componenti-stera30m}
 \end{table}
 
-\paragraph{Al crescere del modello.} La Figura~\ref{fig:risparmio-crescita} e la Tabella~\ref{tab:risparmio-crescita} applicano la Proposizione~\ref{prop:risparmio-modello} a modelli con la stessa forma di STERA 30M e dimensione crescente. Senza basso rango il risparmio supera il $78\%$ per ogni dimensione considerata. Con il rango fissato a 96 cresce con il modello: è del $63{,}3\%$ per $d=768$ e supera il $76\%$ per $d=4096$. Con il rango proporzionale alla dimensione resta quasi costante; scende leggermente perché il peso dell'embedding, che risparmia più degli strati, diminuisce, e tende al valore per strato del $61{,}9\%$.
+\paragraph{Al crescere del modello.} La Tabella~\ref{tab:risparmio-crescita} applica la Proposizione~\ref{prop:risparmio-modello} a modelli con la stessa forma di STERA 30M e dimensione crescente. Senza basso rango il risparmio supera il $78\%$ per ogni dimensione considerata. Con il rango fissato a 96 cresce con il modello: è del $63{,}3\%$ per $d=768$ e supera il $76\%$ per $d=4096$. Con il rango proporzionale alla dimensione resta quasi costante; scende leggermente perché il peso dell'embedding, che risparmia più degli strati, diminuisce, e tende al valore per strato del $61{,}9\%$.
 
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=.92\linewidth]{figure/formalismo/risparmio_crescita.pdf}
-\caption{Risparmio di un modello STERA rispetto alla sua forma densa al variare della dimensione $d$, per diverse scelte del rango (sei strati, feed-forward $4d$, vocabolario di \num{50304} token, \num{2048} posizioni). La linea tratteggiata è il tetto garantito dai blocchi RowMask23.}
-\label{fig:risparmio-crescita}
-\end{figure}
-
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \small
 \begin{tabular}{rrrrr}
