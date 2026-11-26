@@ -445,12 +445,18 @@ Il termine $UV^\top$, con $U\in\mathbb{R}^{m\times r}$ e $V\in\mathbb{R}^{n\time
 $U$ parte da zero e $V$ da valori normali di deviazione standard $0{,}02$: all'inizio il termine è nullo e ogni proiezione coincide con il suo mosaico di blocchi, mentre il gradiente rispetto a $U$ è già diverso da zero. A differenza di scale e guadagni, $U$ e $V$ sono soggetti al decadimento dei pesi, come le coordinate. Il termine memorizza $r(m+n)$ valori e il suo prodotto con un vettore si calcola come $U(V^\top x)$, con $r(m+n)$ moltiplicazioni, senza formare la matrice $m\times n$. In STERA 30M i fattori sono memorizzati e addestrati in FP32 come ogni altro parametro.
 
 \subsection{Valori appresi}
-Al termine dell'addestramento il termine a basso rango vale fra il $37\%$ e il $47\%$ della norma di Frobenius di ciascuna proiezione. La \autoref{fig:spettro-basso-rango}, subito sotto, mostra i suoi 96 valori singolari, divisi per il più grande: lo spettro scende lentamente e non si concentra in poche direzioni. L'ultimo valore singolare vale ancora, in mediana, il $13\%$ del primo nelle proiezioni dell'attenzione, il $32\%$ in quelle del feed-forward e l'$11\%$ nell'embedding: il modello addestrato usa tutte le direzioni che il rango gli mette a disposizione.
+La domanda di questa sezione è se il modello addestrato usi davvero tutto il rango $r=96$ che gli abbiamo messo a disposizione, oppure se gliene basterebbe meno.
+
+\paragraph{Quanto pesa il termine.} Una prima misura è la sua grandezza rispetto all'intera proiezione. Al termine dell'addestramento la norma di Frobenius di $UV^\top$, cioè la radice della somma dei quadrati dei suoi elementi, vale fra il $37\%$ e il $47\%$ di quella della proiezione $W$. Il basso rango non è quindi un piccolo ritocco ai blocchi RowMask23, ma una parte consistente della matrice.
+
+\paragraph{Quante direzioni usa.} Una matrice di rango 96 si può scrivere come somma di 96 matrici di rango uno, cioè di 96 \emph{direzioni} indipendenti, ciascuna con un proprio peso: il suo \emph{valore singolare} $\sigma_k$. Ordiniamo i valori singolari dal più grande, $\sigma_1$, al più piccolo, $\sigma_{96}$, e li dividiamo per $\sigma_1$, così che la curva parta sempre da 1. Se il modello usasse poche direzioni, la curva crollerebbe vicino a zero dopo i primi valori, e le direzioni successive non conterebbero nulla: parte del rango sarebbe sprecata. Se invece le usa tutte, la curva scende lentamente e anche gli ultimi valori restano lontani da zero.
+
+La Figura~\ref{fig:spettro-basso-rango}, subito sotto, mostra il secondo caso. Per ciascun tipo di proiezione la linea è la mediana sui sei strati e la banda colorata va dalla proiezione con i valori più bassi a quella con i valori più alti. Nell'attenzione e nel feed-forward la curva scende in modo graduale: la 96ª direzione pesa ancora, in mediana, il $13\%$ della prima nell'attenzione e il $32\%$ nel feed-forward. Nell'embedding la prima direzione è molto più forte delle altre e la curva scende subito a circa $0{,}4$; poi resta quasi piatta fra $0{,}2$ e $0{,}1$, e l'ultima direzione vale ancora l'$11\%$ della prima. In nessun tipo di proiezione esistono direzioni trascurabili: il modello addestrato usa tutto il rango che gli è stato dato. Lo studio dell'importanza, nella sottosezione seguente, lo conferma direttamente, misurando che cosa accade togliendo le direzioni più deboli.
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=.9\linewidth]{figure/formalismo/spettro_basso_rango.pdf}
-\caption{Valori singolari del termine $UV^\top$ di STERA 30M, normalizzati al primo. Le linee sono le mediane sulle proiezioni dello stesso tipo nei sei strati, le bande l'intervallo fra minimo e massimo.}
+\caption{Valori singolari del termine $UV^\top$ di STERA 30M, divisi per il più grande: ogni punto è il peso di una delle 96 direzioni del termine. Le linee sono le mediane sulle proiezioni dello stesso tipo nei sei strati, le bande vanno dalla proiezione con i valori più bassi a quella con i valori più alti. Una curva che resta lontana da zero indica che tutte le direzioni sono usate.}
 \label{fig:spettro-basso-rango}
 \end{figure}
 
