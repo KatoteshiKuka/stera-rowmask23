@@ -68,25 +68,25 @@ L'uso di un modello linguistico come giudice è stato poi studiato in generale d
 
 \section{Dove si colloca RowMask23}
 
-La Tabella~\ref{tab:posizionamento} riassume le principali famiglie discusse e le confronta con la nostra proposta lungo quattro assi: quando intervengono, se limitano il rango della matrice, se esiste un prodotto veloce che non ricostruisce la matrice, e se il rapporto di compressione è fissato dalla struttura.
+La Tabella~\ref{tab:posizionamento} riassume le principali famiglie discusse e le confronta con la nostra proposta lungo quattro assi: se intervengono durante l'addestramento o dopo, su un modello già addestrato, se limitano il rango della matrice, se esiste un prodotto veloce che non ricostruisce la matrice, e se il rapporto di compressione è fissato dalla struttura.
 
 \begin{table}[ht]
 \centering
 \small
 \begin{tabularx}{\linewidth}{Xcccc}
 \toprule
-Famiglia & Fase & Rango limitato & Prodotto veloce & Rapporto fisso \\
+Famiglia & Rispetto all'addestramento & Rango limitato & Prodotto veloce & Rapporto fisso \\
 \midrule
 Potatura non strutturata & dopo & no & no & no \\
 Quantizzazione & dopo / durante & no & sì (interi) & sì (bit) \\
-Basso rango ($UV^\top$) & durante & sì & sì & sì \\
+Basso rango ($UV^\top$) & dopo / durante & sì & sì & sì \\
 HashedNets & durante & no & no & sì \\
 Circolanti, ACDC & durante & no & sì (FFT) & sì \\
 Butterfly, Monarch & durante & no & sì & sì \\
 \textbf{RowMask23} & \textbf{durante} & \textbf{no} & \textbf{sì (WHT)} & \textbf{sì (19,4\% per blocco)} \\
 \bottomrule
 \end{tabularx}
-\caption{Confronto qualitativo tra le principali famiglie di compressione dei pesi.}
+\caption{Confronto qualitativo tra le principali famiglie di compressione dei pesi. ``Dopo'' indica una compressione applicata a un modello già addestrato, ``durante'' una struttura imposta ai pesi mentre il modello viene addestrato.}
 \label{tab:posizionamento}
 \end{table}
 
