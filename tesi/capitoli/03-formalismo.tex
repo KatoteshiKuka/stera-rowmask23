@@ -1,4 +1,4 @@
-In questo capitolo definiamo la parametrizzazione STERA delle proiezioni di un Transformer e ne ricaviamo le proprietà. La Sezione~\ref{sec:proiezione-stera} dà la formula di una proiezione STERA, che combina quattro componenti: le coordinate dei blocchi RowMask23, una scala per blocco, i guadagni per riga e per colonna e un termine a basso rango. La Sezione~\ref{sec:esempio-128} mostra come le quattro componenti costruiscono una proiezione $128\times128$. Le sezioni successive analizzano una componente alla volta: le coordinate e le proprietà del blocco RowMask23 (Sezione~\ref{sec:coordinate}), le scale (Sezione~\ref{sec:scale}), i guadagni (Sezione~\ref{sec:guadagni}) e il termine a basso rango (Sezione~\ref{sec:basso-rango}). Per scale, guadagni e basso rango riportiamo con quale criterio sono applicati, i valori appresi da STERA 30M e lo studio con cui ne misuriamo l'importanza; i risultati di questo studio sono nel Capitolo~\ref{cap:capitoli/06-risultati}. Il capitolo si chiude con il bilancio complessivo dei parametri.
+In questo capitolo definiamo la parametrizzazione STERA delle proiezioni di un Transformer e ne ricaviamo le proprietà. La Sezione~\ref{sec:proiezione-stera} dà la formula di una proiezione STERA, che combina quattro componenti: le coordinate dei blocchi RowMask23, una scala per blocco, i guadagni per riga e per colonna e un termine a basso rango. La Sezione~\ref{sec:esempio-128} mostra come le quattro componenti costruiscono una proiezione $128\times128$. Le sezioni successive analizzano una componente alla volta: le coordinate e le proprietà del blocco RowMask23 (Sezione~\ref{sec:coordinate}), le scale (Sezione~\ref{sec:scale}), i guadagni (Sezione~\ref{sec:guadagni}) e il termine a basso rango (Sezione~\ref{sec:basso-rango}). Per scale, guadagni e basso rango riportiamo con quale criterio sono applicati e i valori appresi da STERA 30M; la Sezione~\ref{sec:studio-componenti} descrive lo studio, comune alle tre componenti, con cui ne misuriamo l'importanza, i cui risultati sono nel Capitolo~\ref{cap:capitoli/06-risultati}. Il capitolo si chiude con il bilancio complessivo dei parametri.
 
 \section{La proiezione STERA}
 \label{sec:proiezione-stera}
@@ -28,6 +28,7 @@ Scale & $\alpha^{(p,q)}\in\mathbb{R}$ & $PQ$ & \ref{sec:scale} \\
 Guadagni & $g_{\mathrm{out}}\in\mathbb{R}^{m}$, $g_{\mathrm{in}}\in\mathbb{R}^{n}$ & $m+n$ & \ref{sec:guadagni} \\
 Basso rango & $U\in\mathbb{R}^{m\times r}$, $V\in\mathbb{R}^{n\times r}$ & $r(m+n)$ & \ref{sec:basso-rango} \\
 \midrule
+Studio dell'importanza & & & \ref{sec:studio-componenti} \\
 Bilancio complessivo & & & \ref{sec:bilancio-parametri} \\
 \bottomrule
 \end{tabular}
@@ -355,33 +356,39 @@ Il conteggio delle operazioni non si traduce automaticamente in velocità. Il pr
 \subsection{Dal blocco alla proiezione}
 \label{sec:rettangolari}
 
-\paragraph{Mosaico di blocchi.} Le matrici di un Transformer non sono quadrate di ordine $128$: le proiezioni dell'attenzione sono $d\times d$, quelle del feed-forward $f\times d$ e $d\times f$. Se $m$ e $n$ sono multipli di $128$, una matrice $m\times n$ si divide in $P\times Q$ blocchi e ogni blocco $(p,q)$ è un blocco RowMask23 indipendente, con coordinate proprie $c^{(p,q)}$ e una scala $\alpha^{(p,q)}$, come nella Definizione~\ref{def:proiezione-stera}. Il prodotto $y=\widetilde Wx$ si calcola blocco per blocco: l'ingresso si divide in segmenti di $128$ elementi, ogni blocco moltiplica il proprio segmento e le uscite dei blocchi sulla stessa riga si sommano. Il gradiente rispetto alle coordinate si ottiene applicando \eqref{eq:grad-d}--\eqref{eq:grad-e} a ogni blocco del gradiente rispetto a $\widetilde W$, che le Sezioni~\ref{sec:scale} e~\ref{sec:guadagni} ricavano da $G$ tenendo conto di scale e guadagni.
+Le matrici di un Transformer non sono quadrate di ordine $128$: le proiezioni dell'attenzione sono $d\times d$, quelle del feed-forward $f\times d$ e $d\times f$. Se $m$ e $n$ sono multipli di $128$, una matrice $m\times n$ si divide in $P\times Q$ blocchi e ogni blocco $(p,q)$ è un blocco RowMask23 indipendente, con coordinate proprie $c^{(p,q)}$ e una scala $\alpha^{(p,q)}$, come nella Definizione~\ref{def:proiezione-stera}. Il prodotto $y=\widetilde Wx$ si calcola blocco per blocco: l'ingresso si divide in segmenti di $128$ elementi, ogni blocco moltiplica il proprio segmento e le uscite dei blocchi sulla stessa riga si sommano. Il gradiente rispetto alle coordinate si ottiene applicando \eqref{eq:grad-d}--\eqref{eq:grad-e} a ogni blocco del gradiente rispetto a $\widetilde W$, che le Sezioni~\ref{sec:scale} e~\ref{sec:guadagni} ricavano da $G$ tenendo conto di scale e guadagni.
 
 In STERA 30M, con $d=768$ e $f=\num{3072}$, ogni proiezione dell'attenzione ha $36$ blocchi e ogni matrice del feed-forward $144$: uno strato contiene $4\cdot36+2\cdot144=432$ blocchi, cioè \num{1372032} coordinate invece di \num{7077888} pesi.
 
-\paragraph{Inizializzazione delle coordinate.} Per le matrici dense si estrae di solito ogni peso da una normale di media nulla e deviazione standard $\sigma_0$ piccola, per esempio $0{,}02$. In un blocco RowMask23 gli elementi fuori diagonale con una correzione sono la somma di \emph{due} coordinate indipendenti: se ogni coordinata ha deviazione standard $\sigma$, la varianza media di un elemento vale $\sigma^2\big(1 + \num{2921}/\num{16384}\big)$. Per avere la stessa varianza media di una matrice densa si sceglie quindi
+\subsection{Inizializzazione delle coordinate}
+Per le matrici dense si estrae di solito ogni peso da una normale di media nulla e deviazione standard $\sigma_0$ piccola, per esempio $0{,}02$. In un blocco RowMask23 gli elementi fuori diagonale con una correzione sono la somma di \emph{due} coordinate indipendenti: se ogni coordinata ha deviazione standard $\sigma$, la varianza media di un elemento vale $\sigma^2\big(1 + \num{2921}/\num{16384}\big)$. Per avere la stessa varianza media di una matrice densa si sceglie quindi
 \begin{equation}
 \sigma = \frac{\sigma_0}{\sqrt{1+\num{2921}/\num{16384}}}.
 \end{equation}
 
-\paragraph{Disposizione in memoria.} Le coordinate di un blocco sono memorizzate in un unico vettore di lunghezza \num{3176}: nelle posizioni $0,\dots,127$ la diagonale ($d_i$ in posizione $i$), nelle posizioni $128,\dots,254$ la base ($b_s$ in posizione $127+s$), nelle posizioni $255,\dots,3175$ le correzioni ($e_{i,k}$ in posizione $255+23(i-1)+k$). Ogni coordinata ha così un indice calcolabile in tempo costante, sia nella ricostruzione sia nell'accumulo del gradiente.
+\subsection{Disposizione in memoria}
+Le coordinate di un blocco sono memorizzate in un unico vettore di lunghezza \num{3176}: nelle posizioni $0,\dots,127$ la diagonale ($d_i$ in posizione $i$), nelle posizioni $128,\dots,254$ la base ($b_s$ in posizione $127+s$), nelle posizioni $255,\dots,3175$ le correzioni ($e_{i,k}$ in posizione $255+23(i-1)+k$). Ogni coordinata ha così un indice calcolabile in tempo costante, sia nella ricostruzione sia nell'accumulo del gradiente.
 
 % ---------------------------------------------------------------- ALTRE COMPONENTI
 
 \section{Le scale dei blocchi}
 \label{sec:scale}
 
-\paragraph{Che cosa sono e con quale criterio si applicano.} Ogni blocco $(p,q)$ del mosaico è moltiplicato per un numero $\alpha^{(p,q)}$, la sua scala. Il criterio è uniforme: una scala per ogni blocco $128\times128$ di ogni proiezione, cioè una ogni \num{16384} valori della forma densa, per \num{4950} scale in STERA 30M. Le coordinate fissano la forma del blocco, la scala ne fissa l'ampiezza: separare le due cose permette a blocchi diversi della stessa proiezione di avere ampiezze molto diverse senza che l'ottimizzatore debba spostare in modo coordinato tutte le \num{3176} coordinate.
+\subsection{Che cosa sono e con quale criterio si applicano}
+Ogni blocco $(p,q)$ del mosaico è moltiplicato per un numero $\alpha^{(p,q)}$, la sua scala. Il criterio è uniforme: una scala per ogni blocco $128\times128$ di ogni proiezione, cioè una ogni \num{16384} valori della forma densa, per \num{4950} scale in STERA 30M. Le coordinate fissano la forma del blocco, la scala ne fissa l'ampiezza: separare le due cose permette a blocchi diversi della stessa proiezione di avere ampiezze molto diverse senza che l'ottimizzatore debba spostare in modo coordinato tutte le \num{3176} coordinate.
 
-\paragraph{Gradiente.} Sia $\widetilde G = G\odot\big(g_{\mathrm{out}}\,g_{\mathrm{in}}^\top\big)$ il gradiente rispetto a $\widetilde W$, cioè il gradiente $G$ della proiezione moltiplicato elemento per elemento per i guadagni della riga e della colonna. Allora
+\subsection{Gradiente}
+Sia $\widetilde G = G\odot\big(g_{\mathrm{out}}\,g_{\mathrm{in}}^\top\big)$ il gradiente rispetto a $\widetilde W$, cioè il gradiente $G$ della proiezione moltiplicato elemento per elemento per i guadagni della riga e della colonna. Allora
 \[
 \frac{\partial\mathcal{L}}{\partial\alpha^{(p,q)}} = \big\langle \widetilde G_{[p],[q]},\,\Phi(c^{(p,q)})\big\rangle_F,
 \]
 dove $\langle\cdot,\cdot\rangle_F$ è il prodotto scalare di Frobenius, e il gradiente rispetto alle coordinate del blocco si ottiene applicando \eqref{eq:grad-d}--\eqref{eq:grad-e} a $\alpha^{(p,q)}\widetilde G_{[p],[q]}$.
 
-\paragraph{Inizializzazione e costo.} Le scale partono da $1$ e non sono soggette al decadimento dei pesi: una penalità che le spingesse verso zero ridurrebbe proprio l'ampiezza che devono controllare. Costano $mn/16384$ valori per proiezione e una moltiplicazione per blocco nel prodotto.
+\subsection{Inizializzazione e costo}
+Le scale partono da $1$ e non sono soggette al decadimento dei pesi: una penalità che le spingesse verso zero ridurrebbe proprio l'ampiezza che devono controllare. Costano $mn/16384$ valori per proiezione e una moltiplicazione per blocco nel prodotto.
 
-\paragraph{Valori appresi.} La Figura~\ref{fig:scale-apprese}, subito sotto, mostra la distribuzione delle \num{4950} scale di STERA 30M al termine dell'addestramento: hanno media $1{,}16$ e deviazione standard $0{,}35$, con valori fra $0$ e $3{,}5$. Partite tutte da $1$, si sono differenziate: l'addestramento le usa per dare ampiezze diverse ai blocchi.
+\subsection{Valori appresi}
+La Figura~\ref{fig:scale-apprese}, subito sotto, mostra la distribuzione delle \num{4950} scale di STERA 30M al termine dell'addestramento: hanno media $1{,}16$ e deviazione standard $0{,}35$, con valori fra $0$ e $3{,}5$. Partite tutte da $1$, si sono differenziate: l'addestramento le usa per dare ampiezze diverse ai blocchi.
 
 \begin{figure}[H]
 \centering
@@ -390,23 +397,24 @@ dove $\langle\cdot,\cdot\rangle_F$ è il prodotto scalare di Frobenius, e il gra
 \label{fig:scale-apprese}
 \end{figure}
 
-\paragraph{Studio dell'importanza.} Per misurare quanto il modello addestrato dipenda dalle scale le modifichiamo lasciando invariato tutto il resto e misuriamo la NLL sui 300 racconti di prova in due prove: riportando tutte le scale a $1$, e rappresentandole con 8 bit, con una scala di quantizzazione per matrice. I risultati sono nella Sezione~\ref{sec:risultati-componenti}: senza scale il modello non genera più testo, mentre a 8 bit la NLL resta praticamente invariata.
-
 \section{I guadagni per riga e per colonna}
 \label{sec:guadagni}
 
-\paragraph{Che cosa sono e con quale criterio si applicano.} I guadagni sono due vettori, $g_{\mathrm{out}}\in\mathbb{R}^m$ e $g_{\mathrm{in}}\in\mathbb{R}^n$, che moltiplicano ogni riga e ogni colonna dell'intera matrice: $\big(\operatorname{diag}(g_{\mathrm{out}})\,\widetilde W\,\operatorname{diag}(g_{\mathrm{in}})\big)_{ij} = g_{\mathrm{out},i}\,\widetilde W_{ij}\,g_{\mathrm{in},j}$. Il criterio è uno per ogni riga e uno per ogni colonna di ogni proiezione. Le scale agiscono su un blocco alla volta, i guadagni attraversano i confini dei blocchi: danno a ogni componente in uscita e in ingresso un'ampiezza propria, uguale in tutti i blocchi che la contengono.
+\subsection{Che cosa sono e con quale criterio si applicano}
+I guadagni sono due vettori, $g_{\mathrm{out}}\in\mathbb{R}^m$ e $g_{\mathrm{in}}\in\mathbb{R}^n$, che moltiplicano ogni riga e ogni colonna dell'intera matrice: $\big(\operatorname{diag}(g_{\mathrm{out}})\,\widetilde W\,\operatorname{diag}(g_{\mathrm{in}})\big)_{ij} = g_{\mathrm{out},i}\,\widetilde W_{ij}\,g_{\mathrm{in},j}$. Il criterio è uno per ogni riga e uno per ogni colonna di ogni proiezione. Le scale agiscono su un blocco alla volta, i guadagni attraversano i confini dei blocchi: danno a ogni componente in uscita e in ingresso un'ampiezza propria, uguale in tutti i blocchi che la contengono.
 
-\paragraph{Gradiente.}
+\subsection{Gradiente}
 \[
 \frac{\partial\mathcal{L}}{\partial g_{\mathrm{out},i}} = \sum_{j} G_{ij}\,\widetilde W_{ij}\,g_{\mathrm{in},j},
 \qquad
 \frac{\partial\mathcal{L}}{\partial g_{\mathrm{in},j}} = \sum_{i} G_{ij}\,g_{\mathrm{out},i}\,\widetilde W_{ij}.
 \]
 
-\paragraph{Inizializzazione e costo.} I guadagni partono da $1$ e, come le scale, non sono soggetti al decadimento dei pesi. Costano $m+n$ valori per proiezione; nel prodotto con un vettore equivalgono a moltiplicare l'ingresso per $g_{\mathrm{in}}$ e l'uscita per $g_{\mathrm{out}}$, con $m+n$ moltiplicazioni.
+\subsection{Inizializzazione e costo}
+I guadagni partono da $1$ e, come le scale, non sono soggetti al decadimento dei pesi. Costano $m+n$ valori per proiezione; nel prodotto con un vettore equivalgono a moltiplicare l'ingresso per $g_{\mathrm{in}}$ e l'uscita per $g_{\mathrm{out}}$, con $m+n$ moltiplicazioni.
 
-\paragraph{Valori appresi.} La Figura~\ref{fig:guadagni-appresi}, subito sotto, mostra la distribuzione dei guadagni di STERA 30M. I \num{91776} guadagni di riga hanno media $0{,}80$ e deviazione standard $0{,}35$, con valori fra $-0{,}09$ e $4{,}4$; i \num{42240} guadagni di colonna hanno media $1{,}07$ e deviazione standard $0{,}18$, con valori fra $0$ e $5{,}3$. Pochi guadagni assumono valori molto più grandi della media.
+\subsection{Valori appresi}
+La Figura~\ref{fig:guadagni-appresi}, subito sotto, mostra la distribuzione dei guadagni di STERA 30M. I \num{91776} guadagni di riga hanno media $0{,}80$ e deviazione standard $0{,}35$, con valori fra $-0{,}09$ e $4{,}4$; i \num{42240} guadagni di colonna hanno media $1{,}07$ e deviazione standard $0{,}18$, con valori fra $0$ e $5{,}3$. Pochi guadagni assumono valori molto più grandi della media.
 
 \begin{figure}[H]
 \centering
@@ -415,21 +423,22 @@ dove $\langle\cdot,\cdot\rangle_F$ è il prodotto scalare di Frobenius, e il gra
 \label{fig:guadagni-appresi}
 \end{figure}
 
-\paragraph{Studio dell'importanza.} Come per le scale, riportiamo tutti i guadagni a $1$ e, in una seconda prova, li rappresentiamo con 8 bit e una scala di quantizzazione per matrice, misurando la NLL sui 300 racconti di prova. I risultati sono nella Sezione~\ref{sec:risultati-componenti}: senza guadagni il modello non funziona, mentre a 8 bit la NLL varia di pochi decimi di punto percentuale.
-
 \section{Il termine a basso rango}
 \label{sec:basso-rango}
 
-\paragraph{Che cosa è e con quale criterio si applica.} Il termine $UV^\top$, con $U\in\mathbb{R}^{m\times r}$ e $V\in\mathbb{R}^{n\times r}$, è una matrice $m\times n$ di rango al più $r$ che si somma all'intera proiezione. Il criterio è lo stesso per tutte le proiezioni del modello, embedding compreso: in STERA 30M il rango è $r=96$, fissato prima dell'addestramento. Il mosaico di blocchi RowMask23 tratta ogni blocco in modo indipendente, e ciascuno è vincolato alla struttura XOR con 23 correzioni per riga; il termine a basso rango non ha né l'uno né l'altro vincolo, attraversa tutti i blocchi e può rappresentare un numero limitato di direzioni qualunque. Le due rappresentazioni sono complementari: RowMask23 dà una matrice a rango pieno con pochi valori, il basso rango dà poche direzioni senza struttura.
+\subsection{Che cosa è e con quale criterio si applica}
+Il termine $UV^\top$, con $U\in\mathbb{R}^{m\times r}$ e $V\in\mathbb{R}^{n\times r}$, è una matrice $m\times n$ di rango al più $r$ che si somma all'intera proiezione. Il criterio è lo stesso per tutte le proiezioni del modello, embedding compreso: in STERA 30M il rango è $r=96$, fissato prima dell'addestramento. Il mosaico di blocchi RowMask23 tratta ogni blocco in modo indipendente, e ciascuno è vincolato alla struttura XOR con 23 correzioni per riga; il termine a basso rango non ha né l'uno né l'altro vincolo, attraversa tutti i blocchi e può rappresentare un numero limitato di direzioni qualunque. Le due rappresentazioni sono complementari: RowMask23 dà una matrice a rango pieno con pochi valori, il basso rango dà poche direzioni senza struttura.
 
-\paragraph{Gradiente.}
+\subsection{Gradiente}
 \[
 \frac{\partial\mathcal{L}}{\partial U} = G\,V,\qquad \frac{\partial\mathcal{L}}{\partial V} = G^\top U.
 \]
 
-\paragraph{Inizializzazione e costo.} $U$ parte da zero e $V$ da valori normali di deviazione standard $0{,}02$: all'inizio il termine è nullo e ogni proiezione coincide con il suo mosaico di blocchi, mentre il gradiente rispetto a $U$ è già diverso da zero. A differenza di scale e guadagni, $U$ e $V$ sono soggetti al decadimento dei pesi, come le coordinate. Il termine memorizza $r(m+n)$ valori e il suo prodotto con un vettore si calcola come $U(V^\top x)$, con $r(m+n)$ moltiplicazioni, senza formare la matrice $m\times n$. In STERA 30M i fattori sono memorizzati e addestrati in FP32 come ogni altro parametro.
+\subsection{Inizializzazione e costo}
+$U$ parte da zero e $V$ da valori normali di deviazione standard $0{,}02$: all'inizio il termine è nullo e ogni proiezione coincide con il suo mosaico di blocchi, mentre il gradiente rispetto a $U$ è già diverso da zero. A differenza di scale e guadagni, $U$ e $V$ sono soggetti al decadimento dei pesi, come le coordinate. Il termine memorizza $r(m+n)$ valori e il suo prodotto con un vettore si calcola come $U(V^\top x)$, con $r(m+n)$ moltiplicazioni, senza formare la matrice $m\times n$. In STERA 30M i fattori sono memorizzati e addestrati in FP32 come ogni altro parametro.
 
-\paragraph{Valori appresi.} Al termine dell'addestramento il termine a basso rango vale fra il $37\%$ e il $47\%$ della norma di Frobenius di ciascuna proiezione. La Figura~\ref{fig:spettro-basso-rango}, subito sotto, mostra i suoi 96 valori singolari, divisi per il più grande: lo spettro scende lentamente e non si concentra in poche direzioni. L'ultimo valore singolare vale ancora, in mediana, il $13\%$ del primo nelle proiezioni dell'attenzione, il $32\%$ in quelle del feed-forward e l'$11\%$ nell'embedding: il modello addestrato usa tutte le direzioni che il rango gli mette a disposizione.
+\subsection{Valori appresi}
+Al termine dell'addestramento il termine a basso rango vale fra il $37\%$ e il $47\%$ della norma di Frobenius di ciascuna proiezione. La Figura~\ref{fig:spettro-basso-rango}, subito sotto, mostra i suoi 96 valori singolari, divisi per il più grande: lo spettro scende lentamente e non si concentra in poche direzioni. L'ultimo valore singolare vale ancora, in mediana, il $13\%$ del primo nelle proiezioni dell'attenzione, il $32\%$ in quelle del feed-forward e l'$11\%$ nell'embedding: il modello addestrato usa tutte le direzioni che il rango gli mette a disposizione.
 
 \begin{figure}[H]
 \centering
@@ -438,9 +447,34 @@ dove $\langle\cdot,\cdot\rangle_F$ è il prodotto scalare di Frobenius, e il gra
 \label{fig:spettro-basso-rango}
 \end{figure}
 
-\paragraph{Studio dell'importanza.} Lo studio ha due parti. Nella prima sostituiamo, in tutte le proiezioni, $UV^\top$ con la sua migliore approssimazione di rango $k<96$, ottenuta dalla decomposizione ai valori singolari, con $k$ pari a 64, 48, 32, 16, 8 e 0; per ogni $k$ misuriamo la NLL sui 300 racconti di prova e ripetiamo la generazione e il giudizio cieco del Capitolo~\ref{cap:capitoli/05-metodologia}, con i racconti di tutti i ranghi mescolati fra loro. Nella seconda lasciamo il rango a 96 e quantizziamo $U$ e $V$ a 8 bit: nel formato del motore, con una scala ogni 32 valori, la matrice densa equivalente cambia in norma dello $0{,}48\%$; il giudizio cieco usa uno schema con una scala per colonna, leggermente meno preciso ($0{,}61\%$), ed è svolto in una sessione separata con lo stesso giudice e la stessa rubrica.
+\section{Studio dell'importanza delle componenti aggiuntive}
+\label{sec:studio-componenti}
 
-I risultati sono nella Sezione~\ref{sec:risultati-componenti}, i tempi della variante a 8 bit nella Sezione~\ref{sec:rango8-tempi}. In sintesi, il modello addestrato non tollera la riduzione del rango, già a $k=64$ la quota di racconti corretti si dimezza, mentre tollera la riduzione dei bit: a 8 bit la NLL varia del $+0{,}007\%$ e i pesi scendono da $121{,}4$ a $86{,}1$~MB. Struttura e quantizzazione agiscono su grandezze diverse, il numero di valori e i bit per valore, e si sommano. Lo studio misura la dipendenza del modello \emph{già addestrato} dal termine a basso rango; non dice quanto rango servirebbe a un modello addestrato fin dall'inizio con un rango minore, che potrebbe affidare più informazione alle coordinate.
+Scale, guadagni e basso rango sono componenti aggiuntive rispetto alle coordinate: le loro grandezze sono scelte di progetto, e per questo misuriamo quanto il modello addestrato dipenda da ciascuna. Lo studio segue lo stesso schema per le tre componenti: si parte dal checkpoint finale di STERA 30M, si modifica una sola componente lasciando invariato tutto il resto, e si misura la NLL sui 300 racconti di prova. Per ogni componente facciamo due prove, riassunte nella Tabella~\ref{tab:studio-componenti}, subito sotto:
+\begin{itemize}
+\item una prova di \emph{rimozione}, che toglie l'informazione appresa dalla componente: scale e guadagni riportati al valore iniziale $1$, basso rango sostituito dalla sua migliore approssimazione di rango $k<96$, ottenuta dalla decomposizione ai valori singolari, con $k$ pari a 64, 48, 32, 16, 8 e 0;
+\item una prova di \emph{quantizzazione}, che mantiene la componente ma ne rappresenta i valori con 8 bit.
+\end{itemize}
+Per il basso rango, che vale il $42\%$ dei parametri, alla NLL si aggiunge la qualità dei racconti: per ogni rango ridotto e per la variante a 8 bit ripetiamo la generazione e il giudizio cieco del Capitolo~\ref{cap:capitoli/05-metodologia}. I racconti dei ranghi ridotti sono giudicati mescolati fra loro; la variante a 8 bit è giudicata in una sessione separata, con lo stesso giudice e la stessa rubrica.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{>{\raggedright\arraybackslash}p{22mm}>{\raggedright\arraybackslash}p{40mm}>{\raggedright\arraybackslash}p{42mm}>{\raggedright\arraybackslash}p{24mm}}
+\toprule
+Componente & Rimozione & Quantizzazione a 8 bit & Misure \\
+\midrule
+\rowcolor{steraGrigio!12} Scale & tutte le scale a $1$ & una scala di quantizzazione per matrice & NLL \\
+\rowcolor{steraVerde!15} Guadagni & tutti i guadagni a $1$ & una scala di quantizzazione per matrice & NLL \\
+\rowcolor{steraArancio!15} Basso rango & rango ridotto a $k=64,\dots,0$ con la SVD & formato del motore: una scala ogni 32 valori (errore $0{,}48\%$); per il giudizio una scala per colonna (errore $0{,}61\%$) & NLL, giudizio cieco \\
+\bottomrule
+\end{tabular}
+\caption{Prove dello studio dell'importanza delle componenti aggiuntive. L'errore è la variazione in norma della matrice densa equivalente.}
+\label{tab:studio-componenti}
+\end{table}
+
+I risultati sono nella Sezione~\ref{sec:risultati-componenti}, i tempi della variante a 8 bit nella Sezione~\ref{sec:rango8-tempi}. In sintesi, il modello addestrato non funziona senza nessuna delle tre componenti: senza scale o senza guadagni non genera più testo, e già a rango 64 la quota di racconti corretti si dimezza. Tollera invece la riduzione dei bit: a 8 bit la NLL cambia al più di qualche decimo di punto percentuale, e con il basso rango a 8 bit i pesi scendono da $121{,}4$ a $86{,}1$~MB. Struttura e quantizzazione agiscono su grandezze diverse, il numero di valori e i bit per valore, e si sommano. Lo studio misura la dipendenza del modello \emph{già addestrato} dalle componenti; non dice quanto rango servirebbe a un modello addestrato fin dall'inizio con un rango minore, che potrebbe affidare più informazione alle coordinate.
 
 % ---------------------------------------------------------------- BILANCIO
 
