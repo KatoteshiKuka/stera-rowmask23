@@ -27,7 +27,7 @@ H4 & STERA 30M genera racconti di qualità confrontabile con quella dei riferime
 \section{Modelli di riferimento}
 \label{sec:metodo-modelli-tre}
 
-Il confronto linguistico impiega STERA 30M e due checkpoint pubblici della famiglia TinyStories \cite{eldan2023tinystories}, addestrati sullo stesso dominio e con lo stesso tokenizzatore (Tabella~\ref{tab:modelli-principali}). Il numero nel nome pubblico dei checkpoint TinyStories non coincide con il conteggio dei loro parametri: per tutti i modelli riportiamo il numero effettivo di valori memorizzati, contando una sola volta le matrici condivise.
+Il confronto linguistico impiega STERA 30M e due checkpoint pubblici della famiglia TinyStories \cite{eldan2023tinystories}, addestrati sullo stesso dominio e con lo stesso tokenizzatore (\autoref{tab:modelli-principali}). Il numero nel nome pubblico dei checkpoint TinyStories non coincide con il conteggio dei loro parametri: per tutti i modelli riportiamo il numero effettivo di valori memorizzati, contando una sola volta le matrici condivise.
 
 \begin{table}[htbp]
 \centering
@@ -50,7 +50,7 @@ STERA 30M si colloca fra i due riferimenti per numero di parametri memorizzati: 
 \section{Protocollo di valutazione}
 \label{sec:metodo-confronto-generativo}
 
-La Figura~\ref{fig:protocollo} riassume il flusso completo, dai dati al confronto statistico.
+La \autoref{fig:protocollo} riassume il flusso completo, dai dati al confronto statistico.
 
 \begin{figure}[htbp]
 \centering
@@ -69,7 +69,7 @@ Per ogni modello si calcola la NLL dei 300 racconti TEST completi in \emph{teach
 
 \subsection{Generazione delle continuazioni}
 
-Ogni modello continua ciascun incipit una sola volta, con la stessa procedura: campionamento top-$k$ con $k=40$ e temperatura $0{,}75$, al più 180 nuovi token, arresto al token di fine racconto, pesi in FP32 e seme del generatore dipendente dall'indice dell'incipit (Tabella~\ref{tab:stera30m-seed}). Poiché il campionamento usa un generatore su CPU con lo stesso seme per tutti i modelli, le differenze fra le continuazioni dipendono solo dalle distribuzioni prodotte dai modelli.
+Ogni modello continua ciascun incipit una sola volta, con la stessa procedura: campionamento top-$k$ con $k=40$ e temperatura $0{,}75$, al più 180 nuovi token, arresto al token di fine racconto, pesi in FP32 e seme del generatore dipendente dall'indice dell'incipit (\autoref{tab:stera30m-seed}). Poiché il campionamento usa un generatore su CPU con lo stesso seme per tutti i modelli, le differenze fra le continuazioni dipendono solo dalle distribuzioni prodotte dai modelli.
 
 \subsection{Giudizio cieco}
 \label{sec:metodo-giudizio}
@@ -100,7 +100,7 @@ Fantasia, animali parlanti, finali negativi e assenza di una morale non sono pen
 \section{Misure di memoria e tempo}
 \label{sec:metodo-sistemi}
 
-Le misure distinguono il payload dei parametri, la memoria fisica occupata dal processo, il tempo al primo token e il tempo per i token successivi. Il confronto principale riguarda due motori che eseguono gli stessi pesi di STERA 30M: uno applica le proiezioni direttamente alle coordinate RowMask23, l'altro carica le matrici dense equivalenti. I tempi di esecuzione dipendono dalla forma del modello e non dai valori dei pesi. Lo studio dell'esecuzione con pesi che superano la memoria disponibile, descritto nel Capitolo~\ref{cap:capitoli/07-sistemi}, usa una configurazione STERA di scala maggiore e un modello pubblico eseguito con caricamento progressivo dei pesi dal disco.
+Le misure distinguono il payload dei parametri, la memoria fisica occupata dal processo, il tempo al primo token e il tempo per i token successivi. Il confronto principale riguarda due motori che eseguono gli stessi pesi di STERA 30M: uno applica le proiezioni direttamente alle coordinate RowMask23, l'altro carica le matrici dense equivalenti. I tempi di esecuzione dipendono dalla forma del modello e non dai valori dei pesi. Lo studio dell'esecuzione con pesi che superano la memoria disponibile, descritto nel \autoref{cap:capitoli/07-sistemi}, usa una configurazione STERA di scala maggiore e un modello pubblico eseguito con caricamento progressivo dei pesi dal disco.
 
 \paragraph{Protocollo delle misure di tempo.} Tutte le misure di tempo sono eseguite sullo stesso Mac con chip M1 e 16~GiB di memoria unificata, con i pesi del checkpoint finale già caricati, batch 1, greedy e cache KV di capacità 512. Ogni configurazione è misurata in cinque campagne complete; ciascuna campagna parte solo quando la media di carico del sistema a un minuto è scesa sotto 1,5, dopo una pausa di 60 secondi. Ogni processo esegue una prima richiesta e una seconda a caldo, che è quella riportata; i valori sono mediane fra campagne e input, e in ogni campagna si verifica che i token generati coincidano fra le varianti e fra le campagne.
 

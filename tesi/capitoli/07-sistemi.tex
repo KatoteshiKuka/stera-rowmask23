@@ -58,16 +58,16 @@ Pesi densi equivalenti F10 & 18,597 & 7,821 & 2,378 \\
 
 Una politica che dovesse rileggere integralmente 18,597~GB per ciascun token avrebbe quindi un termine di sola lettura dell'ordine di $7{,}82$~s a quella banda; il reciproco, circa $0{,}128$ token/s, è un tetto imposto dal solo I/O \emph{per quella politica}. Il calcolo, la latenza, lo staging e l'eventuale residenza parziale possono modificarne il risultato reale. La pipeline a doppio buffer può sovrapporre trasferimento e calcolo, ma non eliminare il tempo necessario ai byte effettivamente letti.
 
-Questo termine di lettura è un limite inferiore al costo di una generazione che debba trasferire i pesi dal disco a ogni token; l'esempio completo di generazione con caricamento progressivo degli strati è discusso nella Sezione~\ref{sec:qwen-f10-ssd}.
+Questo termine di lettura è un limite inferiore al costo di una generazione che debba trasferire i pesi dal disco a ogni token; l'esempio completo di generazione con caricamento progressivo degli strati è discusso nella \autoref{sec:qwen-f10-ssd}.
 
 \section{Quanto modello entra in un dispositivo}
 
-Un limite analitico aiuta a distinguere la capacità di memorizzazione dal throughput. Un budget ipotetico di 12~GB per i soli valori FP16 contiene 6 miliardi di scalari densi. Se ogni blocco $128\times128$ fosse rappresentato esclusivamente dalle sue \,\num{3176} coordinate RowMask23, il rapporto ideale fra elementi sarebbe $16384/3176\approx5{,}16$. Tale rapporto non può essere esteso automaticamente a un Transformer completo: embedding, guadagni, fattori a basso rango, cache KV, workspace e granularità dei blocchi consumano spazio. Il prototipo STERA di scala maggiore effettivamente contabilizzato, discussa nella Sezione~\ref{sec:qwen-f10-ssd}, fornisce un confronto a scala maggiore con un perimetro esplicito.
+Un limite analitico aiuta a distinguere la capacità di memorizzazione dal throughput. Un budget ipotetico di 12~GB per i soli valori FP16 contiene 6 miliardi di scalari densi. Se ogni blocco $128\times128$ fosse rappresentato esclusivamente dalle sue \,\num{3176} coordinate RowMask23, il rapporto ideale fra elementi sarebbe $16384/3176\approx5{,}16$. Tale rapporto non può essere esteso automaticamente a un Transformer completo: embedding, guadagni, fattori a basso rango, cache KV, workspace e granularità dei blocchi consumano spazio. Il prototipo STERA di scala maggiore effettivamente contabilizzato, discussa nella \autoref{sec:qwen-f10-ssd}, fornisce un confronto a scala maggiore con un perimetro esplicito.
 
 \section{Peso di STERA 30M}
 \label{sec:stera30m-quantizzazione}
 
-Il risparmio è $1-B_{\mathrm{STERA}}/B_{\mathrm{rif}}$, dove $B$ indica i byte nel perimetro dichiarato. La Tabella~\ref{tab:stera30m-byte} e la Figura~\ref{fig:byte-pesi} esplicitano il riferimento di ogni confronto. I payload FP32 dei checkpoint includono embedding, posizioni, bias e normalizzazioni. MB indica milioni di byte.
+Il risparmio è $1-B_{\mathrm{STERA}}/B_{\mathrm{rif}}$, dove $B$ indica i byte nel perimetro dichiarato. La \autoref{tab:stera30m-byte} e la \autoref{fig:byte-pesi} esplicitano il riferimento di ogni confronto. I payload FP32 dei checkpoint includono embedding, posizioni, bias e normalizzazioni. MB indica milioni di byte.
 
 \begin{table}[htbp]
 \centering
@@ -93,9 +93,9 @@ Basso rango a 8 bit vs propria espansione FP32 & 86,097 & 330,885 & 73,98\% \\
 \label{fig:byte-pesi}
 \end{figure}
 
-Il $63{,}32\%$ rispetto alla propria espansione densa è il risultato della Proposizione~\ref{prop:risparmio-modello}: i blocchi RowMask23 garantiscono l'$80{,}61\%$ sulla parte strutturata e il termine a basso rango di rango 96 ne consuma la parte restante. Il $55{,}71\%$ rispetto a TinyStories-33M confronta invece due modelli diversi e va letto insieme alla qualità dei racconti (Sezione~\ref{sec:risultati-stera30m-tinystories}): STERA 30M occupa meno della metà dei byte con una quota di racconti corretti non significativamente diversa.
+Il $63{,}32\%$ rispetto alla propria espansione densa è il risultato della \autoref{prop:risparmio-modello}: i blocchi RowMask23 garantiscono l'$80{,}61\%$ sulla parte strutturata e il termine a basso rango di rango 96 ne consuma la parte restante. Il $55{,}71\%$ rispetto a TinyStories-33M confronta invece due modelli diversi e va letto insieme alla qualità dei racconti (\autoref{sec:risultati-stera30m-tinystories}): STERA 30M occupa meno della metà dei byte con una quota di racconti corretti non significativamente diversa.
 
-Quantizzando a 8 bit i soli fattori $U$ e $V$, il termine a basso rango passa da $51{,}5$ a $16{,}2$~MB e il modello da $121{,}385$ a $86{,}097$~MB, il $73{,}98\%$ in meno della propria espansione densa. La matrice densa equivalente cambia dello $0{,}5$--$0{,}6\%$ in norma e la NLL del $+0{,}007\%$ (Sezione~\ref{sec:basso-rango}). Il modello valutato nei confronti di qualità e nei benchmark principali è il compatto FP32; la variante a 8 bit è misurata a parte nella Sezione~\ref{sec:rango8-tempi}.
+Quantizzando a 8 bit i soli fattori $U$ e $V$, il termine a basso rango passa da $51{,}5$ a $16{,}2$~MB e il modello da $121{,}385$ a $86{,}097$~MB, il $73{,}98\%$ in meno della propria espansione densa. La matrice densa equivalente cambia dello $0{,}5$--$0{,}6\%$ in norma e la NLL del $+0{,}007\%$ (\autoref{sec:basso-rango}). Il modello valutato nei confronti di qualità e nei benchmark principali è il compatto FP32; la variante a 8 bit è misurata a parte nella \autoref{sec:rango8-tempi}.
 
 \section{Memoria durante l'addestramento}
 
@@ -127,12 +127,12 @@ STERA 30M compatto & 61,0 & 200,58 & 0,559 \\
 \label{fig:decode-appaiato}
 \end{figure}
 
-La riduzione mediana appaiata del tempo per passo di decode è del $34{,}8\%$ (Figura~\ref{fig:decode-appaiato}), con riduzioni osservate da $18{,}0\%$ a $39{,}6\%$ sulle 30 coppie; le mediane delle singole campagne sono comprese fra $33{,}7\%$ e $36{,}0\%$. Il Dense emette prima il primo token in tutte le 30 coppie, mentre il compatto impiega meno tempo totale in tutte le 30. Il confronto dei soli payload FP32 vale 121,385 contro 330,885 MB. Questi valori descrivono i pesi, mentre cache, buffer e runtime contribuiscono alla memoria di esecuzione.
+La riduzione mediana appaiata del tempo per passo di decode è del $34{,}8\%$ (\autoref{fig:decode-appaiato}), con riduzioni osservate da $18{,}0\%$ a $39{,}6\%$ sulle 30 coppie; le mediane delle singole campagne sono comprese fra $33{,}7\%$ e $36{,}0\%$. Il Dense emette prima il primo token in tutte le 30 coppie, mentre il compatto impiega meno tempo totale in tutte le 30. Il confronto dei soli payload FP32 vale 121,385 contro 330,885 MB. Questi valori descrivono i pesi, mentre cache, buffer e runtime contribuiscono alla memoria di esecuzione.
 
 \section{Inferenza applicativa: STERA 30M e i due TinyStories}
 \label{sec:tre-checkpoint-inferenza}
 
-Riprendiamo i tre checkpoint del confronto di qualità della Sezione~\ref{sec:risultati-stera30m-tinystories}. La Tabella~\ref{tab:tre-checkpoint-ram} riporta il payload FP32 dei parametri, i tempi e il picco di memoria del processo durante una richiesta con 256 token in ingresso e 100 generati, per due esecuzioni dei riferimenti: con lo stesso motore denso MLX usato per STERA 30M e con il motore standard Transformers su PyTorch/MPS. In entrambe i due TinyStories producono gli stessi token dell'implementazione di riferimento, in ogni campagna. Il picco è il massimo campionato ogni 10 ms durante la richiesta a caldo e include le allocazioni trattenute dal runtime.
+Riprendiamo i tre checkpoint del confronto di qualità della \autoref{sec:risultati-stera30m-tinystories}. La \autoref{tab:tre-checkpoint-ram} riporta il payload FP32 dei parametri, i tempi e il picco di memoria del processo durante una richiesta con 256 token in ingresso e 100 generati, per due esecuzioni dei riferimenti: con lo stesso motore denso MLX usato per STERA 30M e con il motore standard Transformers su PyTorch/MPS. In entrambe i due TinyStories producono gli stessi token dell'implementazione di riferimento, in ogni campagna. Il picco è il massimo campionato ogni 10 ms durante la richiesta a caldo e include le allocazioni trattenute dal runtime.
 
 \begin{table}[htbp]
 \centering
@@ -153,7 +153,7 @@ TinyStories-8M & 78,810 & 22,9 & 149,8 & 0,691 & \num{1526} \\
 TinyStories-33M & 274,056 & 31,7 & 90,6 & 1,136 & \num{1493} \\
 \bottomrule
 \end{tabularx}
-\caption{Inferenza FP32 sul Mac M1: mediane di 15 richieste a caldo (tre input in cinque campagne). Il primo token di STERA compatto è misurato con il prodotto diretto a blocchi di 16 token; la Sezione~\ref{sec:prefill-misure} mostra come ridurlo.}
+\caption{Inferenza FP32 sul Mac M1: mediane di 15 richieste a caldo (tre input in cinque campagne). Il primo token di STERA compatto è misurato con il prodotto diretto a blocchi di 16 token; la \autoref{sec:prefill-misure} mostra come ridurlo.}
 \label{tab:tre-checkpoint-ram}
 \end{table}
 
@@ -164,7 +164,7 @@ Con lo stesso motore, STERA 30M genera più rapidamente di TinyStories-33M, pur 
 \section{Lunghezza dell'ingresso}
 \label{sec:contesto-misure}
 
-Le misure precedenti usano 256 token in ingresso. Per verificare se il risultato dipende da questa scelta, gli stessi modelli sono stati misurati con 32, 64, 128, 256 e 384 token in ingresso, sempre con 100 token generati e con lo stesso protocollo di cinque campagne. La Figura~\ref{fig:contesto-prefill} riporta primo token e decode.
+Le misure precedenti usano 256 token in ingresso. Per verificare se il risultato dipende da questa scelta, gli stessi modelli sono stati misurati con 32, 64, 128, 256 e 384 token in ingresso, sempre con 100 token generati e con lo stesso protocollo di cinque campagne. La \autoref{fig:contesto-prefill} riporta primo token e decode.
 
 \begin{figure}[htbp]
 \centering
@@ -216,7 +216,7 @@ Combinando espansione al bisogno nel prefill e basso rango a 8 bit, STERA 30M co
 
 \paragraph{Che cosa è il prototipo grande.} Per studiare il limite di memoria, è stata realizzata una configurazione \emph{STERA F10} di scala maggiore rispetto a STERA 30M. I suoi pesi compatti sono inizializzati deterministicamente a partire dal checkpoint finale di STERA 30M: \textbf{non è un secondo modello linguistico addestrato}. Esegue effettivamente il forward e il decode, ma le sue generazioni non dimostrano qualità narrativa, generalizzazione o prestazioni linguistiche di un ipotetico modello grande addestrato da zero.
 
-\paragraph{Dimensione e soglia di RAM.} Il payload contabilizzato dal loader del prototipo compatto FP32 è 4,003~GB, ovvero 3,73~GiB. La rappresentazione densa equivalente richiederebbe una stima complessiva di 18,597~GB (17,32~GiB) di soli pesi, più della memoria fisica del Mac (Figura~\ref{fig:soglia-ram-f10}). La riduzione del payload rispetto alla stima densa è del $78{,}48\%$. La stima comprende il perimetro di parametri dichiarato nel report del loader; cache e workspace sono esclusi dai byte dei pesi.
+\paragraph{Dimensione e soglia di RAM.} Il payload contabilizzato dal loader del prototipo compatto FP32 è 4,003~GB, ovvero 3,73~GiB. La rappresentazione densa equivalente richiederebbe una stima complessiva di 18,597~GB (17,32~GiB) di soli pesi, più della memoria fisica del Mac (\autoref{fig:soglia-ram-f10}). La riduzione del payload rispetto alla stima densa è del $78{,}48\%$. La stima comprende il perimetro di parametri dichiarato nel report del loader; cache e workspace sono esclusi dai byte dei pesi.
 
 \begin{figure}[htbp]
 \centering

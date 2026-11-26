@@ -4,7 +4,7 @@
 
 Una difficoltà frequente nella lettura dei risultati consiste nel capire \emph{quali} matrici siano state effettivamente strutturate. RowMask23 non sostituisce un Transformer con un algoritmo diverso: cambia il modo in cui sono rappresentate le grandi proiezioni lineari, mentre l'attenzione causale, i collegamenti residui, le normalizzazioni e la perdita autoregressiva continuano a svolgere i rispettivi ruoli.
 
-La Figura~\ref{fig:atlante-matrici} riassume le dimensioni delle matrici usate dal solo modello addestrato STERA 30M. La matrice dei token è condivisa fra embedding iniziale e testa di uscita. Ogni strato contiene invece quattro proiezioni dell'attenzione e due proiezioni del feed-forward, tutte organizzate in blocchi da $128\times128$.
+La \autoref{fig:atlante-matrici} riassume le dimensioni delle matrici usate dal solo modello addestrato STERA 30M. La matrice dei token è condivisa fra embedding iniziale e testa di uscita. Ogni strato contiene invece quattro proiezioni dell'attenzione e due proiezioni del feed-forward, tutte organizzate in blocchi da $128\times128$.
 
 \begin{figure}[htbp]
 \centering
@@ -56,7 +56,7 @@ La stessa contabilità spiega le 37 matrici del modello: una matrice condivisa p
 \subsection{Verifica contabile dal blocco al modello}
 \label{sec:contabilita-matrici}
 
-La Tabella~\ref{tab:atlante-matrici} attraversa la catena completa: numero di matrici, numero di blocchi, coordinate compresse e valori dell'espansione. Per evitare doppi conteggi, $E$ compare una volta sola.
+La \autoref{tab:atlante-matrici} attraversa la catena completa: numero di matrici, numero di blocchi, coordinate compresse e valori dell'espansione. Per evitare doppi conteggi, $E$ compare una volta sola.
 
 \begin{table}[htbp]
 \centering
@@ -73,7 +73,7 @@ Feed-forward: ritorno & 6 & \num{864} & \num{2744064} \\
 \textbf{Totale} & \textbf{37} & \textbf{\num{4950}} & \textbf{\num{15721200}} \\
 \bottomrule
 \end{tabularx}
-\caption{Inventario esatto delle matrici e delle sole coordinate RowMask23 presenti in STERA 30M. Ogni blocco contiene \num{3176} coordinate. Le altre componenti allenabili sono riportate nella Tabella~\ref{tab:stera30m-parametri}.}
+\caption{Inventario esatto delle matrici e delle sole coordinate RowMask23 presenti in STERA 30M. Ogni blocco contiene \num{3176} coordinate. Le altre componenti allenabili sono riportate nella \autoref{tab:stera30m-parametri}.}
 \label{tab:atlante-matrici}
 \end{table}
 

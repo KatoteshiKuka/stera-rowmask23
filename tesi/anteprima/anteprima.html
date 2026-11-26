@@ -36,6 +36,7 @@
   #pdf { flex:1; overflow:auto; min-width:0; }
   #log { white-space:pre-wrap; color:var(--err); font:12px ui-monospace,monospace; padding:0 14px; }
   #pagine { display:flex; flex-direction:column; align-items:center; gap:12px; padding:14px; }
+  .pag { position:relative; line-height:0; } .pag a:hover { background:#1f6f8b22; }
   canvas { background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.25); max-width:100%; height:auto; }
 </style>
 </head>
@@ -115,11 +116,28 @@ async function elenco() {
 $("ricarica").onclick = () => { $("avviso").style.display = "none"; salvato = ""; apri(sel, true); };
 $("tieni").onclick = () => { $("avviso").style.display = "none"; tempoFile = tempi[sel]; };
 
-async function disegnaPagina(c) {
-  if (c.dataset.fatto) return; c.dataset.fatto = 1;
-  const page = await doc.getPage(+c.dataset.n), vp = page.getViewport({ scale: scala * 1.5 });
+async function vaiA(dest) {
+  if (typeof dest === "string") dest = await doc.getDestination(dest);
+  if (!dest) return;
+  const idx = await doc.getPageIndex(dest[0]), w = $("pagine").children[idx];
+  const page = await doc.getPage(idx + 1), vp = page.getViewport({ scale: 1 });
+  let y = 0; if (dest[1] && dest[1].name === "XYZ" && dest[3] != null) y = (vp.height - dest[3]) / vp.height * w.offsetHeight;
+  $("pdf").scrollTop = w.offsetTop + y - 20;
+}
+async function disegnaPagina(w) {
+  if (w.dataset.fatto) return; w.dataset.fatto = 1;
+  const c = w.firstChild, page = await doc.getPage(+w.dataset.n), vp = page.getViewport({ scale: scala * 1.5 });
   c.width = vp.width; c.height = vp.height;
   await page.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
+  for (const a of await page.getAnnotations()) {
+    if (a.subtype !== "Link" || (!a.dest && !a.url)) continue;
+    const r = vp.convertToViewportRectangle(a.rect), l = document.createElement("a");
+    const x = Math.min(r[0], r[2]) / 1.5, y = Math.min(r[1], r[3]) / 1.5;
+    Object.assign(l.style, { position: "absolute", left: x + "px", top: y + "px",
+      width: Math.abs(r[2] - r[0]) / 1.5 + "px", height: Math.abs(r[3] - r[1]) / 1.5 + "px", cursor: "pointer" });
+    if (a.url) { l.href = a.url; l.target = "_blank"; } else l.onclick = e => { e.preventDefault(); vaiA(a.dest); };
+    w.appendChild(l);
+  }
 }
 async function disegna(v) {
   rendering = true; const pd = $("pdf"), y = pd.scrollTop, h = pd.scrollHeight || 1;
@@ -129,8 +147,9 @@ async function disegna(v) {
   oss = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) disegnaPagina(e.target); }), { root: pd, rootMargin: "800px" });
   const frag = document.createDocumentFragment();
   for (let i = 1; i <= doc.numPages; i++) {
-    const c = document.createElement("canvas"); c.dataset.n = i; c.width = p1.width; c.height = p1.height;
-    c.style.width = (p1.width / 1.5) + "px"; frag.appendChild(c); oss.observe(c);
+    const w = document.createElement("div"), c = document.createElement("canvas");
+    w.className = "pag"; w.dataset.n = i; c.width = p1.width; c.height = p1.height;
+    c.style.width = (p1.width / 1.5) + "px"; w.appendChild(c); frag.appendChild(w); oss.observe(w);
   }
   $("pagine").replaceChildren(frag); pd.scrollTop = y / h * pd.scrollHeight;
   $("info").textContent = doc.numPages + " pagine · " + new Date().toLocaleTimeString("it-IT");

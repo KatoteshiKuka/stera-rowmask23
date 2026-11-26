@@ -29,7 +29,7 @@ La dimensione del vocabolario ha un effetto diretto sul numero di parametri. La 
 
 \section{L'architettura Transformer}
 
-Il Transformer è stato introdotto da Vaswani e collaboratori in \emph{Attention Is All You Need} \cite{vaswani2017attention} come architettura composta da un \emph{encoder} e da un \emph{decoder}. La Figura~\ref{fig:transformer-originale-vaswani} ne riproduce il diagramma originale, con l'encoder sulla sinistra e il decoder sulla destra.
+Il Transformer è stato introdotto da Vaswani e collaboratori in \emph{Attention Is All You Need} \cite{vaswani2017attention} come architettura composta da un \emph{encoder} e da un \emph{decoder}. La \autoref{fig:transformer-originale-vaswani} ne riproduce il diagramma originale, con l'encoder sulla sinistra e il decoder sulla destra.
 
 \begin{figure}[htbp]
 \centering
@@ -40,7 +40,7 @@ Il Transformer è stato introdotto da Vaswani e collaboratori in \emph{Attention
 
 L'encoder originale è una pila di moduli di \emph{self-attention} e reti feed-forward, intervallati da normalizzazioni e connessioni residue. Il decoder utilizza un'attenzione causale (nel diagramma, \emph{Masked Multi-Head Attention}) e un ulteriore blocco di \emph{cross-attention} sui risultati dell'encoder. I simboli $N\times$ indicano la ripetizione dei blocchi. Lo schema riguarda il Transformer storico, non una rappresentazione delle dimensioni o dei pesi di STERA.
 
-I modelli linguistici autoregressivi della famiglia GPT utilizzano prevalentemente una variante \emph{decoder-only} \cite{radford2019language}: conservano i blocchi di attenzione causale e il feed-forward, ma non hanno un encoder separato e non necessitano dello strato di cross-attention encoder--decoder mostrato in Figura~\ref{fig:transformer-originale-vaswani}. Questa è anche l'impostazione generale di \textbf{STERA 30M}, che impiega normalizzazione pre-residuale e posizioni apprese. La sua architettura specifica, con sei strati, sedici teste e proiezioni RowMask23, è documentata nel diagramma dedicato della Figura~\ref{fig:stera30m-flusso}; non va confusa con il diagramma del paper del 2017. Descriviamo i suoi componenti nell'ordine in cui vengono attraversati.
+I modelli linguistici autoregressivi della famiglia GPT utilizzano prevalentemente una variante \emph{decoder-only} \cite{radford2019language}: conservano i blocchi di attenzione causale e il feed-forward, ma non hanno un encoder separato e non necessitano dello strato di cross-attention encoder--decoder mostrato in \autoref{fig:transformer-originale-vaswani}. Questa è anche l'impostazione generale di \textbf{STERA 30M}, che impiega normalizzazione pre-residuale e posizioni apprese. La sua architettura specifica, con sei strati, sedici teste e proiezioni RowMask23, è documentata nel diagramma dedicato della \autoref{fig:stera30m-flusso}; non va confusa con il diagramma del paper del 2017. Descriviamo i suoi componenti nell'ordine in cui vengono attraversati.
 
 \subsection{Embedding e posizione}
 
@@ -99,7 +99,7 @@ Per uno strato lineare $Y=XW^\top$, con $X\in\mathbb{R}^{B\times n}$ ingressi, $
 \frac{\partial\mathcal{L}}{\partial X} = G_Y W.
 \label{eq:linear-grad}
 \end{equation}
-La prima formula fornisce il gradiente dei pesi, la seconda il gradiente da passare allo strato precedente. Nel Capitolo~\ref{cap:capitoli/03-formalismo} useremo la prima per ricavare il gradiente rispetto alle coordinate compresse: basterà comporla con la derivata della mappa che costruisce $W$ dalle coordinate.
+La prima formula fornisce il gradiente dei pesi, la seconda il gradiente da passare allo strato precedente. Nel \autoref{cap:capitoli/03-formalismo} useremo la prima per ricavare il gradiente rispetto alle coordinate compresse: basterà comporla con la derivata della mappa che costruisce $W$ dalle coordinate.
 
 \subsection{Adam e AdamW}
 
@@ -109,13 +109,13 @@ m_t &= \beta_1 m_{t-1} + (1-\beta_1) g_t,\\
 v_t &= \beta_2 v_{t-1} + (1-\beta_2) g_t^2,\\
 \theta_{t+1} &= \theta_t - \eta_t\,\frac{\hat m_t}{\sqrt{\hat v_t}+\epsilon},
 \end{align}
-dove $\hat m_t=m_t/(1-\beta_1^t)$ e $\hat v_t=v_t/(1-\beta_2^t)$ correggono la distorsione iniziale dovuta all'inizializzazione a zero. AdamW \cite{loshchilov2019decoupled} aggiunge un termine di decadimento dei pesi separato dal gradiente, $-\eta_t\lambda\theta_t$, che agisce come regolarizzazione. Per STERA 30M usiamo $\beta_1=0{,}9$, $\beta_2=0{,}95$ e $\lambda=0{,}1$ (Sezione~\ref{sec:stera30m-config-training}).
+dove $\hat m_t=m_t/(1-\beta_1^t)$ e $\hat v_t=v_t/(1-\beta_2^t)$ correggono la distorsione iniziale dovuta all'inizializzazione a zero. AdamW \cite{loshchilov2019decoupled} aggiunge un termine di decadimento dei pesi separato dal gradiente, $-\eta_t\lambda\theta_t$, che agisce come regolarizzazione. Per STERA 30M usiamo $\beta_1=0{,}9$, $\beta_2=0{,}95$ e $\lambda=0{,}1$ (\autoref{sec:stera30m-config-training}).
 
 Ogni parametro allenabile richiede quindi due valori aggiuntivi nello stato dell'ottimizzatore. È per questo che ridurre il numero di parametri allenabili riduce in proporzione anche la memoria dell'addestramento.
 
 \subsection{Tasso di apprendimento e stabilità}
 
-Il tasso di apprendimento $\eta_t$ non è costante. Nei primi passi cresce linearmente da zero (\emph{warmup}), così che i momenti di Adam abbiano il tempo di stimarsi; poi resta costante o decresce, per esempio seguendo un coseno o una rampa lineare, fino a una frazione del valore massimo. Il profilo usato per STERA 30M è descritto nella Sezione~\ref{sec:stera30m-config-training}. Per evitare che un singolo lotto anomalo produca un passo troppo grande, la norma complessiva del gradiente viene limitata a un valore massimo (\emph{gradient clipping}) \cite{pascanu2013difficulty}.
+Il tasso di apprendimento $\eta_t$ non è costante. Nei primi passi cresce linearmente da zero (\emph{warmup}), così che i momenti di Adam abbiano il tempo di stimarsi; poi resta costante o decresce, per esempio seguendo un coseno o una rampa lineare, fino a una frazione del valore massimo. Il profilo usato per STERA 30M è descritto nella \autoref{sec:stera30m-config-training}. Per evitare che un singolo lotto anomalo produca un passo troppo grande, la norma complessiva del gradiente viene limitata a un valore massimo (\emph{gradient clipping}) \cite{pascanu2013difficulty}.
 
 \section{Generazione del testo}
 
@@ -134,7 +134,7 @@ Durante la generazione, il prefisso cresce di un token alla volta. Ricalcolare o
 
 \subsection{Una gerarchia di memorie}
 
-Durante la generazione, ogni token richiede di applicare tutte le matrici del modello. I pesi devono quindi trovarsi in una memoria da cui l'unità di calcolo possa leggerli rapidamente. Un dispositivo dispone di più livelli di memoria, sempre più capienti e sempre più lenti (Figura~\ref{fig:gerarchia-memoria}): la memoria vicina all'unità di calcolo, la memoria principale e il disco. Sul Mac con chip M1 usato nella tesi, CPU e GPU condividono 16~GiB di memoria unificata, con una banda teorica di circa 68~GB/s; l'SSD interno offre circa 2,4~GB/s in lettura sequenziale (Sezione~\ref{sec:ssd-io-verificato}), quasi trenta volte meno.
+Durante la generazione, ogni token richiede di applicare tutte le matrici del modello. I pesi devono quindi trovarsi in una memoria da cui l'unità di calcolo possa leggerli rapidamente. Un dispositivo dispone di più livelli di memoria, sempre più capienti e sempre più lenti (\autoref{fig:gerarchia-memoria}): la memoria vicina all'unità di calcolo, la memoria principale e il disco. Sul Mac con chip M1 usato nella tesi, CPU e GPU condividono 16~GiB di memoria unificata, con una banda teorica di circa 68~GB/s; l'SSD interno offre circa 2,4~GB/s in lettura sequenziale (\autoref{sec:ssd-io-verificato}), quasi trenta volte meno.
 
 \begin{figure}[htbp]
 \centering
@@ -169,7 +169,7 @@ Con il \emph{prefetch}, lo strato $\ell+1$ viene caricato mentre si calcola lo s
 T_{\mathrm{pref}} \approx \max\!\left(\frac{B}{\beta},\,T_c\right).
 \label{eq:tempo-prefetch}
 \end{equation}
-La Figura~\ref{fig:prefetch} confronta le due politiche. Nei modelli linguistici su dispositivi personali, in generazione con un solo testo alla volta, il calcolo per token è piccolo rispetto alla lettura dei pesi: il termine $B/\beta$ domina e il prefetch può nascondere al più il tempo di calcolo. L'unico modo di ridurre sostanzialmente il tempo per token è ridurre $B$, cioè leggere meno byte. È qui che si inserisce una rappresentazione compatta dei pesi: a parità di banda, ridurre di un fattore $r$ i byte da trasferire riduce dello stesso fattore il termine dominante, oppure permette di mantenere residente un modello che altrimenti andrebbe trasferito.
+La \autoref{fig:prefetch} confronta le due politiche. Nei modelli linguistici su dispositivi personali, in generazione con un solo testo alla volta, il calcolo per token è piccolo rispetto alla lettura dei pesi: il termine $B/\beta$ domina e il prefetch può nascondere al più il tempo di calcolo. L'unico modo di ridurre sostanzialmente il tempo per token è ridurre $B$, cioè leggere meno byte. È qui che si inserisce una rappresentazione compatta dei pesi: a parità di banda, ridurre di un fattore $r$ i byte da trasferire riduce dello stesso fattore il termine dominante, oppure permette di mantenere residente un modello che altrimenti andrebbe trasferito.
 
 \begin{figure}[htbp]
 \centering
@@ -199,7 +199,7 @@ La Figura~\ref{fig:prefetch} confronta le due politiche. Nei modelli linguistici
 \newpage
 \section{Strumenti statistici}
 
-Questa sezione richiama i fondamenti degli strumenti statistici usati nella tesi e lo scopo per cui ciascuno è impiegato. Le differenze fra i modelli confrontati sono spesso piccole e sono misurate su un numero limitato di racconti: per distinguere una differenza reale da una dovuta al caso, i confronti fra modelli del Capitolo~\ref{cap:capitoli/06-risultati} sono accompagnati da una misura di incertezza. Le modalità di applicazione (numero di repliche, unità ricampionate, confronti eseguiti) sono descritte nella Sezione~\ref{sec:metodo-statistica}.
+Questa sezione richiama i fondamenti degli strumenti statistici usati nella tesi e lo scopo per cui ciascuno è impiegato. Le differenze fra i modelli confrontati sono spesso piccole e sono misurate su un numero limitato di racconti: per distinguere una differenza reale da una dovuta al caso, i confronti fra modelli del \autoref{cap:capitoli/06-risultati} sono accompagnati da una misura di incertezza. Le modalità di applicazione (numero di repliche, unità ricampionate, confronti eseguiti) sono descritte nella \autoref{sec:metodo-statistica}.
 
 \paragraph{Bootstrap: incertezza di una differenza media.} Per stimare l'intervallo di confidenza di una differenza media fra due modelli valutati sugli stessi testi, si ricampionano con reinserimento le unità di valutazione, per esempio i racconti, e si ricalcola la differenza molte volte \cite{efron1979bootstrap}. I quantili $2{,}5\%$ e $97{,}5\%$ della distribuzione ottenuta danno un intervallo al 95\%. Nella tesi è usato per la differenza di NLL fra due modelli e per la differenza nella quota di racconti corretti.
 

@@ -18,7 +18,7 @@ In questo percorso lo stesso elemento di $E$ può influire sia sul vettore che e
 
 \subsection{Come si costruiscono le matrici}
 
-Ogni matrice principale di STERA 30M è una proiezione STERA nel senso della Definizione~\ref{def:proiezione-stera}: un mosaico di blocchi RowMask23 con una scala per blocco, guadagni per riga e per colonna e un termine a basso rango. In STERA 30M il rango è $r=96$ in tutte le proiezioni, cioè $\kappa=r/d=1/8$:
+Ogni matrice principale di STERA 30M è una proiezione STERA nel senso della \autoref{def:proiezione-stera}: un mosaico di blocchi RowMask23 con una scala per blocco, guadagni per riga e per colonna e un termine a basso rango. In STERA 30M il rango è $r=96$ in tutte le proiezioni, cioè $\kappa=r/d=1/8$:
 \begin{equation}
  W = \operatorname{diag}(g_{\mathrm{out}})\,\widetilde W\,
      \operatorname{diag}(g_{\mathrm{in}}) + UV^\top,
@@ -27,7 +27,7 @@ Ogni matrice principale di STERA 30M è una proiezione STERA nel senso della Def
 \end{equation}
 Il ruolo, il gradiente e il costo di ciascuna componente sono descritti nelle Sezioni~\ref{sec:scale}, \ref{sec:guadagni} e~\ref{sec:basso-rango}. Tutti i parametri, compresi i fattori $U$ e $V$, sono memorizzati e addestrati in FP32.
 
-La matrice condivisa $E$ conta $393\cdot6=2.358$ blocchi. Ogni strato ha quattro matrici $768\times768$ da 36 blocchi ciascuna e due proiezioni feed-forward da 144 blocchi ciascuna. Il totale è $1+6\cdot6=37$ matrici e $2358+6(4\cdot36+2\cdot144)=\num{4950}$ blocchi. La Tabella~\ref{tab:stera30m-parametri} riporta i parametri allenabili; il bilancio rispetto alla forma densa ($63{,}32\%$ in meno) è ricavato nella Sezione~\ref{sec:bilancio-parametri}.
+La matrice condivisa $E$ conta $393\cdot6=2.358$ blocchi. Ogni strato ha quattro matrici $768\times768$ da 36 blocchi ciascuna e due proiezioni feed-forward da 144 blocchi ciascuna. Il totale è $1+6\cdot6=37$ matrici e $2358+6(4\cdot36+2\cdot144)=\num{4950}$ blocchi. La \autoref{tab:stera30m-parametri} riporta i parametri allenabili; il bilancio rispetto alla forma densa ($63{,}32\%$ in meno) è ricavato nella \autoref{sec:bilancio-parametri}.
 
 \begin{table}[htbp]
 \centering
@@ -62,10 +62,10 @@ In una posizione con token bersaglio $y_t$, la perdita scalare è $\mathcal L_t=
 \label{fig:stera30m-backward}
 \end{figure}
 
-Dal gradiente $G=\partial\mathcal L/\partial W$ di ogni proiezione si ottengono i gradienti di tutte le componenti con le formule del Capitolo~\ref{cap:capitoli/03-formalismo}: le coordinate con \eqref{eq:grad-d}--\eqref{eq:grad-e}, scale, guadagni e basso rango con quelle delle Sezioni~\ref{sec:scale}--\ref{sec:basso-rango}. AdamW aggiorna i tensori allenabili della Tabella~\ref{tab:stera30m-parametri}; il decadimento dei pesi si applica a coordinate, fattori $U$ e $V$ e posizioni, non a scale, guadagni, normalizzazioni e bias.
+Dal gradiente $G=\partial\mathcal L/\partial W$ di ogni proiezione si ottengono i gradienti di tutte le componenti con le formule del \autoref{cap:capitoli/03-formalismo}: le coordinate con \eqref{eq:grad-d}--\eqref{eq:grad-e}, scale, guadagni e basso rango con quelle delle Sezioni~\ref{sec:scale}--\ref{sec:basso-rango}. AdamW aggiorna i tensori allenabili della \autoref{tab:stera30m-parametri}; il decadimento dei pesi si applica a coordinate, fattori $U$ e $V$ e posizioni, non a scale, guadagni, normalizzazioni e bias.
 
 \subsection{Training e motori misurati}
 
 STERA 30M è stato addestrato con un'implementazione PyTorch/CUDA su due GPU NVIDIA P100. Il passo in avanti ricostruisce le matrici effettive. La perdita è calcolata sui token bersaglio, escludendo il riempimento. L'addestramento elabora complessivamente \num{1529514422} token bersaglio.
 
-Per le misure di esecuzione, il percorso denso carica le matrici FP32 già espanse, mentre il percorso compatto applica le proiezioni direttamente alle coordinate tramite kernel Metal. Entrambi eseguono gli stessi pesi. I protocolli di esecuzione sono nel Capitolo~\ref{cap:capitoli/07-sistemi}.
+Per le misure di esecuzione, il percorso denso carica le matrici FP32 già espanse, mentre il percorso compatto applica le proiezioni direttamente alle coordinate tramite kernel Metal. Entrambi eseguono gli stessi pesi. I protocolli di esecuzione sono nel \autoref{cap:capitoli/07-sistemi}.

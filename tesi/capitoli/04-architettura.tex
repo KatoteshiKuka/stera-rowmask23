@@ -6,7 +6,7 @@ Il capitolo precedente ha definito la struttura matematica dei blocchi RowMask23
 
 \section{Dal training alla generazione}
 
-In addestramento, il modello aggiorna direttamente le coordinate RowMask23, le scale, i guadagni, i fattori a basso rango e gli altri tensori elencati nella Tabella~\ref{tab:stera30m-parametri}. La ricostruzione della matrice serve a effettuare i prodotti nelle implementazioni di training, ma non introduce parametri densi indipendenti che l'ottimizzatore possa modificare liberamente. Questo vincolo è imposto durante l'apprendimento, non mediante una compressione successiva.
+In addestramento, il modello aggiorna direttamente le coordinate RowMask23, le scale, i guadagni, i fattori a basso rango e gli altri tensori elencati nella \autoref{tab:stera30m-parametri}. La ricostruzione della matrice serve a effettuare i prodotti nelle implementazioni di training, ma non introduce parametri densi indipendenti che l'ottimizzatore possa modificare liberamente. Questo vincolo è imposto durante l'apprendimento, non mediante una compressione successiva.
 
 Al termine dei \num{122000} aggiornamenti del pretraining, i pesi sono congelati. L'inferenza può utilizzare tre strategie:
 \begin{enumerate}

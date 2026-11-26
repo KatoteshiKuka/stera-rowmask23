@@ -23,7 +23,6 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage[section]{placeins} % le figure restano nella propria sezione
-\usepackage{hyperref}
 \usepackage{amsfonts}
 \usepackage{subcaption}
 \usepackage{mathtools}
@@ -56,6 +55,14 @@
 \definecolor{steraArancio}{HTML}{C2672B}
 \definecolor{steraVerde}{HTML}{7A8B3A}
 \definecolor{steraGrigio}{HTML}{6B7280}
+\hypersetup{colorlinks=true,linkcolor=steraBlu,citecolor=steraBlu,urlcolor=steraBlu}
+\AtBeginDocument{%
+  \renewcommand{\chapterautorefname}{Capitolo}\renewcommand{\appendixautorefname}{Appendice}%
+  \renewcommand{\sectionautorefname}{Sezione}\renewcommand{\subsectionautorefname}{Sezione}%
+  \renewcommand{\subsubsectionautorefname}{Sezione}\renewcommand{\figureautorefname}{Figura}%
+  \renewcommand{\tableautorefname}{Tabella}\renewcommand{\equationautorefname}{Equazione}%
+  \providecommand{\definizioneautorefname}{Definizione}\providecommand{\proposizioneautorefname}{Proposizione}%
+  \providecommand{\osservazioneautorefname}{Osservazione}}
 
 \useunder{\uline}{\ul}{}
 % --- FINE richiamo di pacchetti di utilità
