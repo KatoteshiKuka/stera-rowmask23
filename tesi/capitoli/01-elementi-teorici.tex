@@ -44,7 +44,7 @@ I modelli linguistici autoregressivi della famiglia GPT utilizzano prevalentemen
 
 \subsection{Embedding e posizione}
 
-Ogni token $x_t$ viene sostituito dalla riga corrispondente della matrice di embedding $E\in\mathbb{R}^{|\mathcal{V}|\times d}$. Poiché l'attenzione, da sola, non distingue l'ordine degli elementi, serve un'informazione di posizione. Le varianti più semplici sommano all'embedding un secondo vettore appreso che dipende dalla posizione $t$. Una soluzione più recente, le \emph{Rotary Position Embeddings} (RoPE) \cite{su2024roformer}, ruota le componenti delle query e delle chiavi di un angolo proporzionale alla posizione, in modo che il prodotto scalare tra due posizioni dipenda solo dalla loro distanza relativa. STERA 30M adotta la soluzione più semplice, con vettori di posizione appresi, come i modelli TinyStories con cui è confrontato.
+Ogni token $x_t$ viene sostituito dalla riga corrispondente della matrice di embedding $E\in\mathbb{R}^{|\mathcal{V}|\times d}$. Poiché l'attenzione, da sola, non distingue l'ordine degli elementi, serve un'informazione di posizione. Le varianti più semplici sommano all'embedding un secondo vettore appreso che dipende dalla posizione $t$. Una soluzione più recente, le \emph{Rotary Position Embeddings} (RoPE) \cite{su2024roformer}, ruota le componenti delle query e delle key di un angolo proporzionale alla posizione, in modo che il prodotto scalare tra due posizioni dipenda solo dalla loro distanza relativa. STERA 30M adotta la soluzione più semplice, con vettori di posizione appresi, come i modelli TinyStories con cui è confrontato.
 
 \subsection{Attenzione causale a più teste}
 
@@ -89,9 +89,9 @@ Questa osservazione è il punto di partenza della tesi. Se si vuole cambiare in 
 
 \section{Addestramento}
 
-\subsection{Retropropagazione in uno strato lineare}
+\subsection{Backpropagation in uno strato lineare}
 
-L'addestramento usa la discesa del gradiente: si calcola la derivata della perdita rispetto a ogni parametro e si sposta il parametro nella direzione opposta. Il gradiente si ottiene con la retropropagazione, cioè applicando la regola della catena all'indietro attraverso la rete.
+L'addestramento usa la discesa del gradiente: si calcola la derivata della perdita rispetto a ogni parametro e si sposta il parametro nella direzione opposta. Il gradiente si ottiene con la backpropagation, cioè applicando la regola della catena all'indietro attraverso la rete.
 
 Per uno strato lineare $Y=XW^\top$, con $X\in\mathbb{R}^{B\times n}$ ingressi, $W\in\mathbb{R}^{m\times n}$ pesi e $Y\in\mathbb{R}^{B\times m}$ uscite, se $G_Y=\partial\mathcal{L}/\partial Y$ è il gradiente che arriva dall'alto, valgono
 \begin{equation}
@@ -109,13 +109,13 @@ m_t &= \beta_1 m_{t-1} + (1-\beta_1) g_t,\\
 v_t &= \beta_2 v_{t-1} + (1-\beta_2) g_t^2,\\
 \theta_{t+1} &= \theta_t - \eta_t\,\frac{\hat m_t}{\sqrt{\hat v_t}+\epsilon},
 \end{align}
-dove $\hat m_t=m_t/(1-\beta_1^t)$ e $\hat v_t=v_t/(1-\beta_2^t)$ correggono la distorsione iniziale dovuta all'inizializzazione a zero. AdamW \cite{loshchilov2019decoupled} aggiunge un termine di decadimento dei pesi separato dal gradiente, $-\eta_t\lambda\theta_t$, che agisce come regolarizzazione. Per STERA 30M usiamo $\beta_1=0{,}9$, $\beta_2=0{,}95$ e $\lambda=0{,}1$ (\autoref{sec:stera30m-config-training}).
+dove $\hat m_t=m_t/(1-\beta_1^t)$ e $\hat v_t=v_t/(1-\beta_2^t)$ correggono la distorsione iniziale dovuta all'inizializzazione a zero. AdamW \cite{loshchilov2019decoupled} aggiunge un termine di weight decay separato dal gradiente, $-\eta_t\lambda\theta_t$, che agisce come regolarizzazione. Per STERA 30M usiamo $\beta_1=0{,}9$, $\beta_2=0{,}95$ e $\lambda=0{,}1$ (\autoref{sec:stera30m-config-training}).
 
 Ogni parametro allenabile richiede quindi due valori aggiuntivi nello stato dell'ottimizzatore. È per questo che ridurre il numero di parametri allenabili riduce in proporzione anche la memoria dell'addestramento.
 
-\subsection{Tasso di apprendimento e stabilità}
+\subsection{Learning rate e stabilità}
 
-Il tasso di apprendimento $\eta_t$ non è costante. Nei primi passi cresce linearmente da zero (\emph{warmup}), così che i momenti di Adam abbiano il tempo di stimarsi; poi resta costante o decresce, per esempio seguendo un coseno o una rampa lineare, fino a una frazione del valore massimo. Il profilo usato per STERA 30M è descritto nella \autoref{sec:stera30m-config-training}. Per evitare che un singolo lotto anomalo produca un passo troppo grande, la norma complessiva del gradiente viene limitata a un valore massimo (\emph{gradient clipping}) \cite{pascanu2013difficulty}.
+Il learning rate $\eta_t$ non è costante. Nei primi passi cresce linearmente da zero (\emph{warmup}), così che i momenti di Adam abbiano il tempo di stimarsi; poi resta costante o decresce, per esempio seguendo un coseno o una rampa lineare, fino a una frazione del valore massimo. Il profilo usato per STERA 30M è descritto nella \autoref{sec:stera30m-config-training}. Per evitare che un singolo batch anomalo produca un passo troppo grande, la norma complessiva del gradiente viene limitata a un valore massimo (\emph{gradient clipping}) \cite{pascanu2013difficulty}.
 
 \section{Generazione del testo}
 
@@ -125,9 +125,9 @@ La scelta più semplice è prendere sempre il token più probabile (\emph{greedy
 
 Nelle valutazioni di questa tesi tutti i modelli generano con campionamento top-$k$, $k=40$, e temperatura $0{,}75$.
 
-\subsection{Cache di chiavi e valori}
+\subsection{KV cache}
 
-Durante la generazione, il prefisso cresce di un token alla volta. Ricalcolare ogni volta l'attenzione sull'intero prefisso sarebbe uno spreco: le chiavi e i valori delle posizioni passate non cambiano. Si conservano quindi in una \emph{KV cache} e, a ogni nuovo token, si calcolano solo la query, la chiave e il valore della nuova posizione. Il costo per token diventa dominato, ancora una volta, dai prodotti matrice--vettore delle proiezioni lineari.
+Durante la generazione, il prefisso cresce di un token alla volta. Ricalcolare ogni volta l'attenzione sull'intero prefisso sarebbe uno spreco: le key e i value delle posizioni passate non cambiano. Si conservano quindi in una \emph{KV cache} e, a ogni nuovo token, si calcolano solo la query, la key e il value della nuova posizione. Il costo per token diventa dominato, ancora una volta, dai prodotti matrice--vettore delle proiezioni lineari.
 
 \section{Memoria e trasferimento dei pesi}
 \label{sec:memoria-trasferimento}

@@ -7,14 +7,14 @@ Il corpus di STERA 30M deriva dal file \texttt{TinyStoriesV2-GPT4-train} \cite{e
 \small
 \begin{tabularx}{\linewidth}{lrrX}
 \toprule
-Insieme & Racconti & Token bersaglio & Uso \\
+Insieme & Racconti & Token target & Uso \\
 \midrule
 TRAIN & \num{2660865} & \num{530189191} & Aggiornamento dei parametri \\
 DEV & \num{29279} & \num{5838521} & Controllo durante l'addestramento e valutazione su un campione distinto \\
 TEST & \num{27351} & \num{5441693} & Prove predittive e narrative dopo il congelamento di STERA 30M \\
 \bottomrule
 \end{tabularx}
-\caption{Partizioni del corpus di STERA 30M. I token bersaglio contano le posizioni predicibili di ogni racconto, compreso il token di fine.}
+\caption{Partizioni del corpus di STERA 30M. I token target contano le posizioni predicibili di ogni racconto, compreso il token di fine.}
 \label{tab:stera30m-split}
 \end{table}
 
@@ -23,9 +23,9 @@ La separazione avviene per racconto. Il programma uniforma gli spazi bianchi e c
 \section{Configurazione del pretraining}
 \label{sec:stera30m-config-training}
 
-Il modello parte da zero ed esegue \num{122000} aggiornamenti, per un totale di \num{1529514422} token bersaglio: circa $2{,}9$ passaggi sull'insieme TRAIN. Ogni aggiornamento usa un lotto di 64 sequenze, suddiviso fra due GPU NVIDIA P100, con accumulo dei gradienti su gruppi di otto sequenze per GPU. Le finestre arrivano a 512 token bersaglio e restano entro lo stesso racconto; il riempimento è escluso dalla perdita. L'ordine di visita di TRAIN è deterministico: il primo indice è \num{194723} e il passo è \num{104729} modulo il numero di racconti di TRAIN.
+Il modello parte da zero ed esegue \num{122000} aggiornamenti, per un totale di \num{1529514422} token target: circa $2{,}9$ passaggi sull'insieme TRAIN. Ogni aggiornamento usa un batch di 64 sequenze, suddiviso fra due GPU NVIDIA P100, con accumulo dei gradienti su gruppi di otto sequenze per GPU. Le finestre arrivano a 512 token target e restano entro lo stesso racconto; il padding è escluso dalla perdita. L'ordine di visita di TRAIN è deterministico: il primo indice è \num{194723} e il passo è \num{104729} modulo il numero di racconti di TRAIN.
 
-AdamW usa $\beta_1=0{,}9$, $\beta_2=0{,}95$ e limita la norma del gradiente a 1. Il decadimento dei pesi è $0{,}1$ per coordinate RowMask23, fattori a basso rango e vettori di posizione. Il tasso di apprendimento segue un profilo a tre fasi (\autoref{fig:stera30m-pretraining}): sale linearmente fino a $6\cdot10^{-4}$ nei primi 300 passi, resta costante fino al passo \num{64000}, scende linearmente fino a $6\cdot10^{-5}$ al passo \num{80000} e rimane a questo valore fino al termine. La NLL su DEV è misurata prima del training e ogni \num{2000} aggiornamenti, sempre sui primi 512 racconti DEV nell'ordine dell'indice (\num{102820} token bersaglio, al massimo 512 per racconto). Il modello valutato nei capitoli successivi è il checkpoint finale.
+AdamW usa $\beta_1=0{,}9$, $\beta_2=0{,}95$ e limita la norma del gradiente a 1. Il weight decay è $0{,}1$ per coordinate RowMask23, fattori a basso rango e vettori di posizione. Il learning rate segue un profilo a tre fasi (\autoref{fig:stera30m-pretraining}): sale linearmente fino a $6\cdot10^{-4}$ nei primi 300 passi, resta costante fino al passo \num{64000}, scende linearmente fino a $6\cdot10^{-5}$ al passo \num{80000} e rimane a questo valore fino al termine. La NLL su DEV è misurata prima del training e ogni \num{2000} aggiornamenti, sempre sui primi 512 racconti DEV nell'ordine dell'indice (\num{102820} token target, al massimo 512 per racconto). Il modello valutato nei capitoli successivi è il checkpoint finale.
 
 \begin{table}[htbp]
 \centering

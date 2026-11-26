@@ -1,4 +1,4 @@
-Il capitolo precedente ha definito la parametrizzazione STERA e ha mostrato come una singola proiezione esegue il passo in avanti e la retropropagazione. Questo capitolo descrive la struttura del modello addestrato e valutato nella tesi, \textbf{STERA 30M}: un Transformer decoder-only in cui tutte le matrici principali sono proiezioni STERA. Il nome indica la classe dimensionale dei \num{30346182} parametri allenabili effettivamente memorizzati, non il numero di elementi delle matrici espanse né una nuova famiglia di architetture. Descriviamo nell'ordine l'architettura, le matrici del modello, il percorso di un token dall'ingresso alla distribuzione sul token successivo, l'addestramento e l'esecuzione.
+Il capitolo precedente ha definito la parametrizzazione STERA e ha mostrato come una singola proiezione esegue il forward e la backpropagation. Questo capitolo descrive la struttura del modello addestrato e valutato nella tesi, \textbf{STERA 30M}: un Transformer decoder-only in cui tutte le matrici principali sono proiezioni STERA. Il nome indica la classe dimensionale dei \num{30346182} parametri allenabili effettivamente memorizzati, non il numero di elementi delle matrici espanse né una nuova famiglia di architetture. Descriviamo nell'ordine l'architettura, le matrici del modello, il percorso di un token dall'ingresso alla distribuzione sul token successivo, l'addestramento e l'esecuzione.
 
 \section{Architettura}
 \label{sec:architettura-stera30m}
@@ -11,7 +11,7 @@ STERA 30M mantiene la struttura di un Transformer decoder-only e cambia solo la 
 \item un vocabolario di \num{50257} token, una tabella di \num{2048} posizioni assolute allenabili e finestre di addestramento fino a 512 token.
 \end{itemize}
 
-Ogni strato segue lo schema con normalizzazione in ingresso: il vettore passa per una normalizzazione, per l'attenzione e viene sommato al collegamento residuo; poi passa per una seconda normalizzazione, per il feed-forward e viene di nuovo sommato al residuo. Dopo il sesto strato una normalizzazione finale produce la rappresentazione da cui si calcolano i punteggi del vocabolario. La \autoref{fig:stera30m-flusso}, subito sotto, mostra il percorso completo; in azzurro sono indicate le proiezioni STERA.
+Ogni strato segue lo schema con normalizzazione in ingresso: il vettore passa per una normalizzazione, per l'attenzione e viene sommato al collegamento residuo; poi passa per una seconda normalizzazione, per il feed-forward e viene di nuovo sommato al residuo. Dopo il sesto strato una normalizzazione finale produce la rappresentazione da cui si calcolano i logit del vocabolario. La \autoref{fig:stera30m-flusso}, subito sotto, mostra il percorso completo; in azzurro sono indicate le proiezioni STERA.
 
 \begin{figure}[H]
 \centering
@@ -62,25 +62,25 @@ Alle coordinate si aggiungono le altre componenti delle 37 proiezioni, una scala
 \section{Dal token alla distribuzione sul token successivo}
 \label{sec:percorso-token}
 
-Il passo in avanti del modello applica le proiezioni STERA nell'ordine dell'architettura. Per una posizione $t$ con token $u_t$:
+Il forward del modello applica le proiezioni STERA nell'ordine dell'architettura. Per una posizione $t$ con token $u_t$:
 \begin{enumerate}
 \item \textbf{Ingresso.} Si prende la riga $E_{u_t,:}$ della matrice condivisa e le si somma il vettore di posizione $P_{t,:}$, ottenendo un vettore di 768 componenti.
-\item \textbf{Strati.} Il vettore attraversa i sei strati. In ciascuno, le proiezioni $W_Q$, $W_K$, $W_V$ producono query, chiavi e valori, $W_O$ riporta il risultato dell'attenzione nello spazio del modello, $W_1$ e $W_2$ formano il feed-forward. Ogni proiezione è applicata con i quattro passi della \autoref{sec:forward-stera}.
-\item \textbf{Uscita.} Dopo la normalizzazione finale, la rappresentazione $h_t$ è confrontata con tutte le righe valide di $E$: il punteggio del token $v$ è $z_{t,v}=E_{v,:}\,h_t$, e la softmax sui \num{50257} punteggi dà la probabilità del token successivo,
+\item \textbf{Strati.} Il vettore attraversa i sei strati. In ciascuno, le proiezioni $W_Q$, $W_K$, $W_V$ producono query, key e value, $W_O$ riporta il risultato dell'attenzione nello spazio del modello, $W_1$ e $W_2$ formano il feed-forward. Ogni proiezione è applicata con i quattro passi della \autoref{sec:forward-stera}.
+\item \textbf{Uscita.} Dopo la normalizzazione finale, la rappresentazione $h_t$ è confrontata con tutte le righe valide di $E$: il logit del token $v$ è $z_{t,v}=E_{v,:}\,h_t$, e la softmax sui \num{50257} logit dà la probabilità del token successivo,
 \[
 p_{t,v}=\frac{\exp(z_{t,v})}{\sum_{j=0}^{50256}\exp(z_{t,j})}.
 \]
 \end{enumerate}
-La stessa matrice $E$ fornisce quindi sia il vettore d'ingresso di un token sia il suo punteggio in uscita: è memorizzata una sola volta, ma è usata in due punti del modello.
+La stessa matrice $E$ fornisce quindi sia il vettore d'ingresso di un token sia il suo logit in uscita: è memorizzata una sola volta, ma è usata in due punti del modello.
 
 \section{Addestramento}
 \label{sec:addestramento-stera30m}
 
-\paragraph{Perdita.} In ogni posizione con token bersaglio $y_t$ la perdita è $\mathcal L_t=-\log p_{t,y_t}$, mediata sui token bersaglio del lotto ed escluso il riempimento.
+\paragraph{Perdita.} In ogni posizione con token target $y_t$ la perdita è $\mathcal L_t=-\log p_{t,y_t}$, mediata sui token target del batch ed escluso il padding.
 
-\paragraph{Retropropagazione nel modello.} Il gradiente parte dai punteggi: rispetto al punteggio del token $v$ vale $\partial\mathcal L_t/\partial z_{t,v}=p_{t,v}-\mathbf 1\{v=y_t\}$, cioè la probabilità assegnata meno uno per il token corretto. Da qui risale nell'ordine inverso del passo in avanti: attraversa la testa di uscita, la normalizzazione finale e i sei strati, dall'ultimo al primo. Ogni proiezione STERA che incontra riceve il gradiente della propria uscita, $\delta=\partial\mathcal L/\partial y$, e con i passi B1--B4 della \autoref{sec:backward-passi} produce i gradienti delle proprie coordinate, scale, guadagni e fattori $U$ e $V$, e il gradiente del proprio ingresso, che prosegue verso lo strato precedente. La matrice condivisa $E$ riceve due contributi, che si sommano: quello della testa di uscita, $\sum_t(p_t-\mathbf 1_{y_t})\,h_t^\top$ sulle righe valide, e quello delle righe usate come ingresso, che arriva in fondo al percorso.
+\paragraph{Backpropagation nel modello.} Il gradiente parte dai logit: rispetto al logit del token $v$ vale $\partial\mathcal L_t/\partial z_{t,v}=p_{t,v}-\mathbf 1\{v=y_t\}$, cioè la probabilità assegnata meno uno per il token corretto. Da qui risale nell'ordine inverso del forward: attraversa la testa di uscita, la normalizzazione finale e i sei strati, dall'ultimo al primo. Ogni proiezione STERA che incontra riceve il gradiente della propria uscita, $\delta=\partial\mathcal L/\partial y$, e con i passi B1--B4 della \autoref{sec:backward-passi} produce i gradienti delle proprie coordinate, scale, guadagni e fattori $U$ e $V$, e il gradiente del proprio ingresso, che prosegue verso lo strato precedente. La matrice condivisa $E$ riceve due contributi, che si sommano: quello della testa di uscita, $\sum_t(p_t-\mathbf 1_{y_t})\,h_t^\top$ sulle righe valide, e quello delle righe usate come ingresso, che arriva in fondo al percorso.
 
-\paragraph{Implementazione e ottimizzatore.} L'addestramento usa PyTorch su due GPU NVIDIA P100. A ogni passo il programma ricostruisce le matrici a partire dalle loro componenti e lascia all'autodifferenziazione il calcolo dei gradienti, che coincidono con quelli della \autoref{sec:backward-stera} (\autoref{prop:backward-esatto}). AdamW aggiorna tutti i parametri allenabili; il decadimento dei pesi si applica a coordinate, fattori $U$ e $V$ e posizioni, non a scale, guadagni, normalizzazioni e bias. Dati, iperparametri e andamento dell'addestramento sono descritti nel \autoref{cap:capitoli/05-metodologia}.
+\paragraph{Implementazione e ottimizzatore.} L'addestramento usa PyTorch su due GPU NVIDIA P100. A ogni passo il programma ricostruisce le matrici a partire dalle loro componenti e lascia all'autograd il calcolo dei gradienti, che coincidono con quelli della \autoref{sec:backward-stera} (\autoref{prop:backward-esatto}). AdamW aggiorna tutti i parametri allenabili; il weight decay si applica a coordinate, fattori $U$ e $V$ e posizioni, non a scale, guadagni, normalizzazioni e bias. Dati, iperparametri e andamento dell'addestramento sono descritti nel \autoref{cap:capitoli/05-metodologia}.
 
 \section{Dall'addestramento alla generazione}
 \label{sec:guida-inferenza-stera}
@@ -99,8 +99,8 @@ Al termine dell'addestramento i parametri sono fissati, e le stesse proiezioni s
 \label{fig:percorso-inferenza-stera}
 \end{figure}
 
-La scelta dipende dalla fase della generazione. Nel \emph{prefill} il modello elabora tutti i token del prompt insieme e costruisce la cache di chiavi e valori: molti token usano gli stessi pesi, il costo è dominato dal calcolo e conviene l'espansione al bisogno, che permette prodotti densi fra matrici. Nel \emph{decode} il modello genera un token alla volta: ogni token rilegge tutti i pesi, il costo è dominato dai byte letti e conviene il prodotto diretto sulle coordinate. Le strategie si possono quindi combinare. In tutti i casi si esegue la stessa funzione con gli stessi parametri appresi: il confronto fra il motore compatto e quello denso del \autoref{cap:capitoli/07-sistemi} non confronta due modelli, ma due modi di eseguire lo stesso modello.
+La scelta dipende dalla fase della generazione. Nel \emph{prefill} il modello elabora tutti i token del prompt insieme e costruisce la KV cache: molti token usano gli stessi pesi, il costo è dominato dal calcolo e conviene l'espansione al bisogno, che permette prodotti densi fra matrici. Nel \emph{decode} il modello genera un token alla volta: ogni token rilegge tutti i pesi, il costo è dominato dai byte letti e conviene il prodotto diretto sulle coordinate. Le strategie si possono quindi combinare. In tutti i casi si esegue la stessa funzione con gli stessi parametri appresi: il confronto fra il motore compatto e quello denso del \autoref{cap:capitoli/07-sistemi} non confronta due modelli, ma due modi di eseguire lo stesso modello.
 
 \section{Sintesi}
 
-STERA 30M è un Transformer decoder-only a sei strati con 37 matrici principali, tutte proiezioni STERA, per \num{4950} blocchi RowMask23 e \num{30346182} parametri allenabili. Il passo in avanti e la retropropagazione del modello attraversano ogni proiezione con i passi della \autoref{sec:backward-stera}; in addestramento le matrici sono ricostruite e i gradienti calcolati per autodifferenziazione, in inferenza le stesse proiezioni si eseguono sulle matrici espanse o direttamente sulle coordinate. Il capitolo successivo descrive i dati, l'addestramento e il protocollo con cui il modello è valutato.
+STERA 30M è un Transformer decoder-only a sei strati con 37 matrici principali, tutte proiezioni STERA, per \num{4950} blocchi RowMask23 e \num{30346182} parametri allenabili. Il forward e la backpropagation del modello attraversano ogni proiezione con i passi della \autoref{sec:backward-stera}; in addestramento le matrici sono ricostruite e i gradienti calcolati con l'autograd, in inferenza le stesse proiezioni si eseguono sulle matrici espanse o direttamente sulle coordinate. Il capitolo successivo descrive i dati, l'addestramento e il protocollo con cui il modello è valutato.

@@ -65,7 +65,7 @@ Dalla partizione TEST sono estratti, con un seme fissato, 300 racconti. Di ciasc
 
 \subsection{Verosimiglianza dei racconti di riferimento}
 
-Per ogni modello si calcola la NLL dei 300 racconti TEST completi in \emph{teacher forcing}: a ogni posizione il modello riceve il prefisso reale e si misura la probabilità assegnata al token successivo corretto. I racconti contano complessivamente \num{57841} token bersaglio, con un massimo di 512 per racconto. La NLL è la media ponderata per token e la perplessità il suo esponenziale. I tre modelli condividono lo stesso tokenizzatore, quindi le NLL sono direttamente confrontabili.
+Per ogni modello si calcola la NLL dei 300 racconti TEST completi in \emph{teacher forcing}: a ogni posizione il modello riceve il prefisso reale e si misura la probabilità assegnata al token successivo corretto. I racconti contano complessivamente \num{57841} token target, con un massimo di 512 per racconto. La NLL è la media ponderata per token e la perplessità il suo esponenziale. I tre modelli condividono lo stesso tokenizzatore, quindi le NLL sono direttamente confrontabili.
 
 \subsection{Generazione delle continuazioni}
 
