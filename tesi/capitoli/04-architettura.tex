@@ -1,4 +1,4 @@
-Il capitolo precedente ha definito la struttura matematica dei blocchi RowMask23. Qui descriviamo come questa \emph{parametrizzazione dei pesi} viene applicata alle proiezioni di un Transformer decoder-only. Il solo modello linguistico addestrato e valutato nella tesi è \textbf{STERA 30M}, dove 30M indica la classe dimensionale dei \num{30346182} parametri allenabili effettivamente memorizzati nella rappresentazione compatta. Non è il numero di elementi dopo l'espansione densa, né il nome di una nuova famiglia di architetture Transformer.
+Il capitolo precedente ha definito la parametrizzazione STERA: la proiezione costruita con i blocchi RowMask23, le scale, i guadagni e il termine a basso rango, e il suo bilancio dei parametri. Qui descriviamo come questa \emph{parametrizzazione dei pesi} viene applicata alle proiezioni di un Transformer decoder-only. Il solo modello linguistico addestrato e valutato nella tesi è \textbf{STERA 30M}, dove 30M indica la classe dimensionale dei \num{30346182} parametri allenabili effettivamente memorizzati nella rappresentazione compatta. Non è il numero di elementi dopo l'espansione densa, né il nome di una nuova famiglia di architetture Transformer.
 
 \input{capitoli/stera30m}
 
@@ -21,4 +21,4 @@ Le strategie si possono combinare: il prefill, che elabora molti token insieme, 
 
 \section{Sintesi}
 
-STERA 30M è l'unico modello STERA addestrato considerato negli esperimenti linguistici della tesi. Il capitolo successivo ne documenta corpus, token bersaglio, iperparametri, validazione e confronti con i due checkpoint pubblici TinyStories-8M e TinyStories-33M.
+STERA 30M è l'unico modello STERA addestrato considerato negli esperimenti linguistici della tesi. Il capitolo successivo ne documenta i dati e l'addestramento (corpus, token bersaglio, iperparametri) e il protocollo di validazione, con i confronti con i due checkpoint pubblici TinyStories-8M e TinyStories-33M.

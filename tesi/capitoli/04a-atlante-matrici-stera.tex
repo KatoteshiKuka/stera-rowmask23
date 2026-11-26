@@ -2,7 +2,7 @@
 \section{Atlante delle matrici del Transformer}
 \label{sec:atlante-matrici}
 
-Una difficoltà frequente nella lettura dei risultati consiste nel capire \emph{quali} matrici siano state effettivamente strutturate. RowMask23 non sostituisce un Transformer con un algoritmo diverso: cambia il modo in cui sono rappresentate le grandi proiezioni lineari, mentre l'attenzione causale, i collegamenti residui, le normalizzazioni e la perdita autoregressiva continuano a svolgere i rispettivi ruoli.
+Una difficoltà frequente nella lettura dei risultati consiste nel capire \emph{quali} matrici siano state effettivamente strutturate. STERA non sostituisce un Transformer con un algoritmo diverso: cambia il modo in cui sono rappresentate le grandi proiezioni lineari, mentre l'attenzione causale, i collegamenti residui, le normalizzazioni e la perdita autoregressiva continuano a svolgere i rispettivi ruoli.
 
 La \autoref{fig:atlante-matrici} riassume le dimensioni delle matrici usate dal solo modello addestrato STERA 30M. La matrice dei token è condivisa fra embedding iniziale e testa di uscita. Ogni strato contiene invece quattro proiezioni dell'attenzione e due proiezioni del feed-forward, tutte organizzate in blocchi da $128\times128$.
 
@@ -88,4 +88,4 @@ Questo è il numero di elementi delle 37 \emph{matrici principali}, non il numer
 
 Le coordinate RowMask23 sono i dati memorizzati; i valori densi sono i coefficienti matematici che la regola di ricostruzione può produrre. I due motori misurati nel capitolo sui tempi di esecuzione rappresentano quindi \emph{lo stesso} STERA 30M, ma organizzano diversamente gli accessi in memoria. Nel motore denso si costruiscono e si mantengono residenti le matrici ricostruite; nel percorso compatto si usano direttamente le coordinate, calcolando i contributi durante il prodotto matrice--vettore.
 
-Non si deve sommare la memoria della matrice densa a quella delle coordinate quando si confrontano i due formati come se fosse una sola rappresentazione obbligatoria. Nella pratica una singola implementazione può avere buffer temporanei e cache che aggiungono memoria al payload persistente: tali costi sono misurati e discussi separatamente. La riduzione teorica dei coefficienti di un singolo blocco non può inoltre essere trasferita indistintamente all'intero Transformer, perché i suoi parametri non sono tutti rappresentati con RowMask23.
+Non si deve sommare la memoria della matrice densa a quella delle coordinate quando si confrontano i due formati come se fosse una sola rappresentazione obbligatoria. Nella pratica una singola implementazione può avere buffer temporanei e cache che aggiungono memoria al payload persistente: tali costi sono misurati e discussi separatamente. La riduzione teorica dei coefficienti di un singolo blocco non può inoltre essere trasferita indistintamente all'intero Transformer, perché i suoi parametri non sono tutti rappresentati con blocchi RowMask23.

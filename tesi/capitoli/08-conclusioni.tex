@@ -21,7 +21,7 @@ H4 & 44,0\% di racconti corretti contro 21,7\% e 48,3\% & Confermata rispetto a 
 
 \paragraph{Una famiglia di matrici con buone proprietà.} Un blocco RowMask23 da $128\times128$ usa \num{3176} coordinate anziché \num{16384} coefficienti indipendenti. La mappa dalle coordinate alla matrice è lineare e iniettiva, il gradiente rispetto alle coordinate ha una forma chiusa e il prodotto matrice--vettore si calcola con la trasformata di Walsh--Hadamard senza materializzare la matrice.
 
-\paragraph{Un modello che apprende.} STERA 30M, addestrato da zero con tutte le proiezioni vincolate a RowMask23, raggiunge una NLL di 1,152 sul campione DEV e di 1,174 sui racconti TEST. La curva di addestramento non mostra segni di sovradattamento.
+\paragraph{Un modello che apprende.} STERA 30M, addestrato da zero con tutte le proiezioni parametrizzate con STERA, raggiunge una NLL di 1,152 sul campione DEV e di 1,174 sui racconti TEST. La curva di addestramento non mostra segni di sovradattamento.
 
 \paragraph{Racconti fra i due riferimenti.} Nel giudizio cieco, STERA 30M scrive racconti corretti nel 44\% dei casi: il doppio di TinyStories-8M, con cui condivide l'ordine di grandezza dei parametri memorizzati, e 4 punti in meno di TinyStories-33M, che ne ha più del doppio, con una differenza non significativa.
 
@@ -39,7 +39,7 @@ H4 & 44,0\% di racconti corretti contro 21,7\% e 48,3\% & Confermata rispetto a 
 
 \paragraph{Riferimenti non controllati.} I checkpoint TinyStories sono modelli pubblici con architettura, budget di addestramento e dati non identici a quelli di STERA 30M. Il confronto descrive le prestazioni dei modelli esistenti e non isola l'effetto della sola parametrizzazione; in particolare, il vantaggio di NLL può dipendere in parte dalla corrispondenza fra i dati di addestramento di STERA 30M e i racconti di prova.
 
-\paragraph{Calcolo e memoria.} Il vantaggio di RowMask23 riguarda i byte da memorizzare e trasferire, non il numero di operazioni: durante l'addestramento e nel motore denso, STERA 30M calcola come un modello con \num{82721280} valori.
+\paragraph{Calcolo e memoria.} Il vantaggio di STERA riguarda i byte da memorizzare e trasferire, non il numero di operazioni: durante l'addestramento e nel motore denso, STERA 30M calcola come un modello con \num{82721280} valori.
 
 \paragraph{Valutazione automatica.} La qualità dei racconti è stata giudicata da un singolo modello linguistico, in modo cieco e con una rubrica fissata in anticipo. Una validazione con lettori umani renderebbe la stima più robusta.
 
@@ -51,7 +51,7 @@ H4 & 44,0\% di racconti corretti contro 21,7\% e 48,3\% & Confermata rispetto a 
 
 \paragraph{Un confronto controllato.} Il passo più importante è addestrare, con gli stessi dati, lo stesso budget e più semi, STERA 30M e due modelli densi di riferimento: uno con lo stesso numero di parametri memorizzati e uno con la stessa forma. Questo confronto isolerebbe l'effetto della parametrizzazione.
 
-\paragraph{Esecuzione fuori memoria.} Una misura completa di generazione con lo stesso modello eseguito in forma compatta residente e in forma densa trasferita dal disco quantificherebbe direttamente il vantaggio di RowMask23 nello scenario che motiva questo lavoro.
+\paragraph{Esecuzione fuori memoria.} Una misura completa di generazione con lo stesso modello eseguito in forma compatta residente e in forma densa trasferita dal disco quantificherebbe direttamente il vantaggio di STERA nello scenario che motiva questo lavoro.
 
 \paragraph{Il rango come scelta di progetto.} La \autoref{prop:risparmio-modello} rende il rango la leva che fissa il risparmio. Addestrare modelli con valori diversi di $\kappa=r/d$, a parità di dati e di budget, misurerebbe il compromesso fra risparmio e qualità e direbbe quanto rango serve all'apprendimento.
 
@@ -63,4 +63,4 @@ H4 & 44,0\% di racconti corretti contro 21,7\% e 48,3\% & Confermata rispetto a 
 
 \section{Considerazioni finali}
 
-I modelli linguistici sono sempre più eseguiti su dispositivi personali, dove la memoria resta la risorsa più scarsa. Questa tesi mostra che si può affrontare il problema scegliendo la forma dei pesi prima dell'addestramento, invece di comprimerli dopo: un Transformer con proiezioni RowMask23 apprende, genera racconti la cui qualità si colloca fra quella di due modelli densi di riferimento, senza differenze significative rispetto al più grande, e occupa una frazione della sua memoria.
+I modelli linguistici sono sempre più eseguiti su dispositivi personali, dove la memoria resta la risorsa più scarsa. Questa tesi mostra che si può affrontare il problema scegliendo la forma dei pesi prima dell'addestramento, invece di comprimerli dopo: un Transformer con proiezioni STERA apprende, genera racconti la cui qualità si colloca fra quella di due modelli densi di riferimento, senza differenze significative rispetto al più grande, e occupa una frazione della sua memoria.
