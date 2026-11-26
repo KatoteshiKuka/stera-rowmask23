@@ -1,4 +1,6 @@
-In questo capitolo definiamo la parametrizzazione STERA delle proiezioni di un Transformer e ne ricaviamo le proprietà. Una proiezione STERA ha quattro componenti: le coordinate dei blocchi RowMask23, una scala per blocco, i guadagni per riga e per colonna e un termine a basso rango. Dopo una panoramica che le presenta insieme, dedichiamo una parte del capitolo a ciascuna. Le coordinate, che sono il contributo principale, occupano la parte più ampia: introduciamo lo XOR tra indici e le matrici che ne derivano, definiamo il blocco RowMask23, ne contiamo i gradi di libertà, mostriamo che la mappa dalle coordinate alla matrice è lineare e iniettiva, ricaviamo il gradiente e il prodotto veloce tramite trasformata di Walsh--Hadamard ed estendiamo la costruzione a matrici rettangolari. Seguono le scale, i guadagni e il termine a basso rango: per ciascuno diciamo che cosa rappresenta, a che cosa serve, come si addestra, quanto costa, quanto conta nel modello addestrato e se può essere quantizzato. Chiudiamo con il bilancio completo dei parametri, cioè con il risparmio di un modello STERA rispetto alla sua forma densa e con il suo andamento al crescere del modello.
+In questo capitolo definiamo la parametrizzazione STERA delle proiezioni di un Transformer e ne ricaviamo le proprietà. Una proiezione STERA ha quattro componenti: le coordinate dei blocchi RowMask23, una scala per blocco, i guadagni per riga e per colonna e un termine a basso rango. Il capitolo le presenta prima insieme (Sezione~\ref{sec:proiezione-stera}), poi una alla volta, e si chiude con il bilancio complessivo dei parametri.
+
+Le coordinate sono il contributo principale e occupano le Sezioni da~\ref{sec:notazione} a~\ref{sec:rettangolari}: lo XOR fra indici e le matrici che ne derivano, il blocco RowMask23, le sue proprietà, il gradiente, il prodotto veloce e il passaggio dal blocco alla proiezione. Le Sezioni~\ref{sec:scale}, \ref{sec:guadagni} e~\ref{sec:basso-rango} trattano le altre tre componenti con lo stesso schema: che cosa sono e a che cosa servono, gradiente, inizializzazione e costo, valori appresi in STERA 30M, quanto contano nel modello addestrato e se si possono quantizzare. La Sezione~\ref{sec:bilancio-parametri} conta tutti i valori memorizzati e ricava il risparmio di un modello STERA rispetto alla sua forma densa e il suo andamento al crescere del modello.
 
 \section{La proiezione STERA}
 \label{sec:proiezione-stera}
@@ -11,10 +13,10 @@ W \;=\; \operatorname{diag}(g_{\mathrm{out}})\;\widetilde W\;\operatorname{diag}
 \qquad
 \widetilde W \;=\; \Big[\,\alpha^{(p,q)}\,\Phi\big(c^{(p,q)}\big)\Big]_{p=1,\dots,P;\;q=1,\dots,Q},
 \]
-dove $\widetilde W$ è la matrice a mosaico di $P\times Q$ blocchi $128\times128$ e $\Phi:\mathbb{R}^{3176}\to\mathbb{R}^{128\times128}$ è la mappa che costruisce un blocco RowMask23 dalle sue coordinate (Sezioni da~\ref{sec:notazione} a~\ref{sec:linearita-iniettivita}).
+dove $\widetilde W$ è la matrice a mosaico di $P\times Q$ blocchi $128\times128$ e $\Phi:\mathbb{R}^{3176}\to\mathbb{R}^{128\times128}$ è la mappa che costruisce un blocco RowMask23 dalle sue coordinate (Sezione~\ref{sec:blocco-rowmask}).
 \end{definizione}
 
-La Tabella~\ref{tab:componenti-proiezione} elenca le quattro componenti della proiezione, il loro ruolo e il numero di valori che ciascuna memorizza.
+La Tabella~\ref{tab:componenti-proiezione} elenca le quattro componenti, il loro ruolo e il numero di valori che ciascuna memorizza.
 
 \begin{table}[htbp]
 \centering
@@ -33,37 +35,31 @@ Basso rango & $U\in\mathbb{R}^{m\times r}$, $V\in\mathbb{R}^{n\times r}$ & accop
 \label{tab:componenti-proiezione}
 \end{table}
 
-Le Sezioni da~\ref{sec:notazione} a~\ref{sec:rettangolari} sono dedicate alle coordinate, le Sezioni~\ref{sec:scale}, \ref{sec:guadagni} e~\ref{sec:basso-rango} alle altre tre componenti e la Sezione~\ref{sec:bilancio-parametri} al loro bilancio complessivo.
+% ---------------------------------------------------------------- COORDINATE
 
-\section{Notazione}
+\section{Lo XOR fra indici e le matrici XOR-circolanti}
 \label{sec:notazione}
 
-Fissiamo $N=2^n$ con $n=7$, cioè $N=128$. Gli indici di riga e di colonna vanno da $0$ a $N-1$ e li identifichiamo con la loro rappresentazione binaria a $n$ bit. Indichiamo con $\oplus$ lo XOR bit a bit:
+\paragraph{Notazione.} Fissiamo $N=2^n$ con $n=7$, cioè $N=128$. Gli indici di riga e di colonna vanno da $0$ a $N-1$ e li identifichiamo con la loro rappresentazione binaria a $n$ bit. Indichiamo con $\oplus$ lo XOR bit a bit:
 \[
 i\oplus j = \sum_{\ell=0}^{n-1} \big((i_\ell + j_\ell)\bmod 2\big)\,2^\ell,
 \]
-dove $i_\ell$ e $j_\ell$ sono i bit di posizione $\ell$. L'insieme $\{0,\dots,N-1\}$ con l'operazione $\oplus$ è un gruppo abeliano, isomorfo a $(\mathbb{Z}_2)^n$. Ogni elemento è l'inverso di sé stesso ($i\oplus i=0$) e l'elemento neutro è $0$. Due conseguenze ci serviranno spesso:
+dove $i_\ell$ e $j_\ell$ sono i bit di posizione $\ell$. L'insieme $\{0,\dots,N-1\}$ con l'operazione $\oplus$ è un gruppo abeliano, isomorfo a $(\mathbb{Z}_2)^n$, con elemento neutro $0$; ogni elemento è l'inverso di sé stesso ($i\oplus i=0$). Ne seguono due fatti che useremo spesso:
 \begin{itemize}
 \item per $i$ fissato, la funzione $j\mapsto i\oplus j$ è una biiezione di $\{0,\dots,N-1\}$ in sé;
 \item $i\oplus j = s$ se e solo se $j = i\oplus s$.
 \end{itemize}
 
-\section{Matrici XOR-circolanti}
-
-\begin{definizione}
-Dato un vettore $b\in\mathbb{R}^N$, la matrice XOR-circolante generata da $b$ è la matrice $B\in\mathbb{R}^{N\times N}$ con elementi
-\[
-B_{ij} = b_{i\oplus j}.
-\]
+\begin{definizione}[Matrice XOR-circolante]
+Dato un vettore $b\in\mathbb{R}^N$, la matrice XOR-circolante generata da $b$ è la matrice $B\in\mathbb{R}^{N\times N}$ con elementi $B_{ij} = b_{i\oplus j}$.
 \end{definizione}
 
-Il nome richiama le matrici circolanti, in cui l'elemento $(i,j)$ dipende da $(j-i)\bmod N$. Qui dipende invece da $i\oplus j$. Ogni riga di $B$ contiene tutti gli elementi di $b$, ciascuno una sola volta, in un ordine che cambia da riga a riga; lo stesso vale per le colonne. La matrice è simmetrica, perché $i\oplus j=j\oplus i$. L'elemento $b_0$ compare esattamente sulla diagonale principale.
+Il nome richiama le matrici circolanti, in cui l'elemento $(i,j)$ dipende da $(j-i)\bmod N$; qui dipende invece da $i\oplus j$. Ogni riga e ogni colonna di $B$ contiene tutti gli elementi di $b$, ciascuno una sola volta, in un ordine che cambia da riga a riga. La matrice è simmetrica, perché $i\oplus j=j\oplus i$, e $b_0$ compare esattamente sulla diagonale principale.
 
-Possiamo pensare a $B$ come all'insieme di $N$ ``diagonali generalizzate'': la diagonale di indice $s$ è l'insieme delle posizioni $\{(i,i\oplus s): i=0,\dots,N-1\}$, e su di essa la matrice è costante e vale $b_s$. Le $N$ diagonali generalizzate formano una partizione delle $N^2$ posizioni della matrice. Questa struttura è il fondamento di RowMask23.
+$B$ si può vedere come l'unione di $N$ \emph{diagonali generalizzate}: la diagonale di indice $s$ è l'insieme delle posizioni $\{(i,i\oplus s): i=0,\dots,N-1\}$, su cui la matrice è costante e vale $b_s$. Le $N$ diagonali generalizzate formano una partizione delle $N^2$ posizioni. Una matrice XOR-circolante ha però solo $N$ gradi di libertà su $N^2$ posizioni, troppo pochi per una rete che deve imparare trasformazioni generali: RowMask23 parte da questa base e le aggiunge una diagonale libera e un insieme fisso di correzioni per riga.
 
 \section{Il blocco RowMask23}
-
-Una matrice XOR-circolante ha solo $N$ gradi di libertà su $N^2$ posizioni: troppo pochi per una rete che deve imparare trasformazioni generali. RowMask23 parte da questa base e le aggiunge due componenti: una diagonale libera e un insieme fisso di correzioni per ogni riga.
+\label{sec:blocco-rowmask}
 
 \subsection{Supporto delle correzioni}
 
@@ -73,17 +69,17 @@ S_i = \big\{\,\sigma(i,k) : k=0,\dots,22\,\big\},\qquad
 \sigma(i,k) = 1 + \big((13k + 7i)\bmod 127\big).
 \label{eq:supporto}
 \end{equation}
-Ogni offset è un valore compreso tra $1$ e $127$, quindi diverso da zero. La riga $0$ non ha correzioni: $S_0=\emptyset$.
+Ogni offset è compreso tra $1$ e $127$, quindi diverso da zero. La riga $0$ non ha correzioni: $S_0=\emptyset$.
 
 \begin{proposizione}
 Per ogni riga $i\ge1$, i 23 offset $\sigma(i,0),\dots,\sigma(i,22)$ sono distinti.
 \end{proposizione}
 
 \begin{proof}
-Supponiamo $\sigma(i,k)=\sigma(i,k')$ con $0\le k,k'\le22$. Allora $13k+7i\equiv 13k'+7i \pmod{127}$, cioè $13(k-k')\equiv0\pmod{127}$. Poiché $127$ è primo e non divide $13$, deve dividere $k-k'$. Ma $|k-k'|\le22<127$, quindi $k=k'$.
+Se $\sigma(i,k)=\sigma(i,k')$ con $0\le k,k'\le22$, allora $13(k-k')\equiv0\pmod{127}$. Poiché $127$ è primo e non divide $13$, deve dividere $k-k'$; ma $|k-k'|\le22<127$, quindi $k=k'$.
 \end{proof}
 
-La scelta dei coefficienti $13$ e $7$ ha uno scopo pratico: distribuire le correzioni in modo che righe diverse usino offset diversi, evitando che alcune diagonali generalizzate ricevano molte correzioni e altre nessuna. Lo spostamento $7i$ fa ruotare l'insieme da una riga all'altra; il passo $13$ distanzia gli offset dentro la stessa riga.
+I coefficienti $13$ e $7$ distribuiscono le correzioni in modo che righe diverse usino offset diversi, evitando che alcune diagonali generalizzate ricevano molte correzioni e altre nessuna: lo spostamento $7i$ fa ruotare l'insieme da una riga all'altra, il passo $13$ distanzia gli offset dentro la stessa riga.
 
 \subsection{Definizione}
 
@@ -94,7 +90,7 @@ Il vettore di coordinate di un blocco è $c=(d,b,e)$ con
 \item $b\in\mathbb{R}^{127}$, la \emph{base XOR}, con componenti $b_s$, $s=1,\dots,127$;
 \item $e\in\mathbb{R}^{127\times23}$, le \emph{correzioni}, con componenti $e_{i,k}$, $i=1,\dots,127$, $k=0,\dots,22$.
 \end{itemize}
-La matrice $W=\Phi(c)\in\mathbb{R}^{128\times128}$ ha elementi
+Il blocco $W=\Phi(c)\in\mathbb{R}^{128\times128}$ ha elementi
 \begin{equation}
 W_{ij} =
 \begin{cases}
@@ -106,14 +102,12 @@ b_{i\oplus j} & \text{altrimenti.}
 \end{equation}
 \end{definizione}
 
-In parole: la diagonale è libera; fuori dalla diagonale ogni elemento eredita il valore della base XOR della sua diagonale generalizzata; in 23 posizioni per riga, scelte da \eqref{eq:supporto}, a questo valore si aggiunge una correzione propria. Il nome ``RowMask23'' indica proprio questa maschera di 23 posizioni per riga.
-
-Equivalentemente, si può scrivere
+In parole: la diagonale è libera; fuori dalla diagonale ogni elemento eredita il valore della base XOR della sua diagonale generalizzata; in 23 posizioni per riga, scelte da \eqref{eq:supporto}, a questo valore si aggiunge una correzione propria. Il nome ``RowMask23'' indica questa maschera di 23 posizioni per riga. Equivalentemente,
 \begin{equation}
 W = D + B + R,
 \label{eq:scomposizione}
 \end{equation}
-dove $D=\mathrm{diag}(d)$, $B$ è la matrice XOR-circolante generata dal vettore $(0,b_1,\dots,b_{127})$ e $R$ è una matrice sparsa con $2.921$ elementi non nulli, $R_{i,\,i\oplus\sigma(i,k)}=e_{i,k}$.
+dove $D=\mathrm{diag}(d)$, $B$ è la matrice XOR-circolante generata da $(0,b_1,\dots,b_{127})$ e $R$ è una matrice sparsa con \num{2921} elementi non nulli, $R_{i,\,i\oplus\sigma(i,k)}=e_{i,k}$.
 
 La Figura~\ref{fig:struttura} mostra la struttura di un blocco: a sinistra la posizione della diagonale, delle correzioni e degli elementi che dipendono solo dalla base; a destra l'indice $i\oplus j$ che decide quale coordinata della base si trova in ogni posizione.
 
@@ -124,71 +118,99 @@ La Figura~\ref{fig:struttura} mostra la struttura di un blocco: a sinistra la po
 \label{fig:struttura}
 \end{figure}
 
-\input{capitoli/03a-guida-visuale-rowmask}
+\subsection{Un esempio}
+\label{sec:guida-visiva-rowmask}
+\label{sec:esempio-numerico-rowmask}
 
-\subsection{Disposizione in memoria}
+La Figura~\ref{fig:tre-componenti-rowmask} mostra le tre componenti della scomposizione \eqref{eq:scomposizione} su un ritaglio con le righe e le colonne $0,1,8,9$ dello stesso blocco $128\times128$. Il ritaglio serve a vedere gli indici, non è un blocco autonomo.
 
-Nel motore le coordinate di un blocco sono memorizzate in un unico vettore di lunghezza $3.176$ secondo questo schema:
-\begin{itemize}
-\item posizioni $0,\dots,127$: diagonale, $d_i$ in posizione $i$;
-\item posizioni $128,\dots,254$: base, $b_s$ in posizione $127+s$;
-\item posizioni $255,\dots,3175$: correzioni, $e_{i,k}$ in posizione $255+23(i-1)+k$.
-\end{itemize}
-Questa disposizione rende semplice sia la ricostruzione della matrice sia l'accumulo del gradiente, perché ogni coordinata ha un indice calcolabile in tempo costante.
+\begin{figure}[htbp]
+\centering
+\input{figure/tikz/scomposizione}
+\caption{Le tre componenti della stessa matrice RowMask23: diagonale $D$, base XOR $B$ e correzioni sparse $R$. I quattro indici mostrati sono un sottoinsieme del blocco reale $128\times128$. La parte evidenziata nella matrice centrale riutilizza la stessa coordinata $b_8$.}
+\label{fig:tre-componenti-rowmask}
+\end{figure}
 
-\section{Conteggio dei gradi di libertà}
+Si osservi la coordinata $b_8$. Nella posizione $(0,8)$ vale $0\oplus8=8$, quindi l'elemento riceve $b_8$; anche nella posizione $(1,9)$ vale $1\oplus9=8$. La riga $1$, però, per $k=0$ ha offset $\sigma(1,0)=1+(7\bmod127)=8$, quindi $(1,9)$ è una posizione con correzione, mentre la riga $0$ non ne ha. Assegnando a scopo illustrativo i valori $d_1=0{,}60$, $b_8=0{,}25$ ed $e_{1,0}=-0{,}10$, che non sono pesi del modello addestrato, si ottiene la Tabella~\ref{fig:lettura-casella-rowmask}.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{cccl}
+\toprule
+Casella $(i,j)$ & $s=i\oplus j$ & Origine & Peso risultante \\
+\midrule
+$(1,1)$ & $0$ & diagonale & $d_1 = 0{,}60$ \\
+$(0,8)$ & $8$ & base, riga senza correzioni & $b_8 = 0{,}25$ \\
+$(1,9)$ & $8$ & base e correzione $k=0$ & $b_8 + e_{1,0} = 0{,}15$ \\
+\bottomrule
+\end{tabular}
+\caption{Lettura di tre caselle di un blocco RowMask23, con valori dimostrativi. Le caselle $(0,8)$ e $(1,9)$ condividono la coordinata di base $b_8$; solo la seconda riceve anche una correzione.}
+\label{fig:lettura-casella-rowmask}
+\end{table}
+
+L'esempio mostra l'idea del blocco: la coordinata $b_8$ è \emph{condivisa} da tutta la sua diagonale generalizzata, e la correzione $e_{1,0}$ permette di \emph{adattare localmente} una sola casella senza toccare le altre. Il modello non memorizza i tre elementi come pesi indipendenti, ma le coordinate $d_1$, $b_8$ ed $e_{1,0}$.
+
+\label{sec:non-potatura-rowmask}
+La parola \emph{maschera} non indica una matrice quasi tutta nulla. Quasi tutti gli elementi fuori diagonale dipendono da una coordinata della base e sono in generale diversi da zero; la parte sparsa riguarda solo le correzioni. RowMask23 non è quindi una potatura della matrice: è una matrice piena con pochi gradi di libertà.
+
+\section{Proprietà del blocco}
+\label{sec:linearita-iniettivita}
+
+\subsection{Gradi di libertà}
 
 \begin{proposizione}
 Un blocco RowMask23 ha
 \[
-C = 128 + 127 + 127\cdot23 = 3.176
+C = 128 + 127 + 127\cdot23 = \num{3176}
 \]
-coordinate, contro $D=128^2=16.384$ elementi di una matrice densa. Il rapporto è
-\[
-\frac{C}{D} = \frac{3.176}{16.384} \approx 0{,}1938,
-\]
-cioè una riduzione dell'$80{,}6\%$ dei gradi di libertà, equivalente a un fattore $5{,}16$.
+coordinate, contro i \num{16384} elementi di una matrice densa $128\times128$. Il rapporto è $\num{3176}/\num{16384}\approx 0{,}1938$, cioè l'$80{,}6\%$ di gradi di libertà in meno, un fattore $5{,}16$.
 \end{proposizione}
 
-Il rapporto vale per qualunque precisione numerica, purché coordinate e matrice densa usino la stessa. In FP16 un blocco denso occupa $32.768$ byte e un blocco RowMask23 $6.352$ byte; in FP32 i valori raddoppiano. Si noti che le correzioni sono la parte di gran lunga più numerosa: il $92\%$ delle coordinate. La base XOR, da sola, occupa meno del $4\%$ del blocco ma tocca tutti i $16.256$ elementi fuori diagonale.
+Il rapporto non dipende dalla precisione numerica, purché coordinate e matrice densa usino la stessa. Le correzioni sono la parte più numerosa, il $92\%$ delle coordinate; la base XOR occupa meno del $4\%$ del blocco ma tocca tutti i \num{16256} elementi fuori diagonale.
 
-\section{Linearità e iniettività}
-\label{sec:linearita-iniettivita}
+\subsection{Linearità e iniettività}
 
 \begin{proposizione}
-La mappa $\Phi:\mathbb{R}^{3176}\to\mathbb{R}^{128\times128}$ è lineare e iniettiva. Di conseguenza la sua immagine, che chiamiamo \emph{famiglia RowMask23}, è un sottospazio lineare di dimensione $3.176$ dello spazio delle matrici $128\times128$.
+La mappa $\Phi:\mathbb{R}^{3176}\to\mathbb{R}^{128\times128}$ è lineare e iniettiva. La sua immagine, la \emph{famiglia RowMask23}, è quindi un sottospazio lineare di dimensione \num{3176} dello spazio delle matrici $128\times128$.
 \end{proposizione}
 
 \begin{proof}
-La linearità è evidente da \eqref{eq:rowmask23}: ogni elemento di $W$ è una somma di al più due coordinate con coefficiente uno.
-
-Per l'iniettività basta mostrare che dalle entrate di $W$ si possono leggere tutte le coordinate. La diagonale dà direttamente $d_i=W_{ii}$. La riga $0$ non ha correzioni, quindi per $s\ge1$ vale $W_{0,s}=b_{0\oplus s}=b_s$: la prima riga fornisce l'intera base. Infine, per $i\ge1$ e per ogni $k$, la posizione $j=i\oplus\sigma(i,k)$ dà $e_{i,k}=W_{ij}-b_{\sigma(i,k)}$. Poiché tutte le coordinate si ricavano da $W$, due vettori diversi producono matrici diverse.
+La linearità segue da \eqref{eq:rowmask23}: ogni elemento di $W$ è la somma di al più due coordinate con coefficiente uno. Per l'iniettività basta leggere tutte le coordinate dagli elementi di $W$. La diagonale dà $d_i=W_{ii}$. La riga $0$ non ha correzioni, quindi $W_{0,s}=b_s$ per $s\ge1$ e la prima riga fornisce l'intera base. Infine, per $i\ge1$, la posizione $j=i\oplus\sigma(i,k)$ dà $e_{i,k}=W_{ij}-b_{\sigma(i,k)}$. Due vettori di coordinate diversi producono quindi matrici diverse.
 \end{proof}
 
-Questa proprietà ha una conseguenza pratica: le coordinate sono una rappresentazione \emph{esatta} della matrice, senza perdita. Se si salvano le coordinate si può ricostruire la matrice bit per bit, e viceversa. La compressione non è un'approssimazione di una matrice densa: è la scelta di lavorare dentro un sottospazio.
+\subsection{Ricostruzione esatta}
+\label{sec:esattezza-ricostruzione}
 
-\section{Rango}
+La proposizione precedente dà un significato preciso alla parola \emph{Reconstruction} nel nome STERA. Una matrice $128\times128$ con la struttura RowMask23, cioè che appartiene all'immagine di $\Phi$, si codifica con le sue \num{3176} coordinate e si ricostruisce da esse in modo esatto: la corrispondenza fra le coordinate e le matrici della famiglia è biunivoca e la ricostruzione non richiede di stimare coefficienti mancanti. La proprietà riguarda le matrici della famiglia: una matrice densa qualunque non ammette in generale una rappresentazione RowMask23, perché la famiglia ha dimensione \num{3176}, inferiore a \num{16384}. La compressione non è quindi l'approssimazione di una matrice densa, ma la scelta di lavorare dentro un sottospazio.
 
-Un timore naturale è che una matrice con pochi gradi di libertà sia degenere, cioè abbia rango basso come una fattorizzazione $UV^\top$. Non è così.
+Questa corrispondenza è ciò che serve all'addestramento. L'ottimizzatore non modifica una matrice densa da proiettare poi sulla famiglia: modifica le coordinate, e a ogni vettore di coordinate corrisponde una e una sola matrice. Ne seguono tre conseguenze:
+\begin{itemize}
+\item l'addestramento può raggiungere ogni matrice della famiglia, quindi conserva per intero l'espressività che la struttura RowMask23 mette a disposizione;
+\item non esistono coordinate ridondanti, cioè direzioni di aggiornamento che lascino invariata la matrice: ogni coordinata contribuisce al modello;
+\item il gradiente rispetto alle coordinate (Sezione~\ref{sec:gradiente-coordinate}) passa per la stessa $\Phi$ usata nel passo in avanti, quindi l'ottimizzazione migliora esattamente la matrice $\Phi(c)$ che il modello usa.
+\end{itemize}
+La stessa esattezza vale fra addestramento e inferenza: la ricostruzione eseguita dai kernel di inferenza coincide bit per bit con quella dell'addestramento (Sezione~\ref{sec:kernel-rowmask}), e il modello che si esegue è lo stesso che si è addestrato.
+
+\subsection{Rango}
+
+Una matrice con pochi gradi di libertà potrebbe sembrare degenere, come una fattorizzazione $UV^\top$ di rango basso. Non è così.
 
 \begin{proposizione}
 L'insieme dei vettori di coordinate $c$ per cui $\Phi(c)$ è singolare ha misura di Lebesgue nulla in $\mathbb{R}^{3176}$. In particolare, quasi ogni matrice RowMask23 ha rango pieno $128$.
 \end{proposizione}
 
 \begin{proof}
-La funzione $p(c)=\det\Phi(c)$ è un polinomio nelle coordinate, perché il determinante è un polinomio negli elementi e questi sono lineari in $c$. Il polinomio non è identicamente nullo: scegliendo $d_i=1$ per ogni $i$ e tutte le altre coordinate nulle si ottiene l'identità, con determinante $1$. L'insieme degli zeri di un polinomio non nullo ha misura nulla.
+La funzione $p(c)=\det\Phi(c)$ è un polinomio nelle coordinate, perché il determinante è un polinomio negli elementi e questi sono lineari in $c$. Il polinomio non è identicamente nullo: con $d_i=1$ per ogni $i$ e tutte le altre coordinate nulle si ottiene l'identità. L'insieme degli zeri di un polinomio non nullo ha misura nulla.
 \end{proof}
 
-La distinzione tra numero di parametri e rango è importante. Una fattorizzazione di rango 16 in dimensione 128 ha $2\cdot128\cdot16=4.096$ parametri, più di RowMask23, ma ignora $112$ direzioni dell'ingresso. Un blocco RowMask23 ne usa $3.176$ e, in generale, agisce su tutte le direzioni. Le due famiglie sono sottospazi diversi dello spazio delle matrici, con geometrie diverse.
+Numero di parametri e rango sono quindi cose distinte. Una fattorizzazione di rango 16 in dimensione 128 ha $2\cdot128\cdot16=\num{4096}$ parametri, più di RowMask23, ma ignora $112$ direzioni dell'ingresso; un blocco RowMask23 ne usa \num{3176} e in generale agisce su tutte le direzioni. Le due famiglie sono sottospazi diversi, con geometrie diverse: per questo nella proiezione STERA si possono combinare (Sezione~\ref{sec:basso-rango}). Allo stesso modo, rango pieno non significa coefficienti arbitrari: la famiglia RowMask23 può avere rango pieno e restare un sottoinsieme proprio delle matrici dense.
 
 \section{Gradiente rispetto alle coordinate}
 \label{sec:gradiente-coordinate}
+\label{sec:esempio-gradiente-rowmask}
 
-Per addestrare una rete costruita con blocchi RowMask23 serve il gradiente della perdita rispetto alle coordinate. Supponiamo di conoscere $G=\partial\mathcal{L}/\partial W$, il gradiente rispetto alla matrice ricostruita, calcolato con la retropropagazione ordinaria \eqref{eq:linear-grad}. Poiché $W=\Phi(c)$ è lineare, la regola della catena dà
-\begin{equation}
-\nabla_c\mathcal{L} = J_\Phi^\top\,\mathrm{vec}(G),
-\end{equation}
-dove $J_\Phi$ è la matrice jacobiana di $\Phi$, costante. Non serve costruirla: dalla definizione \eqref{eq:rowmask23} si leggono direttamente le derivate parziali.
+Sia $G=\partial\mathcal{L}/\partial W$ il gradiente della perdita rispetto al blocco ricostruito, calcolato con la retropropagazione ordinaria \eqref{eq:linear-grad}. Poiché $\Phi$ è lineare, $\nabla_c\mathcal{L} = J_\Phi^\top\,\mathrm{vec}(G)$, dove la jacobiana $J_\Phi$ è costante. Non serve costruirla: le derivate parziali si leggono direttamente da \eqref{eq:rowmask23}.
 
 \begin{proposizione}[Gradiente esatto]
 Per ogni blocco valgono
@@ -200,44 +222,35 @@ Per ogni blocco valgono
 \end{proposizione}
 
 \begin{proof}
-Ogni coordinata compare con coefficiente uno in un certo insieme di posizioni di $W$, e la sua derivata è la somma degli elementi di $G$ in quelle posizioni. La diagonale $d_i$ compare solo in $(i,i)$. Una correzione $e_{i,k}$ compare solo in $(i,i\oplus\sigma(i,k))$. La base $b_s$ compare in tutte le posizioni della diagonale generalizzata di indice $s$, cioè in $(i,i\oplus s)$ per ogni $i$.
+Ogni coordinata compare con coefficiente uno in un insieme di posizioni di $W$, e la sua derivata è la somma degli elementi di $G$ in quelle posizioni. La diagonale $d_i$ compare solo in $(i,i)$, la correzione $e_{i,k}$ solo in $(i,i\oplus\sigma(i,k))$, la base $b_s$ in tutte le posizioni $(i,i\oplus s)$ della sua diagonale generalizzata.
 \end{proof}
 
-Il gradiente della base è una somma lungo una diagonale generalizzata: raccoglie il segnale di tutte le $128$ righe. Le correzioni e la diagonale, invece, ricevono il segnale di una sola posizione ciascuna. Questa asimmetria ha un significato intuitivo. La base cattura la parte della trasformazione comune a tutte le righe e si stima con molti dati; le correzioni catturano le eccezioni locali.
+Nell'esempio della Sezione~\ref{sec:esempio-numerico-rowmask}, $\partial\mathcal{L}/\partial d_1=G_{1,1}$ e $\partial\mathcal{L}/\partial e_{1,0}=G_{1,9}$ provengono da una sola casella, mentre $\partial\mathcal{L}/\partial b_8=\sum_i G_{i,i\oplus8}$ raccoglie il segnale di tutte le 128 righe. L'asimmetria ha un significato intuitivo: la base cattura la parte della trasformazione comune a tutte le righe e si stima con molti dati, le correzioni e la diagonale catturano le eccezioni locali.
 
-\subsection{Il gradiente della base come correlazione XOR}
-
-Il gradiente \eqref{eq:grad-b} si può calcolare in modo efficiente senza formare $G$. In uno strato lineare $Y=XW^\top$ con ingressi $x^{(m)}$ e gradienti in uscita $g^{(m)}$, $m=1,\dots,M$, si ha $G=\sum_m g^{(m)}x^{(m)\top}$, e quindi
+\paragraph{Il gradiente della base come correlazione XOR.} Il gradiente \eqref{eq:grad-b} si può calcolare senza formare $G$. In uno strato lineare $Y=XW^\top$ con ingressi $x^{(m)}$ e gradienti in uscita $g^{(m)}$, $m=1,\dots,M$, si ha $G=\sum_m g^{(m)}x^{(m)\top}$ e quindi
 \[
-\frac{\partial\mathcal{L}}{\partial b_s} = \sum_m \sum_i g^{(m)}_i\, x^{(m)}_{i\oplus s}.
+\frac{\partial\mathcal{L}}{\partial b_s} = \sum_m \sum_i g^{(m)}_i\, x^{(m)}_{i\oplus s},
 \]
-È una correlazione XOR tra $g^{(m)}$ e $x^{(m)}$, che si calcola con la trasformata di Walsh--Hadamard come la convoluzione della sezione seguente. Nella pratica del nostro motore, durante l'addestramento, si preferisce comunque ricostruire $W$ e $G$ per sfruttare i prodotti densi ottimizzati della GPU, e poi applicare \eqref{eq:grad-d}--\eqref{eq:grad-e}; la scelta è discussa nel Capitolo~\ref{cap:capitoli/04-architettura}.
+una correlazione XOR fra $g^{(m)}$ e $x^{(m)}$ che si calcola con la trasformata di Walsh--Hadamard come il prodotto della Sezione~\ref{sec:wht}. In addestramento il nostro motore preferisce comunque ricostruire $W$ e $G$ per sfruttare i prodotti densi ottimizzati della GPU e applicare poi \eqref{eq:grad-d}--\eqref{eq:grad-e}; la scelta è discussa nel Capitolo~\ref{cap:capitoli/04-architettura}.
 
-\subsection{Una conseguenza per l'ottimizzazione}
-
-L'ottimizzatore riceve $\nabla_c\mathcal{L}$ e aggiorna direttamente $c$. Ne segue che ogni iterata resta nella famiglia RowMask23: non esiste, in nessun momento, una copia densa dei pesi che si allontana dal sottospazio e che va poi riproiettata. È una differenza sostanziale rispetto ai metodi che addestrano una rete densa e la comprimono alla fine, e rispetto a quelli che aggiornano i pesi densi e li proiettano a ogni passo. Nel nostro caso il problema di ottimizzazione è, fin dall'inizio, un problema su $\mathbb{R}^{3176}$ per blocco.
-
-Vale la pena guardare anche la geometria della mappa. Nella matrice $J_\Phi^\top J_\Phi$ gli elementi diagonali valgono $1$ per la diagonale e per le correzioni e $128$ per ciascuna coordinata della base, perché $b_s$ tocca $128$ posizioni. Fuori dalla diagonale l'unico accoppiamento è tra una correzione $e_{i,k}$ e la base $b_{\sigma(i,k)}$, che condividono una posizione. La base riceve quindi gradienti con norma tipicamente maggiore delle altre coordinate. Un ottimizzatore adattivo come Adam, che normalizza ogni coordinata con la propria varianza stimata, compensa naturalmente questa differenza di scala.
+\paragraph{Conseguenze per l'ottimizzazione.} L'ottimizzatore riceve $\nabla_c\mathcal{L}$ e aggiorna direttamente $c$, quindi ogni iterata resta nella famiglia RowMask23: non esiste, in nessun momento, una copia densa dei pesi che si allontana dal sottospazio e va riproiettata. È la differenza rispetto ai metodi che addestrano una rete densa e la comprimono alla fine, o che aggiornano i pesi densi e li proiettano a ogni passo. Quanto alla geometria della mappa, in $J_\Phi^\top J_\Phi$ gli elementi diagonali valgono $1$ per la diagonale e per le correzioni e $128$ per ogni coordinata della base, e l'unico accoppiamento fuori diagonale è fra una correzione $e_{i,k}$ e la base $b_{\sigma(i,k)}$, che condividono una posizione. La base riceve quindi gradienti di norma maggiore; un ottimizzatore adattivo come Adam, che normalizza ogni coordinata con la propria varianza stimata, compensa questa differenza di scala.
 
 \section{Prodotto veloce tramite trasformata di Walsh--Hadamard}
+\label{sec:wht}
 
-Veniamo ora all'esecuzione. Data la scomposizione \eqref{eq:scomposizione}, il prodotto $y=Wx$ si scrive
+Per la scomposizione \eqref{eq:scomposizione}, il prodotto $y=Wx$ si scrive
 \begin{equation}
 y_i = d_i x_i + \sum_{j} b_{i\oplus j}\,x_j + \sum_{k=0}^{22} e_{i,k}\,x_{i\oplus\sigma(i,k)},
 \label{eq:gemv}
 \end{equation}
-con la convenzione $b_0=0$. Il primo e il terzo termine costano rispettivamente $128$ e $2.921$ moltiplicazioni. Il secondo, calcolato direttamente, ne costerebbe $16.384$. Mostriamo che si può fare molto meglio.
+con la convenzione $b_0=0$. Il primo e il terzo termine costano $128$ e \num{2921} moltiplicazioni; il secondo, calcolato direttamente, ne costerebbe \num{16384}. La trasformata di Walsh--Hadamard lo riduce di molto.
 
-\subsection{La trasformata di Walsh--Hadamard}
-
-La matrice di Hadamard di ordine $N=2^n$ si definisce per ricorsione:
+\paragraph{La trasformata.} La matrice di Hadamard di ordine $N=2^n$ si definisce per ricorsione:
 \[
 H_1 = \begin{pmatrix}1\end{pmatrix},\qquad
 H_{2m} = \begin{pmatrix} H_m & H_m \\ H_m & -H_m \end{pmatrix}.
 \]
-In forma esplicita, $(H_N)_{uv} = (-1)^{\langle u,v\rangle}$, dove $\langle u,v\rangle=\sum_\ell u_\ell v_\ell$ è il prodotto scalare dei vettori di bit. La matrice è simmetrica e soddisfa $H_N^2 = N\,I$. La trasformata di Walsh--Hadamard di un vettore è il prodotto $Hx$; grazie alla struttura ricorsiva si calcola in $n$ stadi di somme e differenze a coppie, per un totale di $N\log_2 N$ operazioni e nessuna moltiplicazione \cite{fino1976unified,beauchamp1984applications}. Per $N=128$ sono $7$ stadi e $896$ addizioni.
-
-Lo schema di calcolo, detto \emph{a farfalla}, è illustrato nella Figura~\ref{fig:wht}.
+In forma esplicita $(H_N)_{uv} = (-1)^{\langle u,v\rangle}$, dove $\langle u,v\rangle=\sum_\ell u_\ell v_\ell$ è il prodotto scalare dei vettori di bit; la matrice è simmetrica e $H_N^2 = N\,I$. La trasformata di un vettore è il prodotto $Hx$ e, per la struttura ricorsiva, si calcola in $n$ stadi di somme e differenze a coppie, con $N\log_2 N$ operazioni e nessuna moltiplicazione \cite{fino1976unified,beauchamp1984applications}: per $N=128$ sono $7$ stadi e $896$ addizioni (Figura~\ref{fig:wht}).
 
 \begin{figure}[htbp]
 \centering
@@ -246,14 +259,8 @@ Lo schema di calcolo, detto \emph{a farfalla}, è illustrato nella Figura~\ref{f
 \label{fig:wht}
 \end{figure}
 
-\subsection{Diagonalizzazione delle matrici XOR-circolanti}
-
-\begin{proposizione}
-Sia $B$ la matrice XOR-circolante generata da $b$. Allora
-\[
-H B H = N\,\mathrm{diag}(Hb),
-\]
-e di conseguenza, per ogni vettore $x$,
+\begin{proposizione}[Diagonalizzazione delle matrici XOR-circolanti]
+Sia $B$ la matrice XOR-circolante generata da $b$. Allora $H B H = N\,\mathrm{diag}(Hb)$ e, per ogni vettore $x$,
 \begin{equation}
 Bx = \frac{1}{N}\,H\big((Hb)\odot(Hx)\big),
 \label{eq:wht-conv}
@@ -262,67 +269,58 @@ dove $\odot$ è il prodotto elemento per elemento.
 \end{proposizione}
 
 \begin{proof}
-Le righe di $H$ sono i caratteri del gruppo $(\mathbb{Z}_2)^n$: per ogni $u$ la funzione $\chi_u(i)=(-1)^{\langle u,i\rangle}$ soddisfa $\chi_u(i\oplus j)=\chi_u(i)\chi_u(j)$. Calcoliamo $B$ applicata a un carattere:
+Le righe di $H$ sono i caratteri del gruppo $(\mathbb{Z}_2)^n$: per ogni $u$ la funzione $\chi_u(i)=(-1)^{\langle u,i\rangle}$ soddisfa $\chi_u(i\oplus j)=\chi_u(i)\chi_u(j)$. Allora
 \[
 (B\chi_u)_i = \sum_j b_{i\oplus j}\chi_u(j) = \sum_s b_s\,\chi_u(i\oplus s) = \chi_u(i)\sum_s b_s\chi_u(s) = (Hb)_u\,\chi_u(i),
 \]
-dove abbiamo posto $s=i\oplus j$ e usato il fatto che $j\mapsto i\oplus j$ è una biiezione. Ogni carattere è quindi un autovettore di $B$ con autovalore $(Hb)_u$. Poiché i caratteri sono le colonne di $H$, si ha $BH = H\,\mathrm{diag}(Hb)$. Moltiplicando a sinistra per $H$ e usando $H^2=NI$ si ottiene la tesi.
+dove si è posto $s=i\oplus j$, usando che $j\mapsto i\oplus j$ è una biiezione. Ogni carattere è quindi un autovettore di $B$ con autovalore $(Hb)_u$; poiché i caratteri sono le colonne di $H$, $BH = H\,\mathrm{diag}(Hb)$, e moltiplicando a sinistra per $H$ con $H^2=NI$ si ottiene la tesi.
 \end{proof}
 
-La formula \eqref{eq:wht-conv} è l'analogo, per lo XOR, del teorema di convoluzione di Fourier. Il prodotto con la parte XOR della matrice si riduce a due trasformate e a $128$ moltiplicazioni. Il vettore $Hb$ dipende solo dai pesi e può essere calcolato una volta per tutte.
+La formula \eqref{eq:wht-conv} è l'analogo, per lo XOR, del teorema di convoluzione di Fourier: il prodotto con la parte XOR si riduce a due trasformate e a $128$ moltiplicazioni, e il vettore $Hb$ dipende solo dai pesi, quindi si calcola una volta per tutte.
 
-\subsection{Costo del prodotto completo}
+\paragraph{Costo del prodotto completo.} Il prodotto con un blocco richiede una trasformata di $x$ ($896$ addizioni), il prodotto con $Hb$ ($128$ moltiplicazioni), la trasformata inversa ($896$ addizioni; la divisione per $N$ si assorbe nei pesi), la diagonale ($128$ moltiplicazioni e addizioni) e le correzioni (\num{2921} moltiplicazioni e addizioni). In totale circa \num{3200} moltiplicazioni e \num{5000} addizioni, contro \num{16384} moltiplicazioni e altrettante addizioni del prodotto denso: le operazioni scendono di circa tre volte. I dati da leggere scendono invece di $5{,}16$ volte, \num{3176} coordinate invece di \num{16384} pesi, ed è questa la grandezza che conta nella generazione token per token (Sezione~\ref{sec:memory-bound}).
 
-Mettendo insieme i tre termini, il prodotto con un blocco RowMask23 richiede:
-\begin{itemize}
-\item una trasformata di $x$: $896$ addizioni;
-\item un prodotto elemento per elemento con $Hb$: $128$ moltiplicazioni;
-\item una trasformata inversa: $896$ addizioni e una divisione per $N$, che si può assorbire nei pesi;
-\item la diagonale: $128$ moltiplicazioni e addizioni;
-\item le correzioni: $2.921$ moltiplicazioni e addizioni.
-\end{itemize}
-In totale circa $3.200$ moltiplicazioni e $5.000$ addizioni, contro $16.384$ moltiplicazioni e altrettante addizioni del prodotto denso. Il numero di operazioni scende di circa tre volte. La quantità di dati da leggere scende invece di $5{,}16$ volte, perché si leggono $3.176$ coordinate invece di $16.384$ pesi; e, come abbiamo visto nella Sezione~\ref{sec:memory-bound}, è questa la grandezza che conta nella generazione token per token.
+Il conteggio delle operazioni non si traduce automaticamente in velocità. Il prodotto denso è l'operazione più ottimizzata di ogni libreria numerica, mentre le correzioni richiedono accessi indiretti all'ingresso, $x_{i\oplus\sigma(i,k)}$, meno regolari. Il Capitolo~\ref{cap:capitoli/07-sistemi} misura quanto di questo vantaggio si ritrova in pratica.
 
-È giusto sottolineare che il conteggio delle operazioni non si traduce automaticamente in velocità. Il prodotto denso è l'operazione più ottimizzata di ogni libreria numerica, mentre le correzioni richiedono accessi indiretti all'ingresso, $x_{i\oplus\sigma(i,k)}$, che sono meno regolari. Nel Capitolo~\ref{cap:capitoli/07-sistemi} misureremo quanto di questo vantaggio teorico si ritrova su una GPU reale.
-
-\section{Estensione a matrici rettangolari}
+\section{Dal blocco alla proiezione}
 \label{sec:rettangolari}
 
-Le matrici di un Transformer non sono tutte quadrate di ordine $128$: le proiezioni dell'attenzione sono $d\times d$, quelle del blocco feed-forward $f\times d$ e $d\times f$. Le gestiamo con una suddivisione in blocchi. Se $m$ e $n$ sono multipli di $128$, una matrice $W\in\mathbb{R}^{m\times n}$ si divide in $(m/128)\times(n/128)$ blocchi, e ciascun blocco $(p,q)$ è una matrice RowMask23 indipendente con coordinate proprie $c^{(p,q)}$, moltiplicata per un fattore di scala $\alpha^{(p,q)}$:
+\paragraph{Mosaico di blocchi.} Le matrici di un Transformer non sono quadrate di ordine $128$: le proiezioni dell'attenzione sono $d\times d$, quelle del feed-forward $f\times d$ e $d\times f$. Se $m$ e $n$ sono multipli di $128$, una matrice $m\times n$ si divide in $P\times Q$ blocchi e ogni blocco $(p,q)$ è un blocco RowMask23 indipendente, con coordinate proprie $c^{(p,q)}$ e una scala $\alpha^{(p,q)}$, come nella Definizione~\ref{def:proiezione-stera}. Il prodotto $y=\widetilde Wx$ si calcola blocco per blocco: l'ingresso si divide in segmenti di $128$ elementi, ogni blocco moltiplica il proprio segmento e le uscite dei blocchi sulla stessa riga si sommano. Il gradiente rispetto alle coordinate si ottiene applicando \eqref{eq:grad-d}--\eqref{eq:grad-e} a ogni blocco del gradiente rispetto a $\widetilde W$, che le Sezioni~\ref{sec:scale} e~\ref{sec:guadagni} ricavano da $G$ tenendo conto di scale e guadagni.
+
+In STERA 30M, con $d=768$ e $f=\num{3072}$, ogni proiezione dell'attenzione ha $36$ blocchi e ogni matrice del feed-forward $144$: uno strato contiene $4\cdot36+2\cdot144=432$ blocchi, cioè \num{1372032} coordinate invece di \num{7077888} pesi.
+
+\paragraph{Inizializzazione delle coordinate.} Per le matrici dense si estrae di solito ogni peso da una normale di media nulla e deviazione standard $\sigma_0$ piccola, per esempio $0{,}02$. In un blocco RowMask23 gli elementi fuori diagonale con una correzione sono la somma di \emph{due} coordinate indipendenti: se ogni coordinata ha deviazione standard $\sigma$, la varianza media di un elemento vale $\sigma^2\big(1 + \num{2921}/\num{16384}\big)$. Per avere la stessa varianza media di una matrice densa si sceglie quindi
 \begin{equation}
-W_{[p],[q]} = \alpha^{(p,q)}\,\Phi\big(c^{(p,q)}\big).
+\sigma = \frac{\sigma_0}{\sqrt{1+\num{2921}/\num{16384}}}.
 \end{equation}
-Il fattore di scala, discusso nella Sezione~\ref{sec:scale}, permette a blocchi diversi di avere ampiezze diverse senza che l'ottimizzatore debba spostare tutte le coordinate.
 
-Il prodotto $y=Wx$ si calcola blocco per blocco: l'ingresso viene diviso in segmenti di $128$ elementi, ogni blocco moltiplica il proprio segmento e le uscite dei blocchi sulla stessa riga si sommano. Il gradiente rispetto alle coordinate si calcola allo stesso modo, applicando \eqref{eq:grad-d}--\eqref{eq:grad-e} a ogni blocco del gradiente; nella proiezione completa il gradiente da usare è quello rispetto a $\widetilde W$, che le Sezioni seguenti ricavano da $G$ tenendo conto di scale e guadagni.
+\paragraph{Disposizione in memoria.} Le coordinate di un blocco sono memorizzate in un unico vettore di lunghezza \num{3176}: nelle posizioni $0,\dots,127$ la diagonale ($d_i$ in posizione $i$), nelle posizioni $128,\dots,254$ la base ($b_s$ in posizione $127+s$), nelle posizioni $255,\dots,3175$ le correzioni ($e_{i,k}$ in posizione $255+23(i-1)+k$). Ogni coordinata ha così un indice calcolabile in tempo costante, sia nella ricostruzione sia nell'accumulo del gradiente.
 
-Per esempio, in STERA 30M, con $d=768$ e $f=3.072$, ogni proiezione dell'attenzione si divide in $36$ blocchi, ogni matrice del feed-forward in $144$. Uno strato contiene quindi $4\cdot36+2\cdot144=432$ blocchi, cioè $1.372.032$ coordinate invece di $7.077.888$ pesi.
+% ---------------------------------------------------------------- ALTRE COMPONENTI
 
 \section{Le scale dei blocchi}
 \label{sec:scale}
 
-\paragraph{Che cosa sono.} Ogni blocco $(p,q)$ di una proiezione è moltiplicato per un numero $\alpha^{(p,q)}$, la sua scala. In una matrice $m\times n$ le scale sono $mn/16384$, una ogni $16.384$ valori della forma densa.
+\paragraph{Che cosa sono e a che cosa servono.} Ogni blocco $(p,q)$ è moltiplicato per un numero $\alpha^{(p,q)}$, la sua scala: una ogni \num{16384} valori della forma densa. Le coordinate fissano la forma del blocco, la scala ne fissa l'ampiezza. Separare le due cose permette a blocchi diversi della stessa proiezione di avere ampiezze molto diverse senza che l'ottimizzatore debba spostare in modo coordinato tutte le \num{3176} coordinate.
 
-\paragraph{A che cosa servono.} Le coordinate di un blocco fissano la forma della sua matrice, la scala ne fissa l'ampiezza. Separare le due cose permette a blocchi diversi della stessa proiezione di avere ampiezze molto diverse senza che l'ottimizzatore debba spostare in modo coordinato tutte le $3.176$ coordinate. Le scale non sono soggette al decadimento dei pesi: una penalità che le spingesse verso zero ridurrebbe proprio l'ampiezza che devono controllare.
-
-\paragraph{Gradiente.} Indicando con $\widetilde G = G\odot\big(g_{\mathrm{out}}\,g_{\mathrm{in}}^\top\big)$ il gradiente rispetto a $\widetilde W$, cioè il gradiente $G$ della proiezione moltiplicato elemento per elemento per i guadagni della riga e della colonna,
+\paragraph{Gradiente.} Sia $\widetilde G = G\odot\big(g_{\mathrm{out}}\,g_{\mathrm{in}}^\top\big)$ il gradiente rispetto a $\widetilde W$, cioè il gradiente $G$ della proiezione moltiplicato elemento per elemento per i guadagni della riga e della colonna. Allora
 \[
 \frac{\partial\mathcal{L}}{\partial\alpha^{(p,q)}} = \big\langle \widetilde G_{[p],[q]},\,\Phi(c^{(p,q)})\big\rangle_F,
 \]
-dove $\langle\cdot,\cdot\rangle_F$ è il prodotto scalare di Frobenius. Il gradiente rispetto alle coordinate del blocco si ottiene applicando \eqref{eq:grad-d}--\eqref{eq:grad-e} a $\alpha^{(p,q)}\widetilde G_{[p],[q]}$.
+dove $\langle\cdot,\cdot\rangle_F$ è il prodotto scalare di Frobenius, e il gradiente rispetto alle coordinate del blocco si ottiene applicando \eqref{eq:grad-d}--\eqref{eq:grad-e} a $\alpha^{(p,q)}\widetilde G_{[p],[q]}$.
 
-\paragraph{Inizializzazione e valori appresi.} Le scale partono da $1$. In STERA 30M, al termine dell'addestramento, le \num{4950} scale hanno media $1{,}16$ e deviazione standard $0{,}35$, con valori fra $0$ e $3{,}5$: l'addestramento le usa per dare ampiezze diverse ai blocchi.
+\paragraph{Inizializzazione e costo.} Le scale partono da $1$ e non sono soggette al decadimento dei pesi: una penalità che le spingesse verso zero ridurrebbe proprio l'ampiezza che devono controllare. Costano $mn/16384$ valori per proiezione e una moltiplicazione per blocco nel prodotto.
 
-\paragraph{Quanto contano.} Riportando tutte le scale del modello addestrato a $1$, la NLL sui racconti di prova passa da $1{,}174$ a $4{,}42$: il modello perde la capacità di generare testo. Un componente che vale lo $0{,}02\%$ dei parametri è quindi indispensabile al modello addestrato.
+\paragraph{Valori appresi.} In STERA 30M, al termine dell'addestramento, le \num{4950} scale hanno media $1{,}16$ e deviazione standard $0{,}35$, con valori fra $0$ e $3{,}5$: l'addestramento le usa per dare ampiezze diverse ai blocchi.
+
+\paragraph{Quanto contano.} Riportando tutte le scale del modello addestrato a $1$, la NLL sui racconti di prova passa da $1{,}174$ a $4{,}42$ e il modello perde la capacità di generare testo. Una componente che vale lo $0{,}02\%$ dei parametri è quindi indispensabile al modello addestrato.
 
 \paragraph{Quantizzazione.} Rappresentando le scale con 8 bit, con una scala di quantizzazione per matrice, la NLL varia del $+0{,}02\%$. Il guadagno in memoria è trascurabile, ma la prova mostra che anche questa componente ammette una rappresentazione a pochi bit.
 
 \section{I guadagni per riga e per colonna}
 \label{sec:guadagni}
 
-\paragraph{Che cosa sono.} I guadagni sono due vettori, $g_{\mathrm{out}}\in\mathbb{R}^m$ e $g_{\mathrm{in}}\in\mathbb{R}^n$, che moltiplicano ogni riga e ogni colonna dell'intera matrice: $(\operatorname{diag}(g_{\mathrm{out}})\,\widetilde W\,\operatorname{diag}(g_{\mathrm{in}}))_{ij} = g_{\mathrm{out},i}\,\widetilde W_{ij}\,g_{\mathrm{in},j}$.
-
-\paragraph{A che cosa servono.} Le scale agiscono su un blocco alla volta; i guadagni attraversano i confini dei blocchi. Danno a ogni neurone in uscita e a ogni componente in ingresso un'ampiezza propria, uguale in tutti i blocchi che li contengono. Nel prodotto con un vettore equivalgono a moltiplicare l'ingresso per $g_{\mathrm{in}}$ e l'uscita per $g_{\mathrm{out}}$, con un costo di $m+n$ moltiplicazioni. Come le scale, non sono soggetti al decadimento dei pesi.
+\paragraph{Che cosa sono e a che cosa servono.} I guadagni sono due vettori, $g_{\mathrm{out}}\in\mathbb{R}^m$ e $g_{\mathrm{in}}\in\mathbb{R}^n$, che moltiplicano ogni riga e ogni colonna dell'intera matrice: $\big(\operatorname{diag}(g_{\mathrm{out}})\,\widetilde W\,\operatorname{diag}(g_{\mathrm{in}})\big)_{ij} = g_{\mathrm{out},i}\,\widetilde W_{ij}\,g_{\mathrm{in},j}$. Le scale agiscono su un blocco alla volta, i guadagni attraversano i confini dei blocchi: danno a ogni componente in uscita e in ingresso un'ampiezza propria, uguale in tutti i blocchi che la contengono.
 
 \paragraph{Gradiente.}
 \[
@@ -331,7 +329,9 @@ dove $\langle\cdot,\cdot\rangle_F$ è il prodotto scalare di Frobenius. Il gradi
 \frac{\partial\mathcal{L}}{\partial g_{\mathrm{in},j}} = \sum_{i} G_{ij}\,g_{\mathrm{out},i}\,\widetilde W_{ij}.
 \]
 
-\paragraph{Inizializzazione e valori appresi.} I guadagni partono da $1$. In STERA 30M i \num{91776} guadagni di riga hanno media $0{,}80$ e deviazione standard $0{,}35$, con valori fra $-0{,}09$ e $4{,}4$; i \num{42240} guadagni di colonna hanno media $1{,}07$ e deviazione standard $0{,}18$, con valori fra $0$ e $5{,}3$.
+\paragraph{Inizializzazione e costo.} I guadagni partono da $1$ e, come le scale, non sono soggetti al decadimento dei pesi. Costano $m+n$ valori per proiezione; nel prodotto con un vettore equivalgono a moltiplicare l'ingresso per $g_{\mathrm{in}}$ e l'uscita per $g_{\mathrm{out}}$, con $m+n$ moltiplicazioni.
+
+\paragraph{Valori appresi.} In STERA 30M i \num{91776} guadagni di riga hanno media $0{,}80$ e deviazione standard $0{,}35$, con valori fra $-0{,}09$ e $4{,}4$; i \num{42240} guadagni di colonna hanno media $1{,}07$ e deviazione standard $0{,}18$, con valori fra $0$ e $5{,}3$.
 
 \paragraph{Quanto contano.} Riportando tutti i guadagni a $1$, la NLL sui racconti di prova sale a $11{,}38$, oltre il valore di una distribuzione uniforme sul vocabolario ($10{,}82$): il modello addestrato non funziona senza guadagni, che pure valgono lo $0{,}4\%$ dei parametri.
 
@@ -340,20 +340,18 @@ dove $\langle\cdot,\cdot\rangle_F$ è il prodotto scalare di Frobenius. Il gradi
 \section{Il termine a basso rango}
 \label{sec:basso-rango}
 
-\paragraph{Che cosa è.} Il termine $UV^\top$, con $U\in\mathbb{R}^{m\times r}$ e $V\in\mathbb{R}^{n\times r}$, è una matrice $m\times n$ di rango al più $r$ che si somma all'intera proiezione.
-
-\paragraph{A che cosa serve.} Il mosaico di blocchi RowMask23 tratta ogni blocco in modo indipendente: un blocco non vede il contenuto degli altri, e ciascuno è vincolato alla struttura XOR con 23 correzioni per riga. Il termine a basso rango aggiunge una componente che non ha né l'uno né l'altro vincolo: attraversa tutti i blocchi e può rappresentare un numero limitato di direzioni qualunque. Le due rappresentazioni sono complementari: RowMask23 dà una matrice a rango pieno con pochi valori (Sezione~\ref{sec:rettangolari}), il basso rango dà poche direzioni senza struttura.
+\paragraph{Che cosa è e a che cosa serve.} Il termine $UV^\top$, con $U\in\mathbb{R}^{m\times r}$ e $V\in\mathbb{R}^{n\times r}$, è una matrice $m\times n$ di rango al più $r$ che si somma all'intera proiezione. Il mosaico di blocchi RowMask23 tratta ogni blocco in modo indipendente, e ciascuno è vincolato alla struttura XOR con 23 correzioni per riga. Il termine a basso rango non ha né l'uno né l'altro vincolo: attraversa tutti i blocchi e può rappresentare un numero limitato di direzioni qualunque. Le due rappresentazioni sono complementari: RowMask23 dà una matrice a rango pieno con pochi valori, il basso rango dà poche direzioni senza struttura.
 
 \paragraph{Gradiente.}
 \[
 \frac{\partial\mathcal{L}}{\partial U} = G\,V,\qquad \frac{\partial\mathcal{L}}{\partial V} = G^\top U.
 \]
 
-\paragraph{Costo.} Il termine memorizza $r(m+n)$ valori e il suo prodotto con un vettore si calcola come $U(V^\top x)$, con $r(m+n)$ moltiplicazioni, senza formare la matrice $m\times n$. In STERA 30M, con $r=96$, i fattori sono memorizzati e addestrati in FP32 come ogni altro parametro.
+\paragraph{Inizializzazione e costo.} $U$ parte da zero e $V$ da valori normali di deviazione standard $0{,}02$: all'inizio il termine è nullo e ogni proiezione coincide con il suo mosaico di blocchi, mentre il gradiente rispetto a $U$ è già diverso da zero. A differenza di scale e guadagni, $U$ e $V$ sono soggetti al decadimento dei pesi, come le coordinate. Il termine memorizza $r(m+n)$ valori e il suo prodotto con un vettore si calcola come $U(V^\top x)$, con $r(m+n)$ moltiplicazioni, senza formare la matrice $m\times n$. In STERA 30M, con $r=96$, i fattori sono memorizzati e addestrati in FP32 come ogni altro parametro.
 
-\paragraph{Inizializzazione.} $U$ parte da zero e $V$ da valori normali di deviazione standard $0{,}02$: all'inizio il termine è nullo e il modello coincide con il solo mosaico RowMask23, mentre il gradiente rispetto a $U$ è già diverso da zero. A differenza di scale e guadagni, $U$ e $V$ sono soggetti al decadimento dei pesi, come le coordinate.
+\paragraph{Valori appresi.} Al termine dell'addestramento il termine a basso rango vale fra il $37\%$ e il $47\%$ della norma di Frobenius di ciascuna proiezione.
 
-\paragraph{Quanto conta nel modello addestrato.} Al termine dell'addestramento il termine a basso rango vale fra il $37\%$ e il $47\%$ della norma di Frobenius di ciascuna proiezione. Per misurare quanto il modello ne dipenda abbiamo sostituito, in tutte le proiezioni, $UV^\top$ con la sua migliore approssimazione di rango $k<96$, ottenuta dalla decomposizione ai valori singolari, e ripetuto sui 300 racconti di prova la NLL e il giudizio cieco del Capitolo~\ref{cap:capitoli/05-metodologia}. La Tabella~\ref{tab:rango-ridotto} riporta il risultato.
+\paragraph{Quanto conta.} Per misurare quanto il modello addestrato ne dipenda, abbiamo sostituito in tutte le proiezioni $UV^\top$ con la sua migliore approssimazione di rango $k<96$, ottenuta dalla decomposizione ai valori singolari, e ripetuto sui 300 racconti di prova la NLL e il giudizio cieco del Capitolo~\ref{cap:capitoli/05-metodologia} (Tabella~\ref{tab:rango-ridotto}).
 
 \begin{table}[htbp]
 \centering
@@ -375,9 +373,11 @@ Rango usato & NLL TEST & Racconti corretti & Risparmio vs forma densa \\
 \label{tab:rango-ridotto}
 \end{table}
 
-Il modello addestrato usa tutto il rango disponibile: già a rango 64 la quota di racconti corretti si dimezza e da rango 48 in giù il modello non produce più testo comprensibile. Questa prova misura la dipendenza del modello \emph{già addestrato} dal termine a basso rango; non dice quanto rango servirebbe a un modello addestrato fin dall'inizio con un rango minore, che potrebbe affidare più informazione alle coordinate.
+Il modello addestrato usa tutto il rango disponibile: già a rango 64 la quota di racconti corretti si dimezza e da rango 48 in giù il modello non produce più testo comprensibile. La prova misura la dipendenza del modello \emph{già addestrato} dal termine a basso rango; non dice quanto rango servirebbe a un modello addestrato fin dall'inizio con un rango minore, che potrebbe affidare più informazione alle coordinate.
 
-\paragraph{Quantizzazione.} Ridurre il rango è quindi un modo inefficace di comprimere il termine. Ridurre i bit di ogni valore lo è invece molto. Quantizzando $U$ e $V$ a 8 bit, con una scala per gruppi di 32 valori, la matrice densa equivalente cambia in norma dello $0{,}5$--$0{,}6\%$ a seconda dello schema e la NLL varia del $+0{,}007\%$. Nel giudizio cieco, svolto in una sessione separata con lo stesso giudice e la stessa rubrica e con uno schema di quantizzazione leggermente meno preciso, i racconti corretti sono il $41{,}3\%$ contro il $44{,}0\%$, una differenza non significativa ($p=0{,}52$). Il termine passa da $51{,}5$ a $16{,}2$~MB e il modello completo da $121{,}4$ a $86{,}1$~MB; il Capitolo~\ref{cap:capitoli/07-sistemi} mostra che il prodotto con i fattori a 8 bit rende anche più rapida la generazione. Struttura e quantizzazione agiscono su grandezze diverse, il numero di valori e i bit per valore, e si sommano.
+\paragraph{Quantizzazione.} Ridurre il rango è quindi un modo inefficace di comprimere il termine; ridurre i bit di ogni valore lo è invece molto. Quantizzando $U$ e $V$ a 8 bit nel formato del motore, con una scala ogni 32 valori, la matrice densa equivalente cambia in norma dello $0{,}48\%$ e la NLL del $+0{,}007\%$. Il giudizio cieco, svolto in una sessione separata con lo stesso giudice e la stessa rubrica e con uno schema con una scala per colonna, leggermente meno preciso ($0{,}61\%$), dà il $41{,}3\%$ di racconti corretti contro il $44{,}0\%$, una differenza non significativa ($p=0{,}52$). Il termine passa da $51{,}5$ a $16{,}2$~MB e il modello completo da $121{,}4$ a $86{,}1$~MB; il Capitolo~\ref{cap:capitoli/07-sistemi} mostra che il prodotto con i fattori a 8 bit rende anche più rapida la generazione. Struttura e quantizzazione agiscono su grandezze diverse, il numero di valori e i bit per valore, e si sommano.
+
+% ---------------------------------------------------------------- BILANCIO
 
 \section{Bilancio dei parametri}
 \label{sec:bilancio-parametri}
@@ -398,7 +398,7 @@ s(m,n,r) \;=\; 1-\frac{3177}{16384}-(1+r)\left(\frac1m+\frac1n\right)
 \end{proposizione}
 
 \begin{proof}
-I blocchi sono $mn/16384$. Ciascuno contribuisce con 3176 coordinate e una scala, cioè $3177\,mn/16384$ valori in tutto. I guadagni aggiungono $m+n$ valori e i fattori $U$ e $V$ ne aggiungono $r(m+n)$. Dividendo per $mn$ si ottiene $s$.
+I blocchi sono $mn/16384$; ciascuno contribuisce con 3176 coordinate e una scala, cioè $3177\,mn/16384$ valori in tutto. I guadagni aggiungono $m+n$ valori e i fattori $U$ e $V$ ne aggiungono $r(m+n)$. Dividendo per $mn$ si ottiene $s$.
 \end{proof}
 
 La formula separa ciò che il formato garantisce da ciò che dipende dalle scelte di progetto:
@@ -417,9 +417,7 @@ Per ogni scelta dei parametri $s(m,n,r)<80{,}61\%$. In assenza del termine a bas
 s_{\text{strato}} \;=\; 1-\frac{3177}{16384} - 1{,}5\,\kappa - \frac{1{,}5}{d}
 \;\approx\; 80{,}61\% - 1{,}5\,\kappa .
 \]
-Il coefficiente $1{,}5$ è la media, pesata per le dimensioni, del costo del basso rango nelle due famiglie di matrici: $2\kappa$ per ognuna delle quattro matrici $d\times d$ e $1{,}25\,\kappa$ per ognuna delle due matrici del feed-forward, cioè $(4\cdot 2\kappa\cdot d^2+2\cdot1{,}25\,\kappa\cdot4d^2)/12d^2=1{,}5\,\kappa$. Il termine $1{,}5/d$, dovuto alle unità aggiunte da scale e guadagni, vale lo $0{,}2\%$ per $d=768$ e tende a zero.
-
-Ne seguono due comportamenti al crescere del modello:
+Il coefficiente $1{,}5$ è la media, pesata per le dimensioni, del costo del basso rango nelle due famiglie di matrici: $2\kappa$ per ognuna delle quattro matrici $d\times d$ e $1{,}25\,\kappa$ per ognuna delle due matrici del feed-forward, cioè $(4\cdot 2\kappa\cdot d^2+2\cdot1{,}25\,\kappa\cdot4d^2)/12d^2=1{,}5\,\kappa$. Il termine $1{,}5/d$, dovuto ai guadagni, vale lo $0{,}2\%$ per $d=768$ e tende a zero. Ne seguono due comportamenti al crescere del modello:
 \begin{itemize}
 \item \textbf{con il rango proporzionale alla dimensione} ($\kappa$ fissato) il risparmio per strato è costante: con $\kappa=1/8$, come in STERA 30M ($96/768$), vale $61{,}9\%$ per ogni $d$;
 \item \textbf{con il rango fissato} il termine del basso rango decresce come $1/d$ e il risparmio tende all'$80{,}61\%$ del formato.
@@ -457,7 +455,7 @@ P = \num{15726150} + \num{134016} + \num{12865536} + \num{1620480} = \num{303461
 \qquad D = \num{82721280},
 \qquad S = 63{,}32\%.
 \]
-La Tabella~\ref{tab:componenti-stera30m} mostra lo stesso conto per componente: le coordinate e il basso rango insieme fanno oltre il $94\%$ dei valori memorizzati.
+La Tabella~\ref{tab:componenti-stera30m} mostra lo stesso conto per componente: coordinate e basso rango insieme fanno oltre il $94\%$ dei valori memorizzati.
 
 \begin{table}[htbp]
 \centering
@@ -508,20 +506,8 @@ $d$ & senza basso rango & $r=96$ & $r=d/8$ & strato con $r=d/8$ \\
 \label{tab:risparmio-crescita}
 \end{table}
 
-\section{Inizializzazione}
-
-Una rete neurale si addestra bene solo se, all'inizio, i segnali non esplodono né si spengono attraversando gli strati. Per le matrici dense si sceglie di solito di estrarre ogni peso da una normale di media nulla e deviazione standard $\sigma_0$ piccola, per esempio $0{,}02$. Con RowMask23 bisogna tenere conto del fatto che gli elementi fuori diagonale con una correzione sono la somma di \emph{due} coordinate indipendenti. Se ogni coordinata ha deviazione standard $\sigma$, la varianza media di un elemento della matrice vale
-\[
-\sigma^2\left(1 + \frac{2.921}{16.384}\right),
-\]
-perché $2.921$ dei $16.384$ elementi ricevono una seconda coordinata. Per ottenere la stessa varianza media di una matrice densa inizializzata con $\sigma_0$ si sceglie quindi
-\begin{equation}
-\sigma = \frac{\sigma_0}{\sqrt{1+2.921/16.384}}.
-\end{equation}
-Le inizializzazioni delle altre componenti sono riportate nelle rispettive sezioni: scale e guadagni partono da uno, $U$ da zero e $V$ da valori normali di deviazione standard $0{,}02$, cosicché all'inizio dell'addestramento ogni proiezione coincide con il suo mosaico di blocchi RowMask23.
-
 \section{Riepilogo}
 
-Una proiezione STERA è formata da quattro componenti. Le coordinate dei blocchi RowMask23 sono la parte strutturata: un sottospazio lineare di dimensione $3.176$ su $16.384$ per blocco, quindi una rappresentazione esatta e cinque volte più compatta, con matrici in generale a rango pieno, un gradiente in forma chiusa e un prodotto veloce tramite trasformata di Walsh--Hadamard. Scale e guadagni costano meno dello $0{,}5\%$ dei valori ma regolano l'ampiezza di blocchi, righe e colonne, e il modello addestrato non funziona senza di essi. Il termine a basso rango accoppia i blocchi e, nel modello addestrato, è usato per intero; non si comprime riducendone il rango, ma si comprime bene riducendone i bit. Il bilancio complessivo separa ciò che il formato garantisce, l'$80{,}61\%$ di risparmio sulla parte strutturata, da ciò che dipende dalle scelte di progetto, cioè il costo $1{,}5\,\kappa$ del basso rango per strato.
+Una proiezione STERA è formata da quattro componenti. Le coordinate dei blocchi RowMask23 sono la parte strutturata: un sottospazio lineare di dimensione \num{3176} su \num{16384} per blocco, quindi una rappresentazione esatta e cinque volte più compatta, con matrici in generale a rango pieno, un gradiente in forma chiusa e un prodotto veloce tramite trasformata di Walsh--Hadamard. Scale e guadagni costano meno dello $0{,}5\%$ dei valori ma regolano l'ampiezza di blocchi, righe e colonne, e il modello addestrato non funziona senza di essi. Il termine a basso rango accoppia i blocchi e, nel modello addestrato, è usato per intero; non si comprime riducendone il rango, ma si comprime bene riducendone i bit. Il bilancio complessivo separa ciò che il formato garantisce, l'$80{,}61\%$ di risparmio sulla parte strutturata, da ciò che dipende dalle scelte di progetto, cioè il costo $1{,}5\,\kappa$ del basso rango per strato.
 
 Nel prossimo capitolo vediamo come queste componenti si traducono in un modello completo e in un motore che lo addestra e lo esegue.
