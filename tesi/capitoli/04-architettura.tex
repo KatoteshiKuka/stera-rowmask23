@@ -80,7 +80,48 @@ La stessa matrice $E$ fornisce quindi sia il vettore d'ingresso di un token sia 
 
 \paragraph{Backpropagation nel modello.} Il gradiente parte dai logit: rispetto al logit del token $v$ vale $\partial\mathcal L_t/\partial z_{t,v}=p_{t,v}-\mathbf 1\{v=y_t\}$, cioè la probabilità assegnata meno uno per il token corretto. Da qui risale nell'ordine inverso del forward: attraversa la output head, la LayerNorm finale e i sei layer, dall'ultimo al primo. Ogni proiezione STERA che incontra riceve il gradiente della propria uscita, $\delta=\partial\mathcal L/\partial y$, e con i passi B1--B4 della \autoref{sec:backward-passi} produce i gradienti delle proprie coordinate, scale, guadagni e fattori $U$ e $V$, e il gradiente del proprio ingresso, che prosegue verso il layer precedente. La matrice condivisa $E$ riceve due contributi, che si sommano: quello della output head, $\sum_t(p_t-\mathbf 1_{y_t})\,h_t^\top$ sulle righe valide, e quello delle righe usate come ingresso, che arriva in fondo al percorso.
 
-\paragraph{Implementazione e optimizer.} Il training usa PyTorch su due GPU NVIDIA P100. A ogni passo il programma ricostruisce le matrici a partire dalle loro componenti e lascia all'autograd il calcolo dei gradienti, che coincidono con quelli della \autoref{sec:backward-stera} (\autoref{prop:backward-esatto}). AdamW aggiorna tutti i parametri allenabili; il weight decay si applica a coordinate, fattori $U$ e $V$ e posizioni, non a scale, guadagni, LayerNorm e bias. Dati, iperparametri e andamento del training sono descritti nel \autoref{cap:capitoli/05-metodologia}.
+\subsection{Un passo di training: che cosa viene aggiornato}
+\label{sec:passo-training}
+
+Durante il training la matrice densa $W$ compare, ma solo come strumento di calcolo: i parametri che il modello impara e che vengono salvati sono le coordinate compresse, insieme a scale, guadagni e fattori $U$ e $V$. Un passo di training si svolge in cinque fasi, mostrate nella \autoref{fig:passo-training}, subito sotto.
+
+\begin{figure}[H]
+\centering
+\resizebox{\linewidth}{!}{\input{figure/tikz/passo_training}}
+\caption{Un passo di training di STERA 30M. In blu il forward, in arancione il backward. Le caselle tratteggiate sono temporanee: la matrice densa $W$ e il suo gradiente $G$ vengono ricalcolati a ogni passo e non sono mai salvati né aggiornati.}
+\label{fig:passo-training}
+\end{figure}
+
+\begin{enumerate}
+\item \textbf{Ricostruzione.} Dalle coordinate, dalle scale, dai guadagni e dai fattori $U$ e $V$ si costruisce la matrice densa $W$ di ogni proiezione, secondo la \autoref{def:proiezione-stera}. In un blocco, la coordinata di base $b_8$ viene copiata nelle 128 caselle con $i\oplus j=8$.
+\item \textbf{Forward.} Il modello usa le matrici $W$ così costruite per calcolare le probabilità dei token e la loss $\mathcal L$. La loss è quindi calcolata con la forma densa equivalente, che però è determinata interamente dalle coordinate.
+\item \textbf{Backward.} L'autograd calcola il gradiente della loss rispetto a ogni casella di $W$: è la matrice $G=\partial\mathcal L/\partial W$, con un valore per ciascuna delle \num{16384} caselle di un blocco. Le 128 caselle di $b_8$ ricevono in generale 128 gradienti diversi.
+\item \textbf{Raccolta dei gradienti.} Il gradiente di ogni coordinata è la somma dei gradienti delle caselle in cui la coordinata compare (\autoref{sec:gradiente-coordinate}), ciascuno moltiplicato per i fattori che nel forward moltiplicavano la coordinata in quella casella: la scala del blocco e i guadagni della riga e della colonna. Per $b_8$ è la somma dei 128 contributi delle sue caselle; per una correzione o un elemento della diagonale è il gradiente della sua unica casella. Si ottiene un solo gradiente per coordinata, \num{3176} per blocco invece di \num{16384}. Allo stesso modo scale, guadagni, $U$ e $V$ ricavano il proprio gradiente da $G$, con i passi della \autoref{sec:backward-passi}.
+\item \textbf{Aggiornamento.} AdamW aggiorna le coordinate, le scale, i guadagni, $U$, $V$ e i parametri densi del modello (posizioni, LayerNorm e bias). La matrice $W$ e il gradiente $G$ vengono scartati, e al passo successivo $W$ si ricostruisce dalle coordinate aggiornate: le 128 caselle di $b_8$ ricevono di nuovo tutte lo stesso valore, quello nuovo.
+\end{enumerate}
+
+La \autoref{tab:raccolta-gradienti}, subito sotto, riassume da quali caselle di un blocco ogni tipo di coordinata raccoglie il proprio gradiente. Una casella che contiene base e correzione, $b_{i\oplus j}+e_{i,k}$, contribuisce con lo stesso valore di $G$ a entrambe le coordinate.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{lll}
+\toprule
+Coordinate & Caselle da cui raccoglie il gradiente & Gradiente \\
+\midrule
+\rowcolor{steraBlu!12} diagonale $d_i$ & una: $(i,i)$ & $G_{ii}$ \\
+\rowcolor{steraGrigio!12} base $b_s$ & 128: tutte le $(i,\,i\oplus s)$ & $\sum_i G_{i,\,i\oplus s}$ \\
+\rowcolor{steraArancio!15} correzione $e_{i,k}$ & una: $(i,\,i\oplus\sigma(i,k))$ & $G_{i,\,i\oplus\sigma(i,k)}$ \\
+\bottomrule
+\end{tabular}
+\caption{Raccolta dei gradienti in un blocco RowMask23: per ogni tipo di coordinata, le caselle della matrice ricostruita i cui gradienti si sommano. $G$ è qui il gradiente rispetto al blocco, che include già scala e guadagni (\autoref{sec:backward-passi}).}
+\label{tab:raccolta-gradienti}
+\end{table}
+
+\paragraph{Perché si aggiornano le coordinate e non la matrice densa.} Si sommano i gradienti delle caselle e poi si aggiorna una sola volta la coordinata; non si aggiornano le caselle una per una. La differenza è sostanziale. Se l'optimizer aggiornasse direttamente le \num{16384} caselle, ciascuna con il proprio gradiente, le 128 caselle di $b_8$ prenderebbero valori diversi fra loro: la matrice uscirebbe dalla famiglia RowMask23 e non si potrebbe più rappresentare in modo esatto con le coordinate. Aggiornando le coordinate, invece, ogni matrice resta per costruzione una proiezione STERA a ogni passo. Inoltre AdamW non è lineare, perché divide ogni aggiornamento per una stima della varianza del gradiente: sommare i gradienti e poi aggiornare la coordinata non equivale a sommare gli aggiornamenti delle singole caselle.
+
+\paragraph{Implementazione e optimizer.} Il training usa PyTorch su due GPU NVIDIA P100. Le fasi 3 e 4 non sono implementate a mano: la ricostruzione della fase 1 è scritta con operazioni di indicizzazione, e l'autograd, risalendo quelle operazioni, somma automaticamente i gradienti delle caselle che condividono una coordinata. Il risultato coincide con quello della \autoref{sec:backward-stera} (\autoref{prop:backward-esatto}). Il weight decay si applica a coordinate, fattori $U$ e $V$ e posizioni, non a scale, guadagni, LayerNorm e bias. Dati, iperparametri e andamento del training sono descritti nel \autoref{cap:capitoli/05-metodologia}.
 
 \section{Dall'training alla generazione}
 \label{sec:guida-inferenza-stera}

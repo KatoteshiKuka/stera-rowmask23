@@ -1,0 +1,17 @@
+\begin{tikzpicture}[x=10mm, y=10mm, font=\small, >={Latex[length=2mm]},
+  par/.style={draw=steraBlu, fill=steraBlu!12, rounded corners=3pt, minimum width=43mm, minimum height=14mm, align=center},
+  tmp/.style={draw=steraGrigio, dashed, fill=steraGrigio!8, rounded corners=3pt, minimum width=43mm, minimum height=14mm, align=center},
+  gr/.style={draw=steraArancio, fill=steraArancio!12, rounded corners=3pt, minimum width=43mm, minimum height=14mm, align=center},
+  gt/.style={draw=steraArancio, dashed, fill=steraArancio!8, rounded corners=3pt, minimum width=43mm, minimum height=14mm, align=center},
+  et/.style={font=\footnotesize, align=center, fill=white, inner sep=1.5pt}]
+\node[par] (p) at (0,0) {\textbf{parametri salvati}\\coordinate $c$, scale $\alpha$,\\guadagni $g$, $U$, $V$};
+\node[tmp] (w) at (7.6,0) {\textbf{matrice $W$}\\densa, temporanea\\\num{16384} valori per blocco};
+\node[tmp] (l) at (15.2,0) {\textbf{loss} $\mathcal L$\\calcolata con $W$};
+\node[gt] (g) at (15.2,-3.6) {\textbf{gradiente $G$}\\uno per casella\\\num{16384} per blocco};
+\node[gr] (gc) at (6.6,-3.6) {\textbf{gradiente dei parametri}\\uno per coordinata\\\num{3176} per blocco};
+\draw[->, steraBlu, thick] (p) -- node[et, above=2pt] {1. ricostruzione} (w);
+\draw[->, steraBlu, thick] (w) -- node[et, above=2pt] {2. forward} (l);
+\draw[->, steraArancio, thick] (l) -- node[et, right=2pt] {3. backward} (g);
+\draw[->, steraArancio, thick] (g) -- node[et, above=2pt] {4. somma per coordinata} (gc);
+\draw[->, steraArancio, thick] (gc) -| node[et, pos=.3, above=2pt] {5. AdamW} (p);
+\end{tikzpicture}
