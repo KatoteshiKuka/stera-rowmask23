@@ -5,41 +5,31 @@ In questo capitolo definiamo la parametrizzazione STERA delle proiezioni di un T
 
 \begin{definizione}[Proiezione STERA]
 \label{def:proiezione-stera}
-Siano $m$ e $n$ multipli di 128. Una proiezione STERA $W\in\mathbb{R}^{m\times n}$ è
+Siano $m$ e $n$ multipli di 128 e $P=m/128$, $Q=n/128$. Una proiezione STERA $W\in\mathbb{R}^{m\times n}$ è
 \[
-W \;=\; \operatorname{diag}(g_{\mathrm{out}})
-\begin{bmatrix}
-\alpha^{(1,1)}\,\Phi\big(c^{(1,1)}\big) & \cdots & \alpha^{(1,Q)}\,\Phi\big(c^{(1,Q)}\big)\\
-\vdots & \ddots & \vdots\\
-\alpha^{(P,1)}\,\Phi\big(c^{(P,1)}\big) & \cdots & \alpha^{(P,Q)}\,\Phi\big(c^{(P,Q)}\big)
-\end{bmatrix}
-\operatorname{diag}(g_{\mathrm{in}}) \;+\; U V^{\top},
+W \;=\; \operatorname{diag}(g_{\mathrm{out}})\;\widetilde W\;\operatorname{diag}(g_{\mathrm{in}}) \;+\; U V^{\top},
+\qquad
+\widetilde W \;=\; \Big[\,\alpha^{(p,q)}\,\Phi\big(c^{(p,q)}\big)\Big]_{p=1,\dots,P;\;q=1,\dots,Q},
 \]
-con $P=m/128$ e $Q=n/128$ blocchi per lato. Le sue componenti sono:
-\begin{itemize}
-\item le \emph{coordinate} $c^{(p,q)}\in\mathbb{R}^{3176}$ di ogni blocco, da cui la mappa $\Phi$ costruisce un blocco RowMask23 $128\times128$;
-\item una \emph{scala} $\alpha^{(p,q)}\in\mathbb{R}$ per blocco;
-\item i \emph{guadagni} per riga e per colonna $g_{\mathrm{out}}\in\mathbb{R}^{m}$ e $g_{\mathrm{in}}\in\mathbb{R}^{n}$;
-\item il \emph{termine a basso rango} $UV^{\top}$, con $U\in\mathbb{R}^{m\times r}$ e $V\in\mathbb{R}^{n\times r}$.
-\end{itemize}
+dove $\widetilde W$ è la matrice a mosaico di $P\times Q$ blocchi $128\times128$ e $\Phi:\mathbb{R}^{3176}\to\mathbb{R}^{128\times128}$ è la mappa che costruisce un blocco RowMask23 dalle sue coordinate (Sezioni da~\ref{sec:notazione} a~\ref{sec:linearita-iniettivita}).
 \end{definizione}
 
-Indicheremo con $\widetilde W$ la matrice a mosaico formata dai blocchi $\alpha^{(p,q)}\Phi(c^{(p,q)})$, cosicché $W=\operatorname{diag}(g_{\mathrm{out}})\,\widetilde W\,\operatorname{diag}(g_{\mathrm{in}})+UV^\top$. La Tabella~\ref{tab:componenti-proiezione} riassume il ruolo e il costo di ciascuna componente.
+La Tabella~\ref{tab:componenti-proiezione} elenca le quattro componenti della proiezione, il loro ruolo e il numero di valori che ciascuna memorizza.
 
 \begin{table}[htbp]
 \centering
 \small
-\begin{tabularx}{\linewidth}{lXr}
+\begin{tabularx}{\linewidth}{llXr}
 \toprule
-Componente & Ruolo & Valori \\
+Componente & Simbolo & Ruolo & Valori \\
 \midrule
-Coordinate $c^{(p,q)}$ & contenuto di ogni blocco: diagonale, base XOR e 23 correzioni per riga & $3176$ per blocco \\
-Scale $\alpha^{(p,q)}$ & ampiezza di ogni blocco, indipendente dagli altri & $1$ per blocco \\
-Guadagni $g_{\mathrm{out}},g_{\mathrm{in}}$ & ampiezza di ogni riga e colonna dell'intera matrice, attraverso i confini dei blocchi & $m+n$ \\
-Basso rango $UV^\top$ & accoppiamento fra tutti i blocchi e direzioni che la struttura XOR non rappresenta & $r(m+n)$ \\
+Coordinate & $c^{(p,q)}\in\mathbb{R}^{3176}$ & contenuto di ogni blocco: diagonale, base XOR e 23 correzioni per riga & $3176\,PQ$ \\
+Scale & $\alpha^{(p,q)}\in\mathbb{R}$ & ampiezza di ogni blocco & $PQ$ \\
+Guadagni & $g_{\mathrm{out}}\in\mathbb{R}^{m}$, $g_{\mathrm{in}}\in\mathbb{R}^{n}$ & ampiezza di ogni riga e colonna, attraverso i confini dei blocchi & $m+n$ \\
+Basso rango & $U\in\mathbb{R}^{m\times r}$, $V\in\mathbb{R}^{n\times r}$ & accoppiamento fra i blocchi e direzioni che la struttura XOR non rappresenta & $r(m+n)$ \\
 \bottomrule
 \end{tabularx}
-\caption{Le quattro componenti di una proiezione STERA $m\times n$ con termine a basso rango di rango $r$.}
+\caption{Le quattro componenti di una proiezione STERA $m\times n$ con termine a basso rango di rango $r$; $PQ=mn/16384$ è il numero di blocchi.}
 \label{tab:componenti-proiezione}
 \end{table}
 
