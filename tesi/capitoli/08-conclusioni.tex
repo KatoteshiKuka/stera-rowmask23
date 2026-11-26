@@ -43,7 +43,7 @@ H4 & 44,0\% di racconti corretti contro 21,7\% e 48,3\% & Confermata rispetto a 
 
 \paragraph{Valutazione automatica.} La qualità dei racconti è stata giudicata da un singolo modello linguistico, in modo cieco e con una rubrica fissata in anticipo. Una validazione con lettori umani renderebbe la stima più robusta.
 
-\paragraph{Misure di sistema.} Le misure di esecuzione sono state effettuate su un solo dispositivo, un Mac con chip M1 e 16~GiB di memoria unificata, e con contesti fino a 484 posizioni, il limite di addestramento di STERA 30M.
+\paragraph{Misure di sistema.} Le misure di esecuzione sono state effettuate su un solo dispositivo, un Mac con chip M1 e 16~GiB di memoria unificata, e con contesti fino a 484 posizioni, entro le 512 usate in addestramento.
 
 \paragraph{Studi a posteriori delle componenti.} L'importanza di scale, guadagni e termine a basso rango e la loro quantizzazione sono state misurate sul modello già addestrato. Queste prove dicono quanto il modello dipende da ciascuna componente, non quanto essa serva all'apprendimento: un modello addestrato fin dall'inizio con un rango minore potrebbe affidare più informazione alle coordinate. Il giudizio delle varianti è stato svolto in sessioni separate da quella dei tre modelli, con lo stesso giudice e la stessa rubrica.
 
