@@ -13,7 +13,7 @@ Le domande di ricerca dell'Introduzione si traducono in quattro ipotesi verifica
 & Ipotesi & Misura e confronto \\
 \midrule
 H1 & STERA 30M apprende regolarità linguistiche che generalizzano a racconti esclusi dall'addestramento. & NLL su DEV durante il training; NLL sui racconti TEST, confrontata con i due riferimenti. \\
-H2 & La parametrizzazione RowMask23 riduce i byte necessari per rappresentare i pesi. & Payload dei parametri compatti rispetto alla propria espansione densa e ai checkpoint di riferimento. \\
+H2 & La parametrizzazione STERA riduce i byte necessari per rappresentare i pesi. & Payload dei parametri compatti rispetto alla propria espansione densa e ai checkpoint di riferimento. \\
 H3 & Applicando le proiezioni direttamente alle coordinate, la generazione è più rapida che con le matrici dense equivalenti, a parità di pesi. & Tempo per token in decode dei due motori sullo stesso modello, con verifica dell'identità dei token generati. \\
 H4 & STERA 30M genera racconti di qualità confrontabile con quella dei riferimenti TinyStories. & Quota di racconti corretti in una valutazione cieca sugli stessi incipit, con confronti appaiati. \\
 \bottomrule
