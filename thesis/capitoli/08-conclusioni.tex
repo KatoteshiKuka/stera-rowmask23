@@ -37,15 +37,15 @@ H4 & 44,0\% di racconti corretti contro 21,7\% e 48,3\% & Confermata rispetto a 
 
 \paragraph{Un solo training.} STERA 30M è stato addestrato una volta, con un unico seme. Gli intervalli di confidenza riportati misurano l'incertezza dovuta ai racconti di prova, non quella dovuta all'inizializzazione.
 
-\paragraph{Riferimenti non controllati.} I checkpoint TinyStories sono modelli pubblici con architettura, budget di training e dati non identici a quelli di STERA 30M. Il confronto descrive le prestazioni dei modelli esistenti e non isola l'effetto della sola parametrizzazione; in particolare, il vantaggio di NLL può dipendere in parte dalla corrispondenza fra i dati di training di STERA 30M e i racconti di prova.
+\paragraph{Riferimenti non controllati.} I checkpoint TinyStories sono modelli pubblici con architettura, budget di training e dati non identici a quelli di STERA 30M. Il confronto descrive le prestazioni dei modelli esistenti e non isola l'effetto della sola parametrizzazione.
 
 \paragraph{Calcolo e memoria.} Il vantaggio di STERA riguarda i byte da memorizzare e trasferire, non il numero di operazioni: durante il training e nel motore denso, STERA 30M calcola come un modello con \num{82721280} valori.
 
-\paragraph{Valutazione automatica.} La qualità dei racconti è stata giudicata da un singolo modello linguistico, in modo cieco e con una rubrica fissata in anticipo. Una validazione con lettori umani renderebbe la stima più robusta.
+\paragraph{Valutazione automatica.} La qualità dei racconti è stata giudicata da un singolo modello linguistico, in modo cieco e con una rubrica fissata in anticipo.
 
 \paragraph{Misure di sistema.} Le misure di esecuzione sono state effettuate su un solo dispositivo, un Mac con chip M1 e 16~GiB di memoria unificata, con contesti fino a 484 posizioni per STERA 30M, entro le 512 usate in training. Le misure a contesto lungo riguardano solo il modello fittizio F10, che non è addestrato, con la KV cache riempita direttamente: descrivono memoria e tempo per token, non la qualità né il TTFT a contesto lungo.
 
-\paragraph{Studi a posteriori delle componenti.} L'importanza di scale, guadagni e termine low-rank e la loro quantizzazione sono state misurate sul modello già addestrato. Queste prove dicono quanto il modello dipende da ciascuna componente, non quanto essa serva all'apprendimento: un modello addestrato fin dall'inizio con un rango minore potrebbe affidare più informazione alle coordinate. Il giudizio delle varianti è stato svolto in sessioni separate da quella dei tre modelli, con lo stesso giudice e la stessa rubrica.
+\paragraph{Studi a posteriori delle componenti.} L'importanza di scale, guadagni e termine low-rank e la loro quantizzazione sono state misurate sul modello già addestrato. Queste prove misurano quanto il modello addestrato dipende da ciascuna componente. Il giudizio delle varianti è stato svolto in sessioni separate da quella dei tre modelli, con lo stesso giudice e la stessa rubrica.
 
 \section{Sviluppi futuri}
 

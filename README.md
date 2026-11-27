@@ -55,9 +55,8 @@ On 300 TEST stories, with the same prompts, the same tokenizer and the same gene
 - The RowMask23 blocks guarantee −80.6% on the structured part; the saving of a STERA model as a function of the
   rank is derived in closed form in Chapter 4.
 - A fictitious, untrained model the size of Qwen3.5-9B built with STERA (F10, 4.63 billion dense-equivalent values)
-  keeps weights and KV cache within 16 GiB up to 128,000 tokens of context (computed) and decodes at 12.6 tokens/s
-  with short contexts and 3.9 tokens/s at 64,000 tokens (measured); its dense form and Qwen3.5-9B exceed 16 GiB with
-  the weights alone.
+  runs with weights and KV cache resident in 16 GiB up to 64,000 tokens of context, at 12.6 tokens/s with short
+  contexts and 3.9 tokens/s at 64,000 tokens; its dense form and Qwen3.5-9B exceed 16 GiB with the weights alone.
 
 Full details and all numbers: [`docs/RESULTS.md`](docs/RESULTS.md).
 

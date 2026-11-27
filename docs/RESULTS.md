@@ -120,7 +120,7 @@ MPS), 3 inputs × 5 campaigns, warm medians:
 
 The tokens of the two TinyStories models match those of the eager implementation in every campaign.
 
-## A model the size of Qwen3.5-9B: STERA F10 (Chapter 10, Tables 10.6–10.9)
+## A model the size of Qwen3.5-9B: STERA F10 (Chapter 10, Tables 10.6–10.8)
 
 F10 is a fictitious, untrained model generated from the final checkpoint by `systems/f10/generate_f10.py`
 (hidden size 7,680, 160 heads, feed-forward 30,720, 6 layers; 898,109,280 coordinates, 4.63 billion values in the
@@ -144,16 +144,6 @@ Source: `systems/results/campagne_20261127/f10_contesto/`.
 Controls: with the cache filled by the model itself, one token at a time, the time per token at 8,000 tokens is
 about 120 ms (`controllo_reale_8000.json`); at a fixed context of 8,000 the time per token rises from 107.5 to
 112–121 ms over 13 minutes of continuous decode (`verifica_termica_8000.json`), so the gap is thermal.
-
-Memory required for weights and KV cache (16-bit cache), computed from the model sizes, in GiB; the device has 16 GiB:
-
-| Context (tokens) | F10 compact | F10 dense | Qwen3.5-9B (BF16) |
-|---:|---:|---:|---:|
-| 8,000 | 4.4 | 18.0 | 17.0 |
-| 32,000 | 6.5 | 20.1 | 17.7 |
-| 64,000 | 9.2 | 22.8 | 18.7 |
-| 128,000 | 14.7 | 28.3 | 20.6 |
-| 200,000 | 20.9 | 34.5 | 22.8 |
 
 Qwen3.5-9B in BF16 run with SWLP, layers read from disk, prefetch on, one run per condition, four generated tokens
 (`systems/results/03_f10_ssd_qwen/`):

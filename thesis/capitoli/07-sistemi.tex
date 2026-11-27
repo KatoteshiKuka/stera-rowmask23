@@ -33,13 +33,13 @@ Pesi densi equivalenti F10 & 18,597 & 7,821 & 2,378 \\
 \label{tab:ssd-io-validato}
 \end{table}
 
-Una politica che dovesse rileggere integralmente 18,597~GB per ciascun token avrebbe quindi un termine di sola lettura dell'ordine di $7{,}82$~s a quella banda; il reciproco, circa $0{,}128$ token/s, è un tetto imposto dal solo I/O \emph{per quella politica}. Il calcolo, la latenza, lo staging e l'eventuale residenza parziale possono modificarne il risultato reale. La pipeline a doppio buffer può sovrapporre trasferimento e calcolo, ma non eliminare il tempo necessario ai byte effettivamente letti.
+Una politica che dovesse rileggere integralmente 18,597~GB per ciascun token avrebbe quindi un termine di sola lettura dell'ordine di $7{,}82$~s a quella banda; il reciproco, circa $0{,}128$ token/s, è un tetto imposto dal solo I/O \emph{per quella politica}. Il doppio buffer sovrappone trasferimento e calcolo, ma non riduce il tempo di lettura dei byte.
 
 Questo termine di lettura è un limite inferiore al costo di una generazione che debba trasferire i pesi dal disco a ogni token; l'esempio completo di generazione con caricamento progressivo dei layer è discusso nella \autoref{sec:qwen-f10-ssd}.
 
 \section{Quanto modello entra in un dispositivo}
 
-Un limite analitico aiuta a distinguere la capacità di memorizzazione dal throughput. Un budget ipotetico di 12~GB per i soli valori FP16 contiene 6 miliardi di scalari densi. Se ogni blocco $128\times128$ fosse rappresentato esclusivamente dalle sue \,\num{3176} coordinate RowMask23, il rapporto ideale fra elementi sarebbe $16384/3176\approx5{,}16$. Tale rapporto non può essere esteso automaticamente a un Transformer completo: embedding, guadagni, fattori low-rank, KV cache, workspace e granularità dei blocchi consumano spazio. Il modello fittizio STERA F10 della \autoref{sec:qwen-f10-ssd} fornisce questo conto per un modello completo di taglia simile a Qwen3.5-9B: 3,73~GiB di pesi compatti contro 17,32~GiB della forma densa.
+Un limite analitico aiuta a distinguere la capacità di memorizzazione dal throughput. Un budget ipotetico di 12~GB per i soli valori FP16 contiene 6 miliardi di scalari densi. Se ogni blocco $128\times128$ fosse rappresentato esclusivamente dalle sue \,\num{3176} coordinate RowMask23, il rapporto ideale fra elementi sarebbe $16384/3176\approx5{,}16$. In un Transformer completo il rapporto è minore, perché embedding, guadagni, fattori low-rank, KV cache e buffer di lavoro occupano spazio. Il modello fittizio STERA F10 della \autoref{sec:qwen-f10-ssd} fornisce questo conto per un modello completo di taglia simile a Qwen3.5-9B: 3,73~GiB di pesi compatti contro 17,32~GiB della forma densa.
 
 \section{Peso di STERA 30M}
 \label{sec:stera30m-quantizzazione}
@@ -233,29 +233,7 @@ Contesto (token) & KV cache & Decode (token/s) & Tempo per token (ms) & Memoria 
 
 Come mostra la \autoref{tab:f10-contesto}, fino a \num{2000} token il tempo per token resta intorno agli 80~ms, perché è dominato dalla lettura dei pesi. Oltre, cresce con il contesto, perché a ogni token l'attention deve leggere tutte le posizioni della cache: a \num{32000} token il decode scende a circa 5 token/s e a \num{64000} a circa 4. La memoria cresce nello stesso modo, da 4,0 a 9,6~GiB, e resta sempre dentro i 16~GiB del dispositivo. La cache in FP16 dimezza lo spazio della cache e rende il decode più rapido, perché ci sono meno byte da leggere.
 
-\paragraph{Limiti della misura e sua affidabilità.} La misura ha tre limiti. La KV cache è riempita direttamente con valori di prova, invece che dall'elaborazione di un prompt reale, quindi il TTFT a contesto lungo non è misurato. F10 non è addestrato, quindi la misura non dice nulla sulla qualità a contesto lungo. Oltre \num{64000} token la cache non entra in memoria e i valori della \autoref{tab:f10-200k} sono calcolati. La misura resta affidabile per ciò che descrive, cioè memoria e tempo per token: le operazioni di un passo di decode dipendono dal numero di posizioni nella cache e non dai valori che contiene, e una prova di controllo in cui il modello riempie la cache generando \num{8000} token ha dato, allo stesso stato termico del dispositivo, un tempo per token entro il $4\%$ di quello misurato. Tutte le misure sono eseguite sulla GPU del dispositivo reale, con il modello letto dal file generato.
-
-\paragraph{Memoria fino a 200.000 token.} La \autoref{tab:f10-200k}, subito sotto, calcola la memoria necessaria per pesi e cache fino a \num{200000} token, con la cache a 16 bit per tutti i modelli.
-
-\begin{table}[H]
-\centering
-\small
-\begin{tabular}{rrrr}
-\toprule
-Contesto (token) & F10 compatto & F10 denso & Qwen3.5-9B (BF16) \\
-\midrule
-\num{8000} & 4,4 & \cellcolor{steraArancio!25}18,0 & \cellcolor{steraArancio!25}17,0 \\
-\num{32000} & 6,5 & \cellcolor{steraArancio!25}20,1 & \cellcolor{steraArancio!25}17,7 \\
-\num{64000} & 9,2 & \cellcolor{steraArancio!25}22,8 & \cellcolor{steraArancio!25}18,7 \\
-\num{128000} & 14,7 & \cellcolor{steraArancio!25}28,3 & \cellcolor{steraArancio!25}20,6 \\
-\num{200000} & \cellcolor{steraArancio!25}20,9 & \cellcolor{steraArancio!25}34,5 & \cellcolor{steraArancio!25}22,8 \\
-\bottomrule
-\end{tabular}
-\caption{Memoria necessaria, in GiB, per pesi e KV cache al variare del contesto, calcolata dalle dimensioni dei modelli; cache a 16 bit. In arancione i valori che superano i 16~GiB del dispositivo. Per Qwen3.5-9B la cache comprende solo i layer con attention completa e lo stato dei layer ricorrenti.}
-\label{tab:f10-200k}
-\end{table}
-
-La forma compatta di F10 resta dentro i 16~GiB fino a circa \num{128000} token; la sua forma densa e Qwen3.5-9B li superano già con i soli pesi. A \num{200000} token tutti e tre i modelli superano la memoria del dispositivo: per F10 compatto il limite diventa la KV cache, che da sola occupa 17,2~GiB, mentre per Qwen3.5-9B, che ha una cache più piccola grazie ai layer ricorrenti, il limite restano i pesi.
+\paragraph{Limiti della misura e sua affidabilità.} La misura ha due limiti. La KV cache è riempita direttamente con valori di prova, invece che dall'elaborazione di un prompt reale, quindi il TTFT a contesto lungo non è misurato. F10 non è addestrato, quindi la misura non dice nulla sulla qualità a contesto lungo. La misura resta affidabile per ciò che descrive, cioè memoria e tempo per token: le operazioni di un passo di decode dipendono dal numero di posizioni nella cache e non dai valori che contiene, e una prova di controllo in cui il modello riempie la cache generando \num{8000} token ha dato, allo stesso stato termico del dispositivo, un tempo per token entro il $4\%$ di quello misurato. Tutte le misure sono eseguite sulla GPU del dispositivo reale, con il modello letto dal file generato.
 
 \paragraph{Qwen3.5-9B con i layer letti dal disco.} Per verificare una strategia reale di esecuzione oltre la memoria è stato eseguito il decoder di Qwen3.5-9B, con pesi BF16, runtime SWLP su PyTorch/MPS, batch 1 e lettura dei layer dall'SSD. Embedding e output head restano in memoria, mentre i blocchi attraversano una finestra di caricamento e prefetch. Il modello è addestrato, ma qui interessa solo il suo costo di esecuzione su memoria limitata: non è un riferimento per la qualità narrativa di STERA 30M.
 
