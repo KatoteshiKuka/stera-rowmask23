@@ -11,8 +11,8 @@ Questa tesi ha proposto e valutato STERA, una parametrizzazione strutturata dei 
 \midrule
 H1 & NLL TEST 1,174, inferiore a TinyStories-8M (1,515) e TinyStories-33M (1,324) & Confermata \\
 H2 & $-80{,}6\%$ garantito dai blocchi RowMask23; 121,385~MB in FP32 contro 330,885~MB dell'espansione densa ($-63{,}3\%$) e 274,056~MB di TinyStories-33M ($-55{,}7\%$); 86,1~MB con il low-rank a 8 bit & Confermata \\
-H3 & Decode $-34{,}8\%$ rispetto al motore denso sugli stessi pesi, con token identici, costante fra 32 e 384 token in ingresso; il TTFT resta più lento & Confermata per il decode \\
-H4 & 44,0\% di racconti corretti contro 21,7\% e 48,3\% & Confermata rispetto a TinyStories-8M; non conclusiva rispetto a TinyStories-33M \\
+H3 & Decode $-34{,}8\%$ rispetto al motore denso sugli stessi pesi, con token identici, costante fra 32 e 384 token in ingresso; richiesta completa più breve in tutte le 30 coppie & Confermata \\
+H4 & 44,0\% di racconti corretti contro 21,7\% e 48,3\% & Confermata: superiore a TinyStories-8M, nessuna differenza significativa da TinyStories-33M \\
 \bottomrule
 \end{tabularx}
 \caption{Sintesi delle ipotesi della tesi e del loro esito.}
@@ -37,7 +37,7 @@ H4 & 44,0\% di racconti corretti contro 21,7\% e 48,3\% & Confermata rispetto a 
 
 \paragraph{Un solo training.} STERA 30M è stato addestrato una volta, con un unico seme. Gli intervalli di confidenza riportati misurano l'incertezza dovuta ai racconti di prova, non quella dovuta all'inizializzazione.
 
-\paragraph{Riferimenti non controllati.} I checkpoint TinyStories sono modelli pubblici con architettura, budget di training e dati non identici a quelli di STERA 30M. Il confronto descrive le prestazioni dei modelli esistenti e non isola l'effetto della sola parametrizzazione.
+\paragraph{Modelli di riferimento.} I checkpoint TinyStories sono modelli pubblici con architettura, budget di training e dati non identici a quelli di STERA 30M. Il confronto descrive le prestazioni dei modelli esistenti e non isola l'effetto della sola parametrizzazione.
 
 \paragraph{Calcolo e memoria.} Il vantaggio di STERA riguarda i byte da memorizzare e trasferire, non il numero di operazioni: durante il training e nel motore denso, STERA 30M calcola come un modello con \num{82721280} valori.
 

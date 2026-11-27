@@ -14,7 +14,7 @@ A ogni passo il motore ricostruisce le matrici con un algoritmo a tabelle. Una v
 \]
 seguite dalla moltiplicazione per i guadagni e dalla somma di $UV^\top$. Sono tutte operazioni standard di PyTorch, eseguite in parallelo su tutti i blocchi.
 
-Il vantaggio di questa scelta riguarda la backpropagation. L'autograd di PyTorch conosce la derivata di ogni operazione usata: il passo all'indietro di una lettura indicizzata è una somma indicizzata, che accumula il gradiente di ogni casella nella coordinata letta. Il gradiente delle coordinate si ottiene quindi senza codice dedicato, ed è esattamente quello della \autoref{sec:gradiente-coordinate}. Il resto del passo usa i prodotti densi della GPU, l'operazione più ottimizzata delle librerie numeriche.
+Il vantaggio di questa scelta riguarda la backpropagation. L'autograd di PyTorch conosce la derivata di ogni operazione usata: il backward di una lettura indicizzata è una somma indicizzata, che accumula il gradiente di ogni casella nella coordinata letta. Il gradiente delle coordinate si ottiene quindi senza codice dedicato, ed è esattamente quello della \autoref{sec:gradiente-coordinate}. Il resto del passo usa i prodotti densi della GPU, l'operazione più ottimizzata delle librerie numeriche.
 
 \subsection{Inizializzazione delle coordinate}
 \label{sec:init-coordinate}

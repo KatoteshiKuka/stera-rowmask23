@@ -5,7 +5,7 @@ Questo capitolo verifica le ipotesi H2 e H3 e studia il comportamento di STERA q
 
 \paragraph{Hardware.} Tutte le misure di inferenza della tesi sono state effettuate su un MacBook Air con chip Apple M1, 16 GiB di memoria unificata e SSD interno. Si distinguono la dimensione dei pesi persistenti e la memoria fisica occupata dall'intero processo: non sono grandezze intercambiabili.
 
-\paragraph{Unico checkpoint STERA.} Il modello linguistico allenato è soltanto \textbf{STERA 30M}, con \num{30346182} parametri compatti e \num{82721280} elementi nella rappresentazione densa equivalente. Per isolare l'effetto dei motori, viene confrontato il percorso MLX/Metal che utilizza direttamente le coordinate con quello che carica le matrici densi ricostruite dallo stesso insieme di pesi. Tutti i test con tale coppia eseguono la medesima funzione appresa, e la coincidenza dei token generati è stata controllata sui prompt misurati.
+\paragraph{Unico checkpoint STERA.} Il modello linguistico allenato è soltanto \textbf{STERA 30M}, con \num{30346182} parametri compatti e \num{82721280} elementi nella rappresentazione densa equivalente. Per isolare l'effetto dei motori, viene confrontato il percorso MLX/Metal che utilizza direttamente le coordinate con quello che carica le matrici dense ricostruite dallo stesso insieme di pesi. Tutti i test con tale coppia eseguono la medesima funzione appresa, e la coincidenza dei token generati è stata controllata sui prompt misurati.
 
 \paragraph{Riferimenti pubblici.} Per le prove applicative sono eseguiti esclusivamente TinyStories-8M e TinyStories-33M, in due modi: con il runtime standard PyTorch/MPS con cui sono distribuiti e con un motore denso MLX che ha le stesse ottimizzazioni del motore denso di STERA 30M e produce gli stessi token dell'implementazione di riferimento. Solo il secondo confronto attribuisce le differenze di tempo ai modelli anziché ai framework. Il confronto più controllato resta quello fra i due motori di STERA 30M, che eseguono gli stessi pesi.
 
@@ -83,7 +83,7 @@ Durante il training di STERA 30M le matrici vengono espanse temporaneamente per 
 \section{Confronto dei due motori dello stesso STERA 30M}
 \label{sec:replica-stera-dense}
 
-I due motori MLX/Metal eseguono gli stessi pesi, quelli del checkpoint finale di STERA 30M, sullo stesso Mac, a pesi residenti e precisione FP32. Il percorso compatto usa le coordinate RowMask23. Il percorso Dense carica l'espansione equivalente. Entrambi usano prefill a blocchi, SDPA in decode, batch 1 e KV cache di capacità 512. I sei input contano 256 token ciascuno e l'ordine dei motori viene alternato. La misura è ripetuta in cinque campagne, ciascuna avviata solo quando la media di carico del sistema a un minuto era scesa sotto 1,5, per un totale di 30 coppie di richieste a caldo. In ogni coppia coincidono tutti i 101 ID greedy sia alla prima richiesta sia a caldo, e gli ID sono gli stessi in tutte le campagne.
+I due motori MLX/Metal eseguono gli stessi pesi, quelli del checkpoint finale di STERA 30M, sullo stesso Mac, a pesi residenti e precisione FP32. Il percorso compatto usa le coordinate RowMask23. Il percorso denso carica l'espansione equivalente. Entrambi usano prefill a blocchi, SDPA in decode, batch 1 e KV cache di capacità 512. I sei input contano 256 token ciascuno e l'ordine dei motori viene alternato. La misura è ripetuta in cinque campagne, ciascuna avviata solo quando la media di carico del sistema a un minuto era scesa sotto 1,5, per un totale di 30 coppie di richieste a caldo. In ogni coppia coincidono tutti i 101 ID greedy sia alla prima richiesta sia a caldo, e gli ID sono gli stessi in tutte le campagne.
 
 \begin{table}[htbp]
 \centering
@@ -91,7 +91,7 @@ I due motori MLX/Metal eseguono gli stessi pesi, quelli del checkpoint finale di
 \toprule
 Motore & TTFT (ms) & Decode (tok/s) & Totale (s) \\
 \midrule
-STERA 30M Dense & 28,8 & 130,26 & 0,797 \\
+STERA 30M denso & 28,8 & 130,26 & 0,797 \\
 STERA 30M compatto & 61,0 & 200,58 & 0,559 \\
 \bottomrule
 \end{tabular}
@@ -106,7 +106,7 @@ STERA 30M compatto & 61,0 & 200,58 & 0,559 \\
 \label{fig:decode-appaiato}
 \end{figure}
 
-Nel pannello (a) della \autoref{fig:decode-appaiato} ogni barra è la variazione del tempo per token del motore compatto rispetto al denso su uno dei sei input: tutte le barre sono negative, cioè il compatto è più rapido su ogni input. Nel pannello (b) ogni linea collega il tempo totale della stessa richiesta con i due motori, e tutte scendono passando al compatto. La riduzione mediana appaiata del tempo per passo di decode è del $34{,}8\%$, con riduzioni osservate da $18{,}0\%$ a $39{,}6\%$ sulle 30 coppie; le mediane delle singole campagne sono comprese fra $33{,}7\%$ e $36{,}0\%$. Il Dense emette prima il primo token in tutte le 30 coppie, mentre il compatto impiega meno tempo totale in tutte le 30. Il confronto dei soli payload FP32 vale 121,385 contro 330,885 MB. Questi valori descrivono i pesi, mentre cache, buffer e runtime contribuiscono alla memoria di esecuzione.
+Nel pannello (a) della \autoref{fig:decode-appaiato} ogni barra è la variazione del tempo per token del motore compatto rispetto al denso su uno dei sei input: tutte le barre sono negative, cioè il compatto è più rapido su ogni input. Nel pannello (b) ogni linea collega il tempo totale della stessa richiesta con i due motori, e tutte scendono passando al compatto. La riduzione mediana appaiata del tempo per passo di decode è del $34{,}8\%$, con riduzioni osservate da $18{,}0\%$ a $39{,}6\%$ sulle 30 coppie; le mediane delle singole campagne sono comprese fra $33{,}7\%$ e $36{,}0\%$. Il motore denso emette prima il primo token in tutte le 30 coppie, mentre il compatto impiega meno tempo totale in tutte le 30. Il confronto dei soli payload FP32 vale 121,385 contro 330,885 MB. Questi valori descrivono i pesi, mentre cache, buffer e runtime contribuiscono alla memoria di esecuzione.
 
 \section{Inferenza applicativa: STERA 30M e i due TinyStories}
 \label{sec:tre-checkpoint-inferenza}
@@ -252,7 +252,7 @@ Input (token) & TTFT (s) & Decode (tok/s) & Picco processo (GiB) & Letture SSD (
 \label{tab:qwen-swlp}
 \end{table}
 
-Con 256 token di input, una prova separata disattiva il prefetch e riporta 0,126 token/s nel decode, contro 0,153 con prefetch. Sono singole prove, a causa della loro durata, e non forniscono un intervallo sulla variabilità di esecuzione.
+Con 256 token di input, una prova separata disattiva il prefetch e riporta 0,126 token/s nel decode, contro 0,153 con prefetch. Data la durata di ciascuna prova, ogni condizione è misurata una volta.
 
 \paragraph{Confronto dei due regimi.} La \autoref{tab:f10-qwen}, subito sotto, mette a confronto i due modelli nelle condizioni misurate.
 
