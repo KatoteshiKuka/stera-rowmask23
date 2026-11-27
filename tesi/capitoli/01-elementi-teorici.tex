@@ -99,11 +99,11 @@ Per un layer lineare $Y=XW^\top$, con $X\in\mathbb{R}^{B\times n}$ ingressi, $W\
 \frac{\partial\mathcal{L}}{\partial X} = G_Y W.
 \label{eq:linear-grad}
 \end{equation}
-La prima formula fornisce il gradiente dei pesi, la seconda il gradiente da passare al layer precedente. Nel \autoref{cap:capitoli/03-formalismo} useremo la prima per ricavare il gradiente rispetto alle coordinate compresse: basterà comporla con la derivata della mappa che costruisce $W$ dalle coordinate.
+La prima formula fornisce il gradiente dei pesi, la seconda il gradiente da passare al layer precedente. Nel \autoref{cap:capitoli/04c-forward-backward} useremo la prima per ricavare il gradiente rispetto alle coordinate compresse: basterà comporla con la derivata della mappa che costruisce $W$ dalle coordinate.
 
 \subsection{Adam e AdamW}
 
-La gradient descent semplice usa un unico passo per tutti i parametri. Adam \cite{kingma2015adam} adatta invece il passo a ciascun parametro, mantenendo una media esponenziale del gradiente e del suo quadrato:
+Il gradient descent semplice usa un unico passo per tutti i parametri. Adam \cite{kingma2015adam} adatta invece il passo a ciascun parametro, mantenendo una media esponenziale del gradiente e del suo quadrato:
 \begin{align}
 m_t &= \beta_1 m_{t-1} + (1-\beta_1) g_t,\\
 v_t &= \beta_2 v_{t-1} + (1-\beta_2) g_t^2,\\
@@ -127,7 +127,7 @@ Nelle valutazioni di questa tesi tutti i modelli generano con sampling top-$k$, 
 
 \subsection{KV cache}
 
-Durante la generazione, il prefisso cresce di un token alla volta. Ricalcolare ogni volta l'attention sull'intero prefisso sarebbe uno spreco: le key e i value delle posizioni passate non cambiano. Si conservano quindi in una \emph{KV cache} e, a ogni nuovo token, si calcolano solo la query, la key e il value della nuova posizione. Il costo per token diventa dominato, ancora una volta, dai prodotti matrice--vettore delle proiezioni lineari.
+Durante la generazione, il prefisso cresce di un token alla volta. Ricalcolare ogni volta l'attention sull'intero prefisso sarebbe uno spreco: le key e i value delle posizioni passate non cambiano. Si conservano quindi in una \emph{KV cache} e, a ogni nuovo token, si calcolano solo la query, la key e il value della nuova posizione. Il costo per token diventa dominato, ancora una volta, dai prodotti matrice--vettore delle proiezioni lineari, almeno finché il contesto resta breve: con contesti di decine di migliaia di token pesano anche la lettura della KV cache a ogni token e lo spazio che essa occupa in memoria (\autoref{sec:qwen-f10-ssd}).
 
 \section{Memoria e trasferimento dei pesi}
 \label{sec:memoria-trasferimento}
@@ -142,7 +142,7 @@ Durante la generazione, ogni token richiede di applicare tutte le matrici del mo
   liv/.style={draw=steraGrigio, rounded corners=2pt, minimum height=9mm, align=center, font=\small},
   freccia/.style={-{Latex[length=2mm]}, thick, steraGrigio}]
 \node[liv, minimum width=34mm, fill=steraBlu!12] (gpu) {Unità di calcolo\\{\footnotesize registri e cache}};
-\node[liv, minimum width=62mm, fill=steraBlu!6, below=9mm of gpu] (ram) {Memoria principale (16 GiB)\\{\footnotesize pesi residenti, cache KV, activation}};
+\node[liv, minimum width=62mm, fill=steraBlu!6, below=9mm of gpu] (ram) {Memoria principale (16 GiB)\\{\footnotesize pesi residenti, KV cache, activation}};
 \node[liv, minimum width=90mm, fill=white, below=11mm of ram] (ssd) {Disco SSD (centinaia di GB)\\{\footnotesize copia persistente di tutti i pesi}};
 \draw[freccia] ([xshift=-6mm]ram.north) -- node[left, font=\footnotesize]{$\approx 68$ GB/s} ([xshift=-6mm]gpu.south);
 \draw[freccia] ([xshift=-6mm]ssd.north) -- node[left, font=\footnotesize]{$\approx 2{,}4$ GB/s} ([xshift=-6mm]ram.south);
@@ -169,7 +169,7 @@ Con il \emph{prefetch}, il layer $\ell+1$ viene caricato mentre si calcola il la
 T_{\mathrm{pref}} \approx \max\!\left(\frac{B}{\beta},\,T_c\right).
 \label{eq:tempo-prefetch}
 \end{equation}
-La \autoref{fig:prefetch} confronta le due politiche. Nei modelli linguistici su dispositivi personali, in generazione con un solo testo alla volta, il calcolo per token è piccolo rispetto alla lettura dei pesi: il termine $B/\beta$ domina e il prefetch può nascondere al più il tempo di calcolo. L'unico modo di ridurre sostanzialmente il tempo per token è ridurre $B$, cioè leggere meno byte. È qui che si inserisce una rappresentazione compatta dei pesi: a parità di banda, ridurre di un fattore $r$ i byte da trasferire riduce dello stesso fattore il termine dominante, oppure permette di mantenere residente un modello che altrimenti andrebbe trasferito.
+La \autoref{fig:prefetch} confronta le due politiche. Nei modelli linguistici su dispositivi personali, in generazione con un solo testo alla volta, il calcolo per token è piccolo rispetto alla lettura dei pesi: il termine $B/\beta$ domina e il prefetch può nascondere al più il tempo di calcolo. L'unico modo di ridurre sostanzialmente il tempo per token è ridurre $B$, cioè leggere meno byte. È qui che si inserisce una rappresentazione compatta dei pesi: a parità di banda, ridurre i byte da trasferire riduce nella stessa proporzione il termine dominante, oppure permette di mantenere residente un modello che altrimenti andrebbe trasferito.
 
 \begin{figure}[htbp]
 \centering

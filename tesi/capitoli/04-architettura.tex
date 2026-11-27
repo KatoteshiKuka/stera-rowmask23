@@ -6,8 +6,8 @@ I capitoli precedenti hanno definito la parametrizzazione STERA, il suo forward 
 STERA 30M mantiene la struttura di un Transformer decoder-only e cambia solo la rappresentazione delle sue matrici. Le dimensioni sono:
 \begin{itemize}
 \item sei layer, con hidden size $d=768$;
-\item attention a 16 head da 48 componenti; i layer si alternano fra attention causale sull'intero prefisso e attention causale con finestra locale di 256 posizioni, tre e tre;
-\item un feed-forward con dimensione interna $f=\num{3072}$ e activation function GELU;
+\item attention a 16 head da 48 componenti; i layer si alternano fra attention causale sull'intero prefisso e attention causale con finestra locale di 256 posizioni, tre e tre; come nei modelli GPT-Neo, a cui appartengono anche i TinyStories, i prodotti scalari dell'attention non sono divisi per $\sqrt{d_h}$;
+\item un feed-forward con dimensione interna $f=\num{3072}$ e activation function GELU, nella sua approssimazione con la tangente iperbolica;
 \item un vocabolario di \num{50257} token, una tabella di \num{2048} posizioni assolute allenabili e finestre di training fino a 512 token.
 \end{itemize}
 

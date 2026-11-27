@@ -39,7 +39,7 @@ Questo termine di lettura è un limite inferiore al costo di una generazione che
 
 \section{Quanto modello entra in un dispositivo}
 
-Un limite analitico aiuta a distinguere la capacità di memorizzazione dal throughput. Un budget ipotetico di 12~GB per i soli valori FP16 contiene 6 miliardi di scalari densi. Se ogni blocco $128\times128$ fosse rappresentato esclusivamente dalle sue \,\num{3176} coordinate RowMask23, il rapporto ideale fra elementi sarebbe $16384/3176\approx5{,}16$. Tale rapporto non può essere esteso automaticamente a un Transformer completo: embedding, guadagni, fattori low-rank, cache KV, workspace e granularità dei blocchi consumano spazio. Il modello fittizio STERA F10 della \autoref{sec:qwen-f10-ssd} fornisce questo conto per un modello completo di taglia simile a Qwen3.5-9B: 3,73~GiB di pesi compatti contro 17,32~GiB della forma densa.
+Un limite analitico aiuta a distinguere la capacità di memorizzazione dal throughput. Un budget ipotetico di 12~GB per i soli valori FP16 contiene 6 miliardi di scalari densi. Se ogni blocco $128\times128$ fosse rappresentato esclusivamente dalle sue \,\num{3176} coordinate RowMask23, il rapporto ideale fra elementi sarebbe $16384/3176\approx5{,}16$. Tale rapporto non può essere esteso automaticamente a un Transformer completo: embedding, guadagni, fattori low-rank, KV cache, workspace e granularità dei blocchi consumano spazio. Il modello fittizio STERA F10 della \autoref{sec:qwen-f10-ssd} fornisce questo conto per un modello completo di taglia simile a Qwen3.5-9B: 3,73~GiB di pesi compatti contro 17,32~GiB della forma densa.
 
 \section{Peso di STERA 30M}
 \label{sec:stera30m-quantizzazione}
@@ -83,7 +83,7 @@ Durante il training di STERA 30M le matrici vengono espanse temporaneamente per 
 \section{Confronto dei due motori dello stesso STERA 30M}
 \label{sec:replica-stera-dense}
 
-I due motori MLX/Metal eseguono gli stessi pesi, quelli del checkpoint finale di STERA 30M, sullo stesso Mac, a pesi residenti e precisione FP32. Il percorso compatto usa le coordinate RowMask23. Il percorso Dense carica l'espansione equivalente. Entrambi usano prefill a blocchi, SDPA in decode, batch 1 e cache KV di capacità 512. I sei input contano 256 token ciascuno e l'ordine dei motori viene alternato. La misura è ripetuta in cinque campagne, ciascuna avviata solo quando la media di carico del sistema a un minuto era scesa sotto 1,5, per un totale di 30 coppie di richieste a caldo. In ogni coppia coincidono tutti i 101 ID greedy sia alla prima richiesta sia a caldo, e gli ID sono gli stessi in tutte le campagne.
+I due motori MLX/Metal eseguono gli stessi pesi, quelli del checkpoint finale di STERA 30M, sullo stesso Mac, a pesi residenti e precisione FP32. Il percorso compatto usa le coordinate RowMask23. Il percorso Dense carica l'espansione equivalente. Entrambi usano prefill a blocchi, SDPA in decode, batch 1 e KV cache di capacità 512. I sei input contano 256 token ciascuno e l'ordine dei motori viene alternato. La misura è ripetuta in cinque campagne, ciascuna avviata solo quando la media di carico del sistema a un minuto era scesa sotto 1,5, per un totale di 30 coppie di richieste a caldo. In ogni coppia coincidono tutti i 101 ID greedy sia alla prima richiesta sia a caldo, e gli ID sono gli stessi in tutte le campagne.
 
 \begin{table}[htbp]
 \centering

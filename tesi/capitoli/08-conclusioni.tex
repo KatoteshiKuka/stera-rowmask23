@@ -29,9 +29,9 @@ H4 & 44,0\% di racconti corretti contro 21,7\% e 48,3\% & Confermata rispetto a 
 
 \paragraph{Componenti piccole ma indispensabili.} Scale e guadagni valgono meno dello $0{,}5\%$ dei parametri, ma il modello addestrato non funziona senza di essi. Il termine low-rank è usato per intero: ridurne il rango a posteriori fa crollare la qualità già a rango 64.
 
-\paragraph{Struttura e quantizzazione si sommano.} Quantizzare a 8 bit il termine low-rank non produce perdite misurabili, porta i pesi a 86,1~MB ($-74\%$ rispetto alla forma densa) e rende il decode più rapido del $17{,}8\%$. Scale, guadagni e low-rank insieme a 8 bit cambiano la NLL dello $0{,}2\%$.
+\paragraph{Struttura e quantizzazione si sommano.} Quantizzare a 8 bit il termine low-rank cambia la NLL dello $0{,}007\%$ senza ridurre in modo significativo la quota di racconti corretti, porta i pesi a 86,1~MB ($-74\%$ rispetto alla forma densa) e rende il decode più rapido del $17{,}8\%$. Scale, guadagni e low-rank insieme a 8 bit cambiano la NLL dello $0{,}2\%$.
 
-\paragraph{Esecuzione.} Sullo stesso modello il motore compatto riduce il tempo per token in decode, e con lo stesso motore STERA 30M genera più rapidamente di TinyStories-33M. Il motore denso resta più rapido nell'elaborazione del prompt; l'espansione al bisogno delle matrici nel prefill dimezza il divario.
+\paragraph{Esecuzione.} Sullo stesso modello il motore compatto riduce il tempo per token in decode, e con lo stesso motore STERA 30M genera più rapidamente di TinyStories-33M. Il motore denso resta più rapido nell'elaborazione del prompt; l'espansione al bisogno delle matrici nel prefill dimezza il divario. A scala maggiore, un modello fittizio delle dimensioni di Qwen3.5-9B costruito con STERA resta in memoria su un dispositivo da 16~GiB con contesti fino a \num{64000} token, mentre la sua forma densa e Qwen3.5-9B superano la memoria già con i soli pesi.
 
 \section{Limiti}
 
@@ -43,7 +43,7 @@ H4 & 44,0\% di racconti corretti contro 21,7\% e 48,3\% & Confermata rispetto a 
 
 \paragraph{Valutazione automatica.} La qualità dei racconti è stata giudicata da un singolo modello linguistico, in modo cieco e con una rubrica fissata in anticipo. Una validazione con lettori umani renderebbe la stima più robusta.
 
-\paragraph{Misure di sistema.} Le misure di esecuzione sono state effettuate su un solo dispositivo, un Mac con chip M1 e 16~GiB di memoria unificata, e con contesti fino a 484 posizioni, entro le 512 usate in training.
+\paragraph{Misure di sistema.} Le misure di esecuzione sono state effettuate su un solo dispositivo, un Mac con chip M1 e 16~GiB di memoria unificata, con contesti fino a 484 posizioni per STERA 30M, entro le 512 usate in training. Le misure a contesto lungo riguardano solo il modello fittizio F10, che non è addestrato, con la KV cache riempita direttamente: descrivono memoria e tempo per token, non la qualità né il TTFT a contesto lungo.
 
 \paragraph{Studi a posteriori delle componenti.} L'importanza di scale, guadagni e termine low-rank e la loro quantizzazione sono state misurate sul modello già addestrato. Queste prove dicono quanto il modello dipende da ciascuna componente, non quanto essa serva all'apprendimento: un modello addestrato fin dall'inizio con un rango minore potrebbe affidare più informazione alle coordinate. Il giudizio delle varianti è stato svolto in sessioni separate da quella dei tre modelli, con lo stesso giudice e la stessa rubrica.
 

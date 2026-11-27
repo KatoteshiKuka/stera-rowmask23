@@ -20,8 +20,9 @@ La tesi verifica quattro ipotesi.
 
 \begin{itemize}
 \item La definizione della parametrizzazione STERA e delle sue proprietà: la mappa dalle coordinate al blocco è lineare e iniettiva, il gradiente ha forma chiusa e il prodotto con un vettore si calcola con la trasformata di Walsh--Hadamard. Una formula esatta dà il risparmio di una proiezione e di un modello intero in funzione delle dimensioni e del rango.
+\item Il forward e la backpropagation di una proiezione STERA, con un esempio numerico, la dimostrazione della loro esattezza e una verifica numerica, e il motore di training e di inferenza che li esegue.
 \item Il training da zero di STERA 30M e il suo confronto con due checkpoint pubblici dello stesso dominio, TinyStories-8M e TinyStories-33M, sulla likelihood di racconti di prova e con un giudizio cieco delle continuazioni generate.
-\item Due motori di esecuzione per gli stessi pesi, uno che applica le proiezioni direttamente alle coordinate e uno con le matrici dense equivalenti, con misure di memoria e tempi al variare della lunghezza dell'ingresso e un confronto con i modelli di riferimento sullo stesso motore.
+\item Due motori di esecuzione per gli stessi pesi, uno che applica le proiezioni direttamente alle coordinate e uno con le matrici dense equivalenti, con misure di memoria e tempi al variare della lunghezza dell'ingresso e un confronto con i modelli di riferimento sullo stesso motore; un modello fittizio delle dimensioni di Qwen3.5-9B mostra quanta memoria richiede la parametrizzazione a scala maggiore, con contesti fino a \num{64000} token.
 \item Uno studio a posteriori del contributo delle componenti delle proiezioni (rango, scale e guadagni) e della quantizzazione a 8 bit del termine low-rank.
 \end{itemize}
 
