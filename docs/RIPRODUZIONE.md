@@ -152,9 +152,29 @@ I risultati della tesi, con i report che li descrivono, sono in `sistemi/risulta
 - `campagne_20261124/protocollo/`: le cinque campagne sul checkpoint finale usate nella tesi e `riepilogo.json` (decode appaiato −34,8%, tempi e picchi dei tre modelli); `protocollo_H122000_sotto_carico/` contiene cinque campagne sugli stessi pesi eseguite con il sistema carico, `protocollo_H80000/` e `preliminari/` campagne precedenti sui pesi a 80.000 aggiornamenti;
 - `01_motore_compatto_vs_denso/`: misure appaiate precedenti e attribuzione del tempo per operatore;
 - `02_tre_modelli_mac/`: TTFT, decode e picco di memoria dei tre modelli;
-- `03_f10_ssd_qwen/`: prototipo F10 (motore `sistemi/motori/stera_independent_fp32_transposed_jit_v28.py`, lettura dal disco `evidenze_f10/ssd_validato/bench_ssd_f10.py`) (pesi compatti 4,003 GB contro 18,597 GB densi), lettura validata dall'SSD, Qwen3.5-9B con caricamento dei layer dal disco, eseguito con [SWLP](https://github.com/Rishav-Upadhaya/SWLP) al commit `3941963812850f9ad6821f3bec78754d695143ac` (script `prepara_swlp.py`, `misura_swlp.py`, `riepiloga_swlp.py`); modello `Qwen/Qwen3.5-9B` scaricato da Hugging Face (revisione registrata nei metadati di download: `c202236235762e1c871ad0ccb60c8ee5ba337b9a`).
+- `03_f10_ssd_qwen/`: lettura validata dall'SSD e Qwen3.5-9B; le prove F10 qui contenute sono precedenti alla sezione 6.1 e non sono usate nella tesi (motore `sistemi/motori/stera_independent_fp32_transposed_jit_v28.py`, lettura dal disco `evidenze_f10/ssd_validato/bench_ssd_f10.py`) (pesi compatti 4,003 GB contro 18,597 GB densi), lettura validata dall'SSD, Qwen3.5-9B con caricamento dei layer dal disco, eseguito con [SWLP](https://github.com/Rishav-Upadhaya/SWLP) al commit `3941963812850f9ad6821f3bec78754d695143ac` (script `prepara_swlp.py`, `misura_swlp.py`, `riepiloga_swlp.py`); modello `Qwen/Qwen3.5-9B` scaricato da Hugging Face (revisione registrata nei metadati di download: `c202236235762e1c871ad0ccb60c8ee5ba337b9a`).
 
 L'archivio senza perdita dei pesi FP32 del checkpoint finale (102.352.624 byte, non usato nella tesi) si ottiene con `sistemi/benchmark/archivio_senza_perdita/steraf32_byteplane.py` e si ripristina bit per bit con `restore_lossless_archive.py`.
+
+### 6.1 Modello fittizio STERA F10 (confronto di risorse con Qwen3.5-9B)
+
+F10 non è addestrato: serve solo a confrontare le risorse di esecuzione. Si genera dal checkpoint finale con uno script deterministico (file identico bit per bit su ogni macchina):
+
+```bash
+python sistemi/f10/genera_f10.py sistemi/modelli/H122000_fp32_weights.npz sistemi/modelli/F10_H122000.npz
+shasum -a 256 sistemi/modelli/F10_H122000.npz   # c56d2f90fab47efcdb250b231394b531c0b11944faf3dffc5e6e166ba4fa9162
+```
+
+Decode al variare del contesto (cache riempita con valori di prova, tre esecuzioni per contesto, ciascuna avviata con carico sotto 1,5), prova di controllo con la cache riempita dal modello e verifica termica:
+
+```bash
+cd sistemi/benchmark
+CONTESTI="128:fp32 512:fp32 2000:fp32 8000:fp32 16000:fp32 32000:fp32 32000:fp16 64000:fp16" ./campagne_f10_contesto.sh
+STERA_PESI=H122000 python f10_controllo_reale.py --token 8000 --out ../risultati/campagne_20261127/f10_contesto/controllo_reale_8000.json
+STERA_PESI=H122000 python f10_contesto_prolungato.py --contesto 8000 --secondi 800 --out ../risultati/campagne_20261127/f10_contesto/verifica_termica_8000.json
+```
+
+Risultati in `sistemi/risultati/campagne_20261127/f10_contesto/`. Le cartelle `diagnostica_*` contengono misure precedenti non usate nella tesi (modello generato in GPU; cache copiata a ogni passo).
 
 ## 7. Figure e tesi
 
