@@ -1,0 +1,26 @@
+10:52:49 contesto 128 kv fp32 ripetizione 1 carico 1.42 swap 1779.25M
+10:53:24 contesto 512 kv fp32 ripetizione 1 carico 1.22 swap 1771.25M
+10:53:58 contesto 2000 kv fp32 ripetizione 1 carico 1.39 swap 1763.25M
+10:54:33 contesto 8000 kv fp32 ripetizione 1 carico 1.38 swap 1763.25M
+10:55:09 contesto 16000 kv fp32 ripetizione 1 carico 1.31 swap 1707.25M
+10:56:17 contesto 128 kv fp32 ripetizione 2 carico 1.47 swap 1699.25M
+10:56:52 contesto 512 kv fp32 ripetizione 2 carico 1.39 swap 1691.25M
+10:57:27 contesto 2000 kv fp32 ripetizione 2 carico 1.41 swap 1683.25M
+10:58:01 contesto 8000 kv fp32 ripetizione 2 carico 1.19 swap 1683.25M
+10:58:37 contesto 16000 kv fp32 ripetizione 2 carico 1.30 swap 1675.25M
+11:00:46 contesto 128 kv fp32 ripetizione 3 carico 1.46 swap 1700.12M
+11:01:21 contesto 512 kv fp32 ripetizione 3 carico 1.33 swap 1700.12M
+11:01:56 contesto 2000 kv fp32 ripetizione 3 carico 1.32 swap 1684.12M
+11:02:30 contesto 8000 kv fp32 ripetizione 3 carico 1.42 swap 1684.12M
+11:03:36 contesto 16000 kv fp32 ripetizione 3 carico 1.44 swap 1684.12M
+FINE
+11:04:19 contesto 32000 kv fp32 ripetizione 1 carico 1.23 swap 1680.12M
+11:08:02 contesto 32000 kv fp16 ripetizione 1 carico 1.48 swap 2147.44M
+11:09:27 contesto 64000 kv fp16 ripetizione 1 carico 1.42 swap 2449.38M
+11:13:14 contesto 32000 kv fp32 ripetizione 2 carico 1.46 swap 2250.44M
+11:16:55 contesto 32000 kv fp16 ripetizione 2 carico 1.43 swap 2101.56M
+11:18:00 contesto 64000 kv fp16 ripetizione 2 carico 1.37 swap 2024.19M
+11:21:26 contesto 32000 kv fp32 ripetizione 3 carico 1.43 swap 1874.38M
+11:23:57 contesto 32000 kv fp16 ripetizione 3 carico 1.49 swap 1885.19M
+11:25:33 contesto 64000 kv fp16 ripetizione 3 carico 1.44 swap 1981.81M
+FINE

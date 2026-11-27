@@ -17,7 +17,7 @@ from stera4b_factored_fp32_v8 import TOK_PATH
 R=Path(__file__).resolve().parent
 class LongCompiled:
  def __init__(self,capacity=8192,kv_precision="fp32",position_mode="strict"):
-  assert capacity in (512,2048,4096,8192,16384,32768)
+  assert capacity in (512,2048,4096,8192,16384,32768,65536)
   assert kv_precision in ("fp32","fp16")
   assert position_mode in ("strict","interpolate_experimental")
   self.position_mode=position_mode

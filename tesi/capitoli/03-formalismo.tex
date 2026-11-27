@@ -93,7 +93,7 @@ dove $i_\ell$ e $j_\ell$ sono i bit di posizione $\ell$. L'insieme $\{0,\dots,N-
 Dato un vettore $b\in\mathbb{R}^N$, la matrice XOR-circolante generata da $b$ è la matrice $B\in\mathbb{R}^{N\times N}$ con elementi $B_{ij} = b_{i\oplus j}$.
 \end{definizione}
 
-Il nome richiama le matrici circolanti, in cui l'elemento $(i,j)$ dipende da $(j-i)\bmod N$; qui dipende invece da $i\oplus j$. Ogni riga e ogni colonna di $B$ contiene tutti gli elementi di $b$, ciascuno una sola volta, in un ordine che cambia da riga a riga. La matrice è simmetrica, perché $i\oplus j=j\oplus i$, e $b_0$ compare esattamente sulla diagonale principale.
+Il nome richiama le matrici circolanti, in cui l'elemento $(i,j)$ dipende da $(j-i)\bmod N$; qui dipende invece da $i\oplus j$. In letteratura queste matrici sono dette anche \emph{diadiche} \cite{beauchamp1984applications}. Ogni riga e ogni colonna di $B$ contiene tutti gli elementi di $b$, ciascuno una sola volta, in un ordine che cambia da riga a riga. La matrice è simmetrica, perché $i\oplus j=j\oplus i$, e $b_0$ compare esattamente sulla diagonale principale.
 
 $B$ si può vedere come l'unione di $N$ \emph{diagonali generalizzate}: la diagonale di indice $s$ è l'insieme delle posizioni $\{(i,i\oplus s): i=0,\dots,N-1\}$, su cui la matrice è costante e vale $b_s$. Le $N$ diagonali generalizzate formano una partizione delle $N^2$ posizioni. Una matrice XOR-circolante ha però solo $N$ gradi di libertà su $N^2$ posizioni, troppo pochi per una rete che deve imparare trasformazioni generali: RowMask23 parte da questa base e le aggiunge una diagonale libera e un insieme fisso di correzioni per riga.
 

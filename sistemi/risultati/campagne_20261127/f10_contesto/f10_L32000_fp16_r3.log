@@ -1,0 +1,4 @@
+mx.metal.get_active_memory is deprecated and will be removed in a future version. Use mx.get_active_memory instead.
+F10_DA_FILE F10_H122000.npz c56d2f90fab4 byte 4002707952 MLX {'rss_mib': 4239.22, 'mlx_active_mib': 3956.35, 'sys_available_mib': 7113.75, 'swap_used_mib': 2223.06}
+LONG_CTX_INIT capacity 32768 KV_bytes 3043491840 weights_fp32_bytes 4002707952 MLX {'rss_mib': 987.62, 'mlx_active_mib': 3956.35, 'sys_available_mib': 7061.36, 'swap_used_mib': 2223.06}
+{"contesto": 32000, "capacita_cache": 32768, "kv": "fp16", "passi": 24, "modello": "F10_H122000.npz", "sha256_modello": "c56d2f90fab47efcdb250b231394b531c0b11944faf3dffc5e6e166ba4fa9162", "kv_byte": 3043491840, "decode_tok_s": 5.995088528025741, "ms_mediana": 166.1273330100812, "ms_p90": 168.00687497016042, "primo_passo_s": 1.861334417015314, "memoria": {"rss_mib": 77.33, "mlx_active_mib": 6859.05, "sys_available_mib": 3327.25, "swap_used_mib": 2453.06}, "mlx_picco_mib": 6880.1}

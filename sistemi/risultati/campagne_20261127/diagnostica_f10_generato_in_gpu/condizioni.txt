@@ -1,0 +1,16 @@
+10:33:55 contesto 128 ripetizione 1 carico 1.47
+10:34:29 contesto 512 ripetizione 1 carico 1.36
+10:35:03 contesto 2048 ripetizione 1 carico 1.39
+10:35:38 contesto 4096 ripetizione 1 carico 1.36
+10:37:53 contesto 8192 ripetizione 1 carico 1.48
+10:38:51 contesto 128 ripetizione 2 carico 1.45
+10:40:06 contesto 512 ripetizione 2 carico 1.35
+10:40:50 contesto 2048 ripetizione 2 carico 1.42
+10:41:54 contesto 4096 ripetizione 2 carico 1.44
+10:42:29 contesto 8192 ripetizione 2 carico 1.33
+10:43:10 contesto 128 ripetizione 3 carico 1.34
+10:43:43 contesto 512 ripetizione 3 carico 1.46
+10:45:28 contesto 2048 ripetizione 3 carico 1.44
+10:46:02 contesto 4096 ripetizione 3 carico 1.37
+10:46:47 contesto 8192 ripetizione 3 carico 1.48
+FINE

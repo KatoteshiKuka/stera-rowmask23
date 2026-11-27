@@ -1,0 +1,18 @@
+{
+ "contesto": 2048,
+ "capacita_cache": 4096,
+ "passi": 24,
+ "pesi": "H122000",
+ "kv_byte": 802160640,
+ "decode_tok_s": 11.301579123582895,
+ "ms_mediana": 88.6701665003784,
+ "ms_p90": 88.92691705841571,
+ "primo_passo_s": 0.1567865830147639,
+ "memoria": {
+  "rss_mib": 688.53,
+  "mlx_active_mib": 5486.55,
+  "sys_available_mib": 3753.39,
+  "swap_used_mib": 5431.19
+ },
+ "mlx_picco_mib": 5494.5
+}

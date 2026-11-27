@@ -1,0 +1,11 @@
+mx.metal.get_active_memory is deprecated and will be removed in a future version. Use mx.get_active_memory instead.
+DIRECT_MODEL_LOADED embedding tiles 23580 gpu {'rss_mib': 281.41, 'mlx_active_mib': 380.77, 'sys_available_mib': 9647.78, 'swap_used_mib': 5479.19}
+DIRECT_MODEL_LOADED layers.0.proj tiles 14400 gpu {'rss_mib': 338.86, 'mlx_active_mib': 976.7, 'sys_available_mib': 8889.17, 'swap_used_mib': 5479.19}
+DIRECT_MODEL_LOADED layers.1.proj tiles 14400 gpu {'rss_mib': 393.81, 'mlx_active_mib': 1572.63, 'sys_available_mib': 8889.17, 'swap_used_mib': 5479.19}
+DIRECT_MODEL_LOADED layers.2.proj tiles 14400 gpu {'rss_mib': 448.73, 'mlx_active_mib': 2168.56, 'sys_available_mib': 8889.17, 'swap_used_mib': 5479.19}
+DIRECT_MODEL_LOADED layers.3.proj tiles 14400 gpu {'rss_mib': 501.94, 'mlx_active_mib': 2764.49, 'sys_available_mib': 8889.17, 'swap_used_mib': 5479.19}
+DIRECT_MODEL_LOADED layers.4.proj tiles 14400 gpu {'rss_mib': 553.36, 'mlx_active_mib': 3360.42, 'sys_available_mib': 8889.17, 'swap_used_mib': 5479.19}
+DIRECT_MODEL_LOADED layers.5.proj tiles 14400 gpu {'rss_mib': 604.77, 'mlx_active_mib': 3956.35, 'sys_available_mib': 8889.17, 'swap_used_mib': 5479.19}
+DIRECT_MODEL_COMPLETE n_coords 898109280 fp32_weight_bytes 4002707952 gpu {'rss_mib': 721.0, 'mlx_active_mib': 3956.35, 'sys_available_mib': 8889.17, 'swap_used_mib': 5479.19}
+LONG_CTX_INIT capacity 512 KV_bytes 141557760 weights_fp32_bytes 4002707952 MLX {'rss_mib': 679.89, 'mlx_active_mib': 3956.35, 'sys_available_mib': 5876.05, 'swap_used_mib': 5479.19}
+{"contesto": 128, "capacita_cache": 512, "passi": 24, "pesi": "H122000", "kv_byte": 141557760, "decode_tok_s": 11.902305365756417, "ms_mediana": 80.22381248883903, "ms_p90": 81.97716705035418, "primo_passo_s": 0.09658845898229629, "memoria": {"rss_mib": 688.61, "mlx_active_mib": 4226.55, "sys_available_mib": 5875.28, "swap_used_mib": 5471.19}, "mlx_picco_mib": 4504.8}

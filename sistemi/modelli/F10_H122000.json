@@ -1,0 +1,10 @@
+{
+ "file": "F10_H122000.npz",
+ "sha256": "c56d2f90fab47efcdb250b231394b531c0b11944faf3dffc5e6e166ba4fa9162",
+ "sorgente": "H122000_fp32_weights.npz",
+ "sha256_sorgente": "864d03dc63b5d5a8977eba0c7c8bec60530a33a1ef52762ab5b96aeb2201018c",
+ "fattore": 10,
+ "coordinate": 898109280,
+ "byte_pesi_fp32": 4002707952,
+ "valori_forma_densa": 4633067520
+}

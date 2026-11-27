@@ -1,0 +1,20 @@
+{
+ "contesto": 64000,
+ "capacita_cache": 65536,
+ "kv": "fp16",
+ "passi": 24,
+ "modello": "F10_H122000.npz",
+ "sha256_modello": "c56d2f90fab47efcdb250b231394b531c0b11944faf3dffc5e6e166ba4fa9162",
+ "kv_byte": 6063390720,
+ "decode_tok_s": 3.8945194278348922,
+ "ms_mediana": 256.60035450709984,
+ "ms_p90": 258.39737500064075,
+ "primo_passo_s": 8.948208957910538,
+ "memoria": {
+  "rss_mib": 30.28,
+  "mlx_active_mib": 9739.05,
+  "sys_available_mib": 3131.27,
+  "swap_used_mib": 2451.88
+ },
+ "mlx_picco_mib": 9775.7
+}
