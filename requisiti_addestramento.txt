@@ -1,6 +1,0 @@
-# Addestramento e valutazione (GPU NVIDIA o CPU), Python >= 3.11
-# Versioni usate nella tesi: Python 3.12.3, torch 2.14.1+cu126, numpy 2.5.4, tokenizers 0.20.3, transformers 4.46.3
-torch>=2.4
-numpy>=2.0
-tokenizers>=0.20
-transformers>=4.46

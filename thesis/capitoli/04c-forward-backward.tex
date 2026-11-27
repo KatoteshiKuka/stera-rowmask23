@@ -1,0 +1,324 @@
+Il capitolo precedente ha definito la parametrizzazione STERA. Questo capitolo descrive come una proiezione STERA si calcola e come si addestra: il prodotto con un blocco tramite la trasformata di Walsh--Hadamard, il gradiente rispetto alle coordinate, il forward e la backpropagation attraverso un'intera proiezione, con un esempio numerico e una verifica della loro esattezza, e infine che cosa accade a ogni passo di training e quali strategie si possono usare in inferenza. Le formule sono generali e valgono per ogni modello costruito con proiezioni STERA.
+
+\section{Il prodotto con un blocco: la trasformata di Walsh--Hadamard}
+\label{sec:wht}
+
+Per la scomposizione \eqref{eq:scomposizione}, il prodotto $y=Wx$ si scrive
+\begin{equation}
+y_i = d_i x_i + \sum_{j} b_{i\oplus j}\,x_j + \sum_{k=0}^{22} e_{i,k}\,x_{i\oplus\sigma(i,k)},
+\label{eq:gemv}
+\end{equation}
+con la convenzione $b_0=0$. Il primo e il terzo termine costano $128$ e \num{2921} moltiplicazioni; il secondo, calcolato direttamente, ne costerebbe \num{16384}. La trasformata di Walsh--Hadamard lo riduce di molto.
+
+\subsection{La trasformata}
+ La matrice di Hadamard di ordine $N=2^n$ si definisce per ricorsione:
+\[
+H_1 = \begin{pmatrix}1\end{pmatrix},\qquad
+H_{2m} = \begin{pmatrix} H_m & H_m \\ H_m & -H_m \end{pmatrix}.
+\]
+In forma esplicita $(H_N)_{uv} = (-1)^{\langle u,v\rangle}$, dove $\langle u,v\rangle=\sum_\ell u_\ell v_\ell$ è il prodotto scalare dei vettori di bit; la matrice è simmetrica e $H_N^2 = N\,I$. La trasformata di un vettore è il prodotto $Hx$ e, per la struttura ricorsiva, si calcola in $n$ stadi di somme e differenze a coppie, con $N\log_2 N$ operazioni e nessuna moltiplicazione \cite{fino1976unified,beauchamp1984applications}: per $N=128$ sono $7$ stadi e $896$ addizioni. La \autoref{tab:wht} mostra gli stadi per $N=8$.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{cccc}
+\toprule
+Stadio & Distanza $h$ & Coppie combinate & Operazione su ogni coppia $(a,b)$ \\
+\midrule
+\rowcolor{steraBlu!10} 1 & 1 & $(0,1),(2,3),(4,5),(6,7)$ & $(a,b)\mapsto(a+b,\;a-b)$ \\
+2 & 2 & $(0,2),(1,3),(4,6),(5,7)$ & $(a,b)\mapsto(a+b,\;a-b)$ \\
+\rowcolor{steraBlu!10} 3 & 4 & $(0,4),(1,5),(2,6),(3,7)$ & $(a,b)\mapsto(a+b,\;a-b)$ \\
+\bottomrule
+\end{tabular}
+\caption{Trasformata di Walsh--Hadamard veloce per $N=8$: tre stadi, ciascuno con quattro somme e quattro differenze fra componenti a distanza $h$, per $N\log_2N=24$ operazioni e nessuna moltiplicazione. Per $N=128$ gli stadi sono 7.}
+\label{tab:wht}
+\end{table}
+
+\begin{proposizione}[Diagonalizzazione delle matrici XOR-circolanti]
+Sia $B$ la matrice XOR-circolante generata da $b$. Allora $H B H = N\,\mathrm{diag}(Hb)$ e, per ogni vettore $x$,
+\begin{equation}
+Bx = \frac{1}{N}\,H\big((Hb)\odot(Hx)\big),
+\label{eq:wht-conv}
+\end{equation}
+dove $\odot$ è il prodotto elemento per elemento.
+\end{proposizione}
+
+\begin{proof}
+Le righe di $H$ sono i caratteri del gruppo $(\mathbb{Z}_2)^n$: per ogni $u$ la funzione $\chi_u(i)=(-1)^{\langle u,i\rangle}$ soddisfa $\chi_u(i\oplus j)=\chi_u(i)\chi_u(j)$. Allora
+\[
+(B\chi_u)_i = \sum_j b_{i\oplus j}\chi_u(j) = \sum_s b_s\,\chi_u(i\oplus s) = \chi_u(i)\sum_s b_s\chi_u(s) = (Hb)_u\,\chi_u(i),
+\]
+dove si è posto $s=i\oplus j$, usando che $j\mapsto i\oplus j$ è una biiezione. Ogni carattere è quindi un autovettore di $B$ con autovalore $(Hb)_u$; poiché i caratteri sono le colonne di $H$, $BH = H\,\mathrm{diag}(Hb)$, e moltiplicando a sinistra per $H$ con $H^2=NI$ si ottiene la tesi.
+\end{proof}
+
+La formula \eqref{eq:wht-conv} è l'analogo, per lo XOR, del teorema di convoluzione di Fourier: il prodotto con la parte XOR si riduce a due trasformate e a $128$ moltiplicazioni, e il vettore $Hb$ dipende solo dai pesi, quindi si calcola una volta per tutte.
+
+\subsection{Costo del prodotto completo}
+ Il prodotto con un blocco richiede una trasformata di $x$ ($896$ addizioni), il prodotto con $Hb$ ($128$ moltiplicazioni), la trasformata inversa ($896$ addizioni; la divisione per $N$ si assorbe nei pesi), la diagonale ($128$ moltiplicazioni e addizioni) e le correzioni (\num{2921} moltiplicazioni e addizioni). In totale circa \num{3200} moltiplicazioni e \num{5000} addizioni, contro \num{16384} moltiplicazioni e altrettante addizioni del prodotto denso: le operazioni scendono di circa tre volte. I dati da leggere scendono invece di $5{,}16$ volte, \num{3176} coordinate invece di \num{16384} pesi, ed è questa la grandezza che conta nella generazione token per token (\autoref{sec:memory-bound}).
+
+Il conteggio delle operazioni non si traduce automaticamente in velocità. Il prodotto denso è l'operazione più ottimizzata di ogni libreria numerica, mentre le correzioni richiedono accessi indiretti all'ingresso, $x_{i\oplus\sigma(i,k)}$, meno regolari. Il \autoref{cap:capitoli/04d-motore} descrive come il motore di inferenza implementa questo prodotto e il \autoref{cap:capitoli/07-sistemi} misura quanto del vantaggio si ritrova in pratica.
+
+
+\section{Il gradiente rispetto alle coordinate}
+\label{sec:gradiente-coordinate}
+\label{sec:esempio-gradiente-rowmask}
+
+Sia $G=\partial\mathcal{L}/\partial W$ il gradiente della loss rispetto al blocco ricostruito, calcolato con la backpropagation ordinaria \eqref{eq:linear-grad}. Questa sezione resta al livello di un singolo blocco; la \autoref{sec:backward-stera} mostra da dove viene $G$ in un'intera proiezione e come scale e guadagni entrano nel calcolo. Poiché $\Phi$ è lineare, $\nabla_c\mathcal{L} = J_\Phi^\top\,\mathrm{vec}(G)$, dove la jacobiana $J_\Phi$ è costante. Non serve costruirla: le derivate parziali si leggono direttamente da \eqref{eq:rowmask23}.
+
+\begin{proposizione}[Gradiente esatto]
+Per ogni blocco valgono
+\begin{align}
+\frac{\partial\mathcal{L}}{\partial d_i} &= G_{ii}, \label{eq:grad-d}\\
+\frac{\partial\mathcal{L}}{\partial b_s} &= \sum_{i=0}^{127} G_{i,\,i\oplus s}, \qquad s=1,\dots,127, \label{eq:grad-b}\\
+\frac{\partial\mathcal{L}}{\partial e_{i,k}} &= G_{i,\,i\oplus\sigma(i,k)}, \qquad i=1,\dots,127,\ k=0,\dots,22. \label{eq:grad-e}
+\end{align}
+\end{proposizione}
+
+\begin{proof}
+Ogni coordinata compare con coefficiente uno in un insieme di posizioni di $W$, e la sua derivata è la somma degli elementi di $G$ in quelle posizioni. La diagonale $d_i$ compare solo in $(i,i)$, la correzione $e_{i,k}$ solo in $(i,i\oplus\sigma(i,k))$, la base $b_s$ in tutte le posizioni $(i,i\oplus s)$ della sua diagonale generalizzata.
+\end{proof}
+
+Nell'esempio della \autoref{sec:esempio-numerico-rowmask}, $\partial\mathcal{L}/\partial d_1=G_{1,1}$ e $\partial\mathcal{L}/\partial e_{1,0}=G_{1,9}$ provengono da una sola casella, mentre $\partial\mathcal{L}/\partial b_8=\sum_i G_{i,i\oplus8}$ raccoglie il segnale di tutte le 128 righe. L'asimmetria ha un significato intuitivo: la base cattura la parte della trasformazione comune a tutte le righe e si stima con molti dati, le correzioni e la diagonale catturano le eccezioni locali.
+
+\subsection{Il gradiente della base come correlazione XOR}
+ Il gradiente \eqref{eq:grad-b} si può calcolare senza formare $G$. In un layer lineare $Y=XW^\top$ con ingressi $x^{(m)}$ e gradienti in uscita $g^{(m)}$, $m=1,\dots,M$, si ha $G=\sum_m g^{(m)}x^{(m)\top}$ e quindi
+\[
+\frac{\partial\mathcal{L}}{\partial b_s} = \sum_m \sum_i g^{(m)}_i\, x^{(m)}_{i\oplus s},
+\]
+una correlazione XOR fra $g^{(m)}$ e $x^{(m)}$ che si calcola con la trasformata di Walsh--Hadamard come il prodotto della \autoref{sec:wht}. In training il nostro motore preferisce comunque ricostruire $W$ e $G$ per sfruttare i prodotti densi ottimizzati della GPU e applicare poi \eqref{eq:grad-d}--\eqref{eq:grad-e}; la scelta è descritta nel \autoref{cap:capitoli/04d-motore}.
+
+\subsection{Conseguenze per l'ottimizzazione}
+ L'optimizer riceve $\nabla_c\mathcal{L}$ e aggiorna direttamente $c$, quindi ogni iterata resta nella famiglia RowMask23: non esiste, in nessun momento, una copia densa dei pesi che si allontana dal sottospazio e va riproiettata. È la differenza rispetto ai metodi che addestrano una rete densa e la comprimono alla fine, o che aggiornano i pesi densi e li proiettano a ogni passo. Quanto alla geometria della mappa, in $J_\Phi^\top J_\Phi$ gli elementi diagonali valgono $1$ per la diagonale e per le correzioni e $128$ per ogni coordinata della base, e l'unico accoppiamento fuori diagonale è fra una correzione $e_{i,k}$ e la base $b_{\sigma(i,k)}$, che condividono una posizione. La base riceve quindi gradienti di norma maggiore; un optimizer adattivo come Adam, che normalizza ogni coordinata con la propria varianza stimata, compensa questa differenza di scala.
+
+
+\section{Dal blocco alla proiezione}
+\label{sec:rettangolari}
+
+Le matrici di un Transformer non sono quadrate di ordine $128$: le proiezioni dell'attention sono $d\times d$, quelle del feed-forward $f\times d$ e $d\times f$. Se $m$ e $n$ sono multipli di $128$, una matrice $m\times n$ si divide in $P\times Q$ blocchi e ogni blocco $(p,q)$ è un blocco RowMask23 indipendente, con coordinate proprie $c^{(p,q)}$ e una scala $\alpha^{(p,q)}$, come nella \autoref{def:proiezione-stera}. Il prodotto $y=\widetilde Wx$ si calcola blocco per blocco: l'ingresso si divide in segmenti di $128$ elementi, ogni blocco moltiplica il proprio segmento e le uscite dei blocchi sulla stessa riga si sommano. Il gradiente rispetto alle coordinate si ottiene applicando \eqref{eq:grad-d}--\eqref{eq:grad-e} a ogni blocco del gradiente rispetto a $\widetilde W$, che la \autoref{sec:backward-stera} ricava passo per passo tenendo conto di scale e guadagni.
+
+
+
+
+\section{Forward e backpropagation in una proiezione STERA}
+\label{sec:backward-stera}
+
+Le sezioni precedenti hanno trattato il singolo blocco. Per addestrare il modello serve però sapere come una proiezione STERA trasforma il suo ingresso, il \emph{forward}, e come il gradiente della loss torna indietro attraverso di essa, la \emph{backpropagation}: ogni componente deve ricevere il proprio gradiente, e il gradiente deve proseguire verso i layer precedenti. Questa sezione segue entrambi i percorsi un passo alla volta, con un esempio numerico, e mostra perché il risultato è esatto.
+
+\subsection{Il forward in quattro passi}
+\label{sec:forward-stera}
+
+Sia $x\in\mathbb{R}^n$ il vettore che entra nella proiezione, per esempio la rappresentazione di un token, e $y=Wx\in\mathbb{R}^m$ quello che ne esce. Invece di costruire $W$, la proiezione si può applicare per passi successivi, uno per componente, come mostra la \autoref{fig:forward-proiezione}, subito sotto.
+\begin{enumerate}
+\item[\textbf{1.}] \textbf{Guadagni di colonna.} Ogni componente dell'ingresso è moltiplicata per il proprio guadagno: $\tilde x = g_{\mathrm{in}}\odot x$.
+\item[\textbf{2.}] \textbf{Blocchi.} L'ingresso $\tilde x$ è diviso in $Q$ segmenti di 128 componenti, $\tilde x_{[q]}$, e l'uscita in $P$ segmenti, $z_{[p]}$. Ogni blocco moltiplica il proprio segmento, con la trasformata di Walsh--Hadamard della \autoref{sec:wht}, e i risultati dei blocchi della stessa riga si sommano:
+\[
+z_{[p]} = \sum_{q=1}^{Q} \alpha^{(p,q)}\,\Phi\big(c^{(p,q)}\big)\,\tilde x_{[q]},\qquad\text{cioè}\qquad z=\widetilde W\tilde x .
+\]
+\item[\textbf{3.}] \textbf{Guadagni di riga.} Ogni componente dell'uscita dei blocchi è moltiplicata per il proprio guadagno: $u = g_{\mathrm{out}}\odot z$.
+\item[\textbf{4.}] \textbf{Low-rank.} Su un ramo separato, l'ingresso originale $x$ viene ridotto a $r$ componenti, $a=V^\top x$, e riportato a $m$ componenti con $U$; il risultato si somma all'uscita: $y = u + U a$.
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\resizebox{\linewidth}{!}{\input{figure/tikz/forward_proiezione}}
+\caption{Forward di una proiezione STERA: in alto il percorso dei blocchi RowMask23 con i guadagni, in basso il ramo del low-rank. Nessun passo costruisce la matrice $W$.}
+\label{fig:forward-proiezione}
+\end{figure}
+
+I quattro passi calcolano esattamente $y=Wx$: sostituendo uno nell'altro si ottiene $y=\operatorname{diag}(g_{\mathrm{out}})\,\widetilde W\operatorname{diag}(g_{\mathrm{in}})\,x+UV^\top x$, che è la \autoref{def:proiezione-stera} applicata a $x$. Le grandezze intermedie $\tilde x$, $z$ e $a$ servono anche alla backpropagation e vengono conservate.
+
+\subsection{La backpropagation in quattro passi}
+\label{sec:backward-passi}
+
+La backpropagation percorre la stessa strada al contrario. Dallo layer successivo arriva il gradiente della loss rispetto all'uscita, $\delta=\partial\mathcal L/\partial y\in\mathbb{R}^m$. A ogni passo si applica la regola della catena all'operazione corrispondente del forward: si ottiene il gradiente dei parametri di quel passo e il gradiente da passare al passo precedente. La \autoref{fig:backward-proiezione}, subito sotto, mostra il percorso; i passi sono numerati da B1 a B4 nell'ordine in cui vengono eseguiti.
+
+\begin{figure}[H]
+\centering
+\resizebox{\linewidth}{!}{\input{figure/tikz/backward_proiezione}}
+\caption{Backpropagation in una proiezione STERA. Le frecce arancioni vanno dall'uscita verso l'ingresso; accanto a ogni operazione è indicato il gradiente dei suoi parametri. Nel punto in cui il forward sommava i due rami, il gradiente $\delta$ prosegue identico su entrambi.}
+\label{fig:backward-proiezione}
+\end{figure}
+
+\begin{enumerate}
+\item[\textbf{B1.}] \textbf{Low-rank.} La somma $y=u+Ua$ passa $\delta$ invariato a entrambi i rami. Sul ramo del low-rank si risale il prodotto $Ua$, che dà i gradienti di $U$ e di $a$, e poi il prodotto $a=V^\top x$, che dà il gradiente di $V$:
+\[
+\frac{\partial\mathcal L}{\partial U}=\delta\,a^\top,\qquad
+\frac{\partial\mathcal L}{\partial a}=U^\top\delta,\qquad
+\frac{\partial\mathcal L}{\partial V}=x\,\big(U^\top\delta\big)^\top,
+\]
+e il ramo restituisce all'ingresso il contributo $V\big(U^\top\delta\big)$. Come nel forward, nessuna di queste operazioni forma una matrice $m\times n$.
+\item[\textbf{B2.}] \textbf{Guadagni di riga.} Poiché $u_i=g_{\mathrm{out},i}\,z_i$, il gradiente di ogni guadagno è il prodotto del gradiente in arrivo per il valore che il guadagno ha moltiplicato, e il gradiente che prosegue verso i blocchi è moltiplicato per lo stesso guadagno:
+\[
+\frac{\partial\mathcal L}{\partial g_{\mathrm{out}}}=\delta\odot z,\qquad
+\tilde\delta=\frac{\partial\mathcal L}{\partial z}=g_{\mathrm{out}}\odot\delta .
+\]
+\item[\textbf{B3.}] \textbf{Blocchi.} Ogni blocco $(p,q)$ ha ricevuto nel forward il segmento $\tilde x_{[q]}$ e ha contribuito al segmento di uscita $z_{[p]}$, che ora riceve il gradiente $\tilde\delta_{[p]}$. Da queste due sole quantità si ottengono tutti i gradienti del blocco:
+\begin{itemize}
+\item la \emph{scala}: $\dfrac{\partial\mathcal L}{\partial\alpha^{(p,q)}}=\tilde\delta_{[p]}^{\top}\,\Phi\big(c^{(p,q)}\big)\,\tilde x_{[q]}$, cioè il gradiente in uscita moltiplicato per ciò che il blocco aveva prodotto prima di essere scalato;
+\item le \emph{coordinate}: il gradiente del blocco rispetto alla matrice è $\alpha^{(p,q)}\,\tilde\delta_{[p]}\tilde x_{[q]}^{\top}$, e la \autoref{sec:gradiente-coordinate} dice come raccoglierlo nelle coordinate. Scritto elemento per elemento,
+\[
+\frac{\partial\mathcal L}{\partial d_i}=\alpha\,\tilde\delta_i\,\tilde x_i,\qquad
+\frac{\partial\mathcal L}{\partial e_{i,k}}=\alpha\,\tilde\delta_i\,\tilde x_{i\oplus\sigma(i,k)},\qquad
+\frac{\partial\mathcal L}{\partial b_s}=\alpha\sum_{i=0}^{127}\tilde\delta_i\,\tilde x_{i\oplus s},
+\]
+dove gli indici sono interni al blocco. L'ultima somma è una correlazione XOR fra $\tilde\delta$ e $\tilde x$, che si calcola con due trasformate di Walsh--Hadamard come il prodotto della \autoref{sec:wht};
+\item il gradiente da passare indietro: $\dfrac{\partial\mathcal L}{\partial\tilde x_{[q]}}=\sum_{p=1}^{P}\alpha^{(p,q)}\,\Phi\big(c^{(p,q)}\big)^{\top}\tilde\delta_{[p]}$, cioè $\dfrac{\partial\mathcal L}{\partial\tilde x}=\widetilde W^\top\tilde\delta$.
+\end{itemize}
+\item[\textbf{B4.}] \textbf{Guadagni di colonna.} Come per i guadagni di riga, poiché $\tilde x_j=g_{\mathrm{in},j}\,x_j$,
+\[
+\frac{\partial\mathcal L}{\partial g_{\mathrm{in}}}=x\odot\frac{\partial\mathcal L}{\partial\tilde x},
+\]
+e il percorso dei blocchi restituisce all'ingresso $g_{\mathrm{in}}\odot\widetilde W^\top\tilde\delta$.
+\end{enumerate}
+
+Sommando i contributi dei due rami si ottiene il gradiente che la proiezione passa al layer precedente:
+\begin{equation}
+\frac{\partial\mathcal L}{\partial x}
+= g_{\mathrm{in}}\odot\Big(\widetilde W^{\top}\big(g_{\mathrm{out}}\odot\delta\big)\Big) + V\big(U^\top\delta\big)
+= W^\top\delta .
+\label{eq:grad-ingresso}
+\end{equation}
+
+\paragraph{Il blocco trasposto.} Il passo B3 richiede il prodotto con $\Phi(c)^\top$. Dalla scomposizione \eqref{eq:scomposizione}, $\Phi(c)^\top = D + B + R^\top$: la diagonale $D$ e la matrice XOR-circolante $B$ sono simmetriche e restano uguali, mentre la correzione $e_{i,k}$, che nel blocco sta in posizione $(i,\,i\oplus\sigma(i,k))$, nel trasposto sta in posizione $(i\oplus\sigma(i,k),\,i)$. Il prodotto con il blocco trasposto si calcola quindi con la stessa trasformata di Walsh--Hadamard e lo stesso numero di operazioni del prodotto diretto: la backpropagation costa quanto il forward.
+
+\paragraph{Più token insieme.} In training la proiezione riceve un batch di token, ciascuno con il proprio ingresso $x_t$ e il proprio gradiente $\delta_t$. I gradienti dei parametri sono le somme dei contributi dei singoli token, mentre $\partial\mathcal L/\partial x_t$ si calcola separatamente per ogni token. Raccogliendo le somme compare il gradiente rispetto all'intera matrice, $G=\sum_t\delta_t x_t^\top$, e ogni formula dei passi B1--B4 si può scrivere in funzione di $G$: per esempio $\partial\mathcal L/\partial g_{\mathrm{out},i}=\sum_t\delta_{t,i}z_{t,i}=\sum_j G_{ij}\widetilde W_{ij}g_{\mathrm{in},j}$.
+
+\subsection{Un esempio numerico}
+\label{sec:esempio-backward}
+
+Riprendiamo l'elemento $(1,9)$ del blocco della \autoref{sec:esempio-numerico-rowmask}, dove $\Phi(c)_{1,9}=b_8+e_{1,0}=0{,}15$, e isoliamo il suo contributo: l'ingresso ha una sola componente diversa da zero, $x_9=2$, e il gradiente in arrivo una sola, $\delta_1=0{,}5$. Fissiamo, a scopo illustrativo, scala $\alpha=1{,}2$, guadagni $g_{\mathrm{out},1}=0{,}8$ e $g_{\mathrm{in},9}=1{,}1$, e un low-rank di rango 1 con $U_{1,1}=0{,}3$ e $V_{9,1}=-0{,}4$. La \autoref{tab:esempio-backward}, subito sotto, segue i due percorsi.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{>{\raggedright\arraybackslash}p{12mm}>{\raggedright\arraybackslash}p{70mm}r}
+\toprule
+Passo & Operazione & Valore \\
+\midrule
+\rowcolor{steraBlu!10} 1 & $\tilde x_9=g_{\mathrm{in},9}\,x_9=1{,}1\cdot2$ & $2{,}2$ \\
+\rowcolor{steraBlu!10} 2 & $z_1=\alpha\,\Phi_{1,9}\,\tilde x_9=1{,}2\cdot0{,}15\cdot2{,}2$ & $0{,}396$ \\
+\rowcolor{steraBlu!10} 3 & $u_1=g_{\mathrm{out},1}\,z_1=0{,}8\cdot0{,}396$ & $0{,}3168$ \\
+\rowcolor{steraBlu!10} 4 & $a=V_{9,1}x_9=-0{,}8$;\quad $y_1=u_1+U_{1,1}\,a=0{,}3168-0{,}24$ & $0{,}0768$ \\
+\midrule
+\rowcolor{steraArancio!12} B1 & $\partial\mathcal L/\partial U_{1,1}=\delta_1\,a=0{,}5\cdot(-0{,}8)$ & $-0{,}4$ \\
+\rowcolor{steraArancio!12} & $\partial\mathcal L/\partial V_{9,1}=x_9\,U_{1,1}\,\delta_1=2\cdot0{,}3\cdot0{,}5$ & $0{,}3$ \\
+\rowcolor{steraArancio!12} B2 & $\partial\mathcal L/\partial g_{\mathrm{out},1}=\delta_1\,z_1=0{,}5\cdot0{,}396$ & $0{,}198$ \\
+\rowcolor{steraArancio!12} & $\tilde\delta_1=g_{\mathrm{out},1}\,\delta_1=0{,}8\cdot0{,}5$ & $0{,}4$ \\
+\rowcolor{steraArancio!12} B3 & $\partial\mathcal L/\partial\alpha=\tilde\delta_1\,\Phi_{1,9}\,\tilde x_9=0{,}4\cdot0{,}15\cdot2{,}2$ & $0{,}132$ \\
+\rowcolor{steraArancio!12} & $\partial\mathcal L/\partial e_{1,0}=\partial\mathcal L/\partial b_8=\alpha\,\tilde\delta_1\,\tilde x_9=1{,}2\cdot0{,}4\cdot2{,}2$ & $1{,}056$ \\
+\rowcolor{steraArancio!12} & $\partial\mathcal L/\partial\tilde x_9=\alpha\,\Phi_{1,9}\,\tilde\delta_1=1{,}2\cdot0{,}15\cdot0{,}4$ & $0{,}072$ \\
+\rowcolor{steraArancio!12} B4 & $\partial\mathcal L/\partial g_{\mathrm{in},9}=x_9\cdot0{,}072$ & $0{,}144$ \\
+\rowcolor{steraArancio!12} & $\partial\mathcal L/\partial x_9=g_{\mathrm{in},9}\cdot0{,}072+V_{9,1}U_{1,1}\delta_1=0{,}0792-0{,}06$ & $0{,}0192$ \\
+\bottomrule
+\end{tabular}
+\caption{Forward (in blu) e backpropagation (in arancione) per l'elemento $(1,9)$ di una proiezione STERA, con valori dimostrativi.}
+\label{tab:esempio-backward}
+\end{table}
+
+L'esempio permette due controlli a mano. Il primo: l'elemento della matrice vale $W_{1,9}=g_{\mathrm{out},1}\,\alpha\,\Phi_{1,9}\,g_{\mathrm{in},9}+U_{1,1}V_{9,1}=0{,}1584-0{,}12=0{,}0384$, e infatti $y_1=W_{1,9}x_9=0{,}0768$ e $\partial\mathcal L/\partial x_9=W_{1,9}\,\delta_1=0{,}0192$, come prevede la \eqref{eq:grad-ingresso}. Il secondo: $b_8$ ed $e_{1,0}$ ricevono lo stesso gradiente perché in questa casella compaiono entrambe con coefficiente uno; in un caso reale $b_8$ riceverebbe anche i contributi delle altre 127 caselle della sua diagonale generalizzata, $e_{1,0}$ no.
+
+\subsection{Correttezza}
+\label{sec:correttezza-backward}
+
+\begin{proposizione}[Esattezza della backpropagation]
+\label{prop:backward-esatto}
+I gradienti dei passi B1--B4 sono le derivate esatte della loss rispetto a tutti i parametri della proiezione e rispetto al suo ingresso.
+\end{proposizione}
+
+\begin{proof}
+Il forward è una composizione di quattro operazioni: due prodotti elemento per elemento (passi 1 e 3), un'applicazione lineare nell'ingresso e nelle coordinate e bilineare nella coppia (scala, blocco) (passo 2), e un prodotto e una somma (passo 4). Per ciascuna operazione le derivate rispetto ai suoi argomenti sono quelle scritte nei passi B1--B4, e la regola della catena le compone nell'ordine inverso. Per le coordinate si usa in più la \autoref{sec:gradiente-coordinate}, valida perché $\Phi$ è lineare. Infine, sostituendo $\widetilde W^\top\tilde\delta$ con la sua definizione, la \eqref{eq:grad-ingresso} si riduce a $\big(\operatorname{diag}(g_{\mathrm{in}})\widetilde W^\top\operatorname{diag}(g_{\mathrm{out}})+VU^\top\big)\delta=W^\top\delta$, il gradiente di $y=Wx$ rispetto a $x$.
+\end{proof}
+
+\paragraph{Che cosa fa il programma di training.} Il programma con cui è stato addestrato STERA 30M non implementa a mano i passi B1--B4. Nel forward ricostruisce la matrice $W$ a partire da coordinate, scale, guadagni e fattori $U$, $V$, con operazioni di indicizzazione e prodotti, e la backpropagation è calcolata dalla differenziazione automatica di PyTorch (\emph{autograd}). Poiché l'autograd applica la stessa regola della catena alle stesse operazioni, il risultato coincide con quello della \autoref{prop:backward-esatto}. I passi B1--B4 descrivono quindi che cosa calcola il training, e mostrano che la stessa backpropagation si può eseguire senza materializzare $W$.
+
+\paragraph{Verifica numerica.} Abbiamo verificato le formule di questa sezione su una proiezione $256\times384$ con 6 blocchi, low-rank di rango 8 e un batch di 5 token, in doppia precisione. La ricostruzione dei blocchi è la stessa usata in training; il forward e il backward seguono invece le formule di questa sezione, con la trasformata di Walsh--Hadamard per i blocchi e per i blocchi trasposti. La \autoref{tab:verifica-backward}, subito sotto, riporta lo scarto relativo massimo rispetto all'autograd di PyTorch e rispetto alle differenze finite, cioè alla variazione della loss misurata spostando di poco un singolo parametro. Gli scarti rispetto all'autograd sono dell'ordine di $10^{-15}$, il limite della doppia precisione; quelli rispetto alle differenze finite, che sono un'approssimazione, restano sotto $10^{-7}$.
+
+\begin{table}[H]
+\centering
+\small
+\begin{tabular}{lr}
+\toprule
+Grandezza confrontata & Scarto relativo massimo \\
+\midrule
+Uscita $y$ del forward & $1{,}2\cdot10^{-15}$ \\
+Gradiente delle coordinate & $6{,}6\cdot10^{-16}$ \\
+Gradiente delle scale & $3{,}6\cdot10^{-16}$ \\
+Gradiente dei guadagni $g_{\mathrm{out}}$ e $g_{\mathrm{in}}$ & $4{,}5\cdot10^{-16}$ \\
+Gradiente di $U$ e $V$ & $1{,}4\cdot10^{-15}$ \\
+Gradiente dell'ingresso $\partial\mathcal L/\partial x$ & $8{,}5\cdot10^{-16}$ \\
+\midrule
+Differenze finite, 20 parametri a caso & $7{,}6\cdot10^{-8}$ \\
+\bottomrule
+\end{tabular}
+\caption{Verifica numerica del forward e della backpropagation di una proiezione STERA: confronto fra le formule della \autoref{sec:backward-stera} e l'autograd di PyTorch, e fra le stesse formule e le differenze finite. Script: \texttt{evaluation/checks/check\_backward\_stera.py}.}
+\label{tab:verifica-backward}
+\end{table}
+
+
+\section{Un passo di training: che cosa viene aggiornato}
+\label{sec:passo-training}
+
+Le sezioni precedenti descrivono una proiezione; questa descrive che cosa accade a ogni passo di training di un modello costruito con proiezioni STERA. Durante il training la matrice densa $W$ compare, ma solo come strumento di calcolo: i parametri che il modello impara e che vengono salvati sono le coordinate compresse, insieme a scale, guadagni e fattori $U$ e $V$. Un passo di training si svolge in cinque fasi, mostrate nella \autoref{fig:passo-training}, subito sotto.
+
+\begin{figure}[H]
+\centering
+\resizebox{\linewidth}{!}{\input{figure/tikz/passo_training}}
+\caption{Un passo di training di un modello STERA. In blu il forward, in arancione il backward. Le caselle tratteggiate sono temporanee: la matrice densa $W$ e il suo gradiente $G$ vengono ricalcolati a ogni passo e non sono mai salvati né aggiornati.}
+\label{fig:passo-training}
+\end{figure}
+
+\begin{enumerate}
+\item \textbf{Ricostruzione.} Dalle coordinate, dalle scale, dai guadagni e dai fattori $U$ e $V$ si costruisce la matrice densa $W$ di ogni proiezione, secondo la \autoref{def:proiezione-stera}. In un blocco, la coordinata di base $b_8$ viene copiata nelle 128 caselle con $i\oplus j=8$.
+\item \textbf{Forward.} Il modello usa le matrici $W$ così costruite per calcolare le probabilità dei token e la loss $\mathcal L$. La loss è quindi calcolata con la forma densa equivalente, che però è determinata interamente dalle coordinate.
+\item \textbf{Backward.} L'autograd calcola il gradiente della loss rispetto a ogni casella di $W$: è la matrice $G=\partial\mathcal L/\partial W$, con un valore per ciascuna delle \num{16384} caselle di un blocco. Le 128 caselle di $b_8$ ricevono in generale 128 gradienti diversi.
+\item \textbf{Raccolta dei gradienti.} Il gradiente di ogni coordinata è la somma dei gradienti delle caselle in cui la coordinata compare (\autoref{sec:gradiente-coordinate}), ciascuno moltiplicato per i fattori che nel forward moltiplicavano la coordinata in quella casella: la scala del blocco e i guadagni della riga e della colonna. Per $b_8$ è la somma dei 128 contributi delle sue caselle; per una correzione o un elemento della diagonale è il gradiente della sua unica casella. Si ottiene un solo gradiente per coordinata, \num{3176} per blocco invece di \num{16384}. Allo stesso modo scale, guadagni, $U$ e $V$ ricavano il proprio gradiente da $G$, con i passi della \autoref{sec:backward-passi}.
+\item \textbf{Aggiornamento.} L'optimizer aggiorna le coordinate, le scale, i guadagni, $U$, $V$ e i parametri densi del modello (posizioni, LayerNorm e bias). La matrice $W$ e il gradiente $G$ vengono scartati, e al passo successivo $W$ si ricostruisce dalle coordinate aggiornate: le 128 caselle di $b_8$ ricevono di nuovo tutte lo stesso valore, quello nuovo.
+\end{enumerate}
+
+La \autoref{tab:raccolta-gradienti}, subito sotto, riassume da quali caselle di un blocco ogni tipo di coordinata raccoglie il proprio gradiente. Una casella che contiene base e correzione, $b_{i\oplus j}+e_{i,k}$, contribuisce con lo stesso valore di $G$ a entrambe le coordinate.
+
+\begin{table}[H]
+\centering
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{lll}
+\toprule
+Coordinate & Caselle da cui raccoglie il gradiente & Gradiente \\
+\midrule
+\rowcolor{steraBlu!12} diagonale $d_i$ & una: $(i,i)$ & $G_{ii}$ \\
+\rowcolor{steraGrigio!12} base $b_s$ & 128: tutte le $(i,\,i\oplus s)$ & $\sum_i G_{i,\,i\oplus s}$ \\
+\rowcolor{steraArancio!15} correzione $e_{i,k}$ & una: $(i,\,i\oplus\sigma(i,k))$ & $G_{i,\,i\oplus\sigma(i,k)}$ \\
+\bottomrule
+\end{tabular}
+\caption{Raccolta dei gradienti in un blocco RowMask23: per ogni tipo di coordinata, le caselle della matrice ricostruita i cui gradienti si sommano. $G$ è qui il gradiente rispetto al blocco, che include già scala e guadagni (\autoref{sec:backward-passi}).}
+\label{tab:raccolta-gradienti}
+\end{table}
+
+\paragraph{Perché si aggiornano le coordinate e non la matrice densa.} Si sommano i gradienti delle caselle e poi si aggiorna una sola volta la coordinata; non si aggiornano le caselle una per una. La differenza è sostanziale. Se l'optimizer aggiornasse direttamente le \num{16384} caselle, ciascuna con il proprio gradiente, le 128 caselle di $b_8$ prenderebbero valori diversi fra loro: la matrice uscirebbe dalla famiglia RowMask23 e non si potrebbe più rappresentare in modo esatto con le coordinate. Aggiornando le coordinate, invece, ogni matrice resta per costruzione una proiezione STERA a ogni passo. Inoltre AdamW non è lineare, perché divide ogni aggiornamento per una stima della varianza del gradiente: sommare i gradienti e poi aggiornare la coordinata non equivale a sommare gli aggiornamenti delle singole caselle.
+
+
+\section{Dal training all'inferenza}
+\label{sec:guida-inferenza-stera}
+
+Al termine del training i parametri sono fissati, e le stesse proiezioni si possono eseguire in tre modi, mostrati nella \autoref{fig:percorso-inferenza-stera}, subito sotto:
+\begin{enumerate}
+\item \textbf{espansione residente}: si ricostruiscono una volta tutte le matrici e si tengono in memoria; i prodotti sono quelli densi, ma la memoria occupata è quella della forma densa;
+\item \textbf{espansione al bisogno}: si ricostruiscono le matrici di un layer prima di usarle e si rilasciano subito dopo; la memoria resta bassa, ma la ricostruzione si ripete;
+\item \textbf{prodotto diretto sulle coordinate}: si applicano i quattro passi della \autoref{sec:forward-stera} senza costruire nessuna matrice.
+\end{enumerate}
+
+\begin{figure}[H]
+\centering
+\input{figure/tikz/strategie_inferenza}
+\caption{Tre modi di eseguire le stesse proiezioni STERA in inferenza. Da sinistra a destra diminuisce la memoria occupata dai pesi e cresce il lavoro di calcolo per ricostruire o applicare la matrice.}
+\label{fig:percorso-inferenza-stera}
+\end{figure}
+
+La scelta dipende dalla fase della generazione. Nel \emph{prefill} il modello elabora tutti i token del prompt insieme e costruisce la KV cache: molti token usano gli stessi pesi, il costo è dominato dal calcolo e conviene l'espansione al bisogno, che permette prodotti densi fra matrici. Nel \emph{decode} il modello genera un token alla volta: ogni token rilegge tutti i pesi, il costo è dominato dai byte letti e conviene il prodotto diretto sulle coordinate. Le strategie si possono quindi combinare. In tutti i casi si esegue la stessa funzione con gli stessi parametri appresi: il confronto fra il motore compatto e quello denso del \autoref{cap:capitoli/07-sistemi} non confronta due modelli, ma due modi di eseguire lo stesso modello. Il \autoref{cap:capitoli/04d-motore} descrive come le tre strategie sono implementate.
+
+
+\section{Sintesi}
+
+Il prodotto con un blocco RowMask23 si calcola con due trasformate di Walsh--Hadamard, la diagonale e le correzioni, leggendo cinque volte meno dati del prodotto denso; il gradiente rispetto alle coordinate si ottiene sommando il gradiente della matrice sulle caselle di ciascuna coordinata. Il forward di una proiezione STERA si scompone in quattro passi e la backpropagation li percorre al contrario, producendo i gradienti di tutte le componenti e quello dell'ingresso; i passi sono esatti, come mostrano la dimostrazione e la verifica numerica. A ogni passo di training si aggiornano le coordinate, non la matrice densa, e in inferenza le stesse proiezioni si possono eseguire espandendo le matrici o direttamente sulle coordinate.

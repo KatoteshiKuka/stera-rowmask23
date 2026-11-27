@@ -1,0 +1,10 @@
+# Inference engines and system measurements (Mac with Apple Silicon), Python >= 3.11
+mlx==0.32.4
+numpy>=2.4
+tokenizers>=0.23
+# for the TinyStories references on MPS
+torch>=2.4
+transformers>=5.0   # measure.py uses the cache= argument introduced in Transformers 5
+psutil>=5.9
+# to regenerate the thesis figures
+matplotlib>=3.8   # with 3.9.4 the figures are pixel-identical to those in the thesis

@@ -1,0 +1,23 @@
+SOURCE AND ATTRIBUTION OF THE ORIGINAL TRANSFORMER FIGURE
+
+Chapter 2 of the thesis reproduces the original Figure 1 of the paper:
+Ashish Vaswani et al., "Attention Is All You Need", NeurIPS 2017.
+arXiv:1706.03762, https://arxiv.org/pdf/1706.03762
+Source of the file: the image embedded in page 3 of the paper PDF
+(1520 x 2239 pixels), extracted without redrawing it.
+For reproduction on a white background, only the transparency mask
+included in the original PDF was applied.
+
+On the first page of the paper Google grants permission to reproduce
+its figures and tables in scholarly or journalistic works, provided
+proper attribution is given. The corresponding citation is
+\cite{vaswani2017attention}.
+
+The diagram shows the ORIGINAL 2017 encoder-decoder Transformer;
+it is not the technical diagram of STERA 30M. STERA 30M is decoder-only
+and its own diagram is in Chapter 7. The paper figure is not used to
+attribute a separate encoder or a cross-attention layer to STERA.
+
+The other figures of the thesis describe RowMask23 and the model studied.
+To change the caption of the original figure, open:
+capitoli/01-elementi-teorici.tex

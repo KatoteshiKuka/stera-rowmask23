@@ -2,10 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "anteprima-tesi",
+      "name": "thesis-preview",
       "runtimeExecutable": "/opt/homebrew/bin/python3",
       "runtimeArgs": [
-        "/Users/andreanardoni/Desktop/STERA-RowMask23/tesi/anteprima/server.py",
+        "/Users/andreanardoni/Desktop/STERA-RowMask23/thesis/preview/server.py",
         "8765"
       ],
       "port": 8765,

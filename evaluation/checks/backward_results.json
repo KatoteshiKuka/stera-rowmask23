@@ -1,0 +1,30 @@
+{
+ "forward_relative_error": 1.1830592246070982e-15,
+ "backward_relative_error_vs_autograd": {
+  "coords": 6.566243704086159e-16,
+  "scales": 3.6376265662129354e-16,
+  "gout": 3.1990383162893563e-16,
+  "gin": 4.472114811162496e-16,
+  "U": 1.4122687547327172e-15,
+  "V": 9.8381204691352e-16,
+  "x": 8.530202221475875e-16
+ },
+ "finite_differences_max_relative_error": 7.620273325484461e-08,
+ "thesis_example": {
+  "y1": 0.0768,
+  "e": 1.056,
+  "alpha": 0.132,
+  "gout": 0.198,
+  "gin": 0.144,
+  "U": -0.4,
+  "V": 0.3,
+  "x": 0.0192
+ },
+ "sizes": {
+  "m": 256,
+  "n": 384,
+  "r": 8,
+  "tokens": 5
+ },
+ "precision": "float64"
+}
